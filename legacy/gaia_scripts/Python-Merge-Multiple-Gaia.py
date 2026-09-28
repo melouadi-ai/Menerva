@@ -1,0 +1,43 @@
+import json
+
+agent_a = json.loads(r'''{edge}[6]''')   # measures
+agent_b = json.loads(r'''{edge}[11]''')  # bitinfo
+
+# accumula tutti i bitinfo per IP, non solo l'ultimo
+b_index = {}
+for s in agent_b:
+    cfg = s["DRIVERCONFIG"]
+    cfg = cfg.split(":")[0]
+    if cfg not in b_index:
+        b_index[cfg] = []
+    b_index[cfg].extend(s.get("bitinfo", []))
+
+merged = []
+
+for a_station in agent_a:
+
+    key = a_station["DRIVERCONFIG"]
+    key = key.split(':')[0]
+
+    measures = []
+    for m in a_station.get("measures", []):
+        measures.append({
+            k: v
+            for k, v in m.items()
+            if k != "_packed_rows"
+        })
+
+    merged.append({
+        "NAME": a_station.get("NAME"),
+        "DRIVERNAME": a_station.get("DRIVERNAME"),
+        "DRIVERCONFIG": a_station.get("DRIVERCONFIG"),
+        "ID": a_station.get("ID"),
+        "measures": measures,
+        "bitinfo": b_index.get(key, [])
+    })
+
+result = json.dumps(
+    merged,
+    ensure_ascii=False,
+    indent=2
+)

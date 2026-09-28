@@ -1,0 +1,5 @@
+Esempio dei file generati da noi (vanno bene)?
+iL FILE Numero 1 ha due record con lo stesso modbus ma non ha la sezione bitinfo ed appartengono a colonne differenti. 
+Esempio gestione del file da 28 pagine, va bene?
+Esempio del file doppio, va bene?
+Come inizio con il BISON? Come funziona?

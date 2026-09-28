@@ -1,0 +1,99 @@
+ 
+-- ============================================================
+-- 1. PROTOCOL_CONFIG (Tabella di riferimento)
+-- ============================================================
+CREATE TABLE protocol_config (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255),      -- protocollo
+    ipaddress INET,         -- ip
+    port INTEGER,           -- porta
+    write4xxxx INTEGER      -- MODBUS REGISTRO
+);
+
+-- ============================================================
+-- 2. STATIONS
+-- ============================================================
+CREATE TABLE stations (
+    id INTEGER PRIMARY KEY,           -- ID univoco stazione
+    name VARCHAR(30),                 -- Nome stazione
+    drivername VARCHAR(50),           -- Protocollo
+    xposition INTEGER,
+    yposition INTEGER,
+    downloadtype SMALLINT,
+    downloadprogram BYTEA,
+    ignoreerrors BOOLEAN,
+    snapshot BOOLEAN,
+    normalsnapshot SMALLINT,
+    criticsnapshot SMALLINT,
+    alarmsnapshot SMALLINT,
+    synobitmap BYTEA,
+    linename VARCHAR(255),
+    areacode VARCHAR(10),
+    address VARCHAR(255),
+    lineconfiguration BYTEA,
+    timelastconfiguration INTEGER,
+    timelastdownload INTEGER,
+    eventtime TIMESTAMP,
+    eventcode INTEGER,
+    eventdescription VARCHAR(255),
+    eventorigin VARCHAR(50),
+    code VARCHAR(20),
+    driverprivate BYTEA,
+    overwritemeasures BOOLEAN,
+    -- Riferimento alla configurazione del driver
+    driverconfig_id INTEGER REFERENCES protocol_config(id)    -- riferimento id del protocoll_config
+);
+
+-- ============================================================
+-- 3. MEASURES
+-- ============================================================
+CREATE TABLE measures (
+    id INTEGER PRIMARY KEY,           -- ID univoco misura
+    stationid INTEGER,                -- id della stazione foreign key stazioone
+    name VARCHAR(50),                 -- nome della misura
+    disabled BOOLEAN,
+    digital BOOLEAN,                  -- 1=Digital, 0=Analogico
+    download BOOLEAN,
+    snapshot BOOLEAN,
+    ignoreerrors BOOLEAN,
+    lowcritical REAL,
+    highcritical REAL,
+    lowrange REAL,                    -- Inizio scala ingegneristica
+    highrange REAL,                   -- Fine scala ingegneristica
+    lowoffset REAL,                   -- Inizio scala elettrica
+    highoffset REAL,                  -- Fine scala elettrica
+    sqraw REAL,
+    sq1hourmean REAL,
+    sq3hourmean REAL,
+    sq8hourmean REAL,
+    sqdailymean REAL,
+    units VARCHAR(10),                -- Unità di misura
+    units2 VARCHAR(10),
+    standardrangeid INTEGER,
+    driverdata INTEGER,               -- Indirizzo registro??
+    type INTEGER,
+    driverprivate BYTEA,
+    only_positives SMALLINT,
+    vm_source_code TEXT,
+    period INTEGER,
+    snapsize INTEGER,
+    -- Riferimento alla configurazione del driver
+    driverconfig_id INTEGER REFERENCES protocol_config(id), -- riferimento id del protocoll_config
+
+    CONSTRAINT fk_measures_station FOREIGN KEY (stationid) REFERENCES stations (id)
+);
+
+-- ============================================================
+-- 4. BITINFO
+-- ============================================================
+CREATE TABLE bitinfo (
+    measureid INTEGER NOT NULL,       -- ID misura foreign key con id table misura
+    bitno SMALLINT NOT NULL,          -- Numero del bit del reg
+    bitname VARCHAR(50),              -- Descrizione bit = nome della descrizio
+    texton VARCHAR(50),               -- etichetta quando bit è 0 es "SPENTO"- "OK"
+    textoff VARCHAR(50),              -- eticheta quando bit è 1 es "ACCESO"- "ALLARME"
+
+    -- Chiave primaria composta (unicità per misura + bit)
+    CONSTRAINT pk_bitinfo PRIMARY KEY (measureid, bitno),
+    CONSTRAINT fk_bitinfo_measure FOREIGN KEY (measureid) REFERENCES measures (id)
+);

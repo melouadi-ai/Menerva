@@ -1,0 +1,828 @@
+[
+  {
+    "NAME": "Emissione",
+    "DRIVERNAME": "modbusplc",
+    "DRIVERCONFIG": "192.168.1.1:511",
+    "ID": 1,
+    "measures": [
+      {
+        "STATIONID": 1,
+        "NAME": "Allarme sonda riscaldata",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 1,
+        "MODBUSREGISTRO": 1,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Allarme linea riscaldata",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 2,
+        "MODBUSREGISTRO": 1,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Allarme frigorifero",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 3,
+        "MODBUSREGISTRO": 1,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Allarme presenza condensa",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 4,
+        "MODBUSREGISTRO": 1,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Allarme mancanza flusso",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 5,
+        "MODBUSREGISTRO": 1,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Allarme CO-O2",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 6,
+        "MODBUSREGISTRO": 1,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Allarme comunicazione CO-O2",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 7,
+        "MODBUSREGISTRO": 1,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Warm-up NO",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 8,
+        "MODBUSREGISTRO": 1,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Allarme NO",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 9,
+        "MODBUSREGISTRO": 1,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Sistema in",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 10,
+        "MODBUSREGISTRO": 3,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Calibrazione automatica in corso",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 11,
+        "MODBUSREGISTRO": 3,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "CO-O2 in calibrazione di zero",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 12,
+        "MODBUSREGISTRO": 3,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "CO-O2 in calibrazione di span",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 13,
+        "MODBUSREGISTRO": 3,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "NOx in calibrazione di zero",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 14,
+        "MODBUSREGISTRO": 3,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "NOx in calibrazione di span",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 15,
+        "MODBUSREGISTRO": 3,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Pompa analisi",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 16,
+        "MODBUSREGISTRO": 3,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Stato elettrovalvola cal zero",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 17,
+        "MODBUSREGISTRO": 4,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Stato elettrovalvola taratura",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 18,
+        "MODBUSREGISTRO": 4,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Stato elettrovalvola cal span",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 19,
+        "MODBUSREGISTRO": 4,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Elettrovalvola cal da sonda",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 20,
+        "MODBUSREGISTRO": 4,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Convertitore in bypass",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 21,
+        "MODBUSREGISTRO": 4,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "PLC life signal",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 22,
+        "MODBUSREGISTRO": 4,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Impianto in marcia",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 23,
+        "MODBUSREGISTRO": 4,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Impianto in minimo tecnico/funzionamento anomalo",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 24,
+        "MODBUSREGISTRO": 4,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Impianto in avviamento",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 25,
+        "MODBUSREGISTRO": 4,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Impianto in spegnimento",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 26,
+        "MODBUSREGISTRO": 4,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "SME in manutenzione",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 27,
+        "MODBUSREGISTRO": 4,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Impianto in manutenzione",
+        "UNITS": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "ID": 28,
+        "MODBUSREGISTRO": 4,
+        "GROUP": "Ingresso_digitale"
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "NOx (in ppm)",
+        "UNITS": "mg/Nm3",
+        "DRIVERDATA": 0,
+        "TYPE": 0,
+        "ID": 29,
+        "MODBUSREGISTRO": 18
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Temperatura fumi",
+        "UNITS": "°C",
+        "DRIVERDATA": 0,
+        "TYPE": 0,
+        "ID": 30,
+        "MODBUSREGISTRO": 25
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Portata gas",
+        "UNITS": "Nm3/h",
+        "DRIVERDATA": 0,
+        "TYPE": 0,
+        "ID": 31,
+        "MODBUSREGISTRO": 31
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Potenza elettrica",
+        "UNITS": null,
+        "DRIVERDATA": 0,
+        "TYPE": 0,
+        "ID": 32,
+        "MODBUSREGISTRO": 32
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "CO",
+        "UNITS": "mg/Nm3",
+        "DRIVERDATA": 0,
+        "TYPE": 0,
+        "ID": 33,
+        "MODBUSREGISTRO": 33
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "O2 Secco",
+        "UNITS": "%",
+        "DRIVERDATA": 0,
+        "TYPE": 0,
+        "ID": 34,
+        "MODBUSREGISTRO": 37
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "CO riferito",
+        "UNITS": "mg/Nm3",
+        "DRIVERDATA": 5,
+        "TYPE": 6,
+        "ID": 35,
+        "MODBUSREGISTRO": 193
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "NO espressi come NO2 riferiti",
+        "UNITS": "mg/Nm3",
+        "DRIVERDATA": 5,
+        "TYPE": 6,
+        "ID": 36,
+        "MODBUSREGISTRO": 194
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "O2 secco",
+        "UNITS": "%",
+        "DRIVERDATA": 5,
+        "TYPE": 6,
+        "ID": 37,
+        "MODBUSREGISTRO": 195
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "O2 umido",
+        "UNITS": "%",
+        "DRIVERDATA": 5,
+        "TYPE": 6,
+        "ID": 38,
+        "MODBUSREGISTRO": 196
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Portata fumi secca",
+        "UNITS": "Nm3/h",
+        "DRIVERDATA": 5,
+        "TYPE": 6,
+        "ID": 39,
+        "MODBUSREGISTRO": 197
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Heartbit PLC",
+        "UNITS": null,
+        "DRIVERDATA": 5,
+        "TYPE": 6,
+        "ID": 40,
+        "MODBUSREGISTRO": 209
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Stop calibrazione",
+        "UNITS": null,
+        "DRIVERDATA": 5,
+        "TYPE": 6,
+        "ID": 41,
+        "MODBUSREGISTRO": 211
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Start autocal zero",
+        "UNITS": null,
+        "DRIVERDATA": 5,
+        "TYPE": 6,
+        "ID": 42,
+        "MODBUSREGISTRO": 212
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Start QAL3",
+        "UNITS": null,
+        "DRIVERDATA": 5,
+        "TYPE": 6,
+        "ID": 43,
+        "MODBUSREGISTRO": 213
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Stop QAL3",
+        "UNITS": null,
+        "DRIVERDATA": 5,
+        "TYPE": 6,
+        "ID": 44,
+        "MODBUSREGISTRO": 214
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Bypass convertitore",
+        "UNITS": null,
+        "DRIVERDATA": 5,
+        "TYPE": 6,
+        "ID": 45,
+        "MODBUSREGISTRO": 216
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Ack allarmi",
+        "UNITS": null,
+        "DRIVERDATA": 5,
+        "TYPE": 6,
+        "ID": 46,
+        "MODBUSREGISTRO": 217
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Superamento media archiviata",
+        "UNITS": null,
+        "DRIVERDATA": 1,
+        "TYPE": 6,
+        "ID": 47,
+        "MODBUSREGISTRO": 221
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Superamento media previsionale",
+        "UNITS": null,
+        "DRIVERDATA": 1,
+        "TYPE": 6,
+        "ID": 48,
+        "MODBUSREGISTRO": 222
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "stimata NOx (in ppm)",
+        "UNITS": "mg/Nm3",
+        "DRIVERDATA": 0,
+        "TYPE": 0,
+        "ID": 49,
+        "MODBUSREGISTRO": 226
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "stimata Temperatura fumi",
+        "UNITS": "°C",
+        "DRIVERDATA": 0,
+        "TYPE": 0,
+        "ID": 50,
+        "MODBUSREGISTRO": 233
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "stimata Portata gas",
+        "UNITS": "Nm3/h",
+        "DRIVERDATA": 0,
+        "TYPE": 0,
+        "ID": 51,
+        "MODBUSREGISTRO": 239
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "stimata Potenza elettrica",
+        "UNITS": null,
+        "DRIVERDATA": 0,
+        "TYPE": 0,
+        "ID": 52,
+        "MODBUSREGISTRO": 240
+      }
+    ],
+    "bitinfo": [
+      {
+        "MEASUREID": 1,
+        "BITNO": 8,
+        "BITNAME": "Allarme sonda riscaldata",
+        "TEXTON": "Allarme",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 9,
+        "BITNAME": "Allarme linea riscaldata",
+        "TEXTON": "Allarme",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 10,
+        "BITNAME": "Allarme frigorifero",
+        "TEXTON": "Allarme",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 11,
+        "BITNAME": "Allarme presenza condensa",
+        "TEXTON": "Allarme",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 12,
+        "BITNAME": "Allarme mancanza flusso",
+        "TEXTON": "Allarme",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 0,
+        "BITNAME": "Allarme analizzatore CO-O2",
+        "TEXTON": "Allarme",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 1,
+        "BITNAME": "Allarme comunicazione CO-O2",
+        "TEXTON": "Allarme",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 2,
+        "BITNAME": "Warm-up analizzatore NO",
+        "TEXTON": "Allarme",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 3,
+        "BITNAME": "Allarme analizzatore NO",
+        "TEXTON": "Allarme",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 3,
+        "BITNO": 8,
+        "BITNAME": "Sistema in misura",
+        "TEXTON": "Misura",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 3,
+        "BITNO": 9,
+        "BITNAME": "Calibrazione automatica in corso",
+        "TEXTON": "Calibrazione",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 3,
+        "BITNO": 10,
+        "BITNAME": "Analizzatore CO-O2 in calibrazione di zero",
+        "TEXTON": "Calibrazione",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 3,
+        "BITNO": 11,
+        "BITNAME": "Analizzatore CO-O2 in calibrazione di span",
+        "TEXTON": "Calibrazione",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 3,
+        "BITNO": 12,
+        "BITNAME": "Analizzatore NOx in calibrazione di zero",
+        "TEXTON": "Calibrazione",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 3,
+        "BITNO": 13,
+        "BITNAME": "Analizzatore NOx in calibrazione di span",
+        "TEXTON": "Calibrazione",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 3,
+        "BITNO": 7,
+        "BITNAME": "Pompa analisi",
+        "TEXTON": "Calibrazione",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 4,
+        "BITNO": 8,
+        "BITNAME": "Stato elettrovalvola cal zero",
+        "TEXTON": "Stato",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 4,
+        "BITNO": 9,
+        "BITNAME": "Stato elettrovalvola taratura",
+        "TEXTON": "Stato",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 4,
+        "BITNO": 10,
+        "BITNAME": "Stato elettrovalvola cal span",
+        "TEXTON": "Stato",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 4,
+        "BITNO": 11,
+        "BITNAME": "Elettrovalvola cal da sonda",
+        "TEXTON": "Stato",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 4,
+        "BITNO": 12,
+        "BITNAME": "Convertitore in bypass",
+        "TEXTON": "Bypass",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 4,
+        "BITNO": 13,
+        "BITNAME": "PLC life signal",
+        "TEXTON": "Stato",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 4,
+        "BITNO": 0,
+        "BITNAME": "Impianto in marcia",
+        "TEXTON": "Marcia",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 4,
+        "BITNO": 1,
+        "BITNAME": "Impianto in minimo tecnico/funzionamento anomalo",
+        "TEXTON": "Anomalia",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 4,
+        "BITNO": 2,
+        "BITNAME": "Impianto in avviamento",
+        "TEXTON": "Avviamento",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 4,
+        "BITNO": 3,
+        "BITNAME": "Impianto in spegnimento",
+        "TEXTON": "Spegnimento",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 4,
+        "BITNO": 5,
+        "BITNAME": "SME in manutenzione",
+        "TEXTON": "Manutenzione",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 4,
+        "BITNO": 6,
+        "BITNAME": "Impianto in manutenzione",
+        "TEXTON": "Manutenzione",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 209,
+        "BITNO": 0,
+        "BITNAME": "Heartbit PLC",
+        "TEXTON": "Heartbit",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 211,
+        "BITNO": 0,
+        "BITNAME": "Stop calibrazione",
+        "TEXTON": "Calibrazione",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 212,
+        "BITNO": 0,
+        "BITNAME": "Start autocal zero",
+        "TEXTON": "Calibrazione",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 213,
+        "BITNO": 0,
+        "BITNAME": "Start QAL3",
+        "TEXTON": "QAL3",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 214,
+        "BITNO": 0,
+        "BITNAME": "Stop QAL3",
+        "TEXTON": "QAL3",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 216,
+        "BITNO": 0,
+        "BITNAME": "Bypass convertitore",
+        "TEXTON": "Allarmi",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 217,
+        "BITNO": 0,
+        "BITNAME": "Ack allarmi",
+        "TEXTON": "Allarmi",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 220,
+        "BITNO": 0,
+        "BITNAME": "Superamento media archiviata",
+        "TEXTON": "Comando",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 221,
+        "BITNO": 0,
+        "BITNAME": "Superamento media archiviata",
+        "TEXTON": "Comando",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 222,
+        "BITNO": 0,
+        "BITNAME": "Superamento media previsionale",
+        "TEXTON": "Comando",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 223,
+        "BITNO": 0,
+        "BITNAME": "Superamento media archiviata",
+        "TEXTON": "Comando",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      },
+      {
+        "MEASUREID": 224,
+        "BITNO": 0,
+        "BITNAME": "Superamento media archiviata",
+        "TEXTON": "Comando",
+        "TEXTOFF": "OFF",
+        "STATIONID": 1
+      }
+    ]
+  }
+]

@@ -1,0 +1,15 @@
+Caio Ademi 
+
+
+41011 – temperatura fumi 0-400 °C 32 BIT FLOAT 
+41003 – analisi Nox 0-200 ppm 32 BIT FLOAT
+41005 – analisi CO 0-200 ppm 32 BIT FLOAT
+41009 – analisi O2 secco 32 BIT FLOAT
+41010 – pressione Abs  fumi 800-1200 mBar INTERO 16BIT
+41012 – status allarme generale
+
+
+Appena puoi collegati , Vediamo insieme
+
+
+Saluti

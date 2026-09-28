@@ -1,0 +1,224 @@
+[
+  {
+    "NAME": "SME",
+    "DRIVERNAME": "modbusplc",
+    "XPOSITION": 430,
+    "YPOSITION": 530,
+    "DOWNLOADTYPE": 0,
+    "DOWNLOADPROGRAM": null,
+    "IGNOREERRORS": 0,
+    "SNAPSHOT": null,
+    "NORMALSNAPSHOT": 1,
+    "CRITICSNAPSHOT": 32767,
+    "ALARMSNAPSHOT": 32767,
+    "SYNOBITMAP": null,
+    "LINENAME": null,
+    "AREACODE": null,
+    "ADDRESS": null,
+    "LINECONFIGURATION": null,
+    "TIMELASTCONFIGURATION": null,
+    "TIMELASTDOWNLOAD": null,
+    "EVENTTIME": null,
+    "EVENTCODE": 0,
+    "EVENTORIGIN": null,
+    "CODE": null,
+    "DRIVERPRIVATE": null,
+    "OVERWRITEMEASURES": 1,
+    "DRIVERCONFIG": "<configuration><commProto><p0 class=\"Protocollo MODBUS (master) via TCP/IP\" name=\"Protocollo MODBUS (master) via TCP/IP\" ipaddress=\"192.168.2.11\" tcpport=\"5021\" timeout=\"5000\" retries=\"3\" write4XXXX=\"6\"/></commProto><recoveryProto/></configuration>",
+    "ID": 1,
+    "measures": [
+      {
+        "STATIONID": 1,
+        "NAME": "Ingressi digitali 1",
+        "DISABLED": 0,
+        "DIGITAL": null,
+        "DOWNLOAD": 0,
+        "SNAPSHOT": 1,
+        "IGNOREERRORS": 0,
+        "LOWCRITICAL": null,
+        "HIGHCRITICAL": null,
+        "LOWRANGE": null,
+        "HIGHRANGE": null,
+        "LOWOFFSET": null,
+        "HIGHOFFSET": null,
+        "SQRAW": null,
+        "SQ1HOURMEAN": null,
+        "SQ3HOURMEAN": null,
+        "SQ8HOURMEAN": null,
+        "SQDAILYMEAN": null,
+        "UNITS": null,
+        "STANDARDRANGEID": null,
+        "DRIVERDATA": 5,
+        "TYPE": 1,
+        "DRIVERPRIVATE": "0x419C00000000000000000000000000000100000096000000",
+        "ONLY_POSITIVES": null,
+        "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+        "PERIOD": 5,
+        "SNAPSIZE": 1000,
+        "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+        "ID": 1,
+        "UNITS2": null
+      },
+      {
+        "STATIONID": 1,
+        "NAME": "Ingressi digitali 2",
+        "DISABLED": 0,
+        "DIGITAL": null,
+        "DOWNLOAD": 0,
+        "SNAPSHOT": 1,
+        "IGNOREERRORS": 0,
+        "LOWCRITICAL": null,
+        "HIGHCRITICAL": null,
+        "LOWRANGE": null,
+        "HIGHRANGE": null,
+        "LOWOFFSET": null,
+        "HIGHOFFSET": null,
+        "SQRAW": null,
+        "SQ1HOURMEAN": null,
+        "SQ3HOURMEAN": null,
+        "SQ8HOURMEAN": null,
+        "SQDAILYMEAN": null,
+        "UNITS": null,
+        "STANDARDRANGEID": null,
+        "DRIVERDATA": 2,
+        "TYPE": 1,
+        "DRIVERPRIVATE": "0x439C00000000000000000000000000000100000096000000",
+        "ONLY_POSITIVES": null,
+        "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+        "PERIOD": 5,
+        "SNAPSIZE": 1000,
+        "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+        "ID": 2,
+        "UNITS2": null
+      }
+    ],
+    "bitinfo": [
+      {
+        "MEASUREID": 1,
+        "BITNO": 9,
+        "BITNAME": "COMANDO ACK RESET",
+        "TEXTON": "COMANDO",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 10,
+        "BITNAME": "COMANDO TACITAZIONE SIRENA",
+        "TEXTON": "COMANDO",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 14,
+        "BITNAME": "COG2: COMANDO AUTOCAL ULTRAMAT 23 NO+CO+O2",
+        "TEXTON": "COMANDO",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 15,
+        "BITNAME": "COG3: COMANDO AUTOCAL ULTRAMAT 23 NO+CO+O2",
+        "TEXTON": "COMANDO",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 1,
+        "BITNAME": "COG2: COMANDO START VERIFICA QAL 3 CO+NO+O2",
+        "TEXTON": "COMANDO",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 2,
+        "BITNAME": "COG2: COMANDO STOP VERIFICA QAL 3 CO+NO+O2",
+        "TEXTON": "COMANDO",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 3,
+        "BITNAME": "COG2: COMANDO SET BYPASS CONVERTITORE NO2-NO",
+        "TEXTON": "COMANDO",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 4,
+        "BITNAME": "COG2: COMANDO RESET BYPASS CONVERTITORE NO2-NO",
+        "TEXTON": "COMANDO",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 5,
+        "BITNAME": "COG3: COMANDO START VERIFICA QAL 3 CO+NO+O2",
+        "TEXTON": "COMANDO",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 6,
+        "BITNAME": "COG3: COMANDO STOP VERIFICA QAL 3 CO+NO+O2",
+        "TEXTON": "COMANDO",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 7,
+        "BITNAME": "COG3: COMANDO SET BYPASS CONVERTITORE NO2-NO",
+        "TEXTON": "COMANDO",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 1,
+        "BITNO": 8,
+        "BITNAME": "COG3: COMANDO RESET BYPASS CONVERTITORE NO2-NO",
+        "TEXTON": "COMANDO",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 2,
+        "BITNO": 9,
+        "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA ZERO PER CO",
+        "TEXTON": "CALIBRAZIONE",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 2,
+        "BITNO": 10,
+        "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA ZERO PER NO",
+        "TEXTON": "CALIBRAZIONE",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 2,
+        "BITNO": 11,
+        "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA ZERO PER O2",
+        "TEXTON": "CALIBRAZIONE",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 2,
+        "BITNO": 1,
+        "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA SPAN PER CO",
+        "TEXTON": "SPAN",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 2,
+        "BITNO": 2,
+        "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA SPAN PER NO",
+        "TEXTON": "SPAN",
+        "TEXTOFF": "OFF"
+      },
+      {
+        "MEASUREID": 2,
+        "BITNO": 3,
+        "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA SPAN PER O2",
+        "TEXTON": "SPAN",
+        "TEXTOFF": "OFF"
+      }
+    ]
+  }
+]

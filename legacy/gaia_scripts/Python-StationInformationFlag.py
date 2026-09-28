@@ -1,0 +1,19 @@
+import json
+
+input_json = r''' {edge}[10] '''
+
+input_json = json.loads(input_json)
+
+if isinstance(input_json, dict):
+    if input_json.get('campi_scala'):
+        input_json['CAMPI_SCALA'] = True
+    else:
+        input_json['STATION_INFORMATIONS'] = True
+elif isinstance(input_json, list):
+    if input_json:
+        if input_json[0].get('campi_scala'):
+            input_json[0]['CAMPI_SCALA'] = True
+        else:
+            input_json[0]['STATION_INFORMATIONS'] = True
+
+result = json.dumps(input_json, indent=4, ensure_ascii=False)

@@ -1,0 +1,2692 @@
+[
+  [
+    {
+      "NAME": "SME",
+      "DRIVERNAME": "modbusplc",
+      "DRIVERCONFIG": "192.168.2.11:502",
+      "ID": 1,
+      "measures": [
+        {
+          "STATIONID": 1,
+          "NAME": "COMANDO ACK RESET",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 1,
+          "MODBUSREGISTRO": 40001,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COMANDO TACITAZIONE SIRENA",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 2,
+          "MODBUSREGISTRO": 40001,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: COMANDO RESET ORE CARTUCCIA",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 3,
+          "MODBUSREGISTRO": 40001,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: COMANDO RESET ORE CARTUCCIA",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 4,
+          "MODBUSREGISTRO": 40001,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: COMANDO Autocal ULTRAMAT 23 \"NO+CO+O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 5,
+          "MODBUSREGISTRO": 40001,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: COMANDO Autocal ULTRAMAT 23 \"NO+CO+O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 6,
+          "MODBUSREGISTRO": 40001,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: COMANDO START VERIFICA QAL 3 CO+NO+O2",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 7,
+          "MODBUSREGISTRO": 40001,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: COMANDO STOP VERIFICA QAL 3 CO+NO+O2",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 8,
+          "MODBUSREGISTRO": 40001,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: COMANDO SET BYPASS CONVERTITORE NO2-NO",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 9,
+          "MODBUSREGISTRO": 40001,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: COMANDO RESET BYPASS CONVERTITORE NO2-NO",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 10,
+          "MODBUSREGISTRO": 40001,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: COMANDO START VERIFICA QAL 3 CO+NO+O2",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 11,
+          "MODBUSREGISTRO": 40001,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: COMANDO STOP VERIFICA QAL 3 CO+NO+O2",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 12,
+          "MODBUSREGISTRO": 40001,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: COMANDO SET BYPASS CONVERTITORE NO2-NO",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 13,
+          "MODBUSREGISTRO": 40001,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: COMANDO RESET BYPASS CONVERTITORE NO2-NO",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 14,
+          "MODBUSREGISTRO": 40001,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "SELEZIONE CALIBRAZ/VERIFICA ZERO PER \"CO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 15,
+          "MODBUSREGISTRO": 40003,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "SELEZIONE CALIBRAZ/VERIFICA ZERO PER \"NO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 16,
+          "MODBUSREGISTRO": 40003,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "SELEZIONE CALIBRAZ/VERIFICA ZERO PER \"O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 17,
+          "MODBUSREGISTRO": 40003,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "SELEZIONE CALIBRAZ/VERIFICA SPAN PER \"CO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 18,
+          "MODBUSREGISTRO": 40003,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "SELEZIONE CALIBRAZ/VERIFICA SPAN PER \"NO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 19,
+          "MODBUSREGISTRO": 40003,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "SELEZIONE CALIBRAZ/VERIFICA SPAN PER \"O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 20,
+          "MODBUSREGISTRO": 40003,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "FAULT COMUNICAZIONE PC SME",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 21,
+          "MODBUSREGISTRO": 40011,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "FAULT COMUNICAZIONE Con DCS",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 22,
+          "MODBUSREGISTRO": 40011,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "ANALOG Output DCS Forzatl",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 23,
+          "MODBUSREGISTRO": 40011,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "SELETTORE MANUTENZIONE GENERALE (OR M1+M2)",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 24,
+          "MODBUSREGISTRO": 40011,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Fault analogica MISURA \"TEMPERATURA LINEA\" (BL1)",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 25,
+          "MODBUSREGISTRO": 40012,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Fault analogica MISURA \"PRESSIONE FUMI\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 26,
+          "MODBUSREGISTRO": 40012,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Fault analogica MISURA \"TEMPERATURA FUMI\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 27,
+          "MODBUSREGISTRO": 40012,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Fault analogica MISURA \"POTENZA_MOTORE\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 28,
+          "MODBUSREGISTRO": 40012,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Fault analogica MISURA \"PORTATA GAS\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 29,
+          "MODBUSREGISTRO": 40012,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "Fault analogica MISURA Ris_006",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 30,
+          "MODBUSREGISTRO": 40012,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: Fault analogica MISURA \"TEMPERATURA LINEA\" (BL2)",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 31,
+          "MODBUSREGISTRO": 40012,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: Fault analogica MISURA \"PRESSIONE FUMI\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 32,
+          "MODBUSREGISTRO": 40012,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: Fault analogica MISURA \"TEMPERATURA FUMI\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 33,
+          "MODBUSREGISTRO": 40012,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: Fault analogica MISURA \"POTENZA_MOTORE\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 34,
+          "MODBUSREGISTRO": 40012,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: Fault analogica MISURA \"PORTATA GAS\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 35,
+          "MODBUSREGISTRO": 40012,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "Fault analogica MISURA Ris_012",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 36,
+          "MODBUSREGISTRO": 40012,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "WATCH DOG COMUNICAZIONE PLC",
+          "UNITS": null,
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 37,
+          "MODBUSREGISTRO": 40008
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "WATCH_DOG_DA SME Server 01",
+          "UNITS": null,
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 38,
+          "MODBUSREGISTRO": 40009
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "WATCH_DOG_DA SME Server 02",
+          "UNITS": null,
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 39,
+          "MODBUSREGISTRO": 40010
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "Gen: ALLARME SITOP SELECT 24Vdc",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 40,
+          "MODBUSREGISTRO": 40013,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "Gen: ALLARME ALTA TEMPERATURA QUADRO ANALISI",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 41,
+          "MODBUSREGISTRO": 40013,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "Gen: SCATTO INTERRUTTORI",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 42,
+          "MODBUSREGISTRO": 40013,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ALLARME TEMPERATURA SONDA DI PRELIEVO",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 43,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ALLARME TEMPERATURA LINEA DI PRELIEVO BL1",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 44,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: BLOCCO ALTISSIME TEMPERATURE In REGOLAZIONE BL1",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 45,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ALLARME FRIGO",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 46,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ALLARME PRESENZA CONDENSA",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 47,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: MEMORIA PRESENZA CONDENSA (Da Resettare)",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 48,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: PSL BASSA PRESSIONE GAS DI MISURA",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 49,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: SELETTORE MANUTENZIONE",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 50,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: SCATTO INTERRUTTORI",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 51,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ALLARME CONVERTITORE NO2/NO",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 52,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ANOMALIA ANALIZZATORE U23 \"CO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 53,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ALLARME BAD_QUALITY MISURA \"CO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 54,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ANOMALIA ANALIZZATORE U23 \"NO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 55,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ALLARME BAD_QUALITY MISURA \"NO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 56,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ANOMALIA ANALIZZATORE U23 \"O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 57,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ALLARME BAD_QUALITY MISURA \"O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 58,
+          "MODBUSREGISTRO": 40014,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ALLARME COMUNICAZIONE ANALIZZATORE U23 \"CO-NO+O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 59,
+          "MODBUSREGISTRO": 40015,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ALLARME VERIFICA QAL3 \"CO+NO+O2\" Terminata CON ERRORI",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 60,
+          "MODBUSREGISTRO": 40015,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: ALLARME TEMPERATURA SONDA DI PRELIEVO",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 61,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: ALLARME TEMPERATURA LINEA DI PRELIEVO BL2",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 62,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: BLOCCO ALTISSIME TEMPERATURE In REGOLAZIONE BL2",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 63,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: ALLARME FRIGO",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 64,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: ALLARME PRESENZA CONDENSA",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 65,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: MEMORIA PRESENZA CONDENSA (Da Resettare)",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 66,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: PSL BASSA PRESSIONE GAS DI MISURA",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 67,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: SELETTORE MANUTENZIONE",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 68,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: SCATTO INTERRUTTORI",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 69,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: ALLARME CONVERTITORE NO2/NO",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 70,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: ANOMALIA ANALIZZATORE U23 \"CO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 71,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: ALLARME BAD_QUALITY MISURA \"CO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 72,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: ANOMALIA ANALIZZATORE U23 \"NO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 73,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: ALLARME BAD_QUALITY MISURA \"NO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 74,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: ANOMALIA ANALIZZATORE U23 \"O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 75,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: ALLARME BAD_QUALITY MISURA \"O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 76,
+          "MODBUSREGISTRO": 40016,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: ALLARME COMUNICAZIONE ANALIZZATORE U23 \"CO-NO+O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 77,
+          "MODBUSREGISTRO": 40017,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: ALLARME VERIFICA QAL3 \"CO+NO+O2\" Terminata CON ERRORI",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 78,
+          "MODBUSREGISTRO": 40017,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "ABILIT.MEMORIZZAZIONE DATA In TO MMC (EXT + TIME INTERLOCK) (Only HMI)",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 79,
+          "MODBUSREGISTRO": 40021,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "MEMORIZZAZIONE DATA MMC OK (Only HMI)",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 80,
+          "MODBUSREGISTRO": 40021,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "MEMORIZZAZIONE DATA MMC ERRORE (Only HMI)",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 81,
+          "MODBUSREGISTRO": 40021,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "MEMORIZZAZIONE IN CORSO (Only HMI)",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 82,
+          "MODBUSREGISTRO": 40021,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: OR ALLARMI",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 83,
+          "MODBUSREGISTRO": 40021,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: OR ALLARMI",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 84,
+          "MODBUSREGISTRO": 40021,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "Gen: OR ALLARMI (M1+M2)",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 85,
+          "MODBUSREGISTRO": 40021,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "Gen: PULSANTE DI RESET (M1+M2)",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 86,
+          "MODBUSREGISTRO": 40021,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: IN MISURA ANALIZZATORE.U23 \"CO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 87,
+          "MODBUSREGISTRO": 40022,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: IN CALIBRAZIONE ANALIZZATORE U23. \"CO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 88,
+          "MODBUSREGISTRO": 40022,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: SPAN GAS ANALIZZATORE U23.\"CO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 89,
+          "MODBUSREGISTRO": 40022,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ZERO GAS ANALIZZATORE U23 \"CO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 90,
+          "MODBUSREGISTRO": 40022,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: IN MISURA ANALIZZATORE.U23 \"NO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 91,
+          "MODBUSREGISTRO": 40022,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: IN CALIBRAZIONE ANALIZZATORE U23. \"NO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 92,
+          "MODBUSREGISTRO": 40022,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: SPAN GAS ANALIZZATORE U23.\"NO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 93,
+          "MODBUSREGISTRO": 40022,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ZERO GAS ANALIZZATORE U23 \"NO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 94,
+          "MODBUSREGISTRO": 40022,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: IN MISURA ANALIZZATORE.U23 \"O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 95,
+          "MODBUSREGISTRO": 40022,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: IN CALIBRAZIONE ANALIZZATORE U23. \"O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 96,
+          "MODBUSREGISTRO": 40022,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: SPAN GAS ANALIZZATORE U23.\"O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 97,
+          "MODBUSREGISTRO": 40022,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: ZERO GAS ANALIZZATORE U23 \"O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 98,
+          "MODBUSREGISTRO": 40022,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: AUTOCAL U 23 \"NO+CO+O2\" IN CORSO",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 99,
+          "MODBUSREGISTRO": 40022,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Selettore inserimento pompa P1",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 100,
+          "MODBUSREGISTRO": 40023,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Stato comando pompa P1",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 101,
+          "MODBUSREGISTRO": 40023,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Com. ELT YV1 (Mis_Cal)",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 102,
+          "MODBUSREGISTRO": 40023,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Com. ELT YV3 (Zero-SpanI)",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 103,
+          "MODBUSREGISTRO": 40023,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Com. Convertitore (Bypass Convertitore NO2/NO)",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 104,
+          "MODBUSREGISTRO": 40023,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Motore in marcia",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 105,
+          "MODBUSREGISTRO": 40023,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Stato verifica QAL3 \"CO+NO+O2\" in corso",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 106,
+          "MODBUSREGISTRO": 40023,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Stato verifica QAL3 \"CO+NO+O2\" terminata senza errori",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 107,
+          "MODBUSREGISTRO": 40023,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Motore in manutenzione",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 108,
+          "MODBUSREGISTRO": 40023,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Preallarme emissione \"CO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 109,
+          "MODBUSREGISTRO": 40023,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Preallarme emissione \"NO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 110,
+          "MODBUSREGISTRO": 40023,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: Allarme superamento emissioni",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 111,
+          "MODBUSREGISTRO": 40023,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: In misura analizzatore.U23 \"CO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 112,
+          "MODBUSREGISTRO": 40024,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: In calibrazione analizzatore U23. \"CO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 113,
+          "MODBUSREGISTRO": 40024,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: Span gas analizzatore U23.\"CO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 114,
+          "MODBUSREGISTRO": 40024,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: Zero gas analizzatore U23 \"CO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 115,
+          "MODBUSREGISTRO": 40024,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: In misura analizzatore.U23 \"NO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 116,
+          "MODBUSREGISTRO": 40024,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: In calibrazione analizzatore U23. \"NO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 117,
+          "MODBUSREGISTRO": 40024,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: Span gas analizzatore U23.\"NO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 118,
+          "MODBUSREGISTRO": 40024,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: Zero gas analizzatore U23 \"NO\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 119,
+          "MODBUSREGISTRO": 40024,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: In misura analizzatore.U23 \"O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 120,
+          "MODBUSREGISTRO": 40024,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: In calibrazione analizzatore U23. \"O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 121,
+          "MODBUSREGISTRO": 40024,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: Span gas analizzatore U23.\"O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 122,
+          "MODBUSREGISTRO": 40024,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: Zero gas analizzatore U23 \"O2\"",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 123,
+          "MODBUSREGISTRO": 40024,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: Autocal U 23 \"NO\" in corso",
+          "UNITS": null,
+          "DRIVERDATA": 2,
+          "TYPE": 1,
+          "ID": 124,
+          "MODBUSREGISTRO": 40024,
+          "GROUP": "Ingresso_digitale"
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: PROGRESSIVO DATI CALIBRAZIONE COMPLETAM. OK CALx C1 (Variaz = read Data a PC)",
+          "UNITS": null,
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 125,
+          "MODBUSREGISTRO": 40251
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: MISURA ULTIMA CALx \"CO\" ZERO (Calibrazione Strumentale) N.U.",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 126,
+          "MODBUSREGISTRO": 40253
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: MISURA ULTIMA CALx \"CO\" SPAN (Calibrazione Strumentale) N.U.",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 127,
+          "MODBUSREGISTRO": 40255
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: MISURA ULTIMA CALx \"NO\" ZERO (Calibrazione Strumentale) N.U.",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 128,
+          "MODBUSREGISTRO": 40257
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: MISURA ULTIMA CALx \"NO\" SPAN (Calibrazione Strumentale) N.U.",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 129,
+          "MODBUSREGISTRO": 40259
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: MISURA ULTIMA CALx \"O2\" ZERO (Calibrazione Strumentale) N.U.",
+          "UNITS": "%",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 130,
+          "MODBUSREGISTRO": 40261
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2: MISURA ULTIMA CALx \"O2\" SPAN (Calibrazione Strumentale) N.U.",
+          "UNITS": "%",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 131,
+          "MODBUSREGISTRO": 40263
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: PROGRESSIVO DATI CALIBRAZIONE COMPLETAM. OK CALx C2 (Variaz = read Data a PC)",
+          "UNITS": null,
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 132,
+          "MODBUSREGISTRO": 40271
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: MISURA ULTIMA CALx \"CO\" ZERO (Calibrazione Strumentale) N.U.",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 133,
+          "MODBUSREGISTRO": 40273
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: MISURA ULTIMA CALx \"CO\" SPAN (Calibrazione Strumentale) N.U.",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 134,
+          "MODBUSREGISTRO": 40275
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: MISURA ULTIMA CALx \"NO\" ZERO (Calibrazione Strumentale) N.U.",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 135,
+          "MODBUSREGISTRO": 40277
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: MISURA ULTIMA CALx \"NO\" SPAN (Calibrazione Strumentale) N.U.",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 136,
+          "MODBUSREGISTRO": 40279
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: MISURA ULTIMA CALx \"O2\" ZERO (Calibrazione Strumentale) N.U.",
+          "UNITS": "%",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 137,
+          "MODBUSREGISTRO": 40281
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3: MISURA ULTIMA CALx \"O2\" SPAN (Calibrazione Strumentale) N.U.",
+          "UNITS": "%",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 138,
+          "MODBUSREGISTRO": 40283
+        },
+        {
+          "STATIONID": 2,
+          "NAME": "COG2: PROGRESSIVO DATI VERIFICA COMPLETAM. OK QAL3 C1 (Variaz = read Data a PC)",
+          "UNITS": null,
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 139,
+          "MODBUSREGISTRO": 40351
+        },
+        {
+          "STATIONID": 2,
+          "NAME": "COG2: MISURA ULTIMA QAL3 \"CO\" ZERO (Validazione Strumentale)",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 140,
+          "MODBUSREGISTRO": 40353
+        },
+        {
+          "STATIONID": 2,
+          "NAME": "COG2: MISURA ULTIMA QAL3 \"CO\" SPAN (Validazione Strumentale)",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 141,
+          "MODBUSREGISTRO": 40355
+        },
+        {
+          "STATIONID": 2,
+          "NAME": "COG2: MISURA ULTIMA QAL3 \"NO\" ZERO (Validazione Strumentale)",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 142,
+          "MODBUSREGISTRO": 40357
+        },
+        {
+          "STATIONID": 2,
+          "NAME": "COG2: MISURA ULTIMA QAL3 \"NO\" SPAN (Validazione Strumentale)",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 143,
+          "MODBUSREGISTRO": 40359
+        },
+        {
+          "STATIONID": 2,
+          "NAME": "COG2: MISURA ULTIMA QAL3 \"O2\" ZERO (Validazione Strumentale)",
+          "UNITS": "%",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 144,
+          "MODBUSREGISTRO": 40361
+        },
+        {
+          "STATIONID": 2,
+          "NAME": "COG2: MISURA ULTIMA QAL3 \"O2\" SPAN (Validazione Strumentale)",
+          "UNITS": "%",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 145,
+          "MODBUSREGISTRO": 40363
+        },
+        {
+          "STATIONID": 2,
+          "NAME": "COG3: PROGRESSIVO DATI VERIFICA COMPLETAM. OK QAL3 C2 (Variaz = read Data a PC)",
+          "UNITS": null,
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 146,
+          "MODBUSREGISTRO": 40371
+        },
+        {
+          "STATIONID": 2,
+          "NAME": "COG3: MISURA ULTIMA QAL3 \"CO\" ZERO (Validazione Strumentale)",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 147,
+          "MODBUSREGISTRO": 40373
+        },
+        {
+          "STATIONID": 2,
+          "NAME": "COG3: MISURA ULTIMA QAL3 \"CO\" SPAN (Validazione Strumentale)",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 148,
+          "MODBUSREGISTRO": 40375
+        },
+        {
+          "STATIONID": 2,
+          "NAME": "COG3: MISURA ULTIMA QAL3 \"NO\" ZERO (Validazione Strumentale)",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 149,
+          "MODBUSREGISTRO": 40377
+        },
+        {
+          "STATIONID": 2,
+          "NAME": "COG3: MISURA ULTIMA QAL3 \"NO\" SPAN (Validazione Strumentale)",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 150,
+          "MODBUSREGISTRO": 40379
+        },
+        {
+          "STATIONID": 2,
+          "NAME": "COG3: MISURA ULTIMA QAL3 \"O2\" ZERO (Validazione Strumentale)",
+          "UNITS": "%",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 151,
+          "MODBUSREGISTRO": 40381
+        },
+        {
+          "STATIONID": 2,
+          "NAME": "COG3: MISURA ULTIMA QAL3 \"O2\" SPAN (Validazione Strumentale)",
+          "UNITS": "%",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 152,
+          "MODBUSREGISTRO": 40383
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG2: CAMPO SCALA LOW 1 MISURA \"TEMPERATURA LINEA PRELIEVO\"",
+          "UNITS": "°C",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 153,
+          "MODBUSREGISTRO": 40461
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG2: CAMPO SCALA HIGH 1 MISURA \"TEMPERATURA LINEA PRELIEVO\"",
+          "UNITS": "°C",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 154,
+          "MODBUSREGISTRO": 40463
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG2: CAMPO SCALA LOW 1 MISURA \"PRESSIONE FUMI\"",
+          "UNITS": "mbar",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 155,
+          "MODBUSREGISTRO": 40465
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG2: CAMPO SCALA HIGH 1 MISURA \"PRESSIONE FUMI\"",
+          "UNITS": "mbar",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 156,
+          "MODBUSREGISTRO": 40467
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG2: CAMPO SCALA LOW 1 MISURA \"TEMPERATURA FUMI\"",
+          "UNITS": "°C",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 157,
+          "MODBUSREGISTRO": 40469
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG2: CAMPO SCALA HIGH 1 MISURA \"TEMPERATURA FUMI\"",
+          "UNITS": "°C",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 158,
+          "MODBUSREGISTRO": 40471
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG2: CAMPO SCALA LOW 1 MISURA \"POTENZA COGENERATORE\"",
+          "UNITS": "kW",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 159,
+          "MODBUSREGISTRO": 40473
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG2: CAMPO SCALA HIGH 1 MISURA \"POTENZA COGENERATORE\"",
+          "UNITS": "kW",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 160,
+          "MODBUSREGISTRO": 40475
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG2: CAMPO SCALA LOW 1 MISURA \"PORTATA GAS\"",
+          "UNITS": "Nm3/h",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 161,
+          "MODBUSREGISTRO": 40477
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG2: CAMPO SCALA HIGH 1 MISURA \"PORTATA GAS\"",
+          "UNITS": "Nm3/h",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 162,
+          "MODBUSREGISTRO": 40479
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG3: CAMPO SCALA LOW 1 MISURA \"TEMPERATURA LINEA PRELIEVO\"",
+          "UNITS": "°C",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 163,
+          "MODBUSREGISTRO": 40485
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG3: CAMPO SCALA HIGH 1 MISURA \"TEMPERATURA LINEA PRELIEVO\"",
+          "UNITS": "°C",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 164,
+          "MODBUSREGISTRO": 40487
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG3: CAMPO SCALA LOW 1 MISURA \"PRESSIONE FUMI\"",
+          "UNITS": "mbar",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 165,
+          "MODBUSREGISTRO": 40489
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG3: CAMPO SCALA HIGH 1 MISURA \"PRESSIONE FUMI\"",
+          "UNITS": "mbar",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 166,
+          "MODBUSREGISTRO": 40491
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG3: CAMPO SCALA LOW 1 MISURA \"TEMPERATURA FUMI\"",
+          "UNITS": "°C",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 167,
+          "MODBUSREGISTRO": 40493
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG3: CAMPO SCALA HIGH 1 MISURA \"TEMPERATURA FUMI\"",
+          "UNITS": "°C",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 168,
+          "MODBUSREGISTRO": 40495
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG3: CAMPO SCALA LOW 1 MISURA \"POTENZA COGENERATORE\"",
+          "UNITS": "kW",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 169,
+          "MODBUSREGISTRO": 40497
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG3: CAMPO SCALA HIGH 1 MISURA \"POTENZA COGENERATORE\"",
+          "UNITS": "kW",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 170,
+          "MODBUSREGISTRO": 40499
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG3: CAMPO SCALA LOW 1 MISURA \"PORTATA GAS\"",
+          "UNITS": "Nm3/h",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 171,
+          "MODBUSREGISTRO": 40501
+        },
+        {
+          "STATIONID": 3,
+          "NAME": "COG3: CAMPO SCALA HIGH 1 MISURA \"PORTATA GAS\"",
+          "UNITS": "Nm3/h",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 172,
+          "MODBUSREGISTRO": 40503
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2-SUPERATO LIMITE CO MEDIA 1H PROGRESSIVA",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 173,
+          "MODBUSREGISTRO": 40631
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2-SUPERATO LIMITE CO MEDIA 1H PREVISIONALE",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 174,
+          "MODBUSREGISTRO": 40632
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2-SUPERATO LIMITE CO MEDIA 1H PRECEDENTE",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 175,
+          "MODBUSREGISTRO": 40633
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2-SUPERATO LIMITE NOX MEDIA 1H PROGRESSIVA",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 176,
+          "MODBUSREGISTRO": 40634
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2-SUPERATO LIMITE NOX MEDIA 1H PREVISIONALE",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 177,
+          "MODBUSREGISTRO": 40635
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2-SUPERATO LIMITE NOX MEDIA 1H PRECEDENTE",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 178,
+          "MODBUSREGISTRO": 40636
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3-SUPERATO LIMITE CO MEDIA 1H PROGRESSIVA",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 179,
+          "MODBUSREGISTRO": 40637
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3-SUPERATO LIMITE CO MEDIA 1H PREVISIONALE",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 180,
+          "MODBUSREGISTRO": 40638
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3-SUPERATO LIMITE CO MEDIA 1H PRECEDENTE",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 181,
+          "MODBUSREGISTRO": 40639
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3-SUPERATO LIMITE NOX MEDIA 1H PROGRESSIVA",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 182,
+          "MODBUSREGISTRO": 40640
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3-SUPERATO LIMITE NOX MEDIA 1H PREVISIONALE",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 183,
+          "MODBUSREGISTRO": 40641
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3-SUPERATO LIMITE NOX MEDIA 1H PRECEDENTE",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 184,
+          "MODBUSREGISTRO": 40642
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2- PREALLARME EMISSIONE \"CO\"",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 185,
+          "MODBUSREGISTRO": 40651
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2- PREALLARME EMISSIONE \"NO\"",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 186,
+          "MODBUSREGISTRO": 40652
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG2- ALLARME SUPERAMENTO EMISSIONI",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 187,
+          "MODBUSREGISTRO": 40653
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3- PREALLARME EMISSIONE \"CO\"",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 188,
+          "MODBUSREGISTRO": 40655
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3- PREALLARME EMISSIONE \"NO\"",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 189,
+          "MODBUSREGISTRO": 40656
+        },
+        {
+          "STATIONID": 1,
+          "NAME": "COG3- ALLARME SUPERAMENTO EMISSIONI",
+          "UNITS": "mg/Nm3",
+          "DRIVERDATA": 0,
+          "TYPE": 0,
+          "ID": 190,
+          "MODBUSREGISTRO": 40657
+        }
+      ],
+      "bitinfo": [
+        {
+          "MEASUREID": 40001,
+          "BITNO": 9,
+          "BITNAME": "COMANDO ACK RESET (impulsivo)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40001,
+          "BITNO": 10,
+          "BITNAME": "COMANDO TACITAZIONE SIRENA (impulsivo)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40001,
+          "BITNO": 11,
+          "BITNAME": "COG2: COMANDO RESET ORE CARTUCCIA (impulsivo)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40001,
+          "BITNO": 12,
+          "BITNAME": "COG3: COMANDO RESET ORE CARTUCCIA (impulsivo)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40001,
+          "BITNO": 14,
+          "BITNAME": "COG2: COMANDO Autocal ULTRAMAT 23 \"NO+CO+O2\" (impulsivo)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40001,
+          "BITNO": 15,
+          "BITNAME": "COG3: COMANDO Autocal ULTRAMAT 23 \"NO+CO+O2\" (impulsivo)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40001,
+          "BITNO": 1,
+          "BITNAME": "COG2: COMANDO START VERIFICA QAL 3 CO+NO+O2 (impulsivo)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40001,
+          "BITNO": 2,
+          "BITNAME": "COG2: COMANDO STOP VERIFICA QAL 3 CO+NO+O2 (impulsivo)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40001,
+          "BITNO": 3,
+          "BITNAME": "COG2: COMANDO SET BYPASS CONVERTITORE NO2-NO (impulsivo)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40001,
+          "BITNO": 4,
+          "BITNAME": "COG2: COMANDO RESET BYPASS CONVERTITORE NO2-NO (impulsivo)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40001,
+          "BITNO": 5,
+          "BITNAME": "COG3: COMANDO START VERIFICA QAL 3 CO+NO+O2 (impulsivo)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40001,
+          "BITNO": 6,
+          "BITNAME": "COG3: COMANDO STOP VERIFICA QAL 3 CO+NO+O2 (impulsivo)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40001,
+          "BITNO": 7,
+          "BITNAME": "COG3: COMANDO SET BYPASS CONVERTITORE NO2-NO (impulsivo)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40001,
+          "BITNO": 8,
+          "BITNAME": "COG3: COMANDO RESET BYPASS CONVERTITORE NO2-NO (impulsivo)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40003,
+          "BITNO": 9,
+          "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA ZERO PER \"CO\"",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40003,
+          "BITNO": 10,
+          "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA ZERO PER \"NO\"",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40003,
+          "BITNO": 11,
+          "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA ZERO PER \"O2\"",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40003,
+          "BITNO": 1,
+          "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA SPAN PER \"CO\"",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40003,
+          "BITNO": 2,
+          "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA SPAN PER \"NO\"",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40003,
+          "BITNO": 3,
+          "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA SPAN PER \"O2\"",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40011,
+          "BITNO": 1,
+          "BITNAME": "FAULT COMUNICAZIONE PC SME",
+          "TEXTON": "Guasto",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40011,
+          "BITNO": 2,
+          "BITNAME": "FAULT COMUNICAZIONE Con DCS",
+          "TEXTON": "Guasto",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40011,
+          "BITNO": 7,
+          "BITNAME": "ANALOG Output DCS Forzatl",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40011,
+          "BITNO": 8,
+          "BITNAME": "SELETTORE MANUTENZIONE GENERALE (OR M1+M2)",
+          "TEXTON": "Manutenzione",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40012,
+          "BITNO": 9,
+          "BITNAME": "COG2: Fault analogica MISURA \"TEMPERATURA LINEA\" (BL1)",
+          "TEXTON": "Guasto",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40012,
+          "BITNO": 10,
+          "BITNAME": "COG2: Fault analogica MISURA \"PRESSIONE FUMI\"",
+          "TEXTON": "Guasto",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40012,
+          "BITNO": 11,
+          "BITNAME": "COG2: Fault analogica MISURA \"TEMPERATURA FUMI\"",
+          "TEXTON": "Guasto",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40012,
+          "BITNO": 12,
+          "BITNAME": "COG2: Fault analogica MISURA \"POTENZA_MOTORE\"",
+          "TEXTON": "Guasto",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40012,
+          "BITNO": 13,
+          "BITNAME": "COG2: Fault analogica MISURA \"PORTATA GAS\"",
+          "TEXTON": "Guasto",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40012,
+          "BITNO": 14,
+          "BITNAME": "Fault analogica MISURA Ris_006",
+          "TEXTON": "Guasto",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40012,
+          "BITNO": 15,
+          "BITNAME": "COG3: Fault analogica MISURA \"TEMPERATURA LINEA\" (BL2)",
+          "TEXTON": "Guasto",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40012,
+          "BITNO": 16,
+          "BITNAME": "COG3: Fault analogica MISURA \"PRESSIONE FUMI\"",
+          "TEXTON": "Guasto",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40012,
+          "BITNO": 1,
+          "BITNAME": "COG3: Fault analogica MISURA \"TEMPERATURA FUMI\"",
+          "TEXTON": "Guasto",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40012,
+          "BITNO": 2,
+          "BITNAME": "COG3: Fault analogica MISURA \"POTENZA_MOTORE\"",
+          "TEXTON": "Guasto",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40012,
+          "BITNO": 3,
+          "BITNAME": "COG3: Fault analogica MISURA \"PORTATA GAS\"",
+          "TEXTON": "Guasto",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40012,
+          "BITNO": 4,
+          "BITNAME": "Fault analogica MISURA Ris_012",
+          "TEXTON": "Guasto",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40013,
+          "BITNO": 1,
+          "BITNAME": "Gen: ALLARME SITOP SELECT 24Vdc",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40013,
+          "BITNO": 2,
+          "BITNAME": "Gen: ALLARME ALTA TEMPERATURA QUADRO ANALISI",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40013,
+          "BITNO": 3,
+          "BITNAME": "Gen: SCATTO INTERRUTTORI",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 9,
+          "BITNAME": "COG2: ALLARME TEMPERATURA SONDA DI PRELIEVO",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 10,
+          "BITNAME": "COG2: ALLARME TEMPERATURA LINEA DI PRELIEVO BL1",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 11,
+          "BITNAME": "COG2: BLOCCO ALTISSIME TEMPERATURE In REGOLAZIONE BL1",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 12,
+          "BITNAME": "COG2: ALLARME FRIGO",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 13,
+          "BITNAME": "COG2: ALLARME PRESENZA CONDENSA",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 14,
+          "BITNAME": "COG2: MEMORIA PRESENZA CONDENSA (Da Resettare)",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 15,
+          "BITNAME": "COG2: PSL BASSA PRESSIONE GAS DI MISURA",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 16,
+          "BITNAME": "COG2: SELETTORE MANUTENZIONE",
+          "TEXTON": "Manutenzione",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 1,
+          "BITNAME": "COG2: SCATTO INTERRUTTORI",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 2,
+          "BITNAME": "COG2: ALLARME CONVERTITORE NO2/NO",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 3,
+          "BITNAME": "COG2: ANOMALIA ANALIZZATORE U23 \"CO\"",
+          "TEXTON": "Anomalia",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 4,
+          "BITNAME": "COG2: ALLARME BAD_QUALITY MISURA \"CO\"",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 5,
+          "BITNAME": "COG2: ANOMALIA ANALIZZATORE U23 \"NO\"",
+          "TEXTON": "Anomalia",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 6,
+          "BITNAME": "COG2: ALLARME BAD_QUALITY MISURA \"NO\"",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 7,
+          "BITNAME": "COG2: ANOMALIA ANALIZZATORE U23 \"O2\"",
+          "TEXTON": "Anomalia",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40014,
+          "BITNO": 8,
+          "BITNAME": "COG2: ALLARME BAD_QUALITY MISURA \"O2\"",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40015,
+          "BITNO": 9,
+          "BITNAME": "COG2: ALLARME COMUNICAZIONE ANALIZZATORE U23 \"CO-NO+O2\"",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40015,
+          "BITNO": 16,
+          "BITNAME": "COG2: ALLARME VERIFICA QAL3 \"CO+NO+O2\" Terminata CON ERRORI",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 9,
+          "BITNAME": "COG3: ALLARME TEMPERATURA SONDA DI PRELIEVO",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 10,
+          "BITNAME": "COG3: ALLARME TEMPERATURA LINEA DI PRELIEVO BL2",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 11,
+          "BITNAME": "COG3: BLOCCO ALTISSIME TEMPERATURE In REGOLAZIONE BL2",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 12,
+          "BITNAME": "COG3: ALLARME FRIGO",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 13,
+          "BITNAME": "COG3: ALLARME PRESENZA CONDENSA",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 14,
+          "BITNAME": "COG3: MEMORIA PRESENZA CONDENSA (Da Resettare)",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 15,
+          "BITNAME": "COG3: PSL BASSA PRESSIONE GAS DI MISURA",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 16,
+          "BITNAME": "COG3: SELETTORE MANUTENZIONE",
+          "TEXTON": "Manutenzione",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 1,
+          "BITNAME": "COG3: SCATTO INTERRUTTORI",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 2,
+          "BITNAME": "COG3: ALLARME CONVERTITORE NO2/NO",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 3,
+          "BITNAME": "COG3: ANOMALIA ANALIZZATORE U23 \"CO\"",
+          "TEXTON": "Anomalia",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 4,
+          "BITNAME": "COG3: ALLARME BAD_QUALITY MISURA \"CO\"",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 5,
+          "BITNAME": "COG3: ANOMALIA ANALIZZATORE U23 \"NO\"",
+          "TEXTON": "Anomalia",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 6,
+          "BITNAME": "COG3: ALLARME BAD_QUALITY MISURA \"NO\"",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 7,
+          "BITNAME": "COG3: ANOMALIA ANALIZZATORE U23 \"O2\"",
+          "TEXTON": "Anomalia",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40016,
+          "BITNO": 8,
+          "BITNAME": "COG3: ALLARME BAD_QUALITY MISURA \"O2\"",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40017,
+          "BITNO": 9,
+          "BITNAME": "COG3: ALLARME COMUNICAZIONE ANALIZZATORE U23 \"CO-NO+O2\"",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40017,
+          "BITNO": 16,
+          "BITNAME": "COG3: ALLARME VERIFICA QAL3 \"CO+NO+O2\" Terminata CON ERRORI",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40021,
+          "BITNO": 9,
+          "BITNAME": "ABILIT.MEMORIZZAZIONE DATA In TO MMC (EXT + TIME INTERLOCK) (Only HMI)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40021,
+          "BITNO": 10,
+          "BITNAME": "MEMORIZZAZIONE DATA MMC OK (Only HMI)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40021,
+          "BITNO": 11,
+          "BITNAME": "MEMORIZZAZIONE DATA MMC ERRORE (Only HMI)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40021,
+          "BITNO": 12,
+          "BITNAME": "MEMORIZZAZIONE IN CORSO (Only HMI)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40021,
+          "BITNO": 14,
+          "BITNAME": "COG2: OR ALLARMI",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40021,
+          "BITNO": 15,
+          "BITNAME": "COG3: OR ALLARMI",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40021,
+          "BITNO": 1,
+          "BITNAME": "Gen: OR ALLARMI (M1+M2)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40021,
+          "BITNO": 2,
+          "BITNAME": "Gen: PULSANTE DI RESET (M1+M2)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40022,
+          "BITNO": 9,
+          "BITNAME": "COG2: IN MISURA ANALIZZATORE.U23 \"CO\"",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40022,
+          "BITNO": 10,
+          "BITNAME": "COG2: IN CALIBRAZIONE ANALIZZATORE U23. \"CO\"",
+          "TEXTON": "Calibrazione",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40022,
+          "BITNO": 11,
+          "BITNAME": "COG2: SPAN GAS ANALIZZATORE U23.\"CO\"",
+          "TEXTON": "Span",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40022,
+          "BITNO": 12,
+          "BITNAME": "COG2: ZERO GAS ANALIZZATORE U23 \"CO\"",
+          "TEXTON": "Zero",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40022,
+          "BITNO": 13,
+          "BITNAME": "COG2: IN MISURA ANALIZZATORE.U23 \"NO\"",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40022,
+          "BITNO": 14,
+          "BITNAME": "COG2: IN CALIBRAZIONE ANALIZZATORE U23. \"NO\"",
+          "TEXTON": "Calibrazione",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40022,
+          "BITNO": 15,
+          "BITNAME": "COG2: SPAN GAS ANALIZZATORE U23.\"NO\"",
+          "TEXTON": "Span",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40022,
+          "BITNO": 16,
+          "BITNAME": "COG2: ZERO GAS ANALIZZATORE U23 \"NO\"",
+          "TEXTON": "Zero",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40022,
+          "BITNO": 1,
+          "BITNAME": "COG2: IN MISURA ANALIZZATORE.U23 \"O2\"",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40022,
+          "BITNO": 2,
+          "BITNAME": "COG2: IN CALIBRAZIONE ANALIZZATORE U23. \"O2\"",
+          "TEXTON": "Calibrazione",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40022,
+          "BITNO": 3,
+          "BITNAME": "COG2: SPAN GAS ANALIZZATORE U23.\"O2\"",
+          "TEXTON": "Span",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40022,
+          "BITNO": 4,
+          "BITNAME": "COG2: ZERO GAS ANALIZZATORE U23 \"O2\"",
+          "TEXTON": "Zero",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40022,
+          "BITNO": 5,
+          "BITNAME": "COG2: AUTOCAL U 23 \"NO+CO+O2\" IN CORSO",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40023,
+          "BITNO": 9,
+          "BITNAME": "COG2: SELETTORE INSERIMENTO POMPA P1",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40023,
+          "BITNO": 10,
+          "BITNAME": "COG2: STATO COMANDO POMPA P1",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40023,
+          "BITNO": 11,
+          "BITNAME": "COG2: COM. ELT YV1 (Mis_Cal)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40023,
+          "BITNO": 12,
+          "BITNAME": "COG2: COM. ELT YV3 (Zero-SpanI)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40023,
+          "BITNO": 13,
+          "BITNAME": "COG2: COM. CONVERTITORE (Bypass CONVERTITORE NO2/NO)",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40023,
+          "BITNO": 14,
+          "BITNAME": "COG2: MOTORE IN MARCIA",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40023,
+          "BITNO": 15,
+          "BITNAME": "COG2: STATO VERIFICA QAL3 \"CO+NO+O2\" IN CORSO",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40023,
+          "BITNO": 16,
+          "BITNAME": "COG2: STATO VERIFICA QAL3 \"CO+NO+O2\" TERMINATA SENZA ERRORI",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40023,
+          "BITNO": 1,
+          "BITNAME": "COG2: MOTORE IN MANUTENZIONE",
+          "TEXTON": "Manutenzione",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40023,
+          "BITNO": 2,
+          "BITNAME": "COG2: PREALLARME EMISSIONE \"CO\"",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40023,
+          "BITNO": 3,
+          "BITNAME": "COG2: PREALLARME EMISSIONE \"NO\"",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40023,
+          "BITNO": 4,
+          "BITNAME": "COG2: ALLARME SUPERAMENTO EMISSIONI",
+          "TEXTON": "Allarme",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40024,
+          "BITNO": 9,
+          "BITNAME": "COG3: IN MISURA ANALIZZATORE.U23 \"CO\"",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40024,
+          "BITNO": 10,
+          "BITNAME": "COG3: IN CALIBRAZIONE ANALIZZATORE U23. \"CO\"",
+          "TEXTON": "Calibrazione",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40024,
+          "BITNO": 11,
+          "BITNAME": "COG3: SPAN GAS ANALIZZATORE U23.\"CO\"",
+          "TEXTON": "Span",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40024,
+          "BITNO": 12,
+          "BITNAME": "COG3: ZERO GAS ANALIZZATORE U23 \"CO\"",
+          "TEXTON": "Zero",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40024,
+          "BITNO": 13,
+          "BITNAME": "COG3: IN MISURA ANALIZZATORE.U23 \"NO\"",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40024,
+          "BITNO": 14,
+          "BITNAME": "COG3: IN CALIBRAZIONE ANALIZZATORE U23. \"NO\"",
+          "TEXTON": "Calibrazione",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40024,
+          "BITNO": 15,
+          "BITNAME": "COG3: SPAN GAS ANALIZZATORE U23.\"NO\"",
+          "TEXTON": "Span",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40024,
+          "BITNO": 16,
+          "BITNAME": "COG3: ZERO GAS ANALIZZATORE U23 \"NO\"",
+          "TEXTON": "Zero",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40024,
+          "BITNO": 1,
+          "BITNAME": "COG3: IN MISURA ANALIZZATORE.U23 \"O2\"",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40024,
+          "BITNO": 2,
+          "BITNAME": "COG3: IN CALIBRAZIONE ANALIZZATORE U23. \"O2\"",
+          "TEXTON": "Calibrazione",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40024,
+          "BITNO": 3,
+          "BITNAME": "COG3: SPAN GAS ANALIZZATORE U23.\"O2\"",
+          "TEXTON": "Span",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40024,
+          "BITNO": 4,
+          "BITNAME": "COG3: ZERO GAS ANALIZZATORE U23 \"O2\"",
+          "TEXTON": "Zero",
+          "TEXTOFF": "OFF"
+        },
+        {
+          "MEASUREID": 40024,
+          "BITNO": 5,
+          "BITNAME": "COG3: AUTOCAL U 23 \"NO\" IN CORSO",
+          "TEXTON": "Attivo",
+          "TEXTOFF": "OFF"
+        }
+      ]
+    }
+  ]
+]

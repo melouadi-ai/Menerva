@@ -1,0 +1,16 @@
+Le assegnazioni di unità di misura per le variabili vanno fatte seguendo queste regole:
+CO - mg/Nm3
+NO - mg/Nm3
+NO2 - mg/Nm3
+NOx - mg/Nm3
+NH3 - mg/Nm3
+SO2 - mg/Nm3
+COT - mg/Nm3
+HCL - mg/Nm3
+Polveri - mg/Nm3
+HF - mg/Nm3
+CO2 - %
+Temperatura fumi - °C
+Pressione fumi - mbar
+Pressione differenziale - mbar
+Portata fumi - Nm3/h

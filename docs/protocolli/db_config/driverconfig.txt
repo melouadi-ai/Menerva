@@ -1,0 +1,7 @@
+ CREATE TABLE protocol_config (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255),
+    ipaddress INET,
+    port INTEGER,
+    write4XXXX INTEGER
+);

@@ -1,0 +1,114 @@
+ 
+import json
+from collections import Counter, defaultdict
+
+# ── Parsing & flatten ────────────────────────────────────────────────────────
+parsed = json.loads(r'''{edge}[6]''')
+
+stack = list(parsed)
+input_json = []
+while stack:
+    item = stack.pop(0)
+    if isinstance(item, dict):
+        input_json.append(item)
+    elif isinstance(item, list):
+        stack = list(item) + stack
+
+DEFAULT_IP   = "127.0.0.1"
+DEFAULT_PORT = "502"
+
+# ── Normalizza DRIVERCONFIG con placeholder, marca le stazioni con placeholder ─
+for station in input_json:
+    cfg = str(station.get('DRIVERCONFIG', ''))
+    if "xxx.xxx.xxx.xxx" in cfg.lower() or "xxx,xxx,xxx,xxx" in cfg.lower():
+        station['DRIVERCONFIG'] = ':'
+        station['_had_placeholder'] = True   # flag interno, rimosso dopo
+    else:
+        station['_had_placeholder'] = False
+
+# ── Trova il primo DRIVERCONFIG reale ────────────────────────────────────────
+real_cfg = None
+for s in input_json:
+    cfg   = s.get("DRIVERCONFIG", ":")
+    parts = cfg.split(":", 1)
+    ip    = parts[0].strip() if parts else ""
+    if ip and "x" not in ip.lower() and ip != DEFAULT_IP:
+        real_cfg = cfg
+        break
+
+# ── Propaga real_cfg SOLO alle stazioni con ":" puro (mai avuto un IP reale)
+# ── NON propaga alle stazioni che avevano un placeholder esplicito ────────────
+if real_cfg is not None:
+    for station in input_json:
+        cfg   = station.get("DRIVERCONFIG", ":")
+        parts = cfg.split(":", 1)
+        ip    = parts[0].strip() if parts else ""
+        if not ip and not station.get('_had_placeholder', False):
+            station["DRIVERCONFIG"] = real_cfg
+
+# ── Rimuovi il flag interno ───────────────────────────────────────────────────
+for station in input_json:
+    if '_had_placeholder' in station:
+        del station['_had_placeholder']
+
+# ── Normalizza MODBUSREGISTRO: "40001.3" → 40001 ────────────────────────────
+for station in input_json:
+    for m in station.get("measures", []):
+        reg = m.get("MODBUSREGISTRO")
+        if isinstance(reg, str) and "." in reg:
+            base = reg.split(".")[0]
+            try:
+                m["MODBUSREGISTRO"] = int(base)
+            except ValueError:
+                m["MODBUSREGISTRO"] = base
+
+# ── Cross-station: registri condivisi tra stazioni diverse ───────────────────
+reg_to_stations = defaultdict(set)
+for station in input_json:
+    sid = station.get("ID") or id(station)
+    for m in station.get("measures", []):
+        reg = m.get("MODBUSREGISTRO")
+        if reg is not None:
+            reg_to_stations[reg].add(sid)
+
+cross_station_regs = set()
+for reg, sids in reg_to_stations.items():
+    if len(sids) > 1:
+        cross_station_regs.add(reg)
+
+# ── Assegna GROUP se registro duplicato nella stessa stazione ────────────────
+for station in input_json:
+    measures = station.get("measures", [])
+
+    reg_counts = Counter(
+        m["MODBUSREGISTRO"]
+        for m in measures
+        if m.get("MODBUSREGISTRO") is not None
+    )
+
+    shared_regs = set()
+    for reg, count in reg_counts.items():
+        if count > 1 and reg not in cross_station_regs:
+            shared_regs.add(reg)
+
+    for m in measures:
+        reg = m.get("MODBUSREGISTRO")
+        if reg is not None and reg in shared_regs:
+            m["GROUP"] = "Ingresso_digitale"
+        elif "GROUP" in m:
+            del m["GROUP"]
+
+# ── Normalizza MEASUREID nei bitinfo: "40007.0" → 40007 ─────────────────────
+for s in input_json:
+    for b in s.get("bitinfo", []):
+        mid = b.get("MEASUREID")
+        if mid is not None:
+            mid_str = str(mid)
+            if "." in mid_str:
+                base = mid_str.split(".")[0]
+                try:
+                    b["MEASUREID"] = int(base)
+                except ValueError:
+                    b["MEASUREID"] = base
+
+output_json = json.dumps(input_json, ensure_ascii=False, indent=4)

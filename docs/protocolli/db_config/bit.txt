@@ -1,0 +1,20 @@
+ 
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[BITINFO](
+	[MEASUREID] [int] NOT NULL, -> id misura
+	[BITNO] [smallint] NOT NULL, -> numero bit del reg
+	[BITNAME] [nvarchar](50) NULL, -> DESCRIZIONE misura
+	[TEXTON] [nvarchar](50) NULL, -> etichetta quando bit è 0 es "SPENTO"- "OK"
+	[TEXTOFF] [nvarchar](50) NULL, -> eticheta quando bit è 1 es "ACCESO"- "ALLARME"
+PRIMARY KEY CLUSTERED
+(
+	[MEASUREID] ASC,
+	[BITNO] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO

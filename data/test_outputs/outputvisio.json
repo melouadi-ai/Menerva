@@ -1,0 +1,1010 @@
+[
+    [
+        {
+            "NAME": "Impianto lavorazione SO2",
+            "DRIVERNAME": "modbusplc",
+            "DRIVERCONFIG": "<p0 class="Protocollo MODBUS (master) via TCP/IP" name="Protocollo MODBUS (master) via TCP/IP" ipaddress="" tcpport="502" timeout="5000" retries="3" write4XXXX="6"/>",
+            "ID": 1,
+            "measures": [
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme sonda riscaldata",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 1,
+                    "MODBUSREGISTRO": 64
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme linea riscaldata",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 1,
+                    "MODBUSREGISTRO": 64
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme frigorifero",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 1,
+                    "MODBUSREGISTRO": 64
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme presenza condensa",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 1,
+                    "MODBUSREGISTRO": 64
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme mancanza flusso",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 1,
+                    "MODBUSREGISTRO": 64
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme analizzatore SO2",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 1,
+                    "MODBUSREGISTRO": 64
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Sistema in misura",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 3,
+                    "MODBUSREGISTRO": 68
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Calibrazione automatica in corso",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 3,
+                    "MODBUSREGISTRO": 68
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Analizzatore SO2 in calibrazione di zero",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 3,
+                    "MODBUSREGISTRO": 68
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Analizzatore SO2 in calibrazione di span",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 3,
+                    "MODBUSREGISTRO": 68
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Secondo campo SO2",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 3,
+                    "MODBUSREGISTRO": 68
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "QAL3 in corso",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 3,
+                    "MODBUSREGISTRO": 69
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "QAL3: elettrovalvola ARIA",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 3,
+                    "MODBUSREGISTRO": 69
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "QAL3: elettrovalvola span SO2",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 3,
+                    "MODBUSREGISTRO": 69
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "QAL3: lavaggio con N2",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 3,
+                    "MODBUSREGISTRO": 69
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "QAL3: ciclo concluso senza errori",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 3,
+                    "MODBUSREGISTRO": 69
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "QAL3: ciclo concluso con errori",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 3,
+                    "MODBUSREGISTRO": 69
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Pompa analisi",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 3,
+                    "MODBUSREGISTRO": 69
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Stato elettrovalvola cal zero",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 4,
+                    "MODBUSREGISTRO": 70
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Stato elettrovalvola N2",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 4,
+                    "MODBUSREGISTRO": 70
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Stato elettrovalvola cal span",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 4,
+                    "MODBUSREGISTRO": 70
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Elettrovalvola cal da sonda",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 4,
+                    "MODBUSREGISTRO": 70
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "PLC life signal",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 4,
+                    "MODBUSREGISTRO": 70
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Impianto in marcia",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 4,
+                    "MODBUSREGISTRO": 71
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Impianto in minimo tecnico/funzionamento anomalo",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 4,
+                    "MODBUSREGISTRO": 71
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Impianto in avviamento",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 4,
+                    "MODBUSREGISTRO": 71
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Impianto in spegnimento",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 4,
+                    "MODBUSREGISTRO": 71
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "SME in manutenzione",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 4,
+                    "MODBUSREGISTRO": 71
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Impianto in manutenzione",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 4,
+                    "MODBUSREGISTRO": 71
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Impianto fuori servizio per guasto",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 4,
+                    "MODBUSREGISTRO": 71
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Blocco da BSS2",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 5,
+                    "MODBUSREGISTRO": 72
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme bassa portata FT-2611",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 5,
+                    "MODBUSREGISTRO": 72
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme bassa portata FT-310",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 5,
+                    "MODBUSREGISTRO": 72
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme bassa portata FT-313",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 5,
+                    "MODBUSREGISTRO": 72
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "AI303A allarme basso pH",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 5,
+                    "MODBUSREGISTRO": 72
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "AI303B allarme basso pH",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 5,
+                    "MODBUSREGISTRO": 72
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "AI2602A allarme basso pH",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 5,
+                    "MODBUSREGISTRO": 72
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "AI2602B allarme basso pH",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 5,
+                    "MODBUSREGISTRO": 72
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "PM-302A in marcia",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 5,
+                    "MODBUSREGISTRO": 73
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "PM-302B in marcia",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 5,
+                    "MODBUSREGISTRO": 73
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "PM-310A in marcia",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 5,
+                    "MODBUSREGISTRO": 73
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "PM-310B in marcia",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 5,
+                    "MODBUSREGISTRO": 73
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "PM-2600A in marcia",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 6,
+                    "MODBUSREGISTRO": 74
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "PM-2600B in marcia",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 6,
+                    "MODBUSREGISTRO": 74
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "PM-2601A in marcia",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 6,
+                    "MODBUSREGISTRO": 74
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "PM-2601B in marcia",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 6,
+                    "MODBUSREGISTRO": 74
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "PM-2604A in marcia",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 6,
+                    "MODBUSREGISTRO": 74
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "PM-2604B in marcia",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 6,
+                    "MODBUSREGISTRO": 74
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Ventilatore VN-400 in marcia",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 6,
+                    "MODBUSREGISTRO": 75
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Ventilatore VN-2504 in marcia",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 6,
+                    "MODBUSREGISTRO": 75
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Ventilatore 514K1 in marcia",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 6,
+                    "MODBUSREGISTRO": 75
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Ventilatore 514K2 in marcia",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 6,
+                    "MODBUSREGISTRO": 75
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "QAL3: Tempo trascorso apertura elettrovalvola N2",
+                    "UNITS": null,
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 9,
+                    "MODBUSREGISTRO": 80
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "QAL3: Tempo trascorso apertura elettrovalvola ARIA",
+                    "UNITS": null,
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 10,
+                    "MODBUSREGISTRO": 82
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "QAL3: Tempo trascorso apertura elettrovalvola SO2",
+                    "UNITS": null,
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 11,
+                    "MODBUSREGISTRO": 84
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "SO2",
+                    "UNITS": "mg/Nm3",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 17,
+                    "MODBUSREGISTRO": 96
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Temperatura fumi",
+                    "UNITS": "°C",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 33,
+                    "MODBUSREGISTRO": 128
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "SO2",
+                    "UNITS": "mg/Nm3",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 49,
+                    "MODBUSREGISTRO": 160
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Temperatura fumi",
+                    "UNITS": "°C",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 65,
+                    "MODBUSREGISTRO": 192
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "PC life signal",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 417,
+                    "MODBUSREGISTRO": 896
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Start autocal",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 418,
+                    "MODBUSREGISTRO": 898
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Stop autocal",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 419,
+                    "MODBUSREGISTRO": 900
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Ack allarmi",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 425,
+                    "MODBUSREGISTRO": 912
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Impianto in manutenzione",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 426,
+                    "MODBUSREGISTRO": 914
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Impianto fuori servizio per guasto",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 427,
+                    "MODBUSREGISTRO": 916
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme supero ultima media",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 431,
+                    "MODBUSREGISTRO": 924
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme supero media previsionale",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 432,
+                    "MODBUSREGISTRO": 926
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Misura stimata SO2",
+                    "UNITS": null,
+                    "DRIVERDATA": 2,
+                    "TYPE": 1,
+                    "ID": 433,
+                    "MODBUSREGISTRO": 928
+                }
+            ],
+            "bitinfo": [
+                {
+                    "MEASUREID": 64,
+                    "BITNO": 0,
+                    "BITNAME": "Allarme sonda riscaldata",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 64,
+                    "BITNO": 1,
+                    "BITNAME": "Allarme linea riscaldata",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 64,
+                    "BITNO": 2,
+                    "BITNAME": "Allarme frigorifero",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 64,
+                    "BITNO": 3,
+                    "BITNAME": "Allarme presenza condensa",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 64,
+                    "BITNO": 4,
+                    "BITNAME": "Allarme mancanza flusso",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 64,
+                    "BITNO": 5,
+                    "BITNAME": "Allarme analizzatore SO2",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 68,
+                    "BITNO": 8,
+                    "BITNAME": "Sistema in misura",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 68,
+                    "BITNO": 9,
+                    "BITNAME": "Calibrazione automatica in corso",
+                    "TEXTON": "CALIBRAZIONE",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 68,
+                    "BITNO": 10,
+                    "BITNAME": "Analizzatore SO2 in calibrazione di zero",
+                    "TEXTON": "ZERO",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 68,
+                    "BITNO": 11,
+                    "BITNAME": "Analizzatore SO2 in calibrazione di span",
+                    "TEXTON": "SPAN",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 68,
+                    "BITNO": 15,
+                    "BITNAME": "Secondo campo SO2",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 69,
+                    "BITNO": 0,
+                    "BITNAME": "QAL3 in corso",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 69,
+                    "BITNO": 1,
+                    "BITNAME": "QAL3: elettrovalvola ARIA",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 69,
+                    "BITNO": 2,
+                    "BITNAME": "QAL3: elettrovalvola span SO2",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 69,
+                    "BITNO": 3,
+                    "BITNAME": "QAL3: lavaggio con N2",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 69,
+                    "BITNO": 5,
+                    "BITNAME": "QAL3: ciclo concluso senza errori",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 69,
+                    "BITNO": 6,
+                    "BITNAME": "QAL3: ciclo concluso con errori",
+                    "TEXTON": "ANOMALIA",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 69,
+                    "BITNO": 7,
+                    "BITNAME": "Pompa analisi",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 70,
+                    "BITNO": 8,
+                    "BITNAME": "Stato elettrovalvola cal zero",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 70,
+                    "BITNO": 9,
+                    "BITNAME": "Stato elettrovalvola N2",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 70,
+                    "BITNO": 10,
+                    "BITNAME": "Stato elettrovalvola cal span",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 70,
+                    "BITNO": 11,
+                    "BITNAME": "Elettrovalvola cal da sonda",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 70,
+                    "BITNO": 13,
+                    "BITNAME": "PLC life signal",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 71,
+                    "BITNO": 0,
+                    "BITNAME": "Impianto in marcia",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 71,
+                    "BITNO": 1,
+                    "BITNAME": "Impianto in minimo tecnico/funzionamento anomalo",
+                    "TEXTON": "ANOMALIA",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 71,
+                    "BITNO": 2,
+                    "BITNAME": "Impianto in avviamento",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 71,
+                    "BITNO": 3,
+                    "BITNAME": "Impianto in spegnimento",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 71,
+                    "BITNO": 5,
+                    "BITNAME": "SME in manutenzione",
+                    "TEXTON": "MANUTENZIONE",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 71,
+                    "BITNO": 6,
+                    "BITNAME": "Impianto in manutenzione",
+                    "TEXTON": "MANUTENZIONE",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 71,
+                    "BITNO": 7,
+                    "BITNAME": "Impianto fuori servizio per guasto",
+                    "TEXTON": "FAULT",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 72,
+                    "BITNO": 8,
+                    "BITNAME": "Blocco da BSS2",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 72,
+                    "BITNO": 9,
+                    "BITNAME": "Allarme bassa portata FT-2611",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 72,
+                    "BITNO": 10,
+                    "BITNAME": "Allarme bassa portata FT-310",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 72,
+                    "BITNO": 11,
+                    "BITNAME": "Allarme bassa portata FT-313",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 72,
+                    "BITNO": 12,
+                    "BITNAME": "AI303A allarme basso pH",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 72,
+                    "BITNO": 13,
+                    "BITNAME": "AI303B allarme basso pH",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 72,
+                    "BITNO": 14,
+                    "BITNAME": "AI2602A allarme basso pH",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 72,
+                    "BITNO": 15,
+                    "BITNAME": "AI2602B allarme basso pH",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 73,
+                    "BITNO": 1,
+                    "BITNAME": "PM-302A in marcia",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 73,
+                    "BITNO": 2,
+                    "BITNAME": "PM-302B in marcia",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 73,
+                    "BITNO": 4,
+                    "BITNAME": "PM-310A in marcia",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 73,
+                    "BITNO": 5,
+                    "BITNAME": "PM-310B in marcia",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 74,
+                    "BITNO": 8,
+                    "BITNAME": "PM-2600A in marcia",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 74,
+                    "BITNO": 9,
+                    "BITNAME": "PM-2600B in marcia",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 74,
+                    "BITNO": 10,
+                    "BITNAME": "PM-2601A in marcia",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 74,
+                    "BITNO": 11,
+                    "BITNAME": "PM-2601B in marcia",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 74,
+                    "BITNO": 12,
+                    "BITNAME": "PM-2604A in marcia",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 74,
+                    "BITNO": 13,
+                    "BITNAME": "PM-2604B in marcia",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 75,
+                    "BITNO": 0,
+                    "BITNAME": "Ventilatore VN-400 in marcia",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 75,
+                    "BITNO": 1,
+                    "BITNAME": "Ventilatore VN-2504 in marcia",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 75,
+                    "BITNO": 2,
+                    "BITNAME": "Ventilatore 514K1 in marcia",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 75,
+                    "BITNO": 3,
+                    "BITNAME": "Ventilatore 514K2 in marcia",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                }
+            ]
+        }
+    ],
+    [
+        {
+            "NAME": "Impianto lavorazione SO2",
+            "DRIVERNAME": "modbusplc",
+            "DRIVERCONFIG": "<p0 class="Protocollo MODBUS (master) via TCP/IP" name="Protocollo MODBUS (master) via TCP/IP" ipaddress="" tcpport="502" timeout="5000" retries="3" write4XXXX="6"/>",
+            "ID": 1,
+            "measures": [
+                {
+                    "STATIONID": 1,
+                    "NAME": "Misura stimata Temperatura fumi",
+                    "UNITS": "°C",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 1,
+                    "MODBUSREGISTRO": 441
+                }
+            ],
+            "bitinfo": []
+        }
+    ]
+]

@@ -1,0 +1,3060 @@
+{
+  "NAME": "SME",
+  "DRIVERNAME": "modbusplc",
+  "XPOSITION": 430,
+  "YPOSITION": 530,
+  "DOWNLOADTYPE": 0,
+  "DOWNLOADPROGRAM": null,
+  "IGNOREERRORS": 0,
+  "SNAPSHOT": null,
+  "NORMALSNAPSHOT": 1,
+  "CRITICSNAPSHOT": 32767,
+  "ALARMSNAPSHOT": 32767,
+  "SYNOBITMAP": null,
+  "LINENAME": null,
+  "AREACODE": null,
+  "ADDRESS": null,
+  "LINECONFIGURATION": null,
+  "TIMELASTCONFIGURATION": null,
+  "TIMELASTDOWNLOAD": null,
+  "EVENTTIME": null,
+  "EVENTCODE": 0,
+  "EVENTORIGIN": null,
+  "CODE": null,
+  "DRIVERPRIVATE": null,
+  "OVERWRITEMEASURES": 1,
+  "DRIVERCONFIG": "<configuration><commProto><p0 class=\"Protocollo MODBUS (master) via TCP/IP\" name=\"Protocollo MODBUS (master) via TCP/IP\" ipaddress=\"127.0.0.1\" tcpport=\"502\" timeout=\"5000\" retries=\"3\" write4XXXX=\"6\"/></commProto><recoveryProto/></configuration>",
+  "ID": 1,
+  "measures": [
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 1",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x419C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 1,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 2",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x439C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 2,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 3",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x449C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 3,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Libero",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": -3.40282e+38,
+      "HIGHCRITICAL": 3.40282e+38,
+      "LOWRANGE": -3.40282e+38,
+      "HIGHRANGE": 3.40282e+38,
+      "LOWOFFSET": -3.40282e+38,
+      "HIGHOFFSET": 3.40282e+38,
+      "SQRAW": 3.40282e+38,
+      "SQ1HOURMEAN": 3.40282e+38,
+      "SQ3HOURMEAN": 3.40282e+38,
+      "SQ8HOURMEAN": 3.40282e+38,
+      "SQDAILYMEAN": 3.40282e+38,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 0,
+      "TYPE": 0,
+      "DRIVERPRIVATE": "0x459C000000000000000000000000000001000000FA000000",
+      "ONLY_POSITIVES": 0,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 4,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 4",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x469C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 5,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "WATCH DOG COMUNICAZIONE PLC",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": -3.40282e+38,
+      "HIGHCRITICAL": 3.40282e+38,
+      "LOWRANGE": -3.40282e+38,
+      "HIGHRANGE": 3.40282e+38,
+      "LOWOFFSET": -3.40282e+38,
+      "HIGHOFFSET": 3.40282e+38,
+      "SQRAW": 3.40282e+38,
+      "SQ1HOURMEAN": 3.40282e+38,
+      "SQ3HOURMEAN": 3.40282e+38,
+      "SQ8HOURMEAN": 3.40282e+38,
+      "SQDAILYMEAN": 3.40282e+38,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 0,
+      "TYPE": 0,
+      "DRIVERPRIVATE": "0x489C000000000000000000000000000001000000FA000000",
+      "ONLY_POSITIVES": 0,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 6,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "WATCH_DOG_DA SME Server 01",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": -3.40282e+38,
+      "HIGHCRITICAL": 3.40282e+38,
+      "LOWRANGE": -3.40282e+38,
+      "HIGHRANGE": 3.40282e+38,
+      "LOWOFFSET": -3.40282e+38,
+      "HIGHOFFSET": 3.40282e+38,
+      "SQRAW": 3.40282e+38,
+      "SQ1HOURMEAN": 3.40282e+38,
+      "SQ3HOURMEAN": 3.40282e+38,
+      "SQ8HOURMEAN": 3.40282e+38,
+      "SQDAILYMEAN": 3.40282e+38,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 0,
+      "TYPE": 0,
+      "DRIVERPRIVATE": "0x499C000000000000000000000000000001000000FA000000",
+      "ONLY_POSITIVES": 0,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 7,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "WATCH_DOG_DA SME Server 02",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": -3.40282e+38,
+      "HIGHCRITICAL": 3.40282e+38,
+      "LOWRANGE": -3.40282e+38,
+      "HIGHRANGE": 3.40282e+38,
+      "LOWOFFSET": -3.40282e+38,
+      "HIGHOFFSET": 3.40282e+38,
+      "SQRAW": 3.40282e+38,
+      "SQ1HOURMEAN": 3.40282e+38,
+      "SQ3HOURMEAN": 3.40282e+38,
+      "SQ8HOURMEAN": 3.40282e+38,
+      "SQDAILYMEAN": 3.40282e+38,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 0,
+      "TYPE": 0,
+      "DRIVERPRIVATE": "0x4A9C000000000000000000000000000001000000FA000000",
+      "ONLY_POSITIVES": 0,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 8,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 5",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x4B9C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 9,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 6",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x4C9C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 10,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 7",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x4D9C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 11,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 8",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x4E9C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 12,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 9",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x4F9C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 13,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 10",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x509C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 14,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 11",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x519C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 15,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 12",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x529C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 16,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 13",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x539C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 17,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 14",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x559C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 18,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 15",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": "mg/Nm3",
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x569C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 19,
+      "UNITS2": "mg/Nm3"
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 16",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x579C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 20,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 17",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": "mg/Nm3",
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x589C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 21,
+      "UNITS2": "mg/Nm3"
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 18",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x599C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 22,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 19",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x5A9C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 23,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 20",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x5C9C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 24,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Riserva STATI LOGICI",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": -3.40282e+38,
+      "HIGHCRITICAL": 3.40282e+38,
+      "LOWRANGE": -3.40282e+38,
+      "HIGHRANGE": 3.40282e+38,
+      "LOWOFFSET": -3.40282e+38,
+      "HIGHOFFSET": 3.40282e+38,
+      "SQRAW": 3.40282e+38,
+      "SQ1HOURMEAN": 3.40282e+38,
+      "SQ3HOURMEAN": 3.40282e+38,
+      "SQ8HOURMEAN": 3.40282e+38,
+      "SQDAILYMEAN": 3.40282e+38,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 0,
+      "TYPE": 0,
+      "DRIVERPRIVATE": "0x5E9C000000000000000000000000000001000000FA000000",
+      "ONLY_POSITIVES": 0,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 25,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 21",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x5F9C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 26,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 22",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x609C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 27,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 23",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x699C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 28,
+      "UNITS2": null
+    },
+    {
+      "STATIONID": 1,
+      "NAME": "Ingressi digitali 24",
+      "DISABLED": 0,
+      "DIGITAL": null,
+      "DOWNLOAD": 0,
+      "SNAPSHOT": 1,
+      "IGNOREERRORS": 0,
+      "LOWCRITICAL": null,
+      "HIGHCRITICAL": null,
+      "LOWRANGE": null,
+      "HIGHRANGE": null,
+      "LOWOFFSET": null,
+      "HIGHOFFSET": null,
+      "SQRAW": null,
+      "SQ1HOURMEAN": null,
+      "SQ3HOURMEAN": null,
+      "SQ8HOURMEAN": null,
+      "SQDAILYMEAN": null,
+      "UNITS": null,
+      "STANDARDRANGEID": null,
+      "DRIVERDATA": 2,
+      "TYPE": 1,
+      "DRIVERPRIVATE": "0x6A9C00000000000000000000000000000100000096000000",
+      "ONLY_POSITIVES": null,
+      "VM_SOURCE_CODE": "if elapsed() then    storep(11);else store(8);fi;",
+      "PERIOD": 5,
+      "SNAPSIZE": 1000,
+      "DRIVERCONFIG": "<configuration SynopticAnalogicFormat=\\\"%7.2f\\\"/>",
+      "ID": 29,
+      "UNITS2": null
+    }
+  ],
+  "bitinfo": [
+    {
+      "MEASUREID": 1,
+      "BITNO": 9,
+      "BITNAME": "COMANDO ACK RESET (IMPULSIVO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 1,
+      "BITNO": 10,
+      "BITNAME": "COMANDO TACITAZIONE SIRENA (IMPULSIVO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 1,
+      "BITNO": 11,
+      "BITNAME": "COG2: COMANDO RESET ORE CARTUCCIA (IMPULSIVO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 1,
+      "BITNO": 12,
+      "BITNAME": "COG3: COMANDO RESET ORE CARTUCCIA (IMPULSIVO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 1,
+      "BITNO": 14,
+      "BITNAME": "COG2: COMANDO AUTOCAL ULTRAMAT 23 \"NO+CO+O2\" (IMPULSIVO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 1,
+      "BITNO": 15,
+      "BITNAME": "COG3: COMANDO AUTOCAL ULTRAMAT 23 \"NO+CO+O2\" (IMPULSIVO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 1,
+      "BITNO": 1,
+      "BITNAME": "COG2: COMANDO START VERIFICA QAL 3 CO+NO+O2 (IMPULSIVO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 1,
+      "BITNO": 2,
+      "BITNAME": "COG2: COMANDO STOP VERIFICA QAL 3 CO+NO+O2 (IMPULSIVO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 1,
+      "BITNO": 3,
+      "BITNAME": "COG2: COMANDO SET BYPASS CONVERTITORE NO2-NO (IMPULSIVO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 1,
+      "BITNO": 4,
+      "BITNAME": "COG2: COMANDO RESET BYPASS CONVERTITORE NO2-NO (IMPULSIVO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 1,
+      "BITNO": 5,
+      "BITNAME": "COG3: COMANDO START VERIFICA QAL 3 CO+NO+O2 (IMPULSIVO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 1,
+      "BITNO": 6,
+      "BITNAME": "COG3: COMANDO STOP VERIFICA QAL 3 CO+NO+O2 (IMPULSIVO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 1,
+      "BITNO": 7,
+      "BITNAME": "COG3: COMANDO SET BYPASS CONVERTITORE NO2-NO (IMPULSIVO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 1,
+      "BITNO": 8,
+      "BITNAME": "COG3: COMANDO RESET BYPASS CONVERTITORE NO2-NO (IMPULSIVO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 2,
+      "BITNO": 9,
+      "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA ZERO PER \"CO\"",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 2,
+      "BITNO": 10,
+      "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA ZERO PER \"NO\"",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 2,
+      "BITNO": 11,
+      "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA ZERO PER \"O2\"",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 2,
+      "BITNO": 1,
+      "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA SPAN PER \"CO\"",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 2,
+      "BITNO": 2,
+      "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA SPAN PER \"NO\"",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 2,
+      "BITNO": 3,
+      "BITNAME": "SELEZIONE CALIBRAZ/VERIFICA SPAN PER \"O2\"",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 9,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 10,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 11,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 12,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 13,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 14,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 15,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 16,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 1,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 2,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 3,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 4,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 5,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 6,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 7,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 3,
+      "BITNO": 8,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 9,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 10,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 11,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 12,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 13,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 14,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 15,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 16,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 1,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 2,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 3,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 4,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 5,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 6,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 7,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 5,
+      "BITNO": 8,
+      "BITNAME": "COMM_ON_OFF",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 9,
+      "BITNO": 1,
+      "BITNAME": "FAULT COMUNICAZIONE PC SME",
+      "TEXTON": "GUASTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 9,
+      "BITNO": 2,
+      "BITNAME": "FAULT COMUNICAZIONE CON DCS",
+      "TEXTON": "GUASTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 9,
+      "BITNO": 7,
+      "BITNAME": "ANALOG OUTPUT DCS FORZATL",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 9,
+      "BITNO": 8,
+      "BITNAME": "SELETTORE MANUTENZIONE GENERALE (OR M1+M2)",
+      "TEXTON": "MANUTENZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 10,
+      "BITNO": 9,
+      "BITNAME": "COG2: FAULT ANALOGICA MISURA TEMPERATURA LINEA (BL1)",
+      "TEXTON": "GUASTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 10,
+      "BITNO": 10,
+      "BITNAME": "COG2: FAULT ANALOGICA MISURA PRESSIONE FUMI",
+      "TEXTON": "GUASTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 10,
+      "BITNO": 11,
+      "BITNAME": "COG2: FAULT ANALOGICA MISURA TEMPERATURA FUMI",
+      "TEXTON": "GUASTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 10,
+      "BITNO": 12,
+      "BITNAME": "COG2: FAULT ANALOGICA MISURA POTENZA_MOTORE",
+      "TEXTON": "GUASTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 10,
+      "BITNO": 13,
+      "BITNAME": "COG2: FAULT ANALOGICA MISURA PORTATA GAS",
+      "TEXTON": "GUASTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 10,
+      "BITNO": 14,
+      "BITNAME": "FAULT ANALOGICA MISURA RIS_006",
+      "TEXTON": "GUASTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 10,
+      "BITNO": 15,
+      "BITNAME": "COG3: FAULT ANALOGICA MISURA TEMPERATURA LINEA (BL2)",
+      "TEXTON": "GUASTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 10,
+      "BITNO": 16,
+      "BITNAME": "COG3: FAULT ANALOGICA MISURA PRESSIONE FUMI",
+      "TEXTON": "GUASTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 10,
+      "BITNO": 1,
+      "BITNAME": "COG3: FAULT ANALOGICA MISURA TEMPERATURA FUMI",
+      "TEXTON": "GUASTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 10,
+      "BITNO": 2,
+      "BITNAME": "COG3: FAULT ANALOGICA MISURA POTENZA_MOTORE",
+      "TEXTON": "GUASTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 10,
+      "BITNO": 3,
+      "BITNAME": "COG3: FAULT ANALOGICA MISURA PORTATA GAS",
+      "TEXTON": "GUASTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 10,
+      "BITNO": 4,
+      "BITNAME": "FAULT ANALOGICA MISURA RIS_012",
+      "TEXTON": "GUASTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 11,
+      "BITNO": 1,
+      "BITNAME": "GEN: ALLARME SITOP SELECT 24VDC",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 11,
+      "BITNO": 2,
+      "BITNAME": "GEN: ALLARME ALTA TEMPERATURA QUADRO ANALISI",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 11,
+      "BITNO": 3,
+      "BITNAME": "GEN: SCATTO INTERRUTTORI",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 9,
+      "BITNAME": "COG2: ALLARME TEMPERATURA SONDA DI PRELIEVO",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 10,
+      "BITNAME": "COG2: ALLARME TEMPERATURA LINEA DI PRELIEVO BL1",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 11,
+      "BITNAME": "COG2: BLOCCO ALTISSIME TEMPERATURE IN REGOLAZIONE BL1",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 12,
+      "BITNAME": "COG2: ALLARME FRIGO",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 13,
+      "BITNAME": "COG2: ALLARME PRESENZA CONDENSA",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 14,
+      "BITNAME": "COG2: MEMORIA PRESENZA CONDENSA (DA RESETTARE)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 15,
+      "BITNAME": "COG2: PSL BASSA PRESSIONE GAS DI MISURA",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 16,
+      "BITNAME": "COG2: SELETTORE MANUTENZIONE",
+      "TEXTON": "MANUTENZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 1,
+      "BITNAME": "COG2: SCATTO INTERRUTTORI",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 2,
+      "BITNAME": "COG2: ALLARME CONVERTITORE NO2/NO",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 3,
+      "BITNAME": "COG2: ANOMALIA ANALIZZATORE U23 \"CO\"",
+      "TEXTON": "ANOMALIA",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 4,
+      "BITNAME": "COG2: ALLARME BAD_QUALITY MISURA \"CO\"",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 5,
+      "BITNAME": "COG2: ANOMALIA ANALIZZATORE U23 \"NO\"",
+      "TEXTON": "ANOMALIA",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 6,
+      "BITNAME": "COG2: ALLARME BAD_QUALITY MISURA \"NO\"",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 7,
+      "BITNAME": "COG2: ANOMALIA ANALIZZATORE U23 \"O2\"",
+      "TEXTON": "ANOMALIA",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 12,
+      "BITNO": 8,
+      "BITNAME": "COG2: ALLARME BAD_QUALITY MISURA \"O2\"",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 13,
+      "BITNO": 9,
+      "BITNAME": "COG2: ALLARME COMUNICAZIONE ANALIZZATORE U23 \"CO-NO+O2\"",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 13,
+      "BITNO": 10,
+      "BITNAME": "COG2: ALLARME VERIFICA QAL3 \"CO+NO+O2\" TERMINATA CON ERRORI",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 9,
+      "BITNAME": "COG3: ALLARME TEMPERATURA SONDA DI PRELIEVO",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 10,
+      "BITNAME": "COG3: ALLARME TEMPERATURA LINEA DI PRELIEVO BL2",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 11,
+      "BITNAME": "COG3: BLOCCO ALTISSIME TEMPERATURE IN REGOLAZIONE BL2",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 12,
+      "BITNAME": "COG3: ALLARME FRIGO",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 13,
+      "BITNAME": "COG3: ALLARME PRESENZA CONDENSA",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 14,
+      "BITNAME": "COG3: MEMORIA PRESENZA CONDENSA (DA RESETTARE)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 15,
+      "BITNAME": "COG3: PSL BASSA PRESSIONE GAS DI MISURA",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 16,
+      "BITNAME": "COG3: SELETTORE MANUTENZIONE",
+      "TEXTON": "MANUTENZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 1,
+      "BITNAME": "COG3: SCATTO INTERRUTTORI",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 2,
+      "BITNAME": "COG3: ALLARME CONVERTITORE NO2/NO",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 3,
+      "BITNAME": "COG3: ANOMALIA ANALIZZATORE U23 \"CO\"",
+      "TEXTON": "ANOMALIA",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 4,
+      "BITNAME": "COG3: ALLARME BAD_QUALITY MISURA \"CO\"",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 5,
+      "BITNAME": "COG3: ANOMALIA ANALIZZATORE U23 \"NO\"",
+      "TEXTON": "ANOMALIA",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 6,
+      "BITNAME": "COG3: ALLARME BAD_QUALITY MISURA \"NO\"",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 7,
+      "BITNAME": "COG3: ANOMALIA ANALIZZATORE U23 \"O2\"",
+      "TEXTON": "ANOMALIA",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 14,
+      "BITNO": 8,
+      "BITNAME": "COG3: ALLARME BAD_QUALITY MISURA \"O2\"",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 15,
+      "BITNO": 9,
+      "BITNAME": "COG3: ALLARME COMUNICAZIONE ANALIZZATORE U23 \"CO-NO+O2\"",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 15,
+      "BITNO": 10,
+      "BITNAME": "COG3: ALLARME VERIFICA QAL3 \"CO+NO+O2\" TERMINATA CON ERRORI",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 15,
+      "BITNO": 1,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 15,
+      "BITNO": 2,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 15,
+      "BITNO": 3,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 15,
+      "BITNO": 4,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 15,
+      "BITNO": 5,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 15,
+      "BITNO": 6,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 15,
+      "BITNO": 7,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 15,
+      "BITNO": 8,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 16,
+      "BITNO": 9,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 16,
+      "BITNO": 10,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 16,
+      "BITNO": 1,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 16,
+      "BITNO": 2,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 16,
+      "BITNO": 3,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 16,
+      "BITNO": 4,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 16,
+      "BITNO": 5,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 16,
+      "BITNO": 6,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 16,
+      "BITNO": 7,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 16,
+      "BITNO": 8,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 17,
+      "BITNO": 9,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 17,
+      "BITNO": 10,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 17,
+      "BITNO": 1,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 17,
+      "BITNO": 2,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 17,
+      "BITNO": 3,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 17,
+      "BITNO": 4,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 17,
+      "BITNO": 5,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 17,
+      "BITNO": 6,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 17,
+      "BITNO": 7,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 17,
+      "BITNO": 8,
+      "BITNAME": "",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 18,
+      "BITNO": 9,
+      "BITNAME": "ABILIT.MEMORIZZAZIONE DATA IN TO MMC (EXT + TIME INTERLOCK) (ONLY HMI)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 18,
+      "BITNO": 10,
+      "BITNAME": "MEMORIZZAZIONE DATA MMC OK (ONLY HMI)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 18,
+      "BITNO": 11,
+      "BITNAME": "MEMORIZZAZIONE DATA MMC ERRORE (ONLY HMI)",
+      "TEXTON": "GUASTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 18,
+      "BITNO": 12,
+      "BITNAME": "MEMORIZZAZIONE IN CORSO (ONLY HMI)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 18,
+      "BITNO": 14,
+      "BITNAME": "COG2: OR ALLARMI",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 18,
+      "BITNO": 15,
+      "BITNAME": "COG3: OR ALLARMI",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 18,
+      "BITNO": 1,
+      "BITNAME": "GEN: OR ALLARMI (M1+M2)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 18,
+      "BITNO": 2,
+      "BITNAME": "GEN: PULSANTE DI RESET (M1+M2)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 19,
+      "BITNO": 9,
+      "BITNAME": "COG2: IN MISURA ANALIZZATORE.U23 \"CO\"",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 19,
+      "BITNO": 10,
+      "BITNAME": "COG2: IN CALIBRAZIONE ANALIZZATORE U23. \"CO\"",
+      "TEXTON": "CALIBRAZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 19,
+      "BITNO": 11,
+      "BITNAME": "COG2: SPAN GAS ANALIZZATORE U23.\"CO\"",
+      "TEXTON": "SPAN",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 19,
+      "BITNO": 12,
+      "BITNAME": "COG2: ZERO GAS ANALIZZATORE U23 \"CO\"",
+      "TEXTON": "ZERO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 19,
+      "BITNO": 13,
+      "BITNAME": "COG2: IN MISURA ANALIZZATORE.U23 \"NO\"",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 19,
+      "BITNO": 14,
+      "BITNAME": "COG2: IN CALIBRAZIONE ANALIZZATORE U23. \"NO\"",
+      "TEXTON": "CALIBRAZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 19,
+      "BITNO": 15,
+      "BITNAME": "COG2: SPAN GAS ANALIZZATORE U23.\"NO\"",
+      "TEXTON": "SPAN",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 19,
+      "BITNO": 16,
+      "BITNAME": "COG2: ZERO GAS ANALIZZATORE U23 \"NO\"",
+      "TEXTON": "ZERO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 19,
+      "BITNO": 1,
+      "BITNAME": "COG2: IN MISURA ANALIZZATORE.U23 \"O2\"",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 19,
+      "BITNO": 2,
+      "BITNAME": "COG2: IN CALIBRAZIONE ANALIZZATORE U23. \"O2\"",
+      "TEXTON": "CALIBRAZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 19,
+      "BITNO": 3,
+      "BITNAME": "COG2: SPAN GAS ANALIZZATORE U23.\"O2\"",
+      "TEXTON": "SPAN",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 19,
+      "BITNO": 4,
+      "BITNAME": "COG2: ZERO GAS ANALIZZATORE U23 \"O2\"",
+      "TEXTON": "ZERO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 19,
+      "BITNO": 5,
+      "BITNAME": "COG2: AUTOCAL U 23 \"NO+CO+O2\" IN CORSO",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 9,
+      "BITNAME": "COG2: SELETTORE INSERIMENTO POMPA P1",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 10,
+      "BITNAME": "COG2: STATO COMANDO POMPA P1",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 11,
+      "BITNAME": "COG2: COM. ELT YV1 (MIS_CAL)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 12,
+      "BITNAME": "COG2: COM. ELT YV3 (ZERO-SPANI)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 13,
+      "BITNAME": "COG2: COM. CONVERTITORE (BYPASS CONVERTITORE NO2/NO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 14,
+      "BITNAME": "COG2: MOTORE IN MARCIA",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 15,
+      "BITNAME": "COG2: STATO VERIFICA QAL3 \"CO+NO+O2\" IN CORSO",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 16,
+      "BITNAME": "COG2: STATO VERIFICA QAL3 \"CO+NO+O2\" TERMINATA SENZA ERRORI",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 1,
+      "BITNAME": "COG2: MOTORE IN MANUTENZIONE",
+      "TEXTON": "MANUTENZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 2,
+      "BITNAME": "COG2: PREALLARME EMISSIONE \"CO\"",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 3,
+      "BITNAME": "COG2: PREALLARME EMISSIONE \"NO\"",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 4,
+      "BITNAME": "COG2: ALLARME SUPERAMENTO EMISSIONI",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 5,
+      "BITNAME": "COG2: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 6,
+      "BITNAME": "COG2: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 7,
+      "BITNAME": "COG2: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 20,
+      "BITNO": 8,
+      "BITNAME": "COG2: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 9,
+      "BITNAME": "COG3: IN MISURA ANALIZZATORE.U23 \"CO\"",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 10,
+      "BITNAME": "COG3: IN CALIBRAZIONE ANALIZZATORE U23. \"CO\"",
+      "TEXTON": "CALIBRAZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 11,
+      "BITNAME": "COG3: SPAN GAS ANALIZZATORE U23.\"CO\"",
+      "TEXTON": "SPAN",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 12,
+      "BITNAME": "COG3: ZERO GAS ANALIZZATORE U23 \"CO\"",
+      "TEXTON": "ZERO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 13,
+      "BITNAME": "COG3: IN MISURA ANALIZZATORE.U23 \"NO\"",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 14,
+      "BITNAME": "COG3: IN CALIBRAZIONE ANALIZZATORE U23. \"NO\"",
+      "TEXTON": "CALIBRAZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 15,
+      "BITNAME": "COG3: SPAN GAS ANALIZZATORE U23.\"NO\"",
+      "TEXTON": "SPAN",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 16,
+      "BITNAME": "COG3: ZERO GAS ANALIZZATORE U23 \"NO\"",
+      "TEXTON": "ZERO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 1,
+      "BITNAME": "COG3: IN MISURA ANALIZZATORE.U23 \"O2\"",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 2,
+      "BITNAME": "COG3: IN CALIBRAZIONE ANALIZZATORE U23. \"O2\"",
+      "TEXTON": "CALIBRAZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 3,
+      "BITNAME": "COG3: SPAN GAS ANALIZZATORE U23.\"O2\"",
+      "TEXTON": "SPAN",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 4,
+      "BITNAME": "COG3: ZERO GAS ANALIZZATORE U23 \"O2\"",
+      "TEXTON": "ZERO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 5,
+      "BITNAME": "COG3: AUTOCAL U 23 \"NO\" IN CORSO",
+      "TEXTON": "CALIBRAZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 6,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 7,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 21,
+      "BITNO": 8,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 9,
+      "BITNAME": "COG3: SELETTORE INSERIMENTO POMPA P1",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 10,
+      "BITNAME": "COG3: STATO COMANDO POMPA P1",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 11,
+      "BITNAME": "COG3: COM. ELT YV2 (MIS_CAL)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 12,
+      "BITNAME": "COG3: COM. ELT YV4 (ZERO-SPANI)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 13,
+      "BITNAME": "COG3: COM. CONVERTITORE(BYPASS CONVERTITORE NO2/NO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 14,
+      "BITNAME": "COG3:MOTORE IN MARCIA",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 15,
+      "BITNAME": "COG3: STATO VERIFICA QAL3 \"CO+NO+O2\" IN CORSO",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 16,
+      "BITNAME": "COG3: STATO VERIFICA QAL3 \"CO+NO+O2\" TERMINATA SENZA ERRORI",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 1,
+      "BITNAME": "COG3: MOTORE IN MANUTENZIONE",
+      "TEXTON": "MANUTENZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 2,
+      "BITNAME": "COG3: PREALLARME EMISSIONE \"CO\"",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 3,
+      "BITNAME": "COG3: PREALLARME EMISSIONE \"NO\"",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 4,
+      "BITNAME": "COG3: ALLARME SUPERAMENTO EMISSIONI",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 5,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 6,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 7,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 22,
+      "BITNO": 8,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 9,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 10,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 11,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 12,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 13,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 14,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 15,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 16,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 1,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 2,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 3,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 4,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 5,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 6,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 7,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 23,
+      "BITNO": 8,
+      "BITNAME": "COG3: ",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 9,
+      "BITNAME": "COG2: VALIDITA MISURA PRESSIONE FUMI",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 10,
+      "BITNAME": "COG2: VALIDITA MISURA TEMPERATURA FUMI",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 11,
+      "BITNAME": "COG2: VALIDITA MISURA POTENZA_COG",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 12,
+      "BITNAME": "COG2: VALIDITA MISURA PORTATA GAS1",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 13,
+      "BITNAME": "COG2: VALIDITA MISURA CO",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 14,
+      "BITNAME": "COG2: VALIDITA MISURA NO",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 15,
+      "BITNAME": "COG2: VALIDITA MISURA O2",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 16,
+      "BITNAME": "COG2: VALIDITA MISURA O2",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 1,
+      "BITNAME": "COG3: VALIDITA MISURA PRESSIONE FUMI",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 2,
+      "BITNAME": "COG3: VALIDITA MISURA TEMPERATURA FUMI",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 3,
+      "BITNAME": "COG3: VALIDITA MISURA POTENZA_COG",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 4,
+      "BITNAME": "COG3: VALIDITA MISURA PORTATA GAS1",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 5,
+      "BITNAME": "COG3: VALIDITA MISURA CO",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 6,
+      "BITNAME": "COG3: VALIDITA MISURA NO",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 7,
+      "BITNAME": "COG3: VALIDITA MISURA O2",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 24,
+      "BITNO": 8,
+      "BITNAME": "COG3: VALIDITA MISURA O2",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 9,
+      "BITNAME": "%I0.0 - GEN: ALLARME SITOP SELECT 24VDC (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 10,
+      "BITNAME": "%I0.1 - M1: SCATTO INTERRUTTORI (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 11,
+      "BITNAME": "%I0.2 - M1: PULSANTE RESET",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 12,
+      "BITNAME": "%I0.3 - M1: SELETTORE MANUTENZIONE",
+      "TEXTON": "MANUTENZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 13,
+      "BITNAME": "%I0.4 - M1: SELETTORE INSERIMENTO POMPA PRELIEVO",
+      "TEXTON": "APERTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 14,
+      "BITNAME": "%I0.5 - M1: PULSANTE BYPASS NO2/NO",
+      "TEXTON": "BYPASS",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 15,
+      "BITNAME": "%I0.6 - M1: PSL BASSA PRESSIONE GAS DI MISURA (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 16,
+      "BITNAME": "%I0.7 - M1: ALLARME TEMPERATURA SONDA DI PRELIEVO (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 1,
+      "BITNAME": "%I1.0 - M1-M2: ALLARME FRIGO (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 2,
+      "BITNAME": "%I1.1 - M1: PRESENZA CONDENSA (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 3,
+      "BITNAME": "%I1.2 - M1: ALLARME CONVERTITORE NO2/NO (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 4,
+      "BITNAME": "%I1.3 - M1: MOTORE IN MARCIA",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 5,
+      "BITNAME": "%I1.4 -",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 6,
+      "BITNAME": "%I1.5 -",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 7,
+      "BITNAME": "%I1.6 -",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 26,
+      "BITNO": 8,
+      "BITNAME": "%I1.7 -",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 9,
+      "BITNAME": "%I2.0 - GEN: ALLARME ALTA TEMPERATURA QUADRO ANALISI (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 10,
+      "BITNAME": "%I2.1 - M2: SCATTO INTERRUTTORI (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 11,
+      "BITNAME": "%I2.2 - M2: PULSANTE RESET",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 12,
+      "BITNAME": "%I2.3 - M2: SELETTORE MANUTENZIONE",
+      "TEXTON": "MANUTENZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 13,
+      "BITNAME": "%I2.4 - M2: SELETTORE INSERIMENTO POMPA PRELIEVO",
+      "TEXTON": "APERTO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 14,
+      "BITNAME": "%I2.5 - M2: PULSANTE BYPASS NO2/NO",
+      "TEXTON": "BYPASS",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 15,
+      "BITNAME": "%I2.6 - M2: PSL BASSA PRESSIONE GAS DI MISURA (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 16,
+      "BITNAME": "%I2.7 - M2: ALLARME TEMPERATURA SONDA DI PRELIEVO (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 1,
+      "BITNAME": "%I3.0 - GEN: SCATTO INTERRUTTORI (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 2,
+      "BITNAME": "%I3.1 - M2: PRESENZA CONDENSA (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 3,
+      "BITNAME": "%I3.2 - M2: ALLARME CONVERTITORE NO2/NO (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 4,
+      "BITNAME": "%I3.3 - M2: MOTORE IN MARCIA",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 5,
+      "BITNAME": "%I3.4 -",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 6,
+      "BITNAME": "%I3.5 -",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 7,
+      "BITNAME": "%I3.6 -",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 27,
+      "BITNO": 8,
+      "BITNAME": "%I3.7 -",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 9,
+      "BITNAME": "%Q0.0 - BL1: COM SSR RISCALDAMENTO LINEA PRELIEVO M1",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 10,
+      "BITNAME": "%Q0.1 - M1: COM. ELT YV1 (MIS_CAL)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 11,
+      "BITNAME": "%Q0.2 - M1: COM. ELT YV3 (ZERO-SPAN)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 12,
+      "BITNAME": "%Q0.3 - M1: COM. CONVERTITORE (BYPASS CONVERTITORE NO2/NO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 13,
+      "BITNAME": "%Q0.4 - M1: COM. SYNC ULTRAMAT 23 \"NO+CO+O2\"",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 14,
+      "BITNAME": "%Q0.5 - M1: COMANDO POMPA",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 15,
+      "BITNAME": "%Q0.6 - M1: LAMPADA OR ALLARMI",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 16,
+      "BITNAME": "%Q0.7 - M1: LAMPADA SELETTORE POMPA",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 1,
+      "BITNAME": "%Q1.0 - M1: RIPETIZIONE CUMULATIVO ALLARME (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 2,
+      "BITNAME": "%Q1.1 - M1: RIPETIZIONE IN MANUTENZIONE (1=MAINT)",
+      "TEXTON": "MANUTENZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 3,
+      "BITNAME": "%Q1.2 - M1: RIPETIZIONE 01 PREALLARME EMISSIONE \"CO\" (1=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 4,
+      "BITNAME": "%Q1.3 - M1: RIPETIZIONE 01 PREALLARME EMISSIONE \"NO\" (1=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 5,
+      "BITNAME": "%Q1.4 - M1: RIPETIZIONE 01 ALLARME SUPERAMENTO EMISSIONI (1=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 6,
+      "BITNAME": "%Q1.5 - M1: RIPETIZIONE 02 PREALLARME EMISSIONE \"CO\" (1=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 7,
+      "BITNAME": "%Q1.6 - M1: RIPETIZIONE 02 PREALLARME EMISSIONE \"NO\" (1=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 28,
+      "BITNO": 8,
+      "BITNAME": "%Q1.7 - M1: RIPETIZIONE 02 ALLARME SUPERAMENTO EMISSIONI (1=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 9,
+      "BITNAME": "%Q2.0 - BL2: COM SSR RISCALDAMENTO LINEA PRELIEVO M2",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 10,
+      "BITNAME": "%Q2.1 - M2: COM. ELT YV2 (MIS_CAL)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 11,
+      "BITNAME": "%Q2.2 - M2: COM. ELT YV4 (ZERO-SPAN)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 12,
+      "BITNAME": "%Q2.3 - M2: COM. CONVERTITORE (BYPASS CONVERTITORE NO2/NO)",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 13,
+      "BITNAME": "%Q2.4 - M2: COM. SYNC ULTRAMAT 23 \"NO+CO+O2\"",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 14,
+      "BITNAME": "%Q2.5 - M2: COMANDO POMPA",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 15,
+      "BITNAME": "%Q2.6 - M2: LAMPADA OR ALLARMI",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 16,
+      "BITNAME": "%Q2.7 - M2: LAMPADA SELETTORE POMPA",
+      "TEXTON": "ATTIVO",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 1,
+      "BITNAME": "%Q3.0 - M2: RIPETIZIONE CUMULATIVO ALLARME (0=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 2,
+      "BITNAME": "%Q3.1 - M2: RIPETIZIONE IN MANUTENZIONE (1=MAINT)",
+      "TEXTON": "MANUTENZIONE",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 3,
+      "BITNAME": "%Q3.2 - M2: RIPETIZIONE 01 PREALLARME EMISSIONE \"CO\" (1=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 4,
+      "BITNAME": "%Q3.3 - M2: RIPETIZIONE 01 PREALLARME EMISSIONE \"NO\" (1=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 5,
+      "BITNAME": "%Q3.4 - M2: RIPETIZIONE 01 ALLARME SUPERAMENTO EMISSIONI (1=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 6,
+      "BITNAME": "%Q3.5 - M2: RIPETIZIONE 02 PREALLARME EMISSIONE \"CO\" (1=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 7,
+      "BITNAME": "%Q3.6 - M2: RIPETIZIONE 02 PREALLARME EMISSIONE \"NO\" (1=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    },
+    {
+      "MEASUREID": 29,
+      "BITNO": 8,
+      "BITNAME": "%Q3.7 - M2: RIPETIZIONE 02 ALLARME SUPERAMENTO EMISSIONI (1=ALL)",
+      "TEXTON": "ALLARME",
+      "TEXTOFF": "OFF"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+import json
+import re
+
+input_json = r'''{edge}[13]'''
+
+# Puliamo la stringa da elementi vuoti (es. "[, json_valido]" -> "[json_valido]")
+# Ripetiamo finché non ci sono più modifiche, per gestire più occorrenze consecutive
+modificato = True
+while modificato:
+    lunghezza_prima = len(input_json)
+    input_json = re.sub(r'\[\s*,', '[', input_json)   # rimuove elemento vuoto subito dopo "["
+    input_json = re.sub(r',\s*,', ',', input_json)     # rimuove elemento vuoto tra due virgole
+    input_json = re.sub(r',\s*\]', ']', input_json)    # rimuove elemento vuoto subito prima di "]"
+    lunghezza_dopo = len(input_json)
+    if lunghezza_dopo == lunghezza_prima:
+        modificato = False
+
+input_json = json.loads(input_json)
+
+if isinstance(input_json, list):
+    # Escludiamo i vettori vuoti [] E le stringhe di errore (es. "Nessun risultato trovato")
+    stazioni_popolate = [station for station in input_json if isinstance(station, list) and station]
+
+    # # Verifichiamo che TUTTE quelle rimaste abbiano STATION_INFORMATIONS a True
+    # if stazioni_popolate and all(s[0].get('STATION_INFORMATIONS') for s in stazioni_popolate):
+    #     print('All of them are station informations!')
+    #     output = 'ERRORE: tutte le stazioni contengono solo informazioni sulla stazione'
+    # elif stazioni_popolate and all(not s[0].get('STATION_INFORMATIONS') for s in stazioni_popolate):
+    #     print('All of them are measure informations! ')
+    #     output = 'ERRORE: tutte le stazioni contengono solo misure'
+    # elif stazioni_popolate:
+    #     output = json.dumps(stazioni_popolate, indent=4, ensure_ascii=False)
+    # else:
+    #     output = 'ERRORE: Nessun formato riconosciuto'
+
+    if not stazioni_popolate:
+        output = "NOJSON"
+    else:
+        output = json.dumps(stazioni_popolate, indent=4, ensure_ascii=False)
+else:
+    output = "NOJSON"

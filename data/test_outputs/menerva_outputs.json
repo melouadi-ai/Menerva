@@ -1,0 +1,683 @@
+[
+    [
+        {
+            "NAME": "Forno 1",
+            "DRIVERNAME": "modbusplc",
+            "DRIVERCONFIG": "<p0 class="Protocollo MODBUS (master) via TCP/IP" name="Protocollo MODBUS (master) via TCP/IP" ipaddress="192.168.6.20" tcpport="502" timeout="5000" retries="3" write4XXXX="6"/>",
+            "ID": 1,
+            "measures": [
+                {
+                    "STATIONID": 1,
+                    "NAME": "CO",
+                    "UNITS": "mg/Nm3",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 1,
+                    "MODBUSREGISTRO": 40001
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "NO",
+                    "UNITS": "mg/Nm3",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 2,
+                    "MODBUSREGISTRO": 40002
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "NOX",
+                    "UNITS": "mg/Nm3",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 3,
+                    "MODBUSREGISTRO": 40003
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "O2 secco",
+                    "UNITS": "%",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 4,
+                    "MODBUSREGISTRO": 40004
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "O2 umido",
+                    "UNITS": "%",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 5,
+                    "MODBUSREGISTRO": 40005
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "H2O",
+                    "UNITS": "%",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 6,
+                    "MODBUSREGISTRO": 40006
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Pressione",
+                    "UNITS": "mBar",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 7,
+                    "MODBUSREGISTRO": 40007
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "TEMPERATURA FUMI",
+                    "UNITS": "°C",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 8,
+                    "MODBUSREGISTRO": 40008
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Pressione Diff.",
+                    "UNITS": "mBar",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 9,
+                    "MODBUSREGISTRO": 40009
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "PORTATA FUMI umida",
+                    "UNITS": "Nm3/h",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 10,
+                    "MODBUSREGISTRO": 40010
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Polveri (GR)",
+                    "UNITS": "Unità",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 11,
+                    "MODBUSREGISTRO": 40011
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Polveri ()",
+                    "UNITS": "mg/Nm3",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 12,
+                    "MODBUSREGISTRO": 40012
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Polveri TQ",
+                    "UNITS": "mg/m3",
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 13,
+                    "MODBUSREGISTRO": 40013
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Anomalia Collegamento ADAM",
+                    "UNITS": null,
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 14,
+                    "MODBUSREGISTRO": 40014
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Temperatura Fumi",
+                    "UNITS": null,
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 15,
+                    "MODBUSREGISTRO": 40001
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "CO",
+                    "UNITS": null,
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 16,
+                    "MODBUSREGISTRO": 40005
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "NOX",
+                    "UNITS": null,
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 17,
+                    "MODBUSREGISTRO": 40009
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Polveri",
+                    "UNITS": null,
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 18,
+                    "MODBUSREGISTRO": 40013
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "O2",
+                    "UNITS": null,
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 19,
+                    "MODBUSREGISTRO": 40017
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "PORTATA FUMI umida",
+                    "UNITS": null,
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 20,
+                    "MODBUSREGISTRO": 40021
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Stato impianto",
+                    "UNITS": null,
+                    "DRIVERDATA": 0,
+                    "TYPE": 0,
+                    "ID": 21,
+                    "MODBUSREGISTRO": 40242
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme Sonda riscaldata",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 22,
+                    "MODBUSREGISTRO": 40033
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme Linea riscaldata",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 23,
+                    "MODBUSREGISTRO": 40034
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme gruppo frigo",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 24,
+                    "MODBUSREGISTRO": 40035
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme presenza condensa",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 25,
+                    "MODBUSREGISTRO": 40036
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Anomalia flusso/pressione",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 26,
+                    "MODBUSREGISTRO": 40037
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme temp. convertitore NO2-NO",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 27,
+                    "MODBUSREGISTRO": 40038
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Fault/Anomalia Analizzatore CO/NO/O2",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 28,
+                    "MODBUSREGISTRO": 40039
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Manutenzione richiesta Analizzatore CO/NO/O2",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 29,
+                    "MODBUSREGISTRO": 40040
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Manutenzione/Cal. Analizzatore CO/NO/O2",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 30,
+                    "MODBUSREGISTRO": 40041
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Fault Sonda Polveri",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 31,
+                    "MODBUSREGISTRO": 40042
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Manutenzione Sonda Polveri",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 32,
+                    "MODBUSREGISTRO": 40043
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Fault Ossigeno umido",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 33,
+                    "MODBUSREGISTRO": 40044
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme 1 Ossigeno umido",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 34,
+                    "MODBUSREGISTRO": 40045
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme 2 Ossigeno umido",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 35,
+                    "MODBUSREGISTRO": 40046
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Portata",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 36,
+                    "MODBUSREGISTRO": 40047
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme temp. armadio",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 37,
+                    "MODBUSREGISTRO": 40048
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Manutenzione in corso",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 38,
+                    "MODBUSREGISTRO": 40049
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme PSU",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 39,
+                    "MODBUSREGISTRO": 40050
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Allarme apertura quadro",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 40,
+                    "MODBUSREGISTRO": 40051
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Calibrazione di zero Manuale da selettore",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 41,
+                    "MODBUSREGISTRO": 40052
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Calibrazione di span Manuale da selettore",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 42,
+                    "MODBUSREGISTRO": 40053
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Stato di zero Analizzatore CO/NO/O2",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 43,
+                    "MODBUSREGISTRO": 40054
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Stato di span Analizzatore CO/NO/O2",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 44,
+                    "MODBUSREGISTRO": 40055
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "By-pass convertitore NO2-NO",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 45,
+                    "MODBUSREGISTRO": 40056
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Fault switch",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 46,
+                    "MODBUSREGISTRO": 40057
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Valvola EVC",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 47,
+                    "MODBUSREGISTRO": 40065
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Valvola EVZ",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 48,
+                    "MODBUSREGISTRO": 40066
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Valvola EVS",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 49,
+                    "MODBUSREGISTRO": 40067
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "By-pass convertitore NO2-NO remoto",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 50,
+                    "MODBUSREGISTRO": 40068
+                },
+                {
+                    "STATIONID": 1,
+                    "NAME": "Manutenzione Sistema",
+                    "UNITS": null,
+                    "DRIVERDATA": 1,
+                    "TYPE": 6,
+                    "ID": 51,
+                    "MODBUSREGISTRO": 40069
+                }
+            ],
+            "bitinfo": [
+                {
+                    "MEASUREID": 22,
+                    "BITNO": 0,
+                    "BITNAME": "Allarme Sonda riscaldata",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 23,
+                    "BITNO": 0,
+                    "BITNAME": "Allarme Linea riscaldata",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 24,
+                    "BITNO": 0,
+                    "BITNAME": "Allarme gruppo frigo",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 25,
+                    "BITNO": 0,
+                    "BITNAME": "Allarme presenza condensa",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 26,
+                    "BITNO": 0,
+                    "BITNAME": "Anomalia flusso/pressione",
+                    "TEXTON": "ANOMALIA",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 27,
+                    "BITNO": 0,
+                    "BITNAME": "Allarme temp. convertitore NO2-NO",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 28,
+                    "BITNO": 0,
+                    "BITNAME": "Fault/Anomalia Analizzatore CO/NO/O2",
+                    "TEXTON": "FAULT",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 29,
+                    "BITNO": 0,
+                    "BITNAME": "Manutenzione richiesta Analizzatore CO/NO/O2",
+                    "TEXTON": "MANUTENZIONE",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 30,
+                    "BITNO": 0,
+                    "BITNAME": "Manutenzione/Cal. Analizzatore CO/NO/O2",
+                    "TEXTON": "MANUTENZIONE",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 31,
+                    "BITNO": 0,
+                    "BITNAME": "Fault Sonda Polveri",
+                    "TEXTON": "FAULT",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 32,
+                    "BITNO": 0,
+                    "BITNAME": "Manutenzione Sonda Polveri",
+                    "TEXTON": "MANUTENZIONE",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 33,
+                    "BITNO": 0,
+                    "BITNAME": "Fault Ossigeno umido",
+                    "TEXTON": "FAULT",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 34,
+                    "BITNO": 0,
+                    "BITNAME": "Allarme 1 Ossigeno umido",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 35,
+                    "BITNO": 0,
+                    "BITNAME": "Allarme 2 Ossigeno umido",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 36,
+                    "BITNO": 0,
+                    "BITNAME": "Portata",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 37,
+                    "BITNO": 0,
+                    "BITNAME": "Allarme temp. armadio",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 38,
+                    "BITNO": 0,
+                    "BITNAME": "Manutenzione in corso",
+                    "TEXTON": "MANUTENZIONE",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 39,
+                    "BITNO": 0,
+                    "BITNAME": "Allarme PSU",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 40,
+                    "BITNO": 0,
+                    "BITNAME": "Allarme apertura quadro",
+                    "TEXTON": "ALLARME",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 41,
+                    "BITNO": 0,
+                    "BITNAME": "Calibrazione di zero Manuale da selettore",
+                    "TEXTON": "CALIBRAZIONE",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 42,
+                    "BITNO": 0,
+                    "BITNAME": "Calibrazione di span Manuale da selettore",
+                    "TEXTON": "CALIBRAZIONE",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 43,
+                    "BITNO": 0,
+                    "BITNAME": "Stato di zero Analizzatore CO/NO/O2",
+                    "TEXTON": "ZERO",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 44,
+                    "BITNO": 0,
+                    "BITNAME": "Stato di span Analizzatore CO/NO/O2",
+                    "TEXTON": "SPAN",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 45,
+                    "BITNO": 0,
+                    "BITNAME": "By-pass convertitore NO2-NO",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 46,
+                    "BITNO": 0,
+                    "BITNAME": "Fault switch",
+                    "TEXTON": "FAULT",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 47,
+                    "BITNO": 0,
+                    "BITNAME": "Valvola EVC",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 48,
+                    "BITNO": 0,
+                    "BITNAME": "Valvola EVZ",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 49,
+                    "BITNO": 0,
+                    "BITNAME": "Valvola EVS",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 50,
+                    "BITNO": 0,
+                    "BITNAME": "By-pass convertitore NO2-NO remoto",
+                    "TEXTON": "OK",
+                    "TEXTOFF": "OK"
+                },
+                {
+                    "MEASUREID": 51,
+                    "BITNO": 0,
+                    "BITNAME": "Manutenzione Sistema",
+                    "TEXTON": "MANUTENZIONE",
+                    "TEXTOFF": "OK"
+                }
+            ]
+        }
+    ]
+]

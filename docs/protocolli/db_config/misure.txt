@@ -1,0 +1,40 @@
+ 
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[MEASURES](
+	[STATIONID] [int] NULL,   -> id della stazione foreing key stazioone
+	[NAME] [nvarchar](50) NULL, -> nome della misura
+	[DISABLED] [bit] NULL,
+	[DIGITAL] [bit] NULL,   ->  1 se segnale è on off / se analolgico 0
+	[DOWNLOAD] [bit] NULL,
+	[SNAPSHOT] [bit] NULL,
+	[IGNOREERRORS] [bit] NULL,
+	[LOWCRITICAL] [real] NULL,
+	[HIGHCRITICAL] [real] NULL,
+	[LOWRANGE] [real] NULL,  -> inizio scala ig
+	[HIGHRANGE] [real] NULL, -> fine scala ig
+	[LOWOFFSET] [real] NULL, -> inizio scal el
+	[HIGHOFFSET] [real] NULL, -> fine scvala el
+	[SQRAW] [real] NULL,
+	[SQ1HOURMEAN] [real] NULL, -> limite orario
+	[SQ3HOURMEAN] [real] NULL,
+	[SQ8HOURMEAN] [real] NULL,
+	[SQDAILYMEAN] [real] NULL, ->   limite giornaliero
+	[UNITS] [nvarchar](10) NULL, -> unità di misura
+	[STANDARDRANGEID] [int] NULL,
+	[DRIVERDATA] [int] NULL,   -> modbus registro?
+	[TYPE] [int] NULL,
+	[DRIVERPRIVATE] [image] NULL,
+	[ONLY_POSITIVES] [smallint] NULL,
+	[VM_SOURCE_CODE] [text] NULL,
+	[PERIOD] [int] NULL,
+	[SNAPSIZE] [int] NULL,
+	[DRIVERCONFIG] [text] NULL,
+	[ID] [int] NULL,  primary KEY
+	[UNITS2] [nvarchar](10) NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO

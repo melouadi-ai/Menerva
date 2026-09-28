@@ -1,0 +1,11 @@
+##Task description
+Given the attached image of the customer's technical document.
+"""
+{edge.media}[1]
+"""
+Extract the list of measurement stations and monitored variables.
+
+##Task output
+Reply ONLY with non-Markdown JSON.
+DO NOT RESPOND IN MARKDOWN
+Do not add any additional information.

@@ -1,0 +1,41 @@
+ 
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[STATIONS](
+	[NAME] [nvarchar](30) NULL, -> nome staziuone
+	[DRIVERNAME] [nvarchar](50) NULL,  -> protocollo?
+	[XPOSITION] [int] NULL,
+	[YPOSITION] [int] NULL,
+	[DOWNLOADTYPE] [smallint] NULL,
+	[DOWNLOADPROGRAM] [varbinary](255) NULL,
+	[IGNOREERRORS] [bit] NULL,
+	[SNAPSHOT] [bit] NULL,
+	[NORMALSNAPSHOT] [smallint] NULL,
+	[CRITICSNAPSHOT] [smallint] NULL,
+	[ALARMSNAPSHOT] [smallint] NULL,
+	[SYNOBITMAP] [image] NULL,
+	[LINENAME] [nvarchar](255) NULL,
+	[AREACODE] [nvarchar](10) NULL,
+	[ADDRESS] [nvarchar](255) NULL, -> indirizzo_ip?
+	[LINECONFIGURATION] [varbinary](255) NULL,
+	[TIMELASTCONFIGURATION] [int] NULL,
+	[TIMELASTDOWNLOAD] [int] NULL,
+	[EVENTTIME] [datetime] NULL,
+	[EVENTCODE] [int] NULL,
+	[EVENTDESCRIPTION] [nvarchar](255) NULL,
+	[EVENTORIGIN] [nvarchar](50) NULL,
+	[CODE] [nvarchar](20) NULL,
+	[DRIVERPRIVATE] [image] NULL,
+	[OVERWRITEMEASURES] [bit] NULL,
+	[DRIVERCONFIG] [text] NULL,   -> <configuration><commProto><p0 class="..." **ipaddress="10.127.126.99"** tcpport="502" timeout="5000" retries="3" **write4XXXX="6"** /></commProto></configuration>
+	[ID] [int] NOT NULL,
+PRIMARY KEY CLUSTERED
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO

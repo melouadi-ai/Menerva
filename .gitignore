@@ -1,0 +1,42 @@
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+logs/
+.env
+
+# uv
+uv.lock
+.python-version
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test outputs (generated)
+tmp/
+outputs/
+
+# Archives (already extracted)
+*.rar
+*.zip
+
+# Build
+dist/
+build/
+*.egg-info/
+
+# Coverage
+.coverage
+htmlcov/
+
+# MCP
+.claude/

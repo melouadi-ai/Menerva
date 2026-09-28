@@ -1,0 +1,1 @@
+Eliminare i valori con "libero","disponibile","riservati"

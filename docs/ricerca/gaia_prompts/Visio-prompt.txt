@@ -1,0 +1,7 @@
+##Task description
+Given the attached file, generate the corresponding text file as markdown
+{edge.media}[1]
+
+##Task output
+data must match exactly the structure received in the image file.
+Do not add any further information.

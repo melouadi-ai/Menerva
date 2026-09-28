@@ -1,0 +1,26 @@
+import json
+
+base = json.loads(r''' {edge}[9] ''') # General
+states = json.loads(r''' {edge}[10] ''') # TEXTON/OFF
+
+state_index = {}
+
+# costruzione indice
+for station in states:
+    for bit in station.get("bitinfo", []):
+        key = (station["DRIVERCONFIG"], bit["MEASUREID"], bit["BITNO"])
+        state_index[key] = (bit.get("TEXTON"), bit.get("TEXTOFF"))
+
+# applicazione
+for station in base:
+    for bit in station.get("bitinfo", []):
+        key = (station["DRIVERCONFIG"], bit["MEASUREID"], bit["BITNO"])
+        if key in state_index:
+            bit["TEXTON"] = state_index[key][0]
+            bit["TEXTOFF"] = state_index[key][1]
+
+result = json.dumps(
+        base,
+        ensure_ascii=False,
+        indent=2
+    )
