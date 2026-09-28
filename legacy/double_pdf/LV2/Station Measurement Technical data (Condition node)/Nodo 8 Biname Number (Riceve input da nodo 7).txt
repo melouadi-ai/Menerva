@@ -1,0 +1,23 @@
+import json
+
+input_json = r'''{edge}[8]'''
+
+try:
+    data = json.loads(input_json)
+
+    for station in data:
+        if 'bitinfo' in station and isinstance(station['bitinfo'], list):
+
+            station['bitinfo'] = [
+                bit for bit in station['bitinfo']
+                if not str(bit.get('BITNAME', '')).isdigit()
+            ]
+
+    print("--- Risultato Filtrato ---")
+    result = json.dumps(data, indent=2, ensure_ascii=False)
+    print(result)
+    print('----')
+    print('Success')
+
+except Exception as e:
+    print(f"Error: {e}")

@@ -1,0 +1,39 @@
+import json
+
+'''
+- No BITINFO section
+- No MEASURES with numbers
+- Deduplica: mantieni solo la prima misura per ogni NAME+UNITS
+'''
+
+input_json = r'''{edge}[6]'''
+
+try:
+    input_json = json.loads(input_json)
+
+    for station in input_json:
+        station['bitinfo'] = []
+
+        if 'measures' in station and isinstance(station['measures'], list):
+
+            # Rimuovi misure il cui NAME è un numero puro
+            station['measures'] = [
+                m for m in station['measures']
+                if not str(m.get('NAME', '')).isdigit()
+            ]
+
+            # Deduplicazione: tieni solo la prima occorrenza per NAME+UNITS
+            seen = set()
+            deduped = []
+            for m in station['measures']:
+                key = (str(m.get('NAME', '')), str(m.get('UNITS', '')))
+                if key not in seen:
+                    seen.add(key)
+                    deduped.append(m)
+            station['measures'] = deduped
+
+    result = json.dumps(input_json, indent=4, ensure_ascii=False)
+    print('Success')
+
+except Exception as e:
+    print(f'Error: {e}')

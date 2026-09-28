@@ -1,0 +1,6 @@
+ 
+{"request":"media2content","nume":1, "nkeysgrp": 1 }{edge.media}[1]
+
+"il nume:1 sarebbe il buffer che si porta dietro nel VLM"
+
+"il nkeysgrp: 1 sarebbe il numero di pagine x gruppo "
