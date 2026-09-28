@@ -108,6 +108,71 @@ elif len(ss) > 0:
 if len(chunks) == 0:
     chunks = [{}]
 
+# ---------- VALIDAZIONE PYDANTIC (Stadio 5, cablaggio opzionale) ----------
+# Modulo src.models disponibile solo nell'ambiente di sviluppo/test: su MyHydra
+# il pytool viene eseguito come script standalone e il pacchetto non e' presente.
+# In quel caso la validazione viene saltata (fallback difensivo identico a prima).
+_pydantic_available = False
+try:
+    import os as _os, sys as _sys
+    # Risale la gerarchia di cartelle partendo da __file__ (reale o fittizio)
+    # e dalla cwd, fino a trovare una root che contenga src/models/ (ambiente
+    # dev/test). Su MyHydra il pytool gira come script standalone senza il
+    # pacchetto: l'import fallisce e la validazione viene saltata in modo
+    # sicuro (comportamento identico alla v4.2 pre-cablaggio).
+    _roots = []
+    try:
+        _d = _os.path.dirname(_os.path.abspath(__file__))
+    except Exception:
+        _d = _os.getcwd()
+    for _start in (_d, _os.getcwd()):
+        while True:
+            if _start not in _roots:
+                _roots.append(_start)
+            _pd = _os.path.dirname(_start)
+            if _pd == _start or len(_roots) > 12:
+                break
+            _start = _pd
+    for _cand in _roots:
+        if _os.path.isdir(_os.path.join(_cand, "src", "models")) and _cand not in _sys.path:
+            _sys.path.insert(0, _cand)
+    from src.models.validators import safe_validate_vlm as _safe_validate_vlm
+    _pydantic_available = True
+except Exception:
+    _pydantic_available = False
+
+validation_errors = []
+validation_warnings = []
+if _pydantic_available:
+    # Normalizza i chunk a livello di singola stazione (la fixture puo' essere
+    # [{'stations':[...]}] oppure [{station}, {station}, ...]) e valida ogni
+    # stazione contro lo schema Variable/Station del contratto intermedio.
+    def _iter_station_dicts(chunk_list):
+        result = []
+        for ch in chunk_list:
+            if isinstance(ch, dict):
+                if isinstance(ch.get("stations"), list):
+                    result.extend([x for x in ch["stations"] if isinstance(x, dict)])
+                elif isinstance(ch.get("variables"), list):
+                    result.append(ch)
+            elif isinstance(ch, list):
+                result.extend(_iter_station_dicts(ch))
+        return result
+
+    _si = 0
+    _all_stations = _iter_station_dicts(chunks)
+    while _si < len(_all_stations):
+        _st = _all_stations[_si]
+        _si = _si + 1
+        try:
+            _res = _safe_validate_vlm({"stations": [_st]})
+            if not _res.success:
+                _nm = str(_st.get("name") or _st.get("NOME") or ("stazione #" + str(_si)))
+                validation_errors.append(_nm + ": " + "; ".join(_res.errors[:3]))
+            else:
+                validation_warnings.extend(_res.warnings)
+        except Exception as _e:
+            validation_errors.append("eccezione validazione: " + str(_e))
 # ---------- normalizzazione chunk -> pagine ----------
 pages = []
 i = 0
@@ -589,6 +654,9 @@ else:
     warnings = []
     if warn_no_ip:
         warnings.append("nessun IP dichiarato nel documento: usato default " + DEFAULT_IP)
+    warnings.extend(validation_warnings)
+    if len(validation_errors) > 0:
+        warnings.append("VALIDAZIONE SCHEMA (Pydantic): " + str(len(validation_errors)) + " stazione/i con errori -> " + " | ".join(validation_errors[:5]))
     if len(warnings) > 0:
         i = 0
         while i < len(out):

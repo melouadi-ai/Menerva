@@ -1,5 +1,8 @@
 # Single PDF Outputs tests
 
+> Per i test del caso **DOUBLE PDF** (coppia IOL + JOB) usare la cartella gemella
+> [`../double_pdf_outputs/`](../double_pdf_outputs/).
+
 Cartella di raccolta per gli **output MyHydra** (risultato del pytool `json_creator.py` v4.2)
 relativi a test su **singolo PDF**. Incolla qui i file; il confronto con i ground truth
 (`data/test_outputs/`) viene eseguito direttamente leggendo questa cartella.

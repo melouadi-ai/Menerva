@@ -33,7 +33,7 @@ with open(creator_path, "r", encoding="utf-8") as f:
 src_mod = re.sub(r"raw\s*=\s*r?'''\{edge\}\[\d+\]'''", "raw = " + repr(fixture), src)
 
 # Scrivi il sorgente modificato in un file temporaneo
-tmp = "/tmp/json_creator_run.py"
+tmp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_json_creator_run.py")
 with open(tmp, "w", encoding="utf-8") as f:
     f.write(src_mod)
 
