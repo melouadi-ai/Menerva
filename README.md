@@ -52,7 +52,8 @@ Menerva_MAS/
 │   ├── core/            # Logica core condivisa
 │   ├── nodes/           # Singoli stadi della pipeline
 │   ├── prompts/         # Prompt VLM
-│   │   ├── vlm_extraction_v12.md      ← prompt corrente (v12, con V20-V24)
+│   │   ├── vlm_extraction_v13.md      ← prompt corrente (v13: schema con data_type, regole V25 DataType + V26 fedeltà bit)
+│   │   ├─── vlm_extraction_v12.md      ← allineato a v13 (stesso contenuto, per runner che lo referenziano)
 │   │   ├── vlm_extraction_v11.md      ← prompt precedente (v11)
 │   │   └── legacy/      # Prompt precedenti (v10bis, Visio, GAIA, EVA)
 │   └── models/          # Modelli Pydantic per validazione
@@ -135,7 +136,7 @@ La pipeline usa due formati JSON distinti:
 ## 🚧 Stato attuale
 
 ### ✅ Completato
-- ✅ **Prompt VLM v12** con regole V20-V24 (filtri note/HW, registri doppi, rimap bit 1-16, porte gate)
+- ✅ **Prompt VLM v13** con regole V20-V26 (filtri note/HW, registri doppi, rimap bit 1-16, porte gate, +V25 copia DataType, +V26 fedeltà bit riga-per-riga); v12 allineato allo stesso contenuto
 - ✅ **json_creator v4.2** con supporto multi-pagina e logiche P1-P6 (dedup measures, group digitali, registri robusti, filtri riservato, pulizia parentesi Nodo 8, sanitize stati); v4.2 aggiunge V25/DataType per il formato analogico (INT16/UINT16/INT→150, REAL32/DINT/FLOAT/WORD→250) e il flag CAMPO_SCALA_AS_MEASURES
 - ✅ **Modelli Pydantic** per validazione contratto intermedio e finale
 - ✅ **Architettura 2 livelli** documentata (ADR-001)

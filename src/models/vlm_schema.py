@@ -7,7 +7,7 @@ Questi modelli servono come "cancello" tra il VLM e il json_creator:
 - Abilitano retry automatici in caso di errore VLM
 
 Schema basato su: docs/contracts/VLM_INTERMEDIATE.md
-Versione prompt: vlm_extraction_v11.md
+Versione prompt: vlm_extraction_v13.md
 """
 
 from typing import Optional, Literal

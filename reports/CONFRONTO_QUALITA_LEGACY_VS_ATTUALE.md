@@ -2,7 +2,7 @@
 
 > **Documento ad uso Direzionale e Tecnico per Clienti**  
 > *Data ultimo aggiornamento: 25 Settembre 2026*  
-> *Versione Pipeline Attuale: VLM Prompt v12 + Pytool json_creator v4.2*
+> *Versione Pipeline Attuale: VLM Prompt v13 + Pytool json_creator v4.2*
 
 ---
 
@@ -87,7 +87,7 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 
 ### Caso 3: Mappatura 4 — Cliente SIEMENS (`Mappatura_4_Cliente_SIEMENS_2.pdf`)
 * **Tipologia:** Documento complesso ad alto volume (**29 pagine**).
-* **Stato:** *In attesa di esecuzione con VLM v12.*
+* **Stato:** *In attesa di esecuzione con VLM v13.*
 * **Miglioramento atteso dal Nuovo Sistema:**
   * Nel vecchio sistema, la ridondanza produceva 148 misure sparse con duplicazioni di registri.
   * Il nuovo pytool v4.2 applica le regole **P1-P6** (deduplicazione registri condivisi, raggruppamento e filtro *"riservato"*), mirando al target consolidato di **108 misure ottimizzate e ~211 bitinfo**, eliminando l'overhead per il database ADAS.
