@@ -1,0 +1,152 @@
+ 
+import json
+from collections import Counter, defaultdict
+
+# ── Parsing & flatten ────────────────────────────────────────────────────────
+# Assumiamo che parsed provenga dal payload JSON che hai fornito
+parsed = json.loads(r''' {edge}[6] ''')
+
+stack = list(parsed)
+input_json = []
+
+while stack:
+    item = stack.pop(0)
+    if isinstance(item, dict):
+        input_json.append(item)
+    elif isinstance(item, list):
+        stack = list(item) + stack
+
+# ── 1. Estrazione configurazione (IP, PORT) per Nome Stazione ────────────────
+station_configs = {}
+
+for item in input_json:
+    if "nome_stazione" in item and item["nome_stazione"] is not None:
+        nome = item["nome_stazione"]
+
+        # Inizializza la configurazione per questo nome stazione se non esiste
+        if nome not in station_configs:
+            station_configs[nome] = {"ip": "", "port": "502"}
+
+        # Prende l'IP solo se è valido (non null)
+        if "ip_plc" in item and item["ip_plc"] is not None:
+            station_configs[nome]["ip"] = str(item["ip_plc"])
+
+        # Prende la porta solo se valida
+        if "port" in item and item["port"] is not None:
+            station_configs[nome]["port"] = str(item["port"])
+
+# ── 2. Aggregazione dei risultati basata sul "NAME" ──────────────────────────
+aggregated_stations = {}
+
+for item in input_json:
+    if "measures" in item:
+        name = item.get("NAME")
+
+        # Se incontriamo questa stazione per la prima volta, la creiamo
+        if name not in aggregated_stations:
+            cfg = str(item.get("DRIVERCONFIG", ":"))
+
+            # Se abbiamo estratto un IP in precedenza per questo nome, lo applichiamo
+            if name in station_configs:
+                ip = station_configs[name]["ip"]
+                port = station_configs[name]["port"]
+                if ip != "":
+                    cfg = ip + ":" + port
+
+# DOPO
+            aggregated_stations[name] = {
+                "NAME": name,
+                "DRIVERNAME": item.get("DRIVERNAME", "modbusplc"),
+                "DRIVERCONFIG": cfg,
+                "ID": item.get("ID", 1),
+                "measures": [],
+                "bitinfo": [],
+                "campi_scala": []
+            }
+
+        # Aggiungiamo tutte le measures trovate
+        for m in item.get("measures", []):
+            aggregated_stations[name]["measures"].append(m)
+
+        # Aggiungiamo tutte le bitinfo trovate
+        # DOPO
+        # Aggiungiamo tutte le bitinfo trovate
+        for b in item.get("bitinfo", []):
+            aggregated_stations[name]["bitinfo"].append(b)
+
+        # Aggiungiamo tutti i campi_scala trovati
+        for cs in item.get("campi_scala", []):
+            aggregated_stations[name]["campi_scala"].append(cs)
+
+# Convertiamo il dizionario aggregato in una lista finale
+final_output = []
+for key in aggregated_stations:
+    final_output.append(aggregated_stations[key])
+
+# ── 3. Normalizza MODBUSREGISTRO ─────────────────────────────────────────────
+for station in final_output:
+    for m in station.get("measures", []):
+        reg = m.get("MODBUSREGISTRO")
+        if isinstance(reg, str) and "." in reg:
+            base = reg.split(".")[0]
+            try:
+                m["MODBUSREGISTRO"] = int(base)
+            except ValueError:
+                m["MODBUSREGISTRO"] = base
+
+# ── 4. Cross-station e assegnazione "GROUP" ──────────────────────────────────
+reg_to_stations = defaultdict(set)
+for station in final_output:
+    sid = station.get("ID")
+    if sid is None:
+        sid = id(station)
+
+    for m in station.get("measures", []):
+        reg = m.get("MODBUSREGISTRO")
+        if reg is not None:
+            reg_to_stations[reg].add(sid)
+
+cross_station_regs = set()
+for reg in reg_to_stations:
+    if len(reg_to_stations[reg]) > 1:
+        cross_station_regs.add(reg)
+
+for station in final_output:
+    measures = station.get("measures", [])
+
+    # Conteggio occorrenze dei registri senza usare generatori
+    reg_counts = Counter()
+    for m in measures:
+        reg = m.get("MODBUSREGISTRO")
+        if reg is not None:
+            reg_counts[reg] += 1
+
+    shared_regs = set()
+    for reg in reg_counts:
+        count = reg_counts[reg]
+        if count > 1 and reg not in cross_station_regs:
+            shared_regs.add(reg)
+
+    for m in measures:
+        reg = m.get("MODBUSREGISTRO")
+        if reg is not None and reg in shared_regs:
+            m["GROUP"] = "Ingresso_digitale"
+        elif "GROUP" in m:
+            del m["GROUP"]
+
+# ── 5. Normalizza MEASUREID nei bitinfo ──────────────────────────────────────
+for station in final_output:
+    for b in station.get("bitinfo", []):
+        mid = b.get("MEASUREID")
+        if mid is not None:
+            mid_str = str(mid)
+            if "." in mid_str:
+                base = mid_str.split(".")[0]
+                try:
+                    b["MEASUREID"] = int(base)
+                except ValueError:
+                    b["MEASUREID"] = base
+
+# ── Generazione risultato finale ─────────────────────────────────────────────
+output_json = json.dumps(final_output, ensure_ascii=False, indent=4)
+# print(output_json)
