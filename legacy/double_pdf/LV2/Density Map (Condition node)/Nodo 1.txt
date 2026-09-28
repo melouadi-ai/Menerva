@@ -1,0 +1,2 @@
+nodo che fa forwarding di output
+
