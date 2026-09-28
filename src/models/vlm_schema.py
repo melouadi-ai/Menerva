@@ -7,7 +7,7 @@ Questi modelli servono come "cancello" tra il VLM e il json_creator:
 - Abilitano retry automatici in caso di errore VLM
 
 Schema basato su: docs/contracts/VLM_INTERMEDIATE.md
-Versione prompt: vlm_extraction_v11.md
+Versione prompt: vlm_extraction_v13.md
 """
 
 from typing import Optional, Literal
@@ -25,6 +25,13 @@ class Variable(BaseModel):
     units: Optional[str] = Field(None, description="Unità di misura (es. mg/Nm³, %, °C)")
     modbus_register: Optional[int] = Field(None, description="Registro Modbus (es. 40001, 40002)")
     bit: Optional[int] = Field(None, description="Bit all'interno del registro (0-15)")
+    data_type: Optional[str] = Field(
+        None,
+        description=(
+            "DataType dichiarato nel documento (INT16/UINT16/INT/REAL32/REAL/DINT/FLOAT/WORD). "
+            "Usato dal pytool v4.2 (regola V25) per il formato analogico nel DRIVERPRIVATE."
+        ),
+    )
     
     kind: Literal["ANALOGICA", "DIGITALE_SINGOLO", "DIGITALE_IMPACCATO"] = Field(
         ..., 

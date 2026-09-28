@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Runner per testare src/nodes/json_creator.py con un fixture realistico.
 
-Sostituisce il placeholder `{edge}[3]` con il contenuto JSON del fixture
-ed esegue lo script esattamente come farebbe MyHydra.
+Sostituisce il placeholder MyHydra `{edge}[N]` (regex, qualunque N) con il
+contenuto JSON del fixture ed esegue lo script esattamente come farebbe MyHydra.
 """
+import re
 import sys
 import os
 
@@ -20,8 +21,9 @@ with open(SCRIPT, "r", encoding="utf-8") as f:
     script = f.read()
 
 # Sostituisce il placeholder MyHydra con il JSON reale come stringa Python
+# (regex-proof: funziona sia con {edge}[3] che {edge}[4], v4.2+)
 replacement = "r'''" + fixture_text.replace("\\", "\\\\").replace("'", "\\'") + "'''"
-script_replaced = script.replace("r'''{edge}[3]'''", replacement)
+script_replaced = re.sub(r"raw\s*=\s*r?'''\{edge\}\[\d+\]'''", "raw = " + replacement, script)
 
 # Esegue lo script con lo stdout catturato
 exec(compile(script_replaced, SCRIPT, "exec"), {"__name__": "__main__"})

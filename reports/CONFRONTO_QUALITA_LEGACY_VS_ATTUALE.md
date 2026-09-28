@@ -2,7 +2,7 @@
 
 > **Documento ad uso Direzionale e Tecnico per Clienti**  
 > *Data ultimo aggiornamento: 25 Settembre 2026*  
-> *Versione Pipeline Attuale: VLM Prompt v12 + Pytool json_creator v4.1*
+> *Versione Pipeline Attuale: VLM Prompt v13 + Pytool json_creator v4.2*
 
 ---
 
@@ -40,7 +40,7 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 
 #### Confronto Risultati
 
-| Aspetto / Parametro | Vecchio Output (Legacy GT) | Nuovo Output (Menerva MAS v4.1) | Impatto / Significato Tecnico |
+| Aspetto / Parametro | Vecchio Output (Legacy GT) | Nuovo Output (Menerva MAS v4.2) | Impatto / Significato Tecnico |
 |---|---|---|---|
 | **Stazioni Generate** | 1 stazione generica `"SME"` | **2 stazioni distinte:**<br>1. `E1` @ `192.168.6.20` (44 variabili)<br>2. `E1 1` @ `xxx.xxx.xxx.xxx` (7 variabili) | ✅ **Denominazione reale**: recuperato il nome camino `E1` dal documento.<br>✅ **Isolamento IP placeholder**: le 7 variabili con IP fittizio non inquinano il driver PLC reale. |
 | **Completezza Descrizioni** | Stringhe troncate a 30 caratteri | **Testo completo e fedele al PDF** | ✅ Nessuna perdita di informazione tecnica. |
@@ -71,7 +71,7 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 
 #### Confronto Risultati
 
-| Aspetto / Parametro | Vecchio Output (Legacy GT) | Nuovo Output (Menerva MAS v4.1) | Impatto / Significato Tecnico |
+| Aspetto / Parametro | Vecchio Output (Legacy GT) | Nuovo Output (Menerva MAS v4.2) | Impatto / Significato Tecnico |
 |---|---|---|---|
 | **Gestione Multi-pagina & IP** | 1 stazione unica forzando arbitrariamente l'IP `192.168.0.1` anche su Pagina 1 | **2 stazioni distinte (ADR-001):**<br>1. `SME` @ `127.0.0.1` (30 variabili, warning `no_ip`)<br>2. `SME 1` @ `192.168.0.1` (15 variabili) | ✅ **Rigorosità di rete**: la pagina 1 non dichiara IP nel PDF; il sistema non inventa dati e isola correttamente i contesti di comunicazione. |
 | **Calcolo Indirizzo Modbus (Reg. 40004)** | **BUG GRAVE**: `DRIVERPRIVATE` hex con registro `0x0100` (Registro 1 invece di 40004) | **CORRETTO**: `DRIVERPRIVATE` hex `0x449C` (Registro 40004 esatto) | ✅ Nel vecchio sistema la misura leggeva dal registro sbagliato. Ora l'indirizzamento Modbus è perfetto. |
@@ -87,10 +87,10 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 
 ### Caso 3: Mappatura 4 — Cliente SIEMENS (`Mappatura_4_Cliente_SIEMENS_2.pdf`)
 * **Tipologia:** Documento complesso ad alto volume (**29 pagine**).
-* **Stato:** *In attesa di esecuzione con VLM v12.*
+* **Stato:** *In attesa di esecuzione con VLM v13.*
 * **Miglioramento atteso dal Nuovo Sistema:**
   * Nel vecchio sistema, la ridondanza produceva 148 misure sparse con duplicazioni di registri.
-  * Il nuovo pytool v4.1 applica le regole **P1-P6** (deduplicazione registri condivisi, raggruppamento e filtro *"riservato"*), mirando al target consolidato di **108 misure ottimizzate e ~211 bitinfo**, eliminando l'overhead per il database ADAS.
+  * Il nuovo pytool v4.2 applica le regole **P1-P6** (deduplicazione registri condivisi, raggruppamento e filtro *"riservato"*), mirando al target consolidato di **108 misure ottimizzate e ~211 bitinfo**, eliminando l'overhead per il database ADAS.
 
 ---
 
