@@ -148,6 +148,11 @@ V22. Registro doppio "40051/40052" con DataType REAL32/REAL/DINT/FLOAT:
 V23. Se la colonna bit mostra valori 1-16 (in qualsiasi ordine, es. 9-16 poi
      1-8), rimappa SEMPRE bit = valore-1. Se mostra 0-15, copia così.
 V24. Porta in formato "gate 5021/5022" o "5021 / 5022": prendi il PRIMO numero.
+V25. data_type: copia la cella della colonna DataType/Tipo dato/"Data Type"
+     (es. INT, INT16, UINT16, REAL32, REAL, DINT, FLOAT, WORD) così com'è,
+     per ogni riga che espone quella colonna; altrimenti null. Il pytool v4.2
+     la usa per scegliere il formato analogico nel DRIVERPRIVATE
+     (INT16/UINT16/INT -> SIGNED_SHORT, il resto -> FLOAT). Non inventare.
 
 ## DIVIETI
 D1. Non inventare NAME/UNITS per righe con descrizione vuota.
@@ -176,3 +181,5 @@ D6. Rispondi SOLO con il JSON.
 12. Ogni registro doppio "X/Y" è diventato UNA sola misura (V22).
 13. I bit da colonna 1-16 sono rimappati 0-15 (V23/V5).
 14. La porta "gate" usa il primo numero (V24).
+15. data_type popolato su ogni riga con colonna DataType presente (V25),
+    copiato senza inventare.

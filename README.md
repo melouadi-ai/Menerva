@@ -136,7 +136,7 @@ La pipeline usa due formati JSON distinti:
 
 ### ✅ Completato
 - ✅ **Prompt VLM v12** con regole V20-V24 (filtri note/HW, registri doppi, rimap bit 1-16, porte gate)
-- ✅ **json_creator v4.1** con supporto multi-pagina e logiche P1-P6 (dedup measures, group digitali, registri robusti, filtri riservato, pulizia parentesi Nodo 8, sanitize stati)
+- ✅ **json_creator v4.2** con supporto multi-pagina e logiche P1-P6 (dedup measures, group digitali, registri robusti, filtri riservato, pulizia parentesi Nodo 8, sanitize stati); v4.2 aggiunge V25/DataType per il formato analogico (INT16/UINT16/INT→150, REAL32/DINT/FLOAT/WORD→250) e il flag CAMPO_SCALA_AS_MEASURES
 - ✅ **Modelli Pydantic** per validazione contratto intermedio e finale
 - ✅ **Architettura 2 livelli** documentata (ADR-001)
 - ✅ **Struttura progetto** inizializzata

@@ -19,6 +19,7 @@ Questo documento definisce lo schema JSON che il VLM deve produrre per ogni pagi
           "units": "string | null",
           "modbus_register": "int | null",
           "bit": "int | null",
+          "data_type": "string | null",
           "kind": "ANALOGICA | DIGITALE_SINGOLO | DIGITALE_IMPACCATO",
           "read_write": "R | W | null",
           "state_on": "string | null",

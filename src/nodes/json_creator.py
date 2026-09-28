@@ -1,18 +1,20 @@
-# pytool - Json Creator finale (contratto intermedio -> formato ADAS) - v4.1
+# pytool - Json Creator finale (contratto intermedio -> formato ADAS) - v4.2 FINAL
 # Input : edge 4 = JSON intermedio aggregato dal nodo iterativo
 # Output: lista di stazioni nel formato finale ADAS (measures + bitinfo)
 #
+# Change-log v4.1 -> v4.2:
+#  - V25/DATA_TYPE: il formato analogico (ultimo blocco DRIVERPRIVATE) dipende
+#    dal DataType dichiarato: INT16/UINT16/INT -> 150 (SIGNED_SHORT);
+#    REAL32/REAL/DINT/FLOAT/assente -> 250 (FLOAT_SINGLE_BE).
+#    WORD resta 250 per parita' con i ground truth SMA/PROTEC.
+#  - Flag CAMPO_SCALA_AS_MEASURES (default True): se False scarta le righe
+#    "CAMPO SCALA" dalle misure (policy BISON futura).
 # Change-log v4 -> v4.1:
-#  - P4bis FILTRO "RISERVATO": scarta misure con description contenente
-#    "riservat" (es. "Riservato Read/Write"), come il vecchio Delete Null Names.
+#  - P4bis: scarta description contenenti "riservat" (es. "Riservato Read/Write").
 # Change-log v3 -> v4 (Piano C):
-#  - P1 DEDUP MEASURES: analogiche/impaccate per (nome,reg), singoli per (reg).
-#  - P2 GROUP: singoli digitali con registro condiviso nella stessa stazione
-#    foldati nel gruppo "Ingressi digitali N" (logica vecchio Check Group).
-#  - P3 REGISTRO ROBUSTO: "40001.3" -> reg 40001 + bit 3 se bit mancante.
-#  - P4 FILTRO NOMI GENERICI: scarta description esattamente generiche.
-#  - P5 PULIZIA PARENTESI (Nodo 8): duplicate-aware su NAME, piena su bitinfo.
-#  - P6 SANITIZE STATI: "1"/"0" negli state_on/off diventano null.
+#  - P1 dedup measures; P2 fold singoli con registro condiviso in gruppo;
+#    P3 registro robusto "40001.3"; P4 filtro nomi generici exact;
+#    P5 pulizia parentesi duplicate-aware; P6 sanitize stati "1"/"0".
 #  - Confermato: guardie A/B, DRIVERDATA=5 per Write, bitinfo singoli BITNO 0,
 #    merge stazioni, forward-fill, placeholder mai fusi, rename omonime, _meta.
 import json
@@ -222,8 +224,12 @@ while i < len(st_in):
         groups[found][3] = st["modbus_id"]
     groups[found][4] = groups[found][4] + st["variables"]
 
+# ---------- costanti di formato ----------
 FMT_SHORT = 150
 FMT_FLOAT = 250
+FMT_INT16 = FMT_SHORT
+FMT_REAL32 = FMT_FLOAT
+CAMPO_SCALA_AS_MEASURES = True
 BIG = 3.40282e+38
 NEGBIG = -3.40282e+38
 VM_DEFAULT = "if elapsed() then    storep(11);else store(8);fi;"
@@ -242,6 +248,7 @@ KW = [
     ["SPAN", "SPAN", "OFF"]
 ]
 
+# ---------- generazione misure/bitinfo per stazione ----------
 out = []
 sid = 0
 g = 0
@@ -303,6 +310,9 @@ while g < len(groups):
         # P4bis: scarta righe "Riservato ..."
         if desc.lower().find("riservat") >= 0:
             continue
+        # v4.2: policy CAMPO SCALA (default: restano misure)
+        if (not CAMPO_SCALA_AS_MEASURES) and desc.upper().find("CAMPO SCALA") >= 0:
+            continue
         kind = v.get("kind")
         reg = v.get("modbus_register")
         regval = 0
@@ -359,6 +369,13 @@ while g < len(groups):
                 rw = None
         else:
             rw = None
+        # v4.2: formato analogico in base al data_type dichiarato (V25)
+        fmt_analog = FMT_REAL32
+        dt = v.get("data_type")
+        if dt is not None:
+            dtu = str(dt).strip().upper()
+            if dtu.find("INT16") >= 0 or dtu.find("UINT16") >= 0 or dtu == "INT":
+                fmt_analog = FMT_INT16
         # Guardia A
         if kind == "DIGITALE_SINGOLO" and regval == 0 and bit is None:
             kind = "ANALOGICA"
@@ -455,7 +472,7 @@ while g < len(groups):
             priv = priv + "00000000"
             priv = priv + struct.pack('<I', 0).hex().upper()
             priv = priv + struct.pack('<I', mid).hex().upper()
-            priv = priv + struct.pack('<I', FMT_FLOAT).hex().upper()
+            priv = priv + struct.pack('<I', fmt_analog).hex().upper()
             measures.append({"STATIONID": sid, "NAME": desc, "DISABLED": 0, "DIGITAL": None, "DOWNLOAD": 0, "SNAPSHOT": 1, "IGNOREERRORS": 0, "LOWCRITICAL": NEGBIG, "HIGHCRITICAL": BIG, "LOWRANGE": NEGBIG, "HIGHRANGE": BIG, "LOWOFFSET": NEGBIG, "HIGHOFFSET": BIG, "SQRAW": BIG, "SQ1HOURMEAN": BIG, "SQ3HOURMEAN": BIG, "SQ8HOURMEAN": BIG, "SQDAILYMEAN": BIG, "UNITS": units, "STANDARDRANGEID": None, "DRIVERDATA": 0, "TYPE": 0, "DRIVERPRIVATE": priv, "ONLY_POSITIVES": 0, "VM_SOURCE_CODE": VM_DEFAULT, "PERIOD": 5, "SNAPSIZE": 1000, "DRIVERCONFIG": MCFG, "ID": mid_seq, "UNITS2": units})
     # ---------- P5 pulizia parentesi (Nodo 8) duplicate-aware ----------
     all_names = []
