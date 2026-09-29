@@ -1,0 +1,16 @@
+[
+  {"pages":[{"index":0,"label":"DENSITY_MAP"},{"index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"pages":[{"index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"pages":[{"index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"pages":[{"index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"pages":[{"index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"index":1,"label":"STATION_INFORMATION"}]},
+  {"pages":[{"index":0,"label":"STATION_INFORMATION"},{"index":1,"label":"STATION_INFORMATION"}]},
+  {"pages":[{"index":0,"label":"STATION_INFORMATION"},{"index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"pages":[{"index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"index":1,"label":"STATION_INFORMATION"}]},
+  {"pages":[{"index":0,"label":"STATION_INFORMATION"},{"index":1,"label":"STATION_INFORMATION"}]},
+  {"pages":[{"index":0,"label":"STATION_INFORMATION"},{"index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"pages":[{"index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"pages":[{"index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"pages":[{"index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"pages":[{"index":0,"label":"MEASUREMENT_TECHNICAL_DATA"}]}
+]

@@ -1,164 +1,43 @@
-<<<<<<< HEAD
-# Menerva MAS — Multi-Agent System
+# Menerva MAS
 
-Pipeline per la conversione automatica di documenti di mappatura PLC/SCADA (PDF/Excel) in configurazione ADAS per sistemi di monitoraggio emissioni industriali (SME/SAE).
+Menerva converte documenti tecnici di mappatura PLC/SCADA in configurazioni JSON per ADAS. Il progetto combina estrazione assistita da VLM e trasformazioni deterministiche in Python.
 
-## 🎯 Obiettivo
+## Stato e perimetro
 
-Trasformare documenti tecnici (tabelle MODBUS, liste I/O, specifiche ADAS) in file di configurazione pronti per la piattaforma ADAS, eliminando l'inserimento manuale e gli errori di trascrizione.
+La pipeline **Single PDF corrente** è configurata sulla piattaforma cloud. Gli screenshot e il flusso osservabile sono documentati in [Single PDF cloud corrente](docs/architettura/single_pdf_cloud_corrente.md). La configurazione cloud non è contenuta integralmente in questo repository: i diagrammi documentano i nodi visibili, non i loro prompt o tutta la logica interna.
 
-## 🏗️ Architettura
+Questo repository contiene script Python, prompt, modelli, documentazione, materiali legacy e dati di esempio. Alcuni documenti descrivono versioni precedenti e non vanno assunti come stato corrente senza verifica.
 
-### Pipeline a 7 stadi
+## Aree principali
 
-```
-PDF/Excel
-    │
-    ▼
-┌─────────────────────────┐
-│ Stadio 1: INGESTIONE    │  Python — apre il file, verifica leggibilità
-├─────────────────────────┤
-│ Stadio 2: SPEZZETTAMENTO│  Python — pagine → immagini (PDF) o righe (Excel)
-├─────────────────────────┤
-│ Stadio 3: CLASSIFICAZ.  │  VLM — identifica tipo di contenuto per pagina
-├─────────────────────────┤
-│ Stadio 4: ESTRAZIONE    │  VLM — produce JSON intermedio (stazioni + misure)
-├─────────────────────────┤
-│ Stadio 5: VALIDAZIONE   │  Pydantic — verifica schema JSON intermedio
-├─────────────────────────┤
-│ Stadio 6: TRASFORMAZ.   │  Python — JSON intermedio → ADAS finale
-├─────────────────────────┤
-│ Stadio 7: MERGE         │  Python — unisce stazioni, calcola hex, rinumera ID
-└─────────────────────────┘
-    │
-    ▼
-ADAS JSON (formato finale con DRIVERPRIVATE, XML DRIVERCONFIG, VM_SOURCE_CODE)
-```
+- `src/nodes/`: codice Python, incluso `json_creator.py`; non tutti gli stadi descritti nei documenti sono implementati qui.
+- `src/prompts/`: prompt VLM correnti e storici.
+- `src/models/`: modelli e validatori Pydantic.
+- `legacy/single_pdf/`, `legacy/double_pdf/`: esportazioni testuali di flussi e prompt precedenti, utili come materiale di analisi.
+- `docs/contracts/`: contratti JSON proposti per l’intermedio VLM e l’output ADAS.
+- `docs/references/materiale_tutor/`: materiali storici ricevuti dal tutor, accompagnati da note di provenienza e cautele.
+- `docs/protocolli/`: schemi DB, mappature, richieste e documenti cliente.
+- `data/test_inputs/`, `data/test_outputs/`: esempi di input e risultati storici; verificare provenienza e ruolo di ogni file prima di usarlo come ground truth.
+- `tests/`: test e strumenti di confronto.
 
-### Separazione delle responsabilità
+## Doppio PDF
 
-| Componente | Ruolo |
-|---|---|
-| **VLM (Qwen-VL)** | Legge e trascrive tabelle dai documenti. Produce JSON intermedio. |
-| **Python** | Calcoli deterministici: hex DRIVERPRIVATE, XML DRIVERCONFIG, BISON, merge stazioni, rinumerazione ID. |
-| **MyHydra** | Orchestrazione della pipeline completa su PDF reali. |
+Il nuovo flusso Double PDF è in fase di progettazione. I documenti in `legacy/double_pdf/` descrivono un precedente flusso di classificazione ed estrazione; non definiscono ancora un contratto completo e verificato per abbinare i documenti IOL e JOB e riconciliare i dati tra loro. L’analisi dei materiali e i punti aperti sono raccolti in [Analisi del progetto](docs/architettura/analisi_progetto.md).
 
-## 📁 Struttura del progetto
+I primi casi indicati dal tutor sono le coppie 6 (IOL + descrizione JOB `0139.23`) e 7 (IOL + descrizione JOB `0105.22`): ogni coppia va trattata come un’unica unità di elaborazione. Le copie originali caricate non sono state aggiunte al repository.
 
-```
-Menerva_MAS/
-├── src/
-│   ├── agents/          # Agenti specializzati (futuro)
-│   ├── core/            # Logica core condivisa
-│   ├── nodes/           # Singoli stadi della pipeline
-│   ├── prompts/         # Prompt VLM
-│   │   ├── vlm_extraction_v13.md      ← prompt corrente (v13: schema con data_type, regole V25 DataType + V26 fedeltà bit)
-│   │   ├─── vlm_extraction_v12.md      ← allineato a v13 (stesso contenuto, per runner che lo referenziano)
-│   │   ├── vlm_extraction_v11.md      ← prompt precedente (v11)
-│   │   └── legacy/      # Prompt precedenti (v10bis, Visio, GAIA, EVA)
-│   └── models/          # Modelli Pydantic per validazione
-│       ├── vlm_schema.py  # Schemi VLM intermedio + ADAS finale
-│       └── validators.py  # Funzioni di validazione sicura
-│   └── utils/           # Funzioni di utilità
-├── configs/             # Configurazioni esterne
-├── data/
-│   ├── test_inputs/     # PDF di test
-│   └── test_outputs/    # Output attesi (ground truth)
-├── docs/
-│   ├── architettura/    # Documentazione architetturale
-│   ├── contracts/       # Schemi JSON dei contratti tra stadi
-│   ├── protocolli/      # Documenti cliente e specifiche DB
-│   └── ricerca/         # Note di ricerca, meeting, TODO
-├── reports/             # Report di qualità e benchmark (Legacy vs Attuale)
-├── tests/               # Test automatici
-│   └── gaia_legacy/     # Test del vecchio sistema
-├── logs/                # Log di esecuzione
-├── scripts/             # Script di utilità
-└── pyproject.toml       # Dipendenze e configurazione
-```
+La prima architettura a due livelli proposta è descritta in [Double PDF — workflow proposto](docs/architettura/double_pdf_workflow_proposta.md); è una bozza da verificare sulla piattaforma cloud e sui documenti campione.
 
-## 🔧 Setup ambiente
+## Riferimenti
 
-### Prerequisiti
+- [Flusso Single PDF cloud corrente](docs/architettura/single_pdf_cloud_corrente.md)
+- [Analisi e mappa del progetto](docs/architettura/analisi_progetto.md)
+- [Inventario file e copertura della revisione](docs/architettura/inventario_repository.md)
+- [Materiali ricevuti dal tutor](docs/references/materiale_tutor/README.md)
+- [Decisione sul merge multi-pagina](docs/architettura/ADR-001-merge-multi-page.md)
+- [Contratto intermedio VLM](docs/contracts/VLM_INTERMEDIATE.md)
+- [Contratto finale ADAS](docs/contracts/ADAS_FINAL.md)
 
-- Python 3.10+
-- [uv](https://docs.astral.sh/uv/) (gestore pacchetti consigliato)
+## Ambiente locale
 
-### Installazione
-
-```bash
-# Installa uv (se non presente)
-pip install uv
-
-# Sincronizza le dipendenze
-uv sync
-
-# Oppure con pip
-pip install -e .
-```
-
-### Dipendenze principali
-
-| Pacchetto | Uso |
-|---|---|
-| `PyMuPDF` | Apertura PDF e conversione pagine → immagini |
-| `Pillow` | Manipolazione immagini |
-| `pydantic` | Validazione schema JSON |
-| `openpyxl` | Lettura file Excel |
-| `requests` | Chiamate API (se VLM via API) |
-
-## 🧪 Test
-
-```bash
-# Esegui tutti i test
-pytest
-
-# Test specifici
-pytest tests/test_pdf_to_images.py
-pytest tests/test_vlm_extraction.py
-pytest tests/test_adas_transform.py
-```
-
-## 📋 Contratti JSON
-
-La pipeline usa due formati JSON distinti:
-
-1. **VLM Intermedio** (`docs/contracts/VLM_INTERMEDIATE.md`)
-   - Prodotto dal VLM dopo estrazione
-   - Contiene: stazioni, misure, bitinfo in forma grezza
-   - Validato da Pydantic prima di passare al nodo successivo
-
-2. **ADAS Finale** (`docs/contracts/ADAS_FINAL.md`)
-   - Prodotto dal nodo Python di trasformazione
-   - Contiene: DRIVERPRIVATE hex, XML DRIVERCONFIG, VM_SOURCE_CODE, ID rinumerati
-   - Formato pronto per l'import nella piattaforma ADAS
-
-## 🚧 Stato attuale
-
-### ✅ Completato
-- ✅ **Prompt VLM v13** con regole V20-V26 (filtri note/HW, registri doppi, rimap bit 1-16, porte gate, +V25 copia DataType, +V26 fedeltà bit riga-per-riga); v12 allineato allo stesso contenuto
-- ✅ **json_creator v4.2** con supporto multi-pagina e logiche P1-P6 (dedup measures, group digitali, registri robusti, filtri riservato, pulizia parentesi Nodo 8, sanitize stati); v4.2 aggiunge V25/DataType per il formato analogico (INT16/UINT16/INT→150, REAL32/DINT/FLOAT/WORD→250) e il flag CAMPO_SCALA_AS_MEASURES
-- ✅ **Modelli Pydantic** per validazione contratto intermedio e finale
-- ✅ **Architettura 2 livelli** documentata (ADR-001)
-- ✅ **Struttura progetto** inizializzata
-- ✅ **Documentazione contratti** completata
-
-### ⏳ Da fare
-- ⏳ Configurazione MyHydra Livello 1 (orchestratore)
-- ⏳ Semplificazione Livello 2 (rimozione pytool interno)
-- ⏳ Test su altri PDF (PROTEC_2, SIEMENS, Curtiriso)
-- ⏳ Generatore BISON (in attesa specifiche cliente)
-
-### ⏸️ Rimandato
-- ⏸️ Sistema doppio-PDF (caso SMI_1 e documenti con indice)
-- ⏸️ BISON e linearizzazioni (bloccato su specifiche cliente)
-
-## 📝 Convenzioni
-
-- **Lingua codice**: inglese
-- **Lingua commenti/doc**: italiano
-- **Branching**: `main` (stabile) + feature branch
-- **Commit**: messaggi descrittivi in italiano o inglese
-=======
-# Menerva
->>>>>>> 9421eb0a31db47d99a76e21f95d7572c14a5a5a6
+Il repository definisce dipendenze e configurazione in `pyproject.toml`. Per l’ambiente locale usare le istruzioni compatibili con il Python installato e con il lockfile presente. La configurazione cloud del Single PDF non si avvia automaticamente con questi comandi.

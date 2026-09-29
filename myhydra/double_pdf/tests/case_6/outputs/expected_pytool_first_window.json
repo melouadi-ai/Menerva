@@ -1,0 +1,7 @@
+{
+  "status": "OK",
+  "pages": [
+    {"key":"CASE6_PAGE_01","index":0,"label":"DENSITY_MAP"},
+    {"key":"CASE6_PAGE_02","index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}
+  ]
+}

@@ -1,7 +1,21 @@
-# pytool - Json Creator finale (contratto intermedio -> formato ADAS) - v4.2 FINAL
+# pytool - Json Creator finale (contratto intermedio -> formato ADAS) - v4.3
 # Input : edge 4 = JSON intermedio aggregato dal nodo iterativo
 # Output: lista di stazioni nel formato finale ADAS (measures + bitinfo)
 #
+# Change-log v4.2 -> v4.3:
+#  - Scarta le variabili senza indirizzo Modbus. Prima restavano a zero e
+#    producevano una misura con DRIVERPRIVATE "0x0000...", formalmente valida
+#    e sostanzialmente inesistente. Sono le grandezze derivate, che nel
+#    documento hanno indicazione CALCOLATA e nessun indirizzo.
+#  - Segnala gli indirizzi scritti con zeri iniziali ("00033"). Il documento
+#    SMA li usa nelle sezioni digitali e "40001" in quelle analogiche: due
+#    convenzioni diverse nello stesso file, che la normalizzazione tratta
+#    allo stesso modo. Il valore emesso non cambia, la conversione e' una
+#    decisione di dominio del cliente: qui viene resa visibile.
+#  - Segnala la copertura sospetta: piu' pagine dichiarate in un solo chunk
+#    indicano che il motore iterativo ha accorpato le richieste, il modo in
+#    cui una perdita di copertura si manifesta senza lasciare traccia nel
+#    formato dell'output.
 # Change-log v4.1 -> v4.2:
 #  - V25/DATA_TYPE: il formato analogico (ultimo blocco DRIVERPRIVATE) dipende
 #    dal DataType dichiarato: INT16/UINT16/INT -> 150 (SIGNED_SHORT);
@@ -317,6 +331,13 @@ KW = [
 out = []
 sid = 0
 g = 0
+# v4.3: accumulatori globali dei controlli introdotti in questa versione.
+# Sono dichiarati qui fuori dal ciclo perche' i controlli valgono sull'output
+# nel suo complesso, non per singola stazione: un indirizzo a zeri iniziali in
+# una stazione e' un problema dell'intero documento.
+zero_padded_tutto = {}
+senza_registro_tutto = 0
+senza_registro_nomi_tutto = []
 while g < len(groups):
     nm = groups[g][0]
     ip = groups[g][1]
@@ -360,6 +381,10 @@ while g < len(groups):
     packed_index = {}
     packed_count = 0
     mid_seq = 0
+    # v4.3: due accumulatori per i controlli introdotti in questa versione
+    zero_padded_regs = {}
+    senza_registro = 0
+    senza_registro_nomi = []
     i = 0
     while i < len(vs):
         v = vs[i]
@@ -378,6 +403,16 @@ while g < len(groups):
         # v4.2: policy CAMPO SCALA (default: restano misure)
         if (not CAMPO_SCALA_AS_MEASURES) and desc.upper().find("CAMPO SCALA") >= 0:
             continue
+        # v4.3: una variabile senza indirizzo Modbus non e' leggibile dal PLC.
+        # Senza questo controllo restava a zero e produceva una misura con
+        # DRIVERPRIVATE "0x0000...", cioe' formalmente valida e sostanzialmente
+        # inesistente. Sono le grandezze derivate, che nel documento hanno
+        # indicato CALCOLATA e nessun indirizzo: vanno scartate.
+        if v.get("modbus_register") is None or str(v.get("modbus_register")).strip() == "":
+            senza_registro = senza_registro + 1
+            if len(senza_registro_nomi) < 20:
+                senza_registro_nomi.append(desc)
+            continue
         kind = v.get("kind")
         reg = v.get("modbus_register")
         regval = 0
@@ -389,6 +424,17 @@ while g < len(groups):
             mm = re.match(r'\s*([0-9]+)', rs)
             if mm is not None:
                 regval = int(mm.group(1))
+                # v4.3: riconosce gli indirizzi con zeri iniziali.
+                # Il documento SMA scrive "00033" nelle sezioni digitali e
+                # "40001" in quelle analogiche: due convenzioni diverse nello
+                # stesso file. La normalizzazione le tratta allo stesso modo,
+                # quindi "00033" diventa 33, che come registro Modbus e'
+                # diverso da 40033. Il valore emesso non viene cambiato, perche'
+                # la conversione e' una decisione di dominio del cliente: qui
+                # si registra l'anomalia, cosi' smette di essere silenziosa.
+                raw_digits = mm.group(1)
+                if raw_digits.startswith("0") and len(raw_digits) >= 4:
+                    zero_padded_regs[raw_digits] = True
                 rest = rs[mm.end(1):]
                 if rest[:1] == '.' or rest[:1] == '_':
                     frac = rest[1:]
@@ -609,6 +655,11 @@ while g < len(groups):
     drv = drv + "timeout=\"5000\" retries=\"3\" write4XXXX=\"6\"/></commProto>"
     drv = drv + "<recoveryProto/></configuration>"
     out.append({"NAME": nm, "DRIVERNAME": "modbusplc", "XPOSITION": 430, "YPOSITION": 530, "DOWNLOADTYPE": 0, "DOWNLOADPROGRAM": None, "IGNOREERRORS": 0, "SNAPSHOT": None, "NORMALSNAPSHOT": 1, "CRITICSNAPSHOT": 32767, "ALARMSNAPSHOT": 32767, "SYNOBITMAP": None, "LINENAME": None, "AREACODE": None, "ADDRESS": None, "LINECONFIGURATION": None, "TIMELASTCONFIGURATION": None, "TIMELASTDOWNLOAD": None, "EVENTTIME": None, "EVENTCODE": 0, "EVENTORIGIN": None, "CODE": None, "DRIVERPRIVATE": None, "OVERWRITEMEASURES": 1, "DRIVERCONFIG": drv, "ID": sid, "measures": measures, "bitinfo": bitinfo})
+    # v4.3: i controlli della stazione confluiscono nei totali del documento
+    for kk in zero_padded_regs:
+        zero_padded_tutto[kk] = True
+    senza_registro_tutto = senza_registro_tutto + senza_registro
+    senza_registro_nomi_tutto = senza_registro_nomi_tutto + senza_registro_nomi
     g = g + 1
 
 # ---------- rename stazioni omonime ----------
@@ -643,6 +694,8 @@ while i < len(st_in):
     meta["station_details"].append({"page_no": st_in[i]["page_no"], "name": st_in[i]["name"], "ip": st_in[i]["ip"], "port": st_in[i]["port"], "modbus_id": st_in[i]["modbus_id"], "num_vars": len(vsd), "first_desc": fd, "last_desc": ld})
     i = i + 1
 meta["variables_total"] = tv
+meta["variabili_senza_registro"] = senza_registro_tutto
+meta["indirizzi_con_zeri_iniziali"] = len(zero_padded_tutto)
 if len(out) == 0:
     dbg = {"DEBUG": True, "raw_len": len(s), "chunks_parsed": len(chunks), "pages_processed": len(pages), "raw_head": s[:800]}
     output = json.dumps(dbg, ensure_ascii=False, indent=1)
@@ -657,6 +710,20 @@ else:
     warnings.extend(validation_warnings)
     if len(validation_errors) > 0:
         warnings.append("VALIDAZIONE SCHEMA (Pydantic): " + str(len(validation_errors)) + " stazione/i con errori -> " + " | ".join(validation_errors[:5]))
+    # v4.3: segnalazione della copertura. Il pytool non puo' sapere quante
+    # righe il documento contiene, ma puo' dire se quello che ha ricevuto e'
+    # coerente con un'elaborazione pagina per pagina. Con piu' pagine
+    # dichiarate e un solo chunk, il motore iterativo ha probabilmente
+    # accorpato piu' pagine in una richiesta: e' il modo in cui una perdita di
+    # copertura si manifesta, e senza questo avviso resterebbe invisibile
+    # perche' l'output e' valido.
+    if len(pages) > 1 and len(chunks) == 1:
+        warnings.append("COPERTURA SOSPETTA: " + str(tv) + " variabili ricevute in un solo chunk per " + str(len(pages)) + " pagine. Il motore iterativo dovrebbe inviare un chunk per pagina: verificare che non stia accorpando piu' pagine in una richiesta.")
+    if len(zero_padded_tutto) > 0:
+        kk = sorted(zero_padded_tutto.keys())
+        warnings.append("INDIRIZZI CON ZERI INIZIALI: " + str(len(kk)) + " indirizzi scritti con zeri iniziali nel documento (" + ", ".join(kk[:8]) + ("..." if len(kk) > 8 else "") + "). Dopo la normalizzazione valgono come intero breve, che e' un registro diverso da quello scritto. Verificare se il documento li intende come indirizzi HMI o Modbus: la conversione non viene applicata perche' e' una decisione di dominio.")
+    if senza_registro_tutto > 0:
+        warnings.append("VARIABILI SENZA INDIRIZZO: " + str(senza_registro_tutto) + " variabili scartate perche' non hanno un indirizzo Modbus, quindi non sono leggibili dal PLC (grandezze derivate, indicazione CALCOLATA). Nomi: " + ", ".join(senza_registro_nomi_tutto[:6]) + ("..." if len(senza_registro_nomi_tutto) > 6 else ""))
     if len(warnings) > 0:
         i = 0
         while i < len(out):

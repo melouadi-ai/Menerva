@@ -1,0 +1,11 @@
+{
+  "edge_4_media_forwarded_by_naive": {
+    "_medexkeys": "[{\"key\":\"CASE6_PAGE_01\"},{\"key\":\"CASE6_PAGE_02\"}]"
+  },
+  "edge_2_vlm": {
+    "pages": [
+      {"index": 0, "label": "DENSITY_MAP"},
+      {"index": 1, "label": "MEASUREMENT_TECHNICAL_DATA"}
+    ]
+  }
+}

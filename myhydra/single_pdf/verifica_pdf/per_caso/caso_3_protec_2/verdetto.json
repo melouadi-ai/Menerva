@@ -1,0 +1,1217 @@
+{
+ "caso": "caso_3_protec_2",
+ "cliente": "PROTEC",
+ "pdf": "Mappatura_3_Cliente_PROTEC_2.pdf",
+ "output": "OUTPUT PROTEC 2.txt",
+ "estrazione": {
+  "formato": "protec",
+  "righe_grezze": 79
+ },
+ "riepilogo": {
+  "righe_pdf": 79,
+  "presenti_nell_output": 39,
+  "saltate_da_regola": 40,
+  "non_coperte": 0,
+  "senza_indirizzo": 0,
+  "fantasma_output": 0,
+  "quadratura": 0,
+  "per_esito": {
+   "ok": 38,
+   "saltata_da_regola_di_prompt": 40,
+   "nome_diverso": 1
+  },
+  "per_classe": {
+   "ok": 38,
+   "saltata_da_regola_di_prompt": 40,
+   "correzione_di_refuso_del_documento": 1
+  }
+ },
+ "trasversali": {
+  "registri_nel_pdf": 19,
+  "registri_nell_output": 19,
+  "registri_solo_nel_pdf": [],
+  "registri_solo_nel_pdf_solo_righe_saltate": [],
+  "registri_solo_nell_output": [],
+  "convenzioni_indirizzo": {},
+  "copertura_per_pagina": {
+   "1": {
+    "totale": 55,
+    "coperte": 20,
+    "saltate": 35
+   },
+   "2": {
+    "totale": 24,
+    "coperte": 19,
+    "saltate": 5
+   }
+  },
+  "pagine_senza_output": [],
+  "variabili_ricevute_dal_pytool": 39,
+  "chunk_ricevuti_dal_pytool": 1,
+  "righe_pdf_utilizzabili": 79,
+  "ip_nel_pdf": [
+   "10.127.126.99",
+   "10.127.126.114",
+   "10.127.126.113"
+  ],
+  "ip_nell_output": [
+   "127.0.0.1",
+   "10.127.126.99"
+  ],
+  "ip_nel_pdf_non_usati": [
+   "10.127.126.114",
+   "10.127.126.113"
+  ],
+  "nomi_stazione_output": [
+   "SME",
+   "SME 1"
+  ],
+  "meta_pdf": {}
+ },
+ "per_riga_pdf": [
+  {
+   "registro": 40001,
+   "bit": 0,
+   "pdf_descrizione": "Check Cycle Polverimetro",
+   "pdf_stato": "Check Cycle Attivo",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "CHECK CYCLE POLVERIMETRO",
+    "texton": "CHECK CYCLE ATTIVO",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 1,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40001,
+   "bit": 2,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40001,
+   "bit": 3,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40001,
+   "bit": 4,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40001,
+   "bit": 5,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40001,
+   "bit": 6,
+   "pdf_descrizione": "Non Utilizzato",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40001,
+   "bit": 7,
+   "pdf_descrizione": "Non Utilizzato",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40001,
+   "bit": 8,
+   "pdf_descrizione": "Selettore Misura / Manutenzione",
+   "pdf_stato": "Manutenzione",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "SELETTORE MISURA / MANUTENZIONE",
+    "texton": "MANUTENZIONE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 9,
+   "pdf_descrizione": "Allarme Temperatura Cabina",
+   "pdf_stato": "OK",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "ALLARME TEMPERATURA CABINA",
+    "texton": "OK",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 10,
+   "pdf_descrizione": "Condizionatore 1 OFF",
+   "pdf_stato": "OK",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "CONDIZIONATORE 1 OFF",
+    "texton": "OK",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 11,
+   "pdf_descrizione": "Condizionatore 2 OFF",
+   "pdf_stato": "OK",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "CONDIZIONATORE 2 OFF",
+    "texton": "OK",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 12,
+   "pdf_descrizione": "Allarme Essiccatore",
+   "pdf_stato": "OK",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "ALLARME ESSICCATORE",
+    "texton": "OK",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 13,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40001,
+   "bit": 14,
+   "pdf_descrizione": "Allarme 24 VDC",
+   "pdf_stato": "OK",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "ALLARME 24 VDC",
+    "texton": "OK",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 15,
+   "pdf_descrizione": "Allarme Polverimetro",
+   "pdf_stato": "OK",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "ALLARME POLVERIMETRO",
+    "texton": "OK",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40002,
+   "bit": 0,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 1,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 2,
+   "pdf_descrizione": "Non Utilizzato",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 3,
+   "pdf_descrizione": "Non Utilizzato",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 4,
+   "pdf_descrizione": "Non Utilizzato",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 5,
+   "pdf_descrizione": "Non Utilizzato",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 6,
+   "pdf_descrizione": "Non Utilizzato",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 7,
+   "pdf_descrizione": "Non Utilizzato",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 8,
+   "pdf_descrizione": "Lampada OR Allarmi",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 2",
+    "bitname": "LAMPADA OR ALLARMI",
+    "texton": "ATTIVO",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40002,
+   "bit": 9,
+   "pdf_descrizione": "Lampada Allarme Alta Temperatura Cabina",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 2",
+    "bitname": "LAMPADA ALLARME ALTA TEMPERATURA CABINA",
+    "texton": "ALLARME",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40002,
+   "bit": 10,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 11,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 12,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 13,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 14,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 15,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 0,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 1,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 2,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 3,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 4,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 5,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 6,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 7,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 8,
+   "pdf_descrizione": "MCA10 Errore",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "MCA10 ERRORE",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40003,
+   "bit": 9,
+   "pdf_descrizione": "Maintenance MCA10",
+   "pdf_stato": "Manutenzione",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "MAINTENANCE MCA10",
+    "texton": "MANUTENZIONE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40003,
+   "bit": 10,
+   "pdf_descrizione": "Maintenance Request MCA10",
+   "pdf_stato": "Richiesta Manutenzione",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "MAINTENANCE REQUEST MCA10",
+    "texton": "RICHIESTA MANUTENZIONE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40003,
+   "bit": 11,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 12,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 13,
+   "pdf_descrizione": "Error FID",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "ERROR FID",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40003,
+   "bit": 14,
+   "pdf_descrizione": "Maintenance FID",
+   "pdf_stato": "Manutenzione",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "MAINTENANCE FID",
+    "texton": "MANUTENZIONE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40003,
+   "bit": 15,
+   "pdf_descrizione": "Maintenance Request FID",
+   "pdf_stato": "Richiesta Manutenzione",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "MAINTENANCE REQUEST FID",
+    "texton": "RICHIESTA MANUTENZIONE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40004,
+   "bit": 0,
+   "pdf_descrizione": "OVF Polveri",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 4",
+    "bitname": "OVF POLVERI",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40004,
+   "bit": 1,
+   "pdf_descrizione": "OVF Temperatura",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 4",
+    "bitname": "OVF TEMPERATURA",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40004,
+   "bit": 2,
+   "pdf_descrizione": "OVF Pressione Differenziale",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 4",
+    "bitname": "OVF PRESSIONE DIFFERENZIALE",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40004,
+   "bit": 3,
+   "pdf_descrizione": "OVF Pressione Assoluta",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 4",
+    "bitname": "OVF PRESSIONE ASSOLUTA",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40004,
+   "bit": 4,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 5,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 6,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 7,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 8,
+   "pdf_descrizione": "RC Polveri",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "RC POLVERI",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40004,
+   "bit": 9,
+   "pdf_descrizione": "RC Temperatura",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "RC TEMPERATURA",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40004,
+   "bit": 10,
+   "pdf_descrizione": "RC Pressione Diferenziale",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "RC PRESSIONE DIFFERENZIALE",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "nome_diverso",
+   "classe": "correzione_di_refuso_del_documento"
+  },
+  {
+   "registro": 40004,
+   "bit": 11,
+   "pdf_descrizione": "RC Pressione Assoluta",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "RC PRESSIONE ASSOLUTA",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40004,
+   "bit": 12,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 13,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 14,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 15,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40005,
+   "bit": null,
+   "pdf_descrizione": "Misura CO",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Misura CO",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40007,
+   "bit": null,
+   "pdf_descrizione": "Misura NO",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Misura NO",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40009,
+   "bit": null,
+   "pdf_descrizione": "Misura NO2",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Misura NO2",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40011,
+   "bit": null,
+   "pdf_descrizione": "Misura SO2",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Misura SO2",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40013,
+   "bit": null,
+   "pdf_descrizione": "Misura NH3",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Misura NH3",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40015,
+   "bit": null,
+   "pdf_descrizione": "Misura H2O",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Misura H2O",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40017,
+   "bit": null,
+   "pdf_descrizione": "Misura CO2",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Misura CO2",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40019,
+   "bit": null,
+   "pdf_descrizione": "Miura O2",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Miura O2",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40021,
+   "bit": null,
+   "pdf_descrizione": "Misura CH4",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Misura CH4",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40023,
+   "bit": null,
+   "pdf_descrizione": "Misura TOC",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Misura TOC",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40025,
+   "bit": null,
+   "pdf_descrizione": "Misura Polveri",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Misura Polveri",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40027,
+   "bit": null,
+   "pdf_descrizione": "Misura Temperatura",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Misura Temperatura",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40029,
+   "bit": null,
+   "pdf_descrizione": "Misura Pressione Differenziale",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Misura Pressione Differenziale",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40031,
+   "bit": null,
+   "pdf_descrizione": "Misura Pressione Assoluta",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Misura Pressione Assoluta",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40033,
+   "bit": null,
+   "pdf_descrizione": "Live PLC",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "10.127.126.99",
+    "nome_misura": "Live PLC",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  }
+ ],
+ "per_riga_output": [],
+ "righe_senza_indirizzo": []
+}

@@ -1,0 +1,1358 @@
+{
+ "caso": "caso_2_protec_1",
+ "cliente": "PROTEC",
+ "pdf": "Mappatura_2_Cliente_PROTEC_1.pdf",
+ "output": "Output PROTEC 1.txt",
+ "estrazione": {
+  "formato": "protec",
+  "righe_grezze": 89
+ },
+ "riepilogo": {
+  "righe_pdf": 89,
+  "presenti_nell_output": 45,
+  "saltate_da_regola": 44,
+  "non_coperte": 0,
+  "senza_indirizzo": 0,
+  "fantasma_output": 0,
+  "quadratura": 0,
+  "per_esito": {
+   "ok": 43,
+   "saltata_da_regola_di_prompt": 44,
+   "riclassificata_dal_pytool": 2
+  },
+  "per_classe": {
+   "ok": 43,
+   "saltata_da_regola_di_prompt": 44,
+   "scelta_di_progetto": 2
+  }
+ },
+ "trasversali": {
+  "registri_nel_pdf": 14,
+  "registri_nell_output": 10,
+  "registri_solo_nel_pdf": [],
+  "registri_solo_nel_pdf_solo_righe_saltate": [
+   40005,
+   40006,
+   40024,
+   40028
+  ],
+  "registri_solo_nell_output": [],
+  "convenzioni_indirizzo": {},
+  "copertura_per_pagina": {
+   "1": {
+    "totale": 57,
+    "coperte": 30,
+    "saltate": 27
+   },
+   "2": {
+    "totale": 32,
+    "coperte": 15,
+    "saltate": 17
+   }
+  },
+  "pagine_senza_output": [],
+  "variabili_ricevute_dal_pytool": 45,
+  "chunk_ricevuti_dal_pytool": 1,
+  "righe_pdf_utilizzabili": 85,
+  "ip_nel_pdf": [
+   "192.168.0.1",
+   "192.168.0.2"
+  ],
+  "ip_nell_output": [
+   "127.0.0.1",
+   "192.168.0.1"
+  ],
+  "ip_nel_pdf_non_usati": [
+   "192.168.0.2"
+  ],
+  "nomi_stazione_output": [
+   "SME",
+   "SME 1"
+  ],
+  "meta_pdf": {}
+ },
+ "per_riga_pdf": [
+  {
+   "registro": 40001,
+   "bit": 0,
+   "pdf_descrizione": "Allarme Generatore H2",
+   "pdf_stato": "Da Definire",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "ALLARME GENERATORE H2",
+    "texton": "DA DEFINIRE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 1,
+   "pdf_descrizione": "Allarme FID6 01 _",
+   "pdf_stato": "OK",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "ALLARME FID6_01",
+    "texton": "OK",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 2,
+   "pdf_descrizione": "Richiesta Manutenzione FID6 01 _",
+   "pdf_stato": "Rchiesta Mnautenzione",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "RICHIESTA MANUTENZIONE FID6_01",
+    "texton": "RCHIESTA MNAUTENZIONE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 3,
+   "pdf_descrizione": "Calibrazione FID6 01 _",
+   "pdf_stato": "Calibrazione",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "CALIBRAZIONE FID6_01",
+    "texton": "CALIBRAZIONE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 4,
+   "pdf_descrizione": "Range Di Misura Alto FID6 01 _",
+   "pdf_stato": "Range Basso",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "RANGE DI MISURA ALTO FID6_01",
+    "texton": "RANGE BASSO",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 5,
+   "pdf_descrizione": "Allarme FID6 02 _",
+   "pdf_stato": "OK",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "ALLARME FID6_02",
+    "texton": "OK",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 6,
+   "pdf_descrizione": "Richiesta Manutenzione FID6 02 _",
+   "pdf_stato": "Richiesta Manutenzione",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "RICHIESTA MANUTENZIONE FID6_02",
+    "texton": "RICHIESTA MANUTENZIONE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 7,
+   "pdf_descrizione": "Calibrazione FID6 02 _",
+   "pdf_stato": "Calibrazione",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "CALIBRAZIONE FID6_02",
+    "texton": "CALIBRAZIONE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 8,
+   "pdf_descrizione": "Allarme Sensore H2",
+   "pdf_stato": "Da Definire",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "ALLARME SENSORE H2",
+    "texton": "DA DEFINIRE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 9,
+   "pdf_descrizione": "Soglia 1 Sensore H2",
+   "pdf_stato": "Da Definire",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "SOGLIA 1 SENSORE H2",
+    "texton": "DA DEFINIRE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 10,
+   "pdf_descrizione": "Soglia 2 Sensore H2",
+   "pdf_stato": "Da Definire",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "SOGLIA 2 SENSORE H2",
+    "texton": "DA DEFINIRE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 11,
+   "pdf_descrizione": "Allarme Sonda Di Prelievo E01 _",
+   "pdf_stato": "OK",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "ALLARME SONDA DI PRELIEVO_E01",
+    "texton": "OK",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 12,
+   "pdf_descrizione": "Allarme Linea Riscaldata EH 01 _",
+   "pdf_stato": "OK",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "ALLARME LINEA RISCALDATA EH_01",
+    "texton": "OK",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 13,
+   "pdf_descrizione": "Allarme Sonda Di Prelievo E02 _",
+   "pdf_stato": "OK",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "ALLARME SONDA DI PRELIEVO_E02",
+    "texton": "OK",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 14,
+   "pdf_descrizione": "Allarme Linea Riscaldata EH 02 _",
+   "pdf_stato": "OK",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "ALLARME LINEA RISCALDATA EH_02",
+    "texton": "OK",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40001,
+   "bit": 15,
+   "pdf_descrizione": "Allarme Purificatore Aria",
+   "pdf_stato": "Da Definire",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "ALLARME PURIFICATORE ARIA",
+    "texton": "DA DEFINIRE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40002,
+   "bit": 0,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 1,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 2,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 3,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 4,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 5,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 6,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 7,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 8,
+   "pdf_descrizione": "Range Di Misura Alto FID6 02 _",
+   "pdf_stato": "Range Basso",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 2",
+    "bitname": "RANGE DI MISURA ALTO FID6_02",
+    "texton": "RANGE BASSO",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40002,
+   "bit": 9,
+   "pdf_descrizione": "Manutenzione Sistema 01",
+   "pdf_stato": "Manutenzione",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 2",
+    "bitname": "MANUTENZIONE SISTEMA 01",
+    "texton": "MANUTENZIONE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40002,
+   "bit": 10,
+   "pdf_descrizione": "Manutenzione Sistema 02",
+   "pdf_stato": "Manutenzione",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 2",
+    "bitname": "MANUTENZIONE SISTEMA 02",
+    "texton": "MANUTENZIONE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40002,
+   "bit": 11,
+   "pdf_descrizione": "Allarme Alta Temperatura Quadro",
+   "pdf_stato": "OK",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 2",
+    "bitname": "ALLARME ALTA TEMPERATURA QUADRO",
+    "texton": "OK",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40002,
+   "bit": 12,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 13,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 14,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40002,
+   "bit": 15,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 0,
+   "pdf_descrizione": "Relè OUT OR Allarmi 01 _",
+   "pdf_stato": "OK",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "RELÈ OUT OR ALLARMI_01",
+    "texton": "OK",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40003,
+   "bit": 1,
+   "pdf_descrizione": "Relè OUT OR Allarmi 02 _",
+   "pdf_stato": "OK",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "RELÈ OUT OR ALLARMI_02",
+    "texton": "OK",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40003,
+   "bit": 2,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 3,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 4,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 5,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 6,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 7,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40003,
+   "bit": 8,
+   "pdf_descrizione": "CMD Zero FID6 01 _",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "CMD ZERO FID6_01",
+    "texton": "ZERO",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40003,
+   "bit": 9,
+   "pdf_descrizione": "CMD Misura FID6 01 _",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "CMD MISURA FID6_01",
+    "texton": "ATTIVO",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40003,
+   "bit": 10,
+   "pdf_descrizione": "CMD Zero FID6 02 _",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "CMD ZERO FID6_02",
+    "texton": "ZERO",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40003,
+   "bit": 11,
+   "pdf_descrizione": "CMD Misura FID6 02 _",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "CMD MISURA FID6_02",
+    "texton": "ATTIVO",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40003,
+   "bit": 12,
+   "pdf_descrizione": "Lampada Manutenzione 01 _",
+   "pdf_stato": "Manutenzione",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "LAMPADA MANUTENZIONE_01",
+    "texton": "MANUTENZIONE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40003,
+   "bit": 13,
+   "pdf_descrizione": "Lampada OR Allarmi 01 _",
+   "pdf_stato": "Allarme",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "LAMPADA OR ALLARMI_01",
+    "texton": "ALLARME",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40003,
+   "bit": 14,
+   "pdf_descrizione": "Lampada Manutenzione 02 _",
+   "pdf_stato": "Manutenzione",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "LAMPADA MANUTENZIONE_02",
+    "texton": "MANUTENZIONE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40003,
+   "bit": 15,
+   "pdf_descrizione": "Lampada OR Allarmi 02 _",
+   "pdf_stato": "Allarme",
+   "pdf_unita": "",
+   "pagina": 1,
+   "output": {
+    "stazione": "SME",
+    "ip": "127.0.0.1",
+    "nome_misura": "Ingressi digitali 3",
+    "bitname": "LAMPADA OR ALLARMI_02",
+    "texton": "ALLARME",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40004,
+   "bit": 0,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 1,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 2,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 3,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 4,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 5,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 6,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 7,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 8,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 1,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 9,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 10,
+   "pdf_descrizione": "FID6 01 In Protezione _",
+   "pdf_stato": "Protezione Attiva",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "192.168.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "FID6_01 IN PROTEZIONE",
+    "texton": "PROTEZIONE ATTIVA",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40004,
+   "bit": 11,
+   "pdf_descrizione": "FID6 02 In Protezione _",
+   "pdf_stato": "Protezione Attiva",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "192.168.0.1",
+    "nome_misura": "Ingressi digitali 1",
+    "bitname": "FID6_02 IN PROTEZIONE",
+    "texton": "PROTEZIONE ATTIVA",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40004,
+   "bit": 12,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 13,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 14,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40004,
+   "bit": 15,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40005,
+   "bit": null,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40006,
+   "bit": null,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40007,
+   "bit": 0,
+   "pdf_descrizione": "OVF COT 01 _",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "192.168.0.1",
+    "nome_misura": "Ingressi digitali 2",
+    "bitname": "OVF COT_01",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40007,
+   "bit": 1,
+   "pdf_descrizione": "OVF COT 02 _",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "192.168.0.1",
+    "nome_misura": "Ingressi digitali 2",
+    "bitname": "OVF COT_02",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40007,
+   "bit": 2,
+   "pdf_descrizione": "OVF Misura Disponibile IW36",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "192.168.0.1",
+    "nome_misura": "Ingressi digitali 2",
+    "bitname": "OVF MISURA DISPONIBILE IW36",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40007,
+   "bit": 3,
+   "pdf_descrizione": "OVF Misura Disponibile IW38",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "192.168.0.1",
+    "nome_misura": "Ingressi digitali 2",
+    "bitname": "OVF MISURA DISPONIBILE IW38",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40007,
+   "bit": 4,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40007,
+   "bit": 5,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40007,
+   "bit": 6,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40007,
+   "bit": 7,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40007,
+   "bit": 8,
+   "pdf_descrizione": "RC COT 01 _",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "192.168.0.1",
+    "nome_misura": "Ingressi digitali 2",
+    "bitname": "RC COT_01",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40007,
+   "bit": 9,
+   "pdf_descrizione": "RC COT 02 _",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "192.168.0.1",
+    "nome_misura": "Ingressi digitali 2",
+    "bitname": "RC COT_02",
+    "texton": "ERRORE",
+    "textoff": "OFF"
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40007,
+   "bit": 10,
+   "pdf_descrizione": "OVF Misura Disponibile IW36",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "riclassificata_dal_pytool",
+   "output": null,
+   "classe": "scelta_di_progetto"
+  },
+  {
+   "registro": 40007,
+   "bit": 11,
+   "pdf_descrizione": "OVF Misura Disponibile IW38",
+   "pdf_stato": "Errore",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "riclassificata_dal_pytool",
+   "output": null,
+   "classe": "scelta_di_progetto"
+  },
+  {
+   "registro": 40007,
+   "bit": 12,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40007,
+   "bit": 13,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40007,
+   "bit": 14,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40007,
+   "bit": 15,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40008,
+   "bit": null,
+   "pdf_descrizione": "Misura COT 01 _",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "192.168.0.1",
+    "nome_misura": "Misura COT_01",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40012,
+   "bit": null,
+   "pdf_descrizione": "Misura COT 02 _",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "192.168.0.1",
+    "nome_misura": "Misura COT_02",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40016,
+   "bit": null,
+   "pdf_descrizione": "Misura Disponibile IW36",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "192.168.0.1",
+    "nome_misura": "Misura Disponibile IW36",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40020,
+   "bit": null,
+   "pdf_descrizione": "Misura Disponibile IW38",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "192.168.0.1",
+    "nome_misura": "Misura Disponibile IW38",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  },
+  {
+   "registro": 40024,
+   "bit": null,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40028,
+   "bit": null,
+   "pdf_descrizione": "Disponibile",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "esito": "saltata_da_regola_di_prompt",
+   "output": null,
+   "classe": "saltata_da_regola_di_prompt"
+  },
+  {
+   "registro": 40032,
+   "bit": null,
+   "pdf_descrizione": "Live PLC",
+   "pdf_stato": "",
+   "pdf_unita": "",
+   "pagina": 2,
+   "output": {
+    "stazione": "SME 1",
+    "ip": "192.168.0.1",
+    "nome_misura": "Live PLC",
+    "bitname": null,
+    "texton": null,
+    "textoff": null
+   },
+   "esito": "ok",
+   "classe": "ok"
+  }
+ ],
+ "per_riga_output": [],
+ "righe_senza_indirizzo": []
+}

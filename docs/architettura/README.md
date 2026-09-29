@@ -1,5 +1,7 @@
 # Architettura — Menerva MAS
 
+> Questa pagina descrive l’architettura di riferimento del repository e include assunzioni di versioni precedenti. Per il diagramma effettivamente osservato del Single PDF cloud, vedere [Single PDF cloud corrente](single_pdf_cloud_corrente.md). Per il quadro delle evidenze e dei punti aperti, vedere [Analisi del progetto](analisi_progetto.md).
+
 ## Visione generale
 
 Menerva è un Multi-Agent System (MAS) che automatizza la conversione di documenti tecnici industriali in configurazioni ADAS. Il sistema è ibrido: combina un **VLM (Vision-Language Model)** per l'estrazione di tabelle dai PDF con **moduli Python deterministici** per i calcoli complessi.
@@ -24,12 +26,12 @@ Menerva è un Multi-Agent System (MAS) che automatizza la conversione di documen
 | Rinumerare ID dopo merge | Python | Operazione meccanica, soggetta a errori se fatta da LLM |
 | Validare schema JSON | Pydantic | Validazione formale, non euristica |
 
-### 2. Contratti espliciti tra stadi
+### 2. Contratti espliciti tra stadi (architettura di riferimento)
 
 Ogni stadio della pipeline comunica con il successivo tramite un contratto JSON ben definito:
 
 - **Stadio 4 → Stadio 5**: VLM produce JSON conforme a `docs/contracts/VLM_INTERMEDIATE.md`
-- **Stadio 5 → Stadio 6**: Pydantic garantisce che solo JSON valido passa avanti
+- **Stadio 5 → Stadio 6**: Pydantic può validare il JSON; nel codice locale la validazione sicura può produrre avvisi senza bloccare il flusso. Verificare il comportamento della piattaforma cloud separatamente.
 - **Stadio 6 → Stadio 7**: Formato ADAS conforme a `docs/contracts/ADAS_FINAL.md`
 
 ### 3. Gestione degli errori
