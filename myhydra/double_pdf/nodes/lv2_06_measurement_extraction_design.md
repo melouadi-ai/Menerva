@@ -88,6 +88,12 @@ Correzione fornita dall'utente dopo aver consultato il tutor: il core attualment
 
 La schermata non conferma se i tre VLM hanno identiche impostazioni: controllare nei rispettivi nodi. La qualità di estrazione e l'effettiva ricezione dell'immagine saranno valutate dagli output della run.
 
+## Prima raccolta output condivisa
+
+Il materiale incollato dall'utente contiene almeno cinque blocchi fenced `json` concatenati, senza indicazione del Naive/nodo sorgente accanto a ciascun blocco. Quattro blocchi completi sono JSON validi: tre restituiscono il placeholder legacy con `NAME: "SME"`, `DRIVERCONFIG: ":"`, `measures: []` e `bitinfo: []`; l'ultimo contiene 20 misure. Un blocco lungo è troncato nella copia allegata a metà di una proprietà (`"TYPE,`), quindi non è possibile stabilire se fosse troncato il payload originale o solo la copia.
+
+Le risposte sono inoltre racchiuse in fence Markdown ` ```json ` nonostante l'istruzione JSON-only. Non attribuire ancora questi blocchi ai tre VLM né usarli per scrivere l'assemblatore: raccogliere o etichettare l'output di ciascun Naive separatamente. I placeholder vuoti derivano dalla forma legacy; nella LV2 iterativa andrà deciso se introdurre una nuova versione dei prompt che restituisca `[]` quando la pagina non contiene righe estraibili, evitando station vuote sintetiche.
+
 ## Forma obiettivo dell'output per pagina
 
 Il Pytool di assemblaggio, da progettare dopo aver visto gli output VLM reali, dovrà produrre un record per pagina e preservare la provenienza. Forma concettuale:
