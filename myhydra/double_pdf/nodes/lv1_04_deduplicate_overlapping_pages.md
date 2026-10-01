@@ -3,7 +3,7 @@
 - **Tipo/nome canvas:** Pytool `DEDUPLICAZIONE` / `ELIMINAZIONE DUPLICATI` (nodo 4 nella configurazione documentata più recente).
 - **Posizione:** dopo l'iniezione iterativa `DOUBLE PDF PAGE CLASSIFIER`, fuori dal ciclo.
 - **Input:** edge #3 dal classificatore LV2: output aggregato delle classificazioni per finestra.
-- **Script:** [`../pytools/deduplicate_overlapping_pages.py`](../pytools/deduplicate_overlapping_pages.py).
+- **Script:** [`../platforms/lv1/scripts/in_use/deduplicate_overlapping_pages.py`](../platforms/lv1/scripts/in_use/deduplicate_overlapping_pages.py).
 - **Output:** JSON `status`, `page_count`, `review_required`, `warnings` e array `pages` con chiave, sequenza, ruolo e categoria.
 - **Collegamento documentato:** edge #4 verso `DISPATCHER PREP`.
 

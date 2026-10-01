@@ -7,8 +7,9 @@ Questa directory documenta e raccoglie l'implementazione nuova del workflow Doub
 - **LV1, classificazione e deduplicazione:** verificata su MyHydra. Il caso 6 ha prodotto 14 pagine uniche; il caso 7 ne ha prodotte 11. I conflitti di classificazione restano visibili come avvisi.
 - **LV1, instradamento per etichetta:** i tre Pytool filtrano i record completi usando `label`. `STATION_INFORMATION` e `MEASUREMENT_TECHNICAL_DATA` vanno alle rispettive LV2 iterative; `DENSITY_MAP` viene inoltrata con un Naive.
 - **Passaggio LV1→LV2:** verificato in una run del caso 6. I rami hanno ricevuto rispettivamente 6 pagine Station, 7 Measurement e 1 Density; le chiavi e i metadati sono rimasti associati alle pagine.
-- **LV2 Station Information:** nuova run con il Pytool associatore aggiornato: tutte e 6 le pagine sono associate senza errori; 3 hanno estrazioni e 3 restituiscono `[]`. Restano avvisi di classificazione sulle pagine 11 e 12 e una variazione tra run nell'estrazione della pagina 10.
-- **LV2 Measurement Data:** collegata alla sua iniezione; il canvas mostra tre VLM in parallelo, ciascuno diretto a un Naive di prova. I prompt per pagina derivati dai nodi Measurement legacy sono pronti, ma non ancora eseguiti; il Pytool di assemblaggio sarà progettato dopo aver raccolto gli output grezzi.
+- **Campi dei VLM:** l'immagine `{edge.media}[n]` va nel campo **Prompt**; **Context** resta vuoto; le istruzioni di estrazione vanno in **Powered identity**. Le nuove versioni dei prompt documentano esplicitamente questa separazione.
+- **LV2 Station Information:** una run precedente con il Pytool associatore aggiornato ha associato tutte e 6 le pagine senza errori; 3 hanno estrazioni e 3 restituiscono `[]`. Le istruzioni Powered identity v4 sono pronte per Prompt `{edge.media}[2]`; non ancora riverificate dopo la separazione dei campi.
+- **LV2 Measurement Data:** collegata alla sua iniezione; il canvas mostra tre VLM in parallelo, ciascuno diretto a un Naive di prova. Le Powered identity v3 e i rispettivi valori Prompt `{edge.media}[2]`, `[3]`, `[4]` sono pronti; non ancora eseguiti dopo la separazione dei campi.
 - **Density Map:** forwarding come nel comportamento legacy osservato; non c'è ancora una specifica di estrazione richiesta.
 
 Il vecchio `PAGE DISPATCHER` è parcheggiato e non fa parte del routing attuale. Non eliminarlo finché non viene concordato esplicitamente.
@@ -19,11 +20,14 @@ Il vecchio `PAGE DISPATCHER` è parcheggiato e non fa parte del routing attuale.
 |---|---|
 | [`WORKFLOW_DESIGN.md`](WORKFLOW_DESIGN.md) | Architettura corrente, collegamenti e decisioni ancora aperte |
 | [`nodes/`](nodes/) | Schede di configurazione per nodi e sottopiattaforme |
-| [`nodes/lv2_06_measurement_extraction_design.md`](nodes/lv2_06_measurement_extraction_design.md) | Proposta LV2 Measurement, mappatura legacy e sequenza canvas |
-| [`prompts/`](prompts/) | Prompt VLM versionati |
-| [`pytools/`](pytools/) | Script da incollare nei Pytool MyHydra e relativo inventario |
+| [`platforms/`](platforms/) | Materiali organizzati per platform e sottopiattaforma |
+| [`platforms/lv1/`](platforms/lv1/) | Script LV1 divisi tra in uso, parcheggiati e diagnostici |
+| [`platforms/lv2/`](platforms/lv2/) | Prompt e script organizzati dentro ciascuna sottopiattaforma |
+| [`nodes/lv2_06_measurement_extraction_design.md`](nodes/lv2_06_measurement_extraction_design.md) | Progettazione LV2 Measurement, collegamenti e mappatura dei payload |
 | [`tests/`](tests/) | Fixture anonimizzate, risultati osservati e test locali |
 | [`../../legacy/double_pdf/`](../../legacy/double_pdf/) | Workflow precedente usato come riferimento; non modificare per il nuovo sviluppo |
+
+Per trovare subito cosa copiare in MyHydra, entra nella cartella della sottopiattaforma e usa `prompts/current/` oppure `scripts/in_use/`. Gli script non ancora verificati sono in `scripts/updated_pending_validation/`; le versioni precedenti sono in `prompts/history/` o `scripts/history/`. Ogni cartella platform contiene un README con lo stato e l'elenco dei file.
 
 ## Canvas LV1 corrente
 
@@ -36,8 +40,8 @@ Il vecchio `PAGE DISPATCHER` è parcheggiato e non fa parte del routing attuale.
 7. Pytool filtro `MEASUREMENT_TECHNICAL_DATA` → iniezione LV2 Measurement Data.
 8. Pytool filtro `DENSITY_MAP` → Naive di forwarding.
 
-I numeri dei nodi possono cambiare se il canvas viene riordinato; i nomi e i contratti sono il riferimento stabile. Per i placeholder e gli edge fare riferimento alle schede aggiornate e verificare l'indice sul canvas prima di incollare uno script.
+I numeri dei nodi possono cambiare se il canvas viene riordinato; i nomi e i contratti sono il riferimento stabile. Per i placeholder e gli edge fare riferimento alle schede aggiornate e verificare l'indice sul canvas prima di incollare uno script. I codici media VLM vanno nel campo **Prompt**; le istruzioni vanno in **Powered identity**.
 
 ## Prossimi passi
 
-Considerare verificata la catena tecnica Station; mantenere i warning visibili e controllare i dati estratti rispetto alle pagine sorgente prima di consolidarli. Per Measurement, incollare i tre prompt versionati nei rispettivi VLM e fare una run diagnostica; poi progettare l'assemblaggio per pagina dagli output effettivi.
+Considerare verificata la catena tecnica Station prima della separazione dei campi; mantenere i warning visibili e controllare i dati estratti rispetto alle pagine sorgente prima di consolidarli. Configurare i VLM con immagine nel campo Prompt e istruzioni nei rispettivi Powered identity, poi raccogliere una run diagnostica per ciascuna LV2.

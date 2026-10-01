@@ -5,7 +5,11 @@ from pathlib import Path
 DOUBLE_PDF_DIR = Path(__file__).resolve().parent.parent
 SCRIPT_PATH = (
     DOUBLE_PDF_DIR
-    / "pytools"
+    / "platforms"
+    / "lv2"
+    / "page_classifier"
+    / "scripts"
+    / "history"
     / "associate_page_labels_to_media_keys.py"
 )
 CASE_DIR = Path(__file__).resolve().parent / "case_6"

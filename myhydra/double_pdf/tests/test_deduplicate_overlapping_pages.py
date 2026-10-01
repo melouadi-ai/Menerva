@@ -3,7 +3,14 @@ from pathlib import Path
 
 
 DOUBLE_PDF_DIR = Path(__file__).resolve().parent.parent
-SCRIPT_PATH = DOUBLE_PDF_DIR / "pytools" / "deduplicate_overlapping_pages.py"
+SCRIPT_PATH = (
+    DOUBLE_PDF_DIR
+    / "platforms"
+    / "lv1"
+    / "scripts"
+    / "in_use"
+    / "deduplicate_overlapping_pages.py"
+)
 CASE_DIR = Path(__file__).resolve().parent / "case_6"
 
 

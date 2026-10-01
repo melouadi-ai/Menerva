@@ -1,7 +1,7 @@
 # Nodo LV2-02 — Classificatore pagine
 
 - **Tipo/nome:** Visiomaru/VLM.
-- **Prompt corrente:** [`../prompts/page_classifier_v2_role_and_type.md`](../prompts/page_classifier_v2_role_and_type.md). La v1 è conservata come baseline dei risultati precedenti.
+- **Configurazione VLM:** campo **Prompt** = `{edge.media}[1]`; **Context** vuoto; **Powered identity** = istruzioni in [`../platforms/lv2/page_classifier/prompts/current/page_classifier_v4_role_and_type.md`](../platforms/lv2/page_classifier/prompts/current/page_classifier_v4_role_and_type.md). Le versioni v2/v3 restano storico; la v3 incorporava erroneamente il riferimento media nel testo delle istruzioni.
 - **Input:** immagini prodotte dal nodo LV2-01.
 - **Output:** un JSON con un oggetto `pages` per ogni immagine ricevuta; ogni pagina ha indice zero-based locale, `document_role` e `label`.
 - **Ruoli documento:** `IOL`, `JOB`, `UNKNOWN`; determinati dalle evidenze visive di quella pagina, mai dall'ordine casuale di upload.

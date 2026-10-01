@@ -3,7 +3,14 @@ from pathlib import Path
 
 
 DOUBLE_PDF_DIR = Path(__file__).resolve().parent.parent
-SCRIPT_PATH = DOUBLE_PDF_DIR / "pytools" / "prepare_pages_for_dispatch.py"
+SCRIPT_PATH = (
+    DOUBLE_PDF_DIR
+    / "platforms"
+    / "lv1"
+    / "scripts"
+    / "in_use"
+    / "prepare_pages_for_dispatch.py"
+)
 
 
 def execute_preparer(lv1_output):

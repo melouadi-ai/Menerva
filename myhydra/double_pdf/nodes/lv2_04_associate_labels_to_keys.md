@@ -3,7 +3,7 @@
 > **Scheda storica.** Questo associatore apparteneva alla precedente classificazione VLM per finestre e non è nel percorso operativo corrente, dove il Page Classifier è un'iniezione LV2 e la deduplicazione avviene nel Pytool LV1-04. Tenerlo come traccia tecnica; non usarlo per modificare il canvas attuale senza prima riallineare il workflow.
 
 - **Tipo/nome:** Pytool.
-- **Script:** [`../pytools/associate_page_labels_to_media_keys.py`](../pytools/associate_page_labels_to_media_keys.py).
+- **Script:** [`../platforms/lv2/page_classifier/scripts/history/associate_page_labels_to_media_keys.py`](../platforms/lv2/page_classifier/scripts/history/associate_page_labels_to_media_keys.py).
 - **Input `{question}`:** finestra originale ricevuta dal ciclo LV1, contenente le chiavi Medex.
 - **Input edge #2:** output JSON del VLM con `index`, `document_role` e `label`.
 - **Operazione:** decodifica `_medexkeys` anche se annidato/serializzato; associa ogni `index` locale alla chiave in ordine; conserva sia ruolo documento sia categoria e controlla conteggi, indici e valori ammessi. Se riceve un risultato storico senza `document_role`, usa `UNKNOWN`.

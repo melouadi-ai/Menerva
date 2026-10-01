@@ -6,10 +6,10 @@ La sottopiattaforma è iterativa: riceve una pagina del gruppo `STATION_INFORMAT
 
 | Nodo | Tipo | Nome descrittivo | Funzione |
 |---:|---|---|---|
-| 1 | Pytool | `ESTRAI CHIAVE PAGINA` | Legge il record dalla `{question}` corrente e restituisce la chiave media semplice. Script: [`../pytools/extract_page_key.py`](../pytools/extract_page_key.py). |
+| 1 | Pytool | `ESTRAI CHIAVE PAGINA` | Legge il record dalla `{question}` corrente e restituisce la chiave media semplice. Script: [`../platforms/lv2/shared/scripts/in_use/extract_page_key.py`](../platforms/lv2/shared/scripts/in_use/extract_page_key.py). |
 | 2 | Medex | `RECUPERA IMMAGINE DA CHIAVE` | `content2media` sulla chiave ricevuta dal nodo 1; configurazione in [LV2-01](lv2_01_content2media.md). |
-| 4 | Visiomaru/VLM | `ESTRAI INFO STAZIONE DA IMMAGINE` | Estrae solo dati visibili nella pagina. Prompt eseguito: [v1](../prompts/station_information_extraction_v1.md). Revisione proposta: [v2](../prompts/station_information_extraction_v2.md). |
-| 5 | Pytool | `ASSOCIA ESTRAZIONE ALLA PAGINA` | Associa il risultato VLM alla pagina della `{question}` corrente. Script aggiornato: [`../pytools/associate_station_extraction_to_page.py`](../pytools/associate_station_extraction_to_page.py); output VLM dall'edge #3. Accetta array, oggetto singolo o `null` e rimuove record privi di valori estratti. Revisione ancora da validare su MyHydra. |
+| 4 | Visiomaru/VLM | `ESTRAI INFO STAZIONE DA IMMAGINE` | Campo **Prompt** = `{edge.media}[2]`; **Context** vuoto; **Powered identity** = istruzioni in [v4](../platforms/lv2/station_information/prompts/current/station_information_extraction_v4.md). La v2 è stata eseguita prima di separare i campi; la v3 incorporava erroneamente il riferimento media nel testo delle istruzioni. |
+| 5 | Pytool | `ASSOCIA ESTRAZIONE ALLA PAGINA` | Associa il risultato VLM alla pagina della `{question}` corrente. Script aggiornato: [`../platforms/lv2/station_information/scripts/in_use/associate_station_extraction_to_page.py`](../platforms/lv2/station_information/scripts/in_use/associate_station_extraction_to_page.py); output VLM dall'edge #3. Accetta array, oggetto singolo o `null` e rimuove record privi di valori estratti. Revisione ancora da validare su MyHydra. |
 | 3 | Naive | `OUTPUT JSON STAZIONE` | Output/sonda della sottopiattaforma; inoltra il risultato del nodo 5 (edge #4). |
 
 I numeri sono quelli del canvas mostrato e non rappresentano l'ordine visuale dei nodi. Se cambiano collegamenti o numerazione, aggiornare edge e scheda.

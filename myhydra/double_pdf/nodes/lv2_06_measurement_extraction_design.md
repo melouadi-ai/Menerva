@@ -1,6 +1,6 @@
 # Progettazione LV2 Measurement Technical Data
 
-**Stato:** cablaggio iniziale confermato dallo screenshot del canvas; i tre prompt sono preparati ma non ancora eseguiti. La proposta deriva dal legacy ed è adattata al passaggio iterativo di una pagina per volta. Il Pytool finale di assemblaggio non è ancora stato preparato.
+**Stato:** cablaggio iniziale confermato dallo screenshot e prima esecuzione effettuata. La raccolta copiata non identifica in modo affidabile il ramo di ogni risposta; prima di usare i payload per progettare il merge, aggiungere un Pytool diagnostico etichettatore in ciascun ramo VLM. La prima prova precede la separazione tra i campi Prompt e Powered identity; le versioni correnti v3 non sono ancora state eseguite.
 
 ## Obiettivo della sottopiattaforma
 
@@ -10,7 +10,7 @@ Ricevere una pagina `MEASUREMENT_TECHNICAL_DATA` per iterazione e ricavarne misu
 
 | Ordine logico | Tipo | Nome proposto | Funzione |
 |---:|---|---|---|
-| 1 | Pytool | `ESTRAI CHIAVE PAGINA` | Riusa [`../pytools/extract_page_key.py`](../pytools/extract_page_key.py): estrae la chiave dal record iterativo `{question}`. |
+| 1 | Pytool | `ESTRAI CHIAVE PAGINA` | Riusa [`../platforms/lv2/shared/scripts/in_use/extract_page_key.py`](../platforms/lv2/shared/scripts/in_use/extract_page_key.py): estrae la chiave dal record iterativo `{question}`. |
 | 2 | Medex | `RECUPERA IMMAGINE PAGINA` | `content2media` sulla chiave del nodo 1. |
 | 3 | Visiomaru/VLM | `ESTRAI MISURE E BISON` | Parte dal legacy Nodo 3; estrae le righe di misura e i campi BISON richiesti, con ordine sorgente conservato. |
 | 4 | Visiomaru/VLM | `ESTRAI BITINFO E NOMI` | Parte dal legacy Nodo 4; identifica i digitali packed e standalone/CMD e restituisce `MEASUREID`, `BITNO`, `BITNAME`. |
@@ -18,18 +18,21 @@ Ricevere una pagina `MEASUREMENT_TECHNICAL_DATA` per iterazione e ricavarne misu
 | 6 | Naive | `OUTPUT TEST MISURE` | Nella prima prova inoltra il risultato grezzo del VLM 3. |
 | 7 | Naive | `OUTPUT TEST BITINFO` | Nella prima prova inoltra il risultato grezzo del VLM 4. |
 | 8 | Naive | `OUTPUT TEST STATI DIGITALI` | Nella prima prova inoltra il risultato grezzo del VLM 5. |
+| 9 | Pytool | `ETICHETTA OUTPUT MISURE` | Etichetta il ramo del VLM 3 e aggiunge la pagina iterativa; edge VLM #5 nello screenshot aggiornato. |
+| 10 | Pytool | `ETICHETTA OUTPUT BITINFO` | Etichetta il ramo del VLM 4 e aggiunge la pagina iterativa; edge VLM #6 nello screenshot aggiornato. |
+| 11 | Pytool | `ETICHETTA OUTPUT STATI` | Etichetta il ramo del VLM 5 e aggiunge la pagina iterativa; edge VLM #7 nello screenshot aggiornato. |
 
-I nodi 3–5 ricevono la stessa immagine prodotta dal nodo 2 e lavorano in parallelo. Per la prima prova non aggiungere ancora il Pytool di merge: raccogliere i tre output separati permette di verificare gli schemi prima di scrivere il parser/associatore. Poi i tre Naive di test saranno sostituiti da un Pytool di assemblaggio per pagina e da un Naive finale.
+I nodi 3–5 ricevono la stessa immagine prodotta dal nodo 2 e lavorano in parallelo. I nodi 9–11 si inseriscono tra ciascun VLM e il Naive corrispondente. Aggiungono ramo e record pagina letto dalla `{question}` iterativa; trasformano le fence JSON in dati JSON quando possibile, mantenendo la risposta grezza se il parsing fallisce. Non sono il Pytool finale di merge.
 
 ### Cablaggio osservato sul canvas
 
-Lo screenshot inviato dall'utente conferma la catena nodo 1 → nodo 2, il fan-out dell'immagine Medex ai tre VLM e un Naive distinto collegato a ciascun VLM. Nel canvas mostrato i collegamenti in uscita dai nodi 2–5 sono numerati rispettivamente #2, #3, #4, #5, #6 e #7. La verifica riguarda la topologia visibile, non ancora i payload effettivamente ricevuti dai VLM.
+Gli screenshot inviati dall'utente confermano la catena nodo 1 → nodo 2, il fan-out dell'immagine Medex ai tre VLM, i tre Pytool etichettatori e un Naive distinto a valle di ciascun Pytool. Nel canvas aggiornato i collegamenti VLM→Pytool sono #5, #6, #7 e quelli Pytool→Naive sono #8, #9, #10. La verifica riguarda la topologia visibile; gli script etichettatori devono ancora essere eseguiti su MyHydra.
 
 ## Contenuto da configurare nei nodi
 
 ### Nodo 1 — Pytool `ESTRAI CHIAVE PAGINA`
 
-Incollare il contenuto completo di [`../pytools/extract_page_key.py`](../pytools/extract_page_key.py). Legge la `{question}` della singola iterazione e restituisce la chiave media come stringa semplice.
+Incollare il contenuto completo di [`../platforms/lv2/shared/scripts/in_use/extract_page_key.py`](../platforms/lv2/shared/scripts/in_use/extract_page_key.py). Legge la `{question}` della singola iterazione e restituisce la chiave media come stringa semplice.
 
 ### Nodo 2 — Medex `RECUPERA IMMAGINE PAGINA`
 
@@ -47,11 +50,23 @@ Incollare il contenuto completo del file corrispondente:
 
 | Nodo | Prompt |
 |---:|---|
-| 3 — `ESTRAI MISURE E BISON` | [`measurement_measures_bison_v1.md`](../prompts/measurement_measures_bison_v1.md) |
-| 4 — `ESTRAI BITINFO E NOMI` | [`measurement_bitinfo_names_v1.md`](../prompts/measurement_bitinfo_names_v1.md) |
-| 5 — `ESTRAI STATI TEXTON TEXTOFF` | [`measurement_bitinfo_states_v1.md`](../prompts/measurement_bitinfo_states_v1.md) |
+| 3 — `ESTRAI MISURE E BISON` | Powered identity [`measurement_measures_bison_v3.md`](../platforms/lv2/measurement/prompts/current/measurement_measures_bison_v3.md); campo Prompt `{edge.media}[2]` |
+| 4 — `ESTRAI BITINFO E NOMI` | Powered identity [`measurement_bitinfo_names_v3.md`](../platforms/lv2/measurement/prompts/current/measurement_bitinfo_names_v3.md); campo Prompt `{edge.media}[3]` |
+| 5 — `ESTRAI STATI TEXTON TEXTOFF` | Powered identity [`measurement_bitinfo_states_v3.md`](../platforms/lv2/measurement/prompts/current/measurement_bitinfo_states_v3.md); campo Prompt `{edge.media}[4]` |
 
-Per ognuno, l'immagine è fornita dall'edge collegato al Medex. I prompt non devono contenere gli indici `edge.media` 19/20/21 del legacy: quegli indici appartengono al canvas precedente.
+Per tutti e tre i VLM lasciare **Context** vuoto e incollare nei rispettivi campi **Powered identity** il contenuto dei file indicati. Gli indici media #2, #3 e #4 sono locali ai collegamenti Medex→VLM di questo canvas. Le versioni v2 sono storiche: avevano messo il riferimento media dentro il testo di istruzioni invece che nel campo Prompt.
+
+### Nodi 9–11 — Pytool etichettatori
+
+Incollare gli script indicati, rispettando gli edge VLM in ingresso osservati nello screenshot aggiornato:
+
+| Nodo | Script | Edge VLM in ingresso |
+|---:|---|---:|
+| 9 — `ETICHETTA OUTPUT MISURE` | [`../platforms/lv2/measurement/scripts/updated_pending_validation/tag_measurement_measures_output.py`](../platforms/lv2/measurement/scripts/updated_pending_validation/tag_measurement_measures_output.py) | #5 |
+| 10 — `ETICHETTA OUTPUT BITINFO` | [`../platforms/lv2/measurement/scripts/updated_pending_validation/tag_measurement_bitinfo_names_output.py`](../platforms/lv2/measurement/scripts/updated_pending_validation/tag_measurement_bitinfo_names_output.py) | #6 |
+| 11 — `ETICHETTA OUTPUT STATI` | [`../platforms/lv2/measurement/scripts/updated_pending_validation/tag_measurement_bitinfo_states_output.py`](../platforms/lv2/measurement/scripts/updated_pending_validation/tag_measurement_bitinfo_states_output.py) | #7 |
+
+Ogni script legge anche `{question}` come record pagina dell'iterazione. Se il VLM restituisce JSON in fence Markdown, prova a decodificarlo; in caso di testo non parsabile, conserva risposta grezza ed errore insieme ai metadati della pagina.
 
 ### Nodi 6–8 — Naive di prova
 
@@ -59,9 +74,9 @@ Non inserire prompt o codice: lasciare il nodo Naive come forwarding dell'output
 
 | Naive | Ingresso |
 |---|---|
-| Nodo 6 — `OUTPUT TEST MISURE` | Edge #5 dal nodo 3 |
-| Nodo 7 — `OUTPUT TEST BITINFO` | Edge #6 dal nodo 4 |
-| Nodo 8 — `OUTPUT TEST STATI DIGITALI` | Edge #7 dal nodo 5 |
+| Nodo 6 — `OUTPUT TEST MISURE` | Edge #8 dal nodo 9 |
+| Nodo 7 — `OUTPUT TEST BITINFO` | Edge #9 dal nodo 10 |
+| Nodo 8 — `OUTPUT TEST STATI DIGITALI` | Edge #10 dal nodo 11 |
 
 ## Impostazioni e modello VLM osservati
 
@@ -90,9 +105,34 @@ La schermata non conferma se i tre VLM hanno identiche impostazioni: controllare
 
 ## Prima raccolta output condivisa
 
-Il materiale incollato dall'utente contiene almeno cinque blocchi fenced `json` concatenati, senza indicazione del Naive/nodo sorgente accanto a ciascun blocco. Quattro blocchi completi sono JSON validi: tre restituiscono il placeholder legacy con `NAME: "SME"`, `DRIVERCONFIG: ":"`, `measures: []` e `bitinfo: []`; l'ultimo contiene 20 misure. Un blocco lungo è troncato nella copia allegata a metà di una proprietà (`"TYPE,`), quindi non è possibile stabilire se fosse troncato il payload originale o solo la copia.
+Il materiale incollato dall'utente contiene almeno cinque blocchi fenced `json` concatenati, senza indicazione del Naive/nodo sorgente accanto a ciascun blocco. Quattro blocchi completi sono JSON validi: tre restituiscono il placeholder legacy con `NAME: "SME"`, `DRIVERCONFIG: ":"`, `measures: []` e `bitinfo: []`; l'ultimo contiene 20 misure. Un blocco lungo è troncato nella copia allegata a metà di una proprietà (`"TYPE,`), quindi non è possibile stabilire se fosse troncato il payload originale o solo la copia. L'output fornito non consente di distinguere con certezza i rami né di concludere che i VLM abbiano unito le proprie risposte: manca l'etichetta di provenienza nella raccolta.
 
-Le risposte sono inoltre racchiuse in fence Markdown ` ```json ` nonostante l'istruzione JSON-only. Non attribuire ancora questi blocchi ai tre VLM né usarli per scrivere l'assemblatore: raccogliere o etichettare l'output di ciascun Naive separatamente. I placeholder vuoti derivano dalla forma legacy; nella LV2 iterativa andrà deciso se introdurre una nuova versione dei prompt che restituisca `[]` quando la pagina non contiene righe estraibili, evitando station vuote sintetiche.
+Le risposte sono inoltre racchiuse in fence Markdown ` ```json ` nonostante l'istruzione JSON-only. Non attribuire ancora questi blocchi ai tre VLM né usarli per scrivere l'assemblatore. Per la prossima run inserire un Pytool tra VLM e Naive per ramo, così ogni output sarà autonomamente identificabile e associato alla pagina. I placeholder vuoti derivano dalla forma legacy; dopo aver separato i rami, decidere se introdurre una nuova versione dei prompt che restituisca `[]` quando la pagina non contiene righe estraibili, evitando station vuote sintetiche.
+
+### Formato diagnostico proposto
+
+Ogni Pytool etichettatore dovrà produrre un envelope simile a questo, anche quando l'output VLM non si può interpretare come JSON:
+
+```json
+{
+  "diagnostic": "LV2_MEASUREMENT_BRANCH",
+  "branch": "MEASURES_BISON",
+  "page": {
+    "key": "<media key>",
+    "sequence_index": 8,
+    "document_role": "JOB",
+    "label": "MEASUREMENT_TECHNICAL_DATA"
+  },
+  "output_format": "MARKDOWN_JSON",
+  "vlm_output": [ ... ]
+}
+```
+
+Usare valori distinti per `branch`: `MEASURES_BISON`, `BITINFO_NAMES`, `BITINFO_STATES`. Se la risposta non è JSON parsabile, l'envelope include `vlm_output_raw` e `parse_error`. In questo modo il collector può aggregare gli output senza perdere il ramo né la pagina. Gli edge #5, #6 e #7 sono quelli mostrati nello screenshot più recente. Questa diagnosi richiede una nuova esecuzione della LV2 per ottenere envelope etichettati.
+
+## Ambito della run
+
+Avviare la platform LV1 principale esegue anche i rami collegati che ricevono pagine. Nel caso 6, il filtro Station produce pagine, quindi viene attivata anche l'iniezione LV2 Station oltre a Measurement. Per una run di sola diagnosi Measurement, scollegare temporaneamente in LV1 il collegamento in ingresso alla sottopiattaforma Station (senza eliminare nodi o script), avviare la prova e ripristinare il collegamento dopo. Non si riporta un numero edge LV1 perché il canvas principale corrente non è visibile nello screenshot Measurement più recente.
 
 ## Forma obiettivo dell'output per pagina
 

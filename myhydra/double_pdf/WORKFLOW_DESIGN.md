@@ -28,7 +28,7 @@ flowchart TD
   end
 ```
 
-Il diagramma riporta i nodi verificati; lo screenshot conferma il cablaggio della LV2 Measurement con un Pytool, un Medex, tre VLM paralleli e tre Naive distinti. I prompt per pagina sono stati preparati in `prompts/measurement_*_v1.md`, ma non ancora eseguiti; quindi i payload e la configurazione non sono ancora verificati a runtime. La sottopiattaforma `PAGE DISPATCHER`, progettata in precedenza per restituire stringhe e attivare rami condizionali, è parcheggiata: i filtri Pytool per etichetta l'hanno resa superflua per la configurazione corrente.
+Il diagramma riporta i nodi verificati; lo screenshot conferma il cablaggio della LV2 Measurement con un Pytool, un Medex, tre VLM paralleli, tre Pytool etichettatori e tre Naive distinti. Le Powered identity attuali e gli script aggiornati sono raccolti in [`platforms/lv2/measurement/`](platforms/lv2/measurement/); la nuova configurazione dei campi VLM e i relativi payload sono ancora da verificare a runtime. La sottopiattaforma `PAGE DISPATCHER`, progettata in precedenza per restituire stringhe e attivare rami condizionali, è parcheggiata: i filtri Pytool per etichetta l'hanno resa superflua per la configurazione corrente.
 
 ## Stato delle verifiche
 
@@ -40,7 +40,7 @@ Il diagramma riporta i nodi verificati; lo screenshot conferma il cablaggio dell
 | Filtri e inoltro alle tre destinazioni | Output MyHydra: 6 Station, 7 Measurement, 1 Density nel caso 6 | Verificata in una run; gli indici 1–14 risultano partizionati una sola volta |
 | Recupero immagine da chiave nel ramo Station | Medex ha mostrato le sei immagini Station | Verificata per il ramo osservato |
 | Estrazione Station e associazione ai metadati | Dopo l'aggiornamento dell'associatore, tutte le 6 pagine terminano senza errori. Dati nelle pagine 6, 7 e 11; `[]` nelle 9, 10 e 12. | Catena tecnica verificata; classificazione e valori da revisionare |
-| Estrazione Measurement | Cablaggio a tre VLM paralleli confermato da screenshot; prompt v1 preparati | Da incollare nei nodi e verificare a runtime |
+| Estrazione Measurement | Cablaggio a tre VLM paralleli e tre Pytool etichettatori confermato da screenshot; prompt Powered identity v3 preparati | Prompt immagine `{edge.media}[2]`, `[3]`, `[4]`; nuova configurazione da riverificare |
 | Aggregazione e JSON finale | Non implementati nel nuovo workflow | Da progettare dopo le estrazioni |
 
 Le esecuzioni MyHydra possono restituire classificazioni diverse tra run sulle pagine di confine. I fixture anonimizzati conservano risultati distinti; un risultato osservato non va trattato come ground truth se ha `review_required: true`.
@@ -53,13 +53,13 @@ Le esecuzioni MyHydra possono restituire classificazioni diverse tra run sulle p
 4. I filtri sono Pytool non iterativi e conservano il record intero. Leggono rispettivamente gli edge di input #5 (Station), #7 (Measurement) e #6 (Density), secondo la configurazione documentata al momento dell'ultima prova. Gli indici edge sono locali al canvas: ricontrollarli se si modificano i collegamenti.
 5. Le due iniezioni LV2 classificazione/estrazione iterano sulle pagine del rispettivo filtro. Il forwarding Density Map non trasforma il record.
 
-Gli script sono in [`pytools/README.md`](pytools/README.md); i collegamenti e le impostazioni dei nodi sono raccolti in [`nodes/`](nodes/).
+Gli script e i prompt sono organizzati per sottopiattaforma in [`platforms/`](platforms/); i collegamenti e le impostazioni dei nodi sono raccolti in [`nodes/`](nodes/).
 
 ## Contratto corrente LV2 Station Information
 
-Il contesto iterativo `{question}` porta il record pagina originale e la sua chiave. Il Pytool estrae la chiave; Medex `content2media` la risolve in immagine; il VLM riceve l'immagine; il Pytool finale associa l'array JSON VLM al record pagina e preserva ruolo, etichetta, sequenza e avvisi.
+Il contesto iterativo `{question}` porta il record pagina originale e la sua chiave. Il Pytool estrae la chiave; Medex `content2media` la risolve in immagine. Nel VLM inserire `{edge.media}[n]` da solo nel campo **Prompt** (indice dell'edge Medex→VLM), lasciare **Context** vuoto e mettere le istruzioni nel **Powered identity**. Non incorporare il token media nelle istruzioni. Il Pytool finale associa l'array JSON VLM al record pagina e preserva ruolo, etichetta, sequenza e avvisi.
 
-Il VLM lavora sulla singola immagine della pagina corrente. Se non contiene informazioni Station, il prompt richiede `[]`; se un campo non è presente su quella pagina, non va inventato. Il valore predefinito legacy `SME` non deve essere sintetizzato in ogni singola pagina: eventuale normalizzazione si decide nel consolidamento. La scheda completa è in [`nodes/lv2_05_station_information_extraction.md`](nodes/lv2_05_station_information_extraction.md). Il prompt v1 è storico; la [v2](prompts/station_information_extraction_v2.md) è stata provata nel runtime.
+Il VLM lavora sulla singola immagine della pagina corrente. Il token media va nel campo **Prompt**, le istruzioni nel **Powered identity**, e **Context** resta vuoto. Se la pagina non contiene informazioni Station, il prompt richiede `[]`; se un campo non è presente, non va inventato. Il valore predefinito legacy `SME` non deve essere sintetizzato in ogni singola pagina: eventuale normalizzazione si decide nel consolidamento. La scheda completa è in [`nodes/lv2_05_station_information_extraction.md`](nodes/lv2_05_station_information_extraction.md). La v2 è stata eseguita prima di separare i campi; configurazione e prompt correnti sono in [`platforms/lv2/station_information/`](platforms/lv2/station_information/), ancora da riverificare.
 
 **Esito della v2:** nel primo output, pagina 9 aveva un payload non-array e pagina 12 un oggetto vuoto. L'associatore aggiornato gestisce array, oggetto singolo o `null` e scarta oggetti senza valori. Nella run successiva tutte le sei iterazioni hanno prodotto un record associato senza `ERROR`: dati nelle pagine 6, 7 e 11; `station_info: []` nelle pagine 9, 10 e 12. Il risultato della pagina 10 varia tra run (prima conteneva il nome, poi `[]`), perciò controllare l'immagine prima di consolidare quel campo. In questa run gli avvisi di classificazione sono alle pagine 11 e 12; mantenerli separati dai dati VLM. Fixture prima run: `tests/case_6/outputs/observed_lv2_station_information_v2_sanitized.json`; run successiva: `tests/case_6/outputs/observed_lv2_station_information_v2_associated_sanitized.json`.
 
@@ -71,7 +71,7 @@ Nell'output MyHydra `review_required` appare come numero (`0`/`1`) e `review_war
 
 1. Confrontare i campi estratti Station con le pagine sorgente e mantenere i warning sulle pagine 11 e 12.
 2. Normalizzare `review_required` e `review_warnings` in modo esplicito prima dell'aggregazione.
-3. Configurare la LV2 Measurement secondo la scheda dedicata: estrai chiave → Medex immagine → tre VLM paralleli → tre Naive sonda; poi raccogliere gli output grezzi per progettare l'assemblaggio per pagina.
+3. Configurare la LV2 Measurement secondo la scheda dedicata: per ogni VLM mettere `{edge.media}[n]` nel campo Prompt, lasciare Context vuoto e incollare la Powered identity indicata; poi raccogliere gli output grezzi per progettare l'assemblaggio per pagina.
 4. Definire come associare estrazioni Station e Measurement usando evidenze dei documenti, senza dedurre il PDF dal prefisso della chiave.
 5. Implementare aggregazione, revisione degli avvisi, normalizzazione e output finale solo dopo aver stabilizzato le estrazioni per pagina.
 

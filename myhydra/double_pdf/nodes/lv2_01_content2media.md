@@ -1,9 +1,9 @@
 # Nodo LV2-01 — CONTENT2MEDIA
 
 - **Tipo/nome:** Medex.
-- **Configurazione riportata:** `{"request":"content2media","nume":1,"content":{question}}`
-- **Input:** chiave pagina prodotta dal Pytool `ESTRAI CHIAVE PAGINA` (edge #1 nella configurazione Station corrente).
-- **Compito:** risolvere le chiavi media in media utilizzabili dal VLM.
-- **Configurazione riportata:** `{"request":"content2media","nume":1,"content":{edge}[1]}`; usare l'indice edge esatto del canvas.
-- **Edge:** output media verso il VLM. Questi media non sostituiscono le chiavi originali: il Pytool di associazione deve leggere il record pagina dall'input iterativo `{question}`.
+- **Configurazione attiva:** `{"request":"content2media","nume":1,"content":{edge}[1]}` — il `content` riceve la chiave dal Pytool `ESTRAI CHIAVE PAGINA` a monte (edge #1 nella configurazione Station corrente). Ricontrollare l'indice edge sul canvas prima di incollare: è locale alla piattaforma.
+- **Configurazione storica, non usare:** `{"request":"content2media","nume":1,"content":{question}}` leggeva dalla `{question}` iterativa, cioè l'intero record pagina e non la sola chiave. Abbandonata perché il record pagina non è un contenuto risolvibile in media; la chiave va estratta prima con il Pytool.
+- **Input:** chiave pagina prodotta dal Pytool `ESTRAI CHIAVE PAGINA`.
+- **Compito:** risolvere la chiave media in un media utilizzabile dal VLM.
+- **Edge:** output media verso il VLM; inserire `{edge.media}[n]` da solo nel campo **Prompt** del VLM, non nel **Context** né nel **Powered identity**. L'indice è locale al canvas e va letto dal collegamento Medex→VLM. Questi media non sostituiscono le chiavi originali: i Pytool di associazione leggono il record pagina dall'input iterativo `{question}`.
 - **Verifica runtime:** il test Station ha mostrato le sei immagini filtrate per il ramo. Il numero di immagini per ciascuna iterazione del LV2 va confrontato con le pagine del ramo e riconfermato sul canvas definitivo.

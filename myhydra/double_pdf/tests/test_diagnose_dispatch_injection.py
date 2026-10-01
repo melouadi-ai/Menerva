@@ -3,7 +3,14 @@ from pathlib import Path
 
 
 DOUBLE_PDF_DIR = Path(__file__).resolve().parent.parent
-SCRIPT_PATH = DOUBLE_PDF_DIR / "pytools" / "diagnose_dispatch_injection.py"
+SCRIPT_PATH = (
+    DOUBLE_PDF_DIR
+    / "platforms"
+    / "lv1"
+    / "scripts"
+    / "diagnostics"
+    / "diagnose_dispatch_injection.py"
+)
 CASE_OUTPUT = (
     DOUBLE_PDF_DIR
     / "tests"
