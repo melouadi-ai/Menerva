@@ -28,7 +28,7 @@ flowchart TD
   end
 ```
 
-Il diagramma riporta i nodi verificati; la LV2 Measurement è ancora nella configurazione sonda con un Naive di forwarding. La proposta di evoluzione è documentata in [`nodes/lv2_06_measurement_extraction_design.md`](nodes/lv2_06_measurement_extraction_design.md): recuperare l'immagine della pagina e passare la stessa immagine a tre VLM paralleli (misure/BISON, bitinfo, stati TEXTON/TEXTOFF), ciascuno con un Naive separato per ispezionare gli output grezzi. Non è ancora una configurazione verificata. La sottopiattaforma `PAGE DISPATCHER`, progettata in precedenza per restituire stringhe e attivare rami condizionali, è parcheggiata: i filtri Pytool per etichetta l'hanno resa superflua per la configurazione corrente.
+Il diagramma riporta i nodi verificati; lo screenshot conferma il cablaggio della LV2 Measurement con un Pytool, un Medex, tre VLM paralleli e tre Naive distinti. I prompt per pagina sono stati preparati in `prompts/measurement_*_v1.md`, ma non ancora eseguiti; quindi i payload e la configurazione non sono ancora verificati a runtime. La sottopiattaforma `PAGE DISPATCHER`, progettata in precedenza per restituire stringhe e attivare rami condizionali, è parcheggiata: i filtri Pytool per etichetta l'hanno resa superflua per la configurazione corrente.
 
 ## Stato delle verifiche
 
@@ -40,7 +40,7 @@ Il diagramma riporta i nodi verificati; la LV2 Measurement è ancora nella confi
 | Filtri e inoltro alle tre destinazioni | Output MyHydra: 6 Station, 7 Measurement, 1 Density nel caso 6 | Verificata in una run; gli indici 1–14 risultano partizionati una sola volta |
 | Recupero immagine da chiave nel ramo Station | Medex ha mostrato le sei immagini Station | Verificata per il ramo osservato |
 | Estrazione Station e associazione ai metadati | Dopo l'aggiornamento dell'associatore, tutte le 6 pagine terminano senza errori. Dati nelle pagine 6, 7 e 11; `[]` nelle 9, 10 e 12. | Catena tecnica verificata; classificazione e valori da revisionare |
-| Estrazione Measurement | La LV2 è collegata e contiene un Naive di forwarding; proposta a tre VLM paralleli registrata nella scheda dedicata | Progettata; da configurare e verificare |
+| Estrazione Measurement | Cablaggio a tre VLM paralleli confermato da screenshot; prompt v1 preparati | Da incollare nei nodi e verificare a runtime |
 | Aggregazione e JSON finale | Non implementati nel nuovo workflow | Da progettare dopo le estrazioni |
 
 Le esecuzioni MyHydra possono restituire classificazioni diverse tra run sulle pagine di confine. I fixture anonimizzati conservano risultati distinti; un risultato osservato non va trattato come ground truth se ha `review_required: true`.

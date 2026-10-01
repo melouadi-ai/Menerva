@@ -1,6 +1,6 @@
 # Progettazione LV2 Measurement Technical Data
 
-**Stato:** cablaggio iniziale confermato dallo screenshot del canvas; ancora da verificare con una run. La proposta deriva dal legacy ed è adattata al passaggio iterativo di una pagina per volta. I prompt e il Pytool finale non sono ancora stati preparati.
+**Stato:** cablaggio iniziale confermato dallo screenshot del canvas; i tre prompt sono preparati ma non ancora eseguiti. La proposta deriva dal legacy ed è adattata al passaggio iterativo di una pagina per volta. Il Pytool finale di assemblaggio non è ancora stato preparato.
 
 ## Obiettivo della sottopiattaforma
 
@@ -24,6 +24,69 @@ I nodi 3–5 ricevono la stessa immagine prodotta dal nodo 2 e lavorano in paral
 ### Cablaggio osservato sul canvas
 
 Lo screenshot inviato dall'utente conferma la catena nodo 1 → nodo 2, il fan-out dell'immagine Medex ai tre VLM e un Naive distinto collegato a ciascun VLM. Nel canvas mostrato i collegamenti in uscita dai nodi 2–5 sono numerati rispettivamente #2, #3, #4, #5, #6 e #7. La verifica riguarda la topologia visibile, non ancora i payload effettivamente ricevuti dai VLM.
+
+## Contenuto da configurare nei nodi
+
+### Nodo 1 — Pytool `ESTRAI CHIAVE PAGINA`
+
+Incollare il contenuto completo di [`../pytools/extract_page_key.py`](../pytools/extract_page_key.py). Legge la `{question}` della singola iterazione e restituisce la chiave media come stringa semplice.
+
+### Nodo 2 — Medex `RECUPERA IMMAGINE PAGINA`
+
+Usare la chiave passata dall'edge #1:
+
+```text
+{"request":"content2media","nume":1,"content":{edge}[1]}
+```
+
+L'indice `[1]` corrisponde al collegamento Pytool→Medex #1 mostrato nello screenshot. Se MyHydra rinumera l'edge dopo modifiche al canvas, aggiornare l'indice.
+
+### Nodi 3–5 — prompt VLM
+
+Incollare il contenuto completo del file corrispondente:
+
+| Nodo | Prompt |
+|---:|---|
+| 3 — `ESTRAI MISURE E BISON` | [`measurement_measures_bison_v1.md`](../prompts/measurement_measures_bison_v1.md) |
+| 4 — `ESTRAI BITINFO E NOMI` | [`measurement_bitinfo_names_v1.md`](../prompts/measurement_bitinfo_names_v1.md) |
+| 5 — `ESTRAI STATI TEXTON TEXTOFF` | [`measurement_bitinfo_states_v1.md`](../prompts/measurement_bitinfo_states_v1.md) |
+
+Per ognuno, l'immagine è fornita dall'edge collegato al Medex. I prompt non devono contenere gli indici `edge.media` 19/20/21 del legacy: quegli indici appartengono al canvas precedente.
+
+### Nodi 6–8 — Naive di prova
+
+Non inserire prompt o codice: lasciare il nodo Naive come forwarding dell'output del rispettivo VLM. Conservare i tre rami separati per poter controllare i payload grezzi.
+
+| Naive | Ingresso |
+|---|---|
+| Nodo 6 — `OUTPUT TEST MISURE` | Edge #5 dal nodo 3 |
+| Nodo 7 — `OUTPUT TEST BITINFO` | Edge #6 dal nodo 4 |
+| Nodo 8 — `OUTPUT TEST STATI DIGITALI` | Edge #7 dal nodo 5 |
+
+## Impostazioni e modello VLM osservati
+
+Screenshot condiviso durante la prima elaborazione, per un nodo Visiomaru:
+
+Modelli mostrati nel selettore `Core`:
+
+- `mary - Qwen 3 Next 80B Q4`
+- `marycoder - Qwen 3.5 35B Q8.0` (selezionato nello screenshot precedente)
+- `marygpt - GPT OSS 120B Q4`
+- `maryvl - Qwen 3.5 35B Q8.0 - Vision Language`
+
+Correzione fornita dall'utente dopo aver consultato il tutor: il core attualmente selezionato (`marycoder - Qwen 3.5 35B Q8.0` nell'etichetta UI) corrisponde in realtà al modello Qwen 3.8; il nome mostrato non è stato aggiornato. Perciò mantenere il core già selezionato per questa prova, senza passare a `maryvl`. Applicare lo stesso core nei tre VLM e valutare l'output della run.
+
+| Impostazione | Valore osservato | Indicazione per la prova |
+|---|---|---|
+| Core nella schermata precedente | `marycoder - Qwen 3.5 35B Q8.0` | Etichetta UI non aggiornata: secondo la conferma del tutor, il modello effettivo è Qwen 3.8. Mantenere la selezione corrente. |
+| Message type | `Text` | Lasciare com'è per ora: il VLM riceve l'immagine dal collegamento Medex; verificare il comportamento dall'output. |
+| Temperature | `0,1` | Mantenere bassa per contenere variazioni nell'estrazione. |
+| Top P | `0,6` | Mantenere per la run comparativa iniziale. |
+| Add current time | Attivo | Disattivare: l'ora corrente non è un dato richiesto dal documento. |
+| Use history | Disattivo | Mantenere disattivo perché ogni iterazione tratta una pagina autonoma. |
+| Thinker Mode | `0` | Lasciare invariato per questa prova; non è ancora stato confrontato con altre impostazioni. |
+
+La schermata non conferma se i tre VLM hanno identiche impostazioni: controllare nei rispettivi nodi. La qualità di estrazione e l'effettiva ricezione dell'immagine saranno valutate dagli output della run.
 
 ## Forma obiettivo dell'output per pagina
 
