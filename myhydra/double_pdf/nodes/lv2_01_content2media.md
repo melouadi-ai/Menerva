@@ -2,7 +2,8 @@
 
 - **Tipo/nome:** Medex.
 - **Configurazione riportata:** `{"request":"content2media","nume":1,"content":{question}}`
-- **Input:** la finestra corrente del nodo iterativo via `question`.
+- **Input:** chiave pagina prodotta dal Pytool `ESTRAI CHIAVE PAGINA` (edge #1 nella configurazione Station corrente).
 - **Compito:** risolvere le chiavi media in media utilizzabili dal VLM.
-- **Edge:** output media verso Visiomaru e verso Naive nella configurazione corrente. Questi media non sostituiscono le chiavi originali: il Pytool le deve leggere dall'input iterativo `{question}`.
-- **Da verificare:** numero di immagini materialmente presentate al VLM in ciascun giro (una o due nel caso osservato).
+- **Configurazione riportata:** `{"request":"content2media","nume":1,"content":{edge}[1]}`; usare l'indice edge esatto del canvas.
+- **Edge:** output media verso il VLM. Questi media non sostituiscono le chiavi originali: il Pytool di associazione deve leggere il record pagina dall'input iterativo `{question}`.
+- **Verifica runtime:** il test Station ha mostrato le sei immagini filtrate per il ramo. Il numero di immagini per ciascuna iterazione del LV2 va confrontato con le pagine del ramo e riconfermato sul canvas definitivo.

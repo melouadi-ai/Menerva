@@ -1,0 +1,16 @@
+[
+  {"status":"OK","pages":[{"key":"CASE6_PAGE_01","index":0,"label":"DENSITY_MAP"},{"key":"CASE6_PAGE_02","index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"status":"OK","pages":[{"key":"CASE6_PAGE_02","index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"key":"CASE6_PAGE_03","index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"status":"OK","pages":[{"key":"CASE6_PAGE_03","index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"key":"CASE6_PAGE_04","index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"status":"OK","pages":[{"key":"CASE6_PAGE_04","index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"key":"CASE6_PAGE_05","index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"status":"OK","pages":[{"key":"CASE6_PAGE_05","index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"key":"CASE6_PAGE_06","index":1,"label":"STATION_INFORMATION"}]},
+  {"status":"OK","pages":[{"key":"CASE6_PAGE_06","index":0,"label":"STATION_INFORMATION"},{"key":"CASE6_PAGE_07","index":1,"label":"STATION_INFORMATION"}]},
+  {"status":"OK","pages":[{"key":"CASE6_PAGE_07","index":0,"label":"STATION_INFORMATION"},{"key":"CASE6_PAGE_08","index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"status":"OK","pages":[{"key":"CASE6_PAGE_08","index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"key":"CASE6_PAGE_09","index":1,"label":"STATION_INFORMATION"}]},
+  {"status":"OK","pages":[{"key":"CASE6_PAGE_09","index":0,"label":"STATION_INFORMATION"},{"key":"CASE6_PAGE_10","index":1,"label":"STATION_INFORMATION"}]},
+  {"status":"OK","pages":[{"key":"CASE6_PAGE_10","index":0,"label":"STATION_INFORMATION"},{"key":"CASE6_PAGE_11","index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"status":"OK","pages":[{"key":"CASE6_PAGE_11","index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"key":"CASE6_PAGE_12","index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"status":"OK","pages":[{"key":"CASE6_PAGE_12","index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"key":"CASE6_PAGE_13","index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"status":"OK","pages":[{"key":"CASE6_PAGE_13","index":0,"label":"MEASUREMENT_TECHNICAL_DATA"},{"key":"CASE6_PAGE_14","index":1,"label":"MEASUREMENT_TECHNICAL_DATA"}]},
+  {"status":"OK","pages":[{"key":"CASE6_PAGE_14","index":0,"label":"MEASUREMENT_TECHNICAL_DATA"}]}
+]

@@ -1,0 +1,85 @@
+{
+  "status": "OK",
+  "page_count": 11,
+  "review_required": true,
+  "warnings": [
+    {
+      "key": "CASE7_PAGE_10",
+      "field": "label",
+      "observed": [
+        "MEASUREMENT_TECHNICAL_DATA",
+        "STATION_INFORMATION"
+      ],
+      "resolved": "STATION_INFORMATION",
+      "rule": "legacy_category_priority"
+    }
+  ],
+  "pages": [
+    {
+      "key": "CASE7_PAGE_01",
+      "sequence_index": 1,
+      "document_role": "IOL",
+      "label": "DENSITY_MAP"
+    },
+    {
+      "key": "CASE7_PAGE_02",
+      "sequence_index": 2,
+      "document_role": "IOL",
+      "label": "MEASUREMENT_TECHNICAL_DATA"
+    },
+    {
+      "key": "CASE7_PAGE_03",
+      "sequence_index": 3,
+      "document_role": "IOL",
+      "label": "MEASUREMENT_TECHNICAL_DATA"
+    },
+    {
+      "key": "CASE7_PAGE_04",
+      "sequence_index": 4,
+      "document_role": "IOL",
+      "label": "MEASUREMENT_TECHNICAL_DATA"
+    },
+    {
+      "key": "CASE7_PAGE_05",
+      "sequence_index": 5,
+      "document_role": "JOB",
+      "label": "STATION_INFORMATION"
+    },
+    {
+      "key": "CASE7_PAGE_06",
+      "sequence_index": 6,
+      "document_role": "JOB",
+      "label": "STATION_INFORMATION"
+    },
+    {
+      "key": "CASE7_PAGE_07",
+      "sequence_index": 7,
+      "document_role": "JOB",
+      "label": "STATION_INFORMATION"
+    },
+    {
+      "key": "CASE7_PAGE_08",
+      "sequence_index": 8,
+      "document_role": "JOB",
+      "label": "MEASUREMENT_TECHNICAL_DATA"
+    },
+    {
+      "key": "CASE7_PAGE_09",
+      "sequence_index": 9,
+      "document_role": "JOB",
+      "label": "MEASUREMENT_TECHNICAL_DATA"
+    },
+    {
+      "key": "CASE7_PAGE_10",
+      "sequence_index": 10,
+      "document_role": "JOB",
+      "label": "STATION_INFORMATION"
+    },
+    {
+      "key": "CASE7_PAGE_11",
+      "sequence_index": 11,
+      "document_role": "JOB",
+      "label": "STATION_INFORMATION"
+    }
+  ]
+}

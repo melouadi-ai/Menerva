@@ -1,0 +1,49 @@
+{
+  "case": "CASE6",
+  "source": "MyHydra LV1 filter branch outputs, user-provided",
+  "sanitized": true,
+  "note": "Medex keys replaced with CASE6_PAGE_nn. Sequence indexes and labels are retained from the observed LV1 result.",
+  "branches": {
+    "DENSITY_MAP": [
+      {
+        "key": "CASE6_PAGE_01",
+        "sequence_index": 1,
+        "document_role": "IOL",
+        "label": "DENSITY_MAP",
+        "review_required": false,
+        "review_warnings": []
+      }
+    ],
+    "MEASUREMENT_TECHNICAL_DATA": [
+      {"key": "CASE6_PAGE_02", "sequence_index": 2, "document_role": "IOL", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": false, "review_warnings": []},
+      {"key": "CASE6_PAGE_03", "sequence_index": 3, "document_role": "IOL", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": false, "review_warnings": []},
+      {"key": "CASE6_PAGE_04", "sequence_index": 4, "document_role": "IOL", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": false, "review_warnings": []},
+      {"key": "CASE6_PAGE_05", "sequence_index": 5, "document_role": "IOL", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": false, "review_warnings": []},
+      {"key": "CASE6_PAGE_08", "sequence_index": 8, "document_role": "JOB", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": false, "review_warnings": []},
+      {"key": "CASE6_PAGE_13", "sequence_index": 13, "document_role": "JOB", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": false, "review_warnings": []},
+      {"key": "CASE6_PAGE_14", "sequence_index": 14, "document_role": "JOB", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": false, "review_warnings": []}
+    ],
+    "STATION_INFORMATION": [
+      {"key": "CASE6_PAGE_06", "sequence_index": 6, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": false, "review_warnings": []},
+      {"key": "CASE6_PAGE_07", "sequence_index": 7, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": false, "review_warnings": []},
+      {"key": "CASE6_PAGE_09", "sequence_index": 9, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": false, "review_warnings": []},
+      {"key": "CASE6_PAGE_10", "sequence_index": 10, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": false, "review_warnings": []},
+      {
+        "key": "CASE6_PAGE_11",
+        "sequence_index": 11,
+        "document_role": "JOB",
+        "label": "STATION_INFORMATION",
+        "review_required": true,
+        "review_warnings": [{"field": "label", "observed": ["MEASUREMENT_TECHNICAL_DATA", "STATION_INFORMATION"], "resolved": "STATION_INFORMATION", "rule": "legacy_category_priority"}]
+      },
+      {
+        "key": "CASE6_PAGE_12",
+        "sequence_index": 12,
+        "document_role": "JOB",
+        "label": "STATION_INFORMATION",
+        "review_required": true,
+        "review_warnings": [{"field": "label", "observed": ["STATION_INFORMATION", "MEASUREMENT_TECHNICAL_DATA"], "resolved": "STATION_INFORMATION", "rule": "legacy_category_priority"}]
+      }
+    ]
+  }
+}

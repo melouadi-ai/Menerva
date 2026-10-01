@@ -1,124 +1,43 @@
-# Double PDF
+# Double PDF — progetto MyHydra
 
-Riceve in chat i due PDF del caso (IOL + JOB), li converte in media, organizza le pagine in finestre per un Livello 2 iterativo e raccoglie i risultati.
+Questa directory documenta e raccoglie l'implementazione nuova del workflow Double PDF. Il legacy rimane in [`../../legacy/double_pdf/`](../../legacy/double_pdf/) come riferimento e non viene modificato da questo progetto.
 
-Questo documento riunisce i due livelli in un unico file. Ogni livello ha una sezione propria e le schede dei nodi sono in [`nodes/`](nodes/), con prefisso `lv1_` o `lv2_`.
+## Stato attuale
 
-## Diagramma complessivo
+- **LV1, classificazione e deduplicazione:** verificata su MyHydra. Il caso 6 ha prodotto 14 pagine uniche; il caso 7 ne ha prodotte 11. I conflitti di classificazione restano visibili come avvisi.
+- **LV1, instradamento per etichetta:** i tre Pytool filtrano i record completi usando `label`. `STATION_INFORMATION` e `MEASUREMENT_TECHNICAL_DATA` vanno alle rispettive LV2 iterative; `DENSITY_MAP` viene inoltrata con un Naive.
+- **Passaggio LV1→LV2:** verificato in una run del caso 6. I rami hanno ricevuto rispettivamente 6 pagine Station, 7 Measurement e 1 Density; le chiavi e i metadati sono rimasti associati alle pagine.
+- **LV2 Station Information:** nuova run con il Pytool associatore aggiornato: tutte e 6 le pagine sono associate senza errori; 3 hanno estrazioni e 3 restituiscono `[]`. Restano avvisi di classificazione sulle pagine 11 e 12 e una variazione tra run nell'estrazione della pagina 10.
+- **LV2 Measurement Data:** collegata alla sua iniezione; al momento contiene un Naive di forwarding. È stata progettata la sequenza di estrazione per pagina, derivata dai nodi Measurement legacy; prompt VLM e Pytool di assemblaggio saranno definiti dopo aver raccolto gli output grezzi delle tre estrazioni.
+- **Density Map:** forwarding come nel comportamento legacy osservato; non c'è ancora una specifica di estrazione richiesta.
 
-```mermaid
-flowchart TD
-    A[1 Medex: PDF2PNG] -->|edge #1| B[2 Medex: MEDIA2CONTENT]
-    B -->|edge #2| C[3 DOUBLE PDF ENGINE: iterativo attivo]
-    C --> D[4 Visiomaru: page classifier]
-    D -->|edge #2| E[5 Pytool: associa chiave ed etichetta]
-    C -->|output aggregato| F[Uscita LV1]
-```
+Il vecchio `PAGE DISPATCHER` è parcheggiato e non fa parte del routing attuale. Non eliminarlo finché non viene concordato esplicitamente.
 
----
+## Struttura
 
-# Livello 1
+| Directory/file | Contenuto |
+|---|---|
+| [`WORKFLOW_DESIGN.md`](WORKFLOW_DESIGN.md) | Architettura corrente, collegamenti e decisioni ancora aperte |
+| [`nodes/`](nodes/) | Schede di configurazione per nodi e sottopiattaforme |
+| [`nodes/lv2_06_measurement_extraction_design.md`](nodes/lv2_06_measurement_extraction_design.md) | Proposta LV2 Measurement, mappatura legacy e sequenza canvas |
+| [`prompts/`](prompts/) | Prompt VLM versionati |
+| [`pytools/`](pytools/) | Script da incollare nei Pytool MyHydra e relativo inventario |
+| [`tests/`](tests/) | Fixture anonimizzate, risultati osservati e test locali |
+| [`../../legacy/double_pdf/`](../../legacy/double_pdf/) | Workflow precedente usato come riferimento; non modificare per il nuovo sviluppo |
 
-## Scopo
+## Canvas LV1 corrente
 
-Ricevere insieme in chat i due PDF del caso, convertirne le pagine in media, organizzarle in finestre per il Livello 2 iterativo e raccoglierne i risultati.
+1. Medex `PDF TO PNG CONVERSION`.
+2. Medex `MEDIA 2 CONTENT E DIVISIONE IN GRUPPI`.
+3. Iniezione `DOUBLE PDF PAGE CLASSIFIER`, iterativa.
+4. Pytool `DEDUPLICAZIONE`.
+5. Pytool `DISPATCHER PREP`.
+6. Pytool filtro `STATION_INFORMATION` → iniezione LV2 Station Information.
+7. Pytool filtro `MEASUREMENT_TECHNICAL_DATA` → iniezione LV2 Measurement Data.
+8. Pytool filtro `DENSITY_MAP` → Naive di forwarding.
 
-## Diagramma osservato
+I numeri dei nodi possono cambiare se il canvas viene riordinato; i nomi e i contratti sono il riferimento stabile. Per i placeholder e gli edge fare riferimento alle schede aggiornate e verificare l'indice sul canvas prima di incollare uno script.
 
-```mermaid
-flowchart TD
-    A[1 Medex: PDF2PNG] -->|edge #1| B[2 Medex: MEDIA2CONTENT]
-    B -->|edge #2| C[3 DOUBLE PDF ENGINE: iterativo attivo]
-    C --> D[Output LV1]
-```
+## Prossimi passi
 
-Lo screenshot mostra il flag iterativo attivo sul motore Double PDF. Il nodo interno del motore è descritto in [Livello 2](#livello-2).
-
-## Inventario nodi
-
-| ID | Nodo | Configurazione / compito | Stato |
-|---|---|---|---|
-| 1 | Medex — PDF TO PNG CONVERSION | `{"request":"pdf2png","nume":5}{question}`. `nume:5` è il fattore di ingrandimento dichiarato dall'utente. | Configurazione osservata; 14 anteprime nel caso 6. |
-| 2 | Medex — MEDIA2CONTENT E DIVISIONE IN GRUPPI | `{"request":"media2content","nume":1, "nkeysgrp": 1 }{edge.media}[1]`; produce finestre sovrapposte di chiavi media. | Configurazione e output forniti dall’utente. |
-| 3 | DOUBLE PDF ENGINE | Iterativo attivo; riceve l'output del nodo 2. | Attivazione confermata; iterazioni osservate: 14 nel caso 6. |
-
-## Collegamenti
-
-| Edge | Da | A | Dato trasferito |
-|---|---|---|---|
-| #1 | Nodo 1 | Nodo 2 | Media/pagine convertite |
-| #2 | Nodo 2 | Nodo 3 | Finestre di chiavi media |
-
-## Evidenze del caso 6
-
-Gli allegati sono `Mappatura_6_Cliente_SMI_1.pdf` (5 pagine) e `Mappatura_6_Descrizione_Cliente_SMI_1.pdf` (9 pagine). Medex mostra 14 anteprime totali. Il Livello 2 osservato contiene 14 finestre e 14 chiavi media uniche, con una chiave in comune tra finestre adiacenti.
-
-Le chiavi sono identificatori opachi. Prefissi e punto in cui cambiano non sono stabili tra le esecuzioni: una cattura mostrava cardinalità 9+5, la diagnostica più recente 12+2. Non usarli per dedurre confine o nome dei PDF. Il payload non espone filename o numeri pagina.
-
-Le fixture complete del caso sono in [`tests/case_6/`](tests/case_6/).
-
-## Punti da confermare — Livello 1
-
-- Salvare il codice esatto del nodo 2 dal canvas.
-- Confermare se il nodo 2 emette sempre finestre di due chiavi con overlap di una, inclusi PDF con una pagina o lunghezze diverse.
-- Verificare come il collector LV1 aggrega i risultati del nodo iterativo e conserva gli errori per singola finestra.
-
----
-
-# Livello 2
-
-## Scopo
-
-Per ogni finestra ricevuta dal motore iterativo, trasformare le chiavi media in immagini, classificare ogni pagina secondo le tre categorie legacy, associare classe e chiave e restituire un record per pagina della finestra.
-
-## Diagramma osservato
-
-```mermaid
-flowchart TD
-    Q[Input finestra LV1: question, contiene chiavi] --> M[1 Medex: CONTENT2MEDIA]
-    M -->|immagini| V[2 Visiomaru: page classifier]
-    Q -->|question originale| P[4 Pytool: associa chiave ed etichetta]
-    V -->|edge #2| P
-```
-
-## Inventario nodi
-
-| ID | Nodo | Configurazione / compito | Stato |
-|---|---|---|---|
-| 1 | Medex — `content2media` | `{"request":"content2media","nume":1,"content":{question}}` | Configurazione riportata dall'utente. |
-| 2 | Visiomaru — classificatore pagine | Prompt [`prompts/page_classifier_v1.md`](prompts/page_classifier_v1.md). Restituisce JSON `pages` con indici locali. | 14 giri classificati nel test caso 6. |
-| 3 | Naive — forwarding | Nodo aggiunto come possibile passaggio delle chiavi. | Edge #4 è risultato vuoto; non è necessario se Pytool legge `{question}`. |
-| 4 | Pytool — associa classi alle chiavi | Script [`pytools/associate_page_labels_to_media_keys.py`](pytools/associate_page_labels_to_media_keys.py). | Diagnostica: `{question}` e edge #2 sono JSON validi in tutte le 14 finestre; script corretto pronto per la prova effettiva. |
-
-## Edge del Pytool osservati nello screenshot
-
-| Edge | Sorgente | Significato |
-|---|---|---|
-| #2 | Nodo Visiomaru | Classificazioni VLM della finestra corrente |
-| #3 | Nodo Medex | Payload media passato al nodo Naive |
-| #4 | Nodo Naive | Output vuoto nella diagnostica; non usare come sorgente delle chiavi |
-
-Gli indici sono letti dagli edge visibili sul canvas. Prima di incollare lo script, ricontrollare che il canvas non abbia rinumerato i collegamenti.
-
-## Contratto dati del Pytool
-
-Input `{question}`: payload originale ricevuto dal ciclo LV1, potenzialmente con `_medexkeys` contenente JSON serializzato come stringa. Input edge #2: oggetto VLM `{"pages":[{"index":0,"label":"..."}]}`. Gli indici VLM sono locali alla finestra, non globali nel PDF. Il Medex LV2 va usato per fornire le immagini al VLM, non come sorgente delle chiavi da associare.
-
-Output `result`:
-
-```json
-{
-  "status": "OK",
-  "pages": [
-    {"key": "<media-key>", "index": 0, "label": "DENSITY_MAP"}
-  ]
-}
-```
-
-Se payload e classificazioni non si possono abbinare, restituisce `status: ERROR` con una diagnosi. Non elimina overlap tra finestre: la deduplicazione deve avvenire dopo il ciclo LV1, usando la chiave media come identità tecnica.
-
-## Punti da confermare — Livello 2
-
-- Confermare l'associazione chiave→pagina con il risultato del Pytool; non inferirla dai prefissi opachi.
-- Eseguire lo script aggiornato sul runtime e verificare 14 finestre `OK`: due record per le prime 13, uno per l'ultima.
-- Il comportamento dello Pytool quando il numero di chiavi nel payload non coincide con il numero di etichette VLM.
+Considerare verificata la catena tecnica Station; mantenere i warning visibili e controllare i dati estratti rispetto alle pagine sorgente prima di consolidarli. Per Measurement, configurare tre estrazioni VLM parallele con tre Naive sonda, poi progettare l'assemblaggio per pagina dagli output effettivi.

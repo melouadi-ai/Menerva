@@ -1,153 +1,94 @@
 import json
 
-# QUESTION: finestra originale ricevuta dal ciclo LV1, contenente le chiavi Medex.
-# EDGE #2: output del Visiomaru/VLM, con le classificazioni della finestra.
+# QUESTION è la finestra originale LV1 con le chiavi Medex.
+# EDGE #2 è la classificazione VLM della stessa finestra.
 media_raw = r'''{question}'''.strip()
 vlm_raw = r'''{edge}[2]'''.strip()
 
 try:
-    # Rimuove eventuali fence Markdown senza alterare i contenuti JSON.
-    media_raw = media_raw.replace("```json", "").replace("```", "").strip()
-    vlm_raw = vlm_raw.replace("```json", "").replace("```", "").strip()
-
-    # Decodifica i due ingressi esterni.
+    # Decodifica il JSON esterno e la stringa JSON annidata _medexkeys.
     media_data = json.loads(media_raw)
+    if isinstance(media_data, str):
+        media_data = json.loads(media_data)
+
+    if isinstance(media_data, dict):
+        keys_data = media_data.get("_medexkeys")
+    else:
+        keys_data = media_data
+
+    if isinstance(keys_data, str):
+        keys_data = json.loads(keys_data)
+    if isinstance(keys_data, dict):
+        keys_data = [keys_data]
+
     vlm_data = json.loads(vlm_raw)
+    if isinstance(vlm_data, str):
+        vlm_data = json.loads(vlm_data)
 
-    # Estrae le chiavi Medex anche se _medexkeys è JSON serializzato come stringa
-    # o se la piattaforma aggiunge uno o più livelli di lista/serializzazione.
-    media_queue = [media_data]
-    media_queue_index = 0
-    media_keys = []
+    if not isinstance(keys_data, list):
+        raise ValueError("_medexkeys non è una lista di chiavi.")
+    if not isinstance(vlm_data, dict) or not isinstance(vlm_data.get("pages"), list):
+        raise ValueError("L'edge #2 non contiene l'array pages del VLM.")
 
-    while media_queue_index < len(media_queue):
-        media_item = media_queue[media_queue_index]
-        media_queue_index += 1
+    pages_data = vlm_data.get("pages")
+    if len(keys_data) != len(pages_data):
+        raise ValueError(
+            "Conteggio diverso: " + str(len(keys_data)) + " chiavi e "
+            + str(len(pages_data)) + " classificazioni."
+        )
 
-        if isinstance(media_item, str):
-            media_text = media_item.strip()
-            if media_text:
-                try:
-                    media_queue.append(json.loads(media_text))
-                except Exception:
-                    pass
-
-        elif isinstance(media_item, list):
-            media_subindex = 0
-            while media_subindex < len(media_item):
-                media_queue.append(media_item[media_subindex])
-                media_subindex += 1
-
-        elif isinstance(media_item, dict):
-            if "_medexkeys" in media_item:
-                media_queue.append(media_item["_medexkeys"])
-            elif "key" in media_item:
-                media_key = media_item.get("key")
-                if isinstance(media_key, str) and media_key.strip():
-                    media_keys.append(media_key.strip())
-
-    if not media_keys:
-        raise ValueError("Nessuna chiave media trovata in {question} (input LV1).")
-
-    # Estrae l'array pages dal VLM e tollera liste/stringhe JSON annidate.
-    vlm_queue = [vlm_data]
-    vlm_queue_index = 0
-    vlm_pages = []
-
-    while vlm_queue_index < len(vlm_queue):
-        vlm_item = vlm_queue[vlm_queue_index]
-        vlm_queue_index += 1
-
-        if isinstance(vlm_item, str):
-            vlm_text = vlm_item.strip()
-            if vlm_text:
-                try:
-                    vlm_queue.append(json.loads(vlm_text))
-                except Exception:
-                    pass
-
-        elif isinstance(vlm_item, list):
-            vlm_subindex = 0
-            while vlm_subindex < len(vlm_item):
-                vlm_queue.append(vlm_item[vlm_subindex])
-                vlm_subindex += 1
-
-        elif isinstance(vlm_item, dict):
-            if isinstance(vlm_item.get("pages"), list):
-                pages_subindex = 0
-                pages_value = vlm_item.get("pages")
-                while pages_subindex < len(pages_value):
-                    vlm_pages.append(pages_value[pages_subindex])
-                    pages_subindex += 1
-            elif "index" in vlm_item and "label" in vlm_item:
-                vlm_pages.append(vlm_item)
-
-    if not vlm_pages:
-        raise ValueError("Nessuna classificazione 'pages' trovata nell'edge #2.")
-
-    # Indicizza le classificazioni per indice locale alla finestra.
-    labels_by_index = {}
-    valid_labels = [
+    allowed_labels = [
         "STATION_INFORMATION",
         "MEASUREMENT_TECHNICAL_DATA",
         "DENSITY_MAP"
     ]
+    allowed_document_roles = ["IOL", "JOB", "UNKNOWN"]
+    output_pages = []
+    seen_indexes = []
+    index = 0
 
-    page_index = 0
-    while page_index < len(vlm_pages):
-        page_item = vlm_pages[page_index]
+    while index < len(pages_data):
+        page_data = pages_data[index]
+        if not isinstance(page_data, dict):
+            raise ValueError("Una classificazione VLM non è un oggetto JSON.")
 
-        if not isinstance(page_item, dict):
-            raise ValueError("Una voce dell'array pages non è un oggetto JSON.")
-
-        local_index = page_item.get("index")
-        page_label = page_item.get("label")
-
+        local_index = page_data.get("index")
+        label = page_data.get("label")
+        document_role = page_data.get("document_role", "UNKNOWN")
         if not isinstance(local_index, int) or isinstance(local_index, bool):
-            raise ValueError("L'indice locale di una pagina non è un intero valido.")
-        if local_index in labels_by_index:
-            raise ValueError("Il VLM ha restituito un indice pagina duplicato.")
-        if page_label not in valid_labels:
-            raise ValueError("Il VLM ha restituito un'etichetta non prevista.")
+            raise ValueError("Index VLM non intero.")
+        if local_index < 0 or local_index >= len(keys_data):
+            raise ValueError("Index VLM fuori dall'intervallo delle chiavi.")
+        if local_index in seen_indexes:
+            raise ValueError("Index VLM duplicato.")
+        if label not in allowed_labels:
+            raise ValueError("Etichetta VLM non ammessa.")
+        if document_role not in allowed_document_roles:
+            raise ValueError("Ruolo documento VLM non ammesso.")
 
-        labels_by_index[local_index] = page_label
-        page_index += 1
+        key_data = keys_data[local_index]
+        if not isinstance(key_data, dict) or not key_data.get("key"):
+            raise ValueError("Chiave Medex assente o non valida.")
 
-    # Il VLM deve classificare una pagina per ogni chiave ricevuta nella finestra.
-    if len(media_keys) != len(vlm_pages):
-        raise ValueError(
-            "Numero diverso di chiavi media e classificazioni: "
-            + str(len(media_keys)) + " chiavi, "
-            + str(len(vlm_pages)) + " classificazioni."
-        )
-
-    # Abbina ogni chiave alla sua etichetta tramite index locale 0..N-1.
-    associated_pages = []
-    local_index = 0
-    while local_index < len(media_keys):
-        if local_index not in labels_by_index:
-            raise ValueError(
-                "Il VLM non ha restituito la classificazione per index "
-                + str(local_index) + "."
-            )
-
-        associated_pages.append({
-            "key": media_keys[local_index],
+        seen_indexes.append(local_index)
+        output_pages.append({
+            "key": key_data.get("key"),
             "index": local_index,
-            "label": labels_by_index[local_index]
+            "document_role": document_role,
+            "label": label
         })
-        local_index += 1
+        index += 1
 
-    output_data = {
+    if len(seen_indexes) != len(keys_data):
+        raise ValueError("Manca la classificazione di una o più chiavi.")
+
+    result = json.dumps({
         "status": "OK",
-        "pages": associated_pages
-    }
-    result = json.dumps(output_data, ensure_ascii=False, indent=2)
+        "pages": output_pages
+    }, ensure_ascii=False)
 
 except Exception as error:
-    # Non scartare finestre non valide: restituisci una diagnosi consumabile a valle.
-    output_data = {
+    result = json.dumps({
         "status": "ERROR",
         "error": str(error)
-    }
-    result = json.dumps(output_data, ensure_ascii=False, indent=2)
+    }, ensure_ascii=False)

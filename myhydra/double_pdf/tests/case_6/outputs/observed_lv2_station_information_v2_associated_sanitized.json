@@ -1,0 +1,14 @@
+{
+  "case": "CASE6",
+  "source": "MyHydra LV2 Station Information output after updated association Pytool, user-provided",
+  "sanitized": true,
+  "note": "Runtime keys replaced with CASE6_PAGE_nn. Runtime types are preserved: review_required is numeric and review_warnings is a serialized JSON string.",
+  "pages": [
+    {"key": "CASE6_PAGE_06", "sequence_index": 6, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": 0, "review_warnings": "[ ]", "station_info": [{"nome_stazione": "Sistema Analisi SO2", "stazione": null, "protocollo": "ModBus TCP", "ip_plc": "10.100.50.95", "port": 511, "campi_scala": []}]},
+    {"key": "CASE6_PAGE_07", "sequence_index": 7, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": 0, "review_warnings": "[ ]", "station_info": [{"nome_stazione": null, "stazione": null, "protocollo": null, "ip_plc": null, "port": null, "campi_scala": [{"segnale": "SO2", "tag": "SO2", "campo_da": 0, "campo_a": 300}, {"segnale": "Temperatura fumi", "tag": "TF", "campo_da": 0, "campo_a": 100}]}]},
+    {"key": "CASE6_PAGE_09", "sequence_index": 9, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": 0, "review_warnings": "[ ]", "station_info": []},
+    {"key": "CASE6_PAGE_10", "sequence_index": 10, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": 0, "review_warnings": "[ ]", "station_info": []},
+    {"key": "CASE6_PAGE_11", "sequence_index": 11, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": 1, "review_warnings": "[ { \"key\": \"CASE6_PAGE_11\", \"field\": \"label\", \"observed\": [ \"MEASUREMENT_TECHNICAL_DATA\", \"STATION_INFORMATION\" ], \"resolved\": \"STATION_INFORMATION\", \"rule\": \"legacy_category_priority\" } ]", "station_info": [{"nome_stazione": null, "stazione": null, "protocollo": "ModBus TCP", "ip_plc": null, "port": null, "campi_scala": []}]},
+    {"key": "CASE6_PAGE_12", "sequence_index": 12, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": 1, "review_warnings": "[ { \"key\": \"CASE6_PAGE_12\", \"field\": \"label\", \"observed\": [ \"STATION_INFORMATION\", \"MEASUREMENT_TECHNICAL_DATA\" ], \"resolved\": \"STATION_INFORMATION\", \"rule\": \"legacy_category_priority\" } ]", "station_info": []}
+  ]
+}

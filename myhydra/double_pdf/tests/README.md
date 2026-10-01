@@ -5,5 +5,20 @@
 - Le chiavi `CASE6_PAGE_nn` sono sintetiche e identificano solo la posizione nella sequenza; non sono chiavi Medex reali e non codificano il PDF di origine.
 - Il caso 6 contiene 14 chiavi uniche e 14 finestre sovrapposte: ogni finestra tranne l’ultima ha due chiavi, con overlap di una chiave.
 - Il contenuto di `outputs/observed_classifier.json` conserva tutte le 27 etichette osservate, una risposta per iterazione.
+- `outputs/observed_pytool_sanitized.json` conserva l'esito runtime dell'associazione: 14 finestre `OK`, con chiavi sostituite da ID sintetici.
+- `outputs/observed_dedup_sanitized.json` conserva l'output LV1 osservato nel Naive dopo il Pytool di deduplicazione: 14 pagine uniche.
+- `outputs/observed_role_v2_dedup_sanitized.json` conserva l'output aggiornato del caso 6: 14 pagine, 5 ruoli `IOL`, 9 `JOB` e due conflitti di categoria risolti con avvisi.
 - `outputs/expected_unique_page_labels.json` deduplica le etichette per chiave e deve contenere 14 elementi.
-- La suite non è stata eseguita qui; i file sono fixture/documentazione per la verifica sul runtime MyHydra.
+- I fixture sono riproducibili localmente e servono anche alla verifica manuale sul runtime MyHydra.
+- Il test locale [`test_associate_page_labels_to_media_keys.py`](test_associate_page_labels_to_media_keys.py) esegue il sorgente Pytool con placeholder simulati, senza invocare MyHydra o il VLM.
+- Il test locale [`test_deduplicate_overlapping_pages.py`](test_deduplicate_overlapping_pages.py) verifica anche i conflitti di categoria e ruolo: priorità legacy per la categoria e `UNKNOWN` per il ruolo discordante.
+- Il test locale [`test_dispatch_classified_pages.py`](test_dispatch_classified_pages.py) esegue il dispatcher sulle pagine dei casi 6 e 7 e verifica che emetta la stringa categoria esatta per ogni pagina e non instradi una iterazione con più pagine.
+- Il test locale [`test_prepare_pages_for_dispatch.py`](test_prepare_pages_for_dispatch.py) verifica che l'oggetto deduplicato venga trasformato in array root e che gli avvisi restino associati alle relative chiavi.
+- Il test locale [`test_diagnose_dispatch_injection.py`](test_diagnose_dispatch_injection.py) distingue input pagina singola, array root e wrapper LV1; nel runtime lo stesso Pytool diagnostico mostra quale forma consegna davvero l'iniezione.
+- `case_6/outputs/observed_dispatch_injection_probe_sanitized.json` registra la verifica runtime: l'iniezione LV2 ha consegnato 14 record distinti, uno per chiamata.
+- `case_6/outputs/observed_prepare_pages_clean_sanitized.json` registra il risultato runtime corrente del Pytool 5: 14 record root, nessun avviso in quella run.
+- `case_6/outputs/observed_lv1_filtered_branches_sanitized.json` registra una run successiva dei filtri: 6 Station, 7 Measurement, 1 Density Map; i record 11 e 12 mantengono gli avvisi e gli indici 1–14 sono partizionati una volta.
+- `case_6/outputs/observed_lv2_station_information_sanitized.json` registra l'estrazione Station runtime; mostra due pagine con dati parziali, una pagina vuota `[]`, tre oggetti senza valori e i tipi MyHydra originali di `review_required`/`review_warnings`.
+- `case_6/outputs/observed_lv2_station_information_v2_sanitized.json` registra la prova con prompt v2: dati parziali in quattro pagine, output non-array che causa errore alla pagina 9 e oggetto senza valori alla pagina 12.
+- `case_6/outputs/observed_lv2_station_information_v2_associated_sanitized.json` registra la run successiva: il Pytool associatore normalizza il non-array e gli oggetti vuoti; sei pagine senza errori, con dati in tre e `[]` in tre.
+- Il caso 7 (`case_7/`) registra una seconda run MyHydra con 11 pagine: 4 ruoli `IOL`, 7 `JOB` e un conflitto di categoria risolto con avviso.
