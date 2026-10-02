@@ -9,7 +9,7 @@ Questa directory documenta e raccoglie l'implementazione nuova del workflow Doub
 - **Passaggio LV1→LV2:** verificato in una run del caso 6. I rami hanno ricevuto rispettivamente 6 pagine Station, 7 Measurement e 1 Density; le chiavi e i metadati sono rimasti associati alle pagine.
 - **Campi dei VLM:** l'immagine `{edge.media}[n]` va nel campo **Prompt**; **Context** resta vuoto; le istruzioni di estrazione vanno in **Powered identity**. Le nuove versioni dei prompt documentano esplicitamente questa separazione.
 - **LV2 Station Information:** una run precedente con il Pytool associatore aggiornato ha associato tutte e 6 le pagine senza errori; 3 hanno estrazioni e 3 restituiscono `[]`. Le istruzioni Powered identity v4 sono pronte per Prompt `{edge.media}[2]`; non ancora riverificate dopo la separazione dei campi.
-- **LV2 Measurement Data:** collegata alla sua iniezione; il canvas mostra tre VLM in parallelo, ciascuno diretto a un Naive di prova. Le Powered identity v3 e i rispettivi valori Prompt `{edge.media}[2]`, `[3]`, `[4]` sono pronti; non ancora eseguiti dopo la separazione dei campi.
+- **LV2 Measurement Data:** la run Qwen 3.8 del ramo misure associa correttamente 7 output alle pagine, ma non estrae righe. Prima di progettare l'assemblaggio, verificare la lettura dell'immagine con una prova breve di trascrizione.
 - **Density Map:** forwarding come nel comportamento legacy osservato; non c'è ancora una specifica di estrazione richiesta.
 
 Il vecchio `PAGE DISPATCHER` è parcheggiato e non fa parte del routing attuale. Non eliminarlo finché non viene concordato esplicitamente.
@@ -44,4 +44,4 @@ I numeri dei nodi possono cambiare se il canvas viene riordinato; i nomi e i con
 
 ## Prossimi passi
 
-Considerare verificata la catena tecnica Station prima della separazione dei campi; mantenere i warning visibili e controllare i dati estratti rispetto alle pagine sorgente prima di consolidarli. Configurare i VLM con immagine nel campo Prompt e istruzioni nei rispettivi Powered identity, poi raccogliere una run diagnostica per ciascuna LV2.
+Per Station, mantenere i warning visibili e controllare i valori estratti rispetto alle pagine sorgente prima di consolidarli. Per Measurement, usare prima la sonda breve di leggibilità della tabella; procedere alla semplificazione dell'estrazione solo dopo aver visto che il VLM trascrive correttamente il contenuto immagine.

@@ -1,0 +1,17 @@
+{
+  "case": "CASE6",
+  "source": "MyHydra LV2 Measurement MEASURES_BISON output with lightweight VLM (not Qwen 3.8), user-provided, 2 Oct 2026",
+  "sanitized": true,
+  "note": "Runtime keys replaced with CASE6_PAGE_nn by sequence_index. 9 records, all status OK with empty vlm_output, including IOL pages 2-4 which contain DESCRIZIONE/REG/BIT tables. BITINFO_NAMES and BITINFO_STATES branches of this run were not collected. Model change was global, so classification also shifted (9 Measurement pages instead of 7).",
+  "records": [
+    {"diagnostic": "LV2_MEASUREMENT_BRANCH", "status": "OK", "branch": "MEASURES_BISON", "page": {"key": "CASE6_PAGE_02", "sequence_index": 2, "document_role": "IOL", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": 0, "review_warnings": "[ ]"}, "output_format": "JSON", "vlm_output": []},
+    {"diagnostic": "LV2_MEASUREMENT_BRANCH", "status": "OK", "branch": "MEASURES_BISON", "page": {"key": "CASE6_PAGE_03", "sequence_index": 3, "document_role": "IOL", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": 0, "review_warnings": "[ ]"}, "output_format": "JSON", "vlm_output": []},
+    {"diagnostic": "LV2_MEASUREMENT_BRANCH", "status": "OK", "branch": "MEASURES_BISON", "page": {"key": "CASE6_PAGE_04", "sequence_index": 4, "document_role": "IOL", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": 0, "review_warnings": "[ ]"}, "output_format": "JSON", "vlm_output": []},
+    {"diagnostic": "LV2_MEASUREMENT_BRANCH", "status": "OK", "branch": "MEASURES_BISON", "page": {"key": "CASE6_PAGE_05", "sequence_index": 5, "document_role": "IOL", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": 0, "review_warnings": "[ ]"}, "output_format": "JSON", "vlm_output": []},
+    {"diagnostic": "LV2_MEASUREMENT_BRANCH", "status": "OK", "branch": "MEASURES_BISON", "page": {"key": "CASE6_PAGE_08", "sequence_index": 8, "document_role": "JOB", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": 0, "review_warnings": "[ ]"}, "output_format": "JSON", "vlm_output": []},
+    {"diagnostic": "LV2_MEASUREMENT_BRANCH", "status": "OK", "branch": "MEASURES_BISON", "page": {"key": "CASE6_PAGE_11", "sequence_index": 11, "document_role": "JOB", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": 0, "review_warnings": "[ ]"}, "output_format": "JSON", "vlm_output": []},
+    {"diagnostic": "LV2_MEASUREMENT_BRANCH", "status": "OK", "branch": "MEASURES_BISON", "page": {"key": "CASE6_PAGE_12", "sequence_index": 12, "document_role": "JOB", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": 0, "review_warnings": "[ ]"}, "output_format": "JSON", "vlm_output": []},
+    {"diagnostic": "LV2_MEASUREMENT_BRANCH", "status": "OK", "branch": "MEASURES_BISON", "page": {"key": "CASE6_PAGE_13", "sequence_index": 13, "document_role": "JOB", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": 0, "review_warnings": "[ ]"}, "output_format": "JSON", "vlm_output": []},
+    {"diagnostic": "LV2_MEASUREMENT_BRANCH", "status": "OK", "branch": "MEASURES_BISON", "page": {"key": "CASE6_PAGE_14", "sequence_index": 14, "document_role": "JOB", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": 0, "review_warnings": "[ ]"}, "output_format": "JSON", "vlm_output": []}
+  ]
+}

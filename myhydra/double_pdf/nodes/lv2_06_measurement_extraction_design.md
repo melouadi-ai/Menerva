@@ -1,6 +1,6 @@
 # Progettazione LV2 Measurement Technical Data
 
-**Stato:** cablaggio iniziale confermato dallo screenshot e prima esecuzione effettuata. La raccolta copiata non identifica in modo affidabile il ramo di ogni risposta; prima di usare i payload per progettare il merge, aggiungere un Pytool diagnostico etichettatore in ciascun ramo VLM. La prima prova precede la separazione tra i campi Prompt e Powered identity; le versioni correnti v3 non sono ancora state eseguite.
+**Stato:** cablaggio confermato e output del ramo `MEASURES_BISON` raccolto in due run Qwen 3.8. Il Pytool associa tutte e 7 le risposte alla pagina e al ramo corretti, ma l'estrazione non produce righe: sei risposte sono gusci stazione vuoti e una è `[]`. Non progettare ancora il merge; prima verificare la lettura di una tabella con una prova VLM breve.
 
 ## Obiettivo della sottopiattaforma
 
@@ -93,7 +93,7 @@ Correzione fornita dall'utente dopo aver consultato il tutor: il core attualment
 
 | Impostazione | Valore osservato | Indicazione per la prova |
 |---|---|---|
-| Core nella schermata precedente | `marycoder - Qwen 3.5 35B Q8.0` | Etichetta UI non aggiornata: secondo la conferma del tutor, il modello effettivo è Qwen 3.8. Mantenere la selezione corrente. |
+| Core da usare nei VLM (confermato da screenshot il 2 ott 2026) | `marycoder - Qwen 3.8 Flash Next 180B 4 bit` | Etichetta UI precedente (`Qwen 3.5 35B Q8.0`) non aggiornata: secondo il tutor il modello effettivo è Qwen 3.8. Applicare lo stesso core nei tre VLM Measurement e nel classifier. |
 | Message type | `Text` | Lasciare com'è per ora: il VLM riceve l'immagine dal collegamento Medex; verificare il comportamento dall'output. |
 | Temperature | `0,1` | Mantenere bassa per contenere variazioni nell'estrazione. |
 | Top P | `0,6` | Mantenere per la run comparativa iniziale. |
@@ -102,6 +102,20 @@ Correzione fornita dall'utente dopo aver consultato il tutor: il core attualment
 | Thinker Mode | `0` | Lasciare invariato per questa prova; non è ancora stato confrontato con altre impostazioni. |
 
 La schermata non conferma se i tre VLM hanno identiche impostazioni: controllare nei rispettivi nodi. La qualità di estrazione e l'effettiva ricezione dell'immagine saranno valutate dagli output della run.
+
+### Prova con modello leggero (2 ott 2026, caso 6)
+
+Per corse più veloci è stato provato un VLM più leggero in via globale (quindi anche sul classifier). Esito ramo `MEASURES_BISON`: 9 record `OK`, tutti con `vlm_output: []` e `output_format: JSON`, incluse le pagine IOL 2–4 che contengono tabelle `DESCRIZIONE`/`REG`/`BIT` da 2000–3000 caratteri. Meccanica verificata (envelope, branch, pagina, JSON senza fence), estrazione inutilizzabile: il modello leggero restituisce l'array vuoto anche dove i dati esistono.
+
+### Prova con Qwen 3.8, prompt v3 (2 ott 2026, caso 6)
+
+Prima run Qwen 3.8: 7 pagine (2,3,4,5,8,13,14), zero righe estratte. Le sequenze 2, 4, 5, 8, 13 e 14 restituiscono il guscio placeholder `{"NAME": "SME", "DRIVERNAME": "modbusplc", "DRIVERCONFIG": ":", "ID": 1, "measures": [], "bitinfo": []}`; la sequenza 3 restituisce `[]`. Cinque risposte su sette sono in fence Markdown (`output_format: MARKDOWN_JSON`) nonostante l'istruzione JSON-only.
+
+La run appena ricevuta conferma il pattern: 7 envelope `status: OK`, correttamente etichettati `MEASURES_BISON` e associati alle sequenze 2, 3, 4, 5, 8, 13 e 14. Le sequenze 2, 3, 4, 8, 13 e 14 contengono il guscio vuoto; la 5 contiene `[]`. Sei risposte su sette sono `MARKDOWN_JSON`, una `JSON`. Il tagger ha quindi funzionato; l'estrazione no. Fixture anonimizzata: [`../tests/case_6/outputs/observed_lv2_measurement_qwen38_measures_rerun_sanitized.json`](../tests/case_6/outputs/observed_lv2_measurement_qwen38_measures_rerun_sanitized.json). La gestione del vuoto varia rispetto alla prima run (le pagine 3 e 5 si scambiano `[]` e guscio), ma non cambia il risultato: zero righe estratte.
+
+Il guscio è compatibile con i default del prompt (`NAME: "SME"` senza etichetta, `DRIVERCONFIG: ":"` senza IP/porta); questo mostra che il modello ha prodotto il formato previsto, ma non dimostra da solo che l'immagine sia arrivata correttamente al VLM. Nota di diagnosi: i default stessi fabbricano le stazioni vuote — una pagina senza IP produce un oggetto stazione sintetico invece di `[]`. Se la sonda mostra che il modello legge, il prompt di estrazione va riscritto senza avvolgimento stazione-per-IP (sole righe piatte, join con la stazione per via deterministica dopo). Le pagine IOL 2–4 contengono tabelle reali. Restano da distinguere la lettura/ricezione dell'immagine e la complessità del Powered identity, che supera 600 righe e combina estrazione tabellare, logiche BISON, default stazione e output aggregato. Prossimo test: una sola run del ramo con la [sonda di leggibilità tabella](../platforms/lv2/measurement/prompts/diagnostics/measure_table_readability_probe_v1.md), mantenendo `{edge.media}[2]` nel campo Prompt e sostituendo temporaneamente il Powered identity. La sonda restituisce intestazioni e al massimo cinque righe per ogni pagina iterata; confrontare in particolare le IOL 2–4. Se non trascrive, investigare il media ricevuto; se trascrive, semplificare e separare le istruzioni di estrazione. I rami BITINFO/STATES non sono inclusi nell'output condiviso.
+
+Regola confermata: modello leggero solo per prove di plumbing; la qualità di estrazione si giudica solo con Qwen 3.8, e i confronti tra run valgono solo a parità di modello e di classificazione.
 
 ## Prima raccolta output condivisa
 

@@ -40,10 +40,10 @@ Il diagramma riporta i nodi verificati; lo screenshot conferma il cablaggio dell
 | Filtri e inoltro alle tre destinazioni | Output MyHydra: 6 Station, 7 Measurement, 1 Density nel caso 6 | Verificata in una run; gli indici 1–14 risultano partizionati una sola volta |
 | Recupero immagine da chiave nel ramo Station | Medex ha mostrato le sei immagini Station | Verificata per il ramo osservato |
 | Estrazione Station e associazione ai metadati | Dopo l'aggiornamento dell'associatore, tutte le 6 pagine terminano senza errori. Dati nelle pagine 6, 7 e 11; `[]` nelle 9, 10 e 12. | Catena tecnica verificata; classificazione e valori da revisionare |
-| Estrazione Measurement | Cablaggio a tre VLM paralleli e tre Pytool etichettatori confermato da screenshot; prompt Powered identity v3 preparati | Prompt immagine `{edge.media}[2]`, `[3]`, `[4]`; nuova configurazione da riverificare |
+| Estrazione Measurement | Run Qwen 3.8: 7 envelope `OK` associati a pagina e ramo; zero righe estratte | Il tagging funziona, la qualità di lettura no; verificare il media con una trascrizione breve prima di progettare il merge |
 | Aggregazione e JSON finale | Non implementati nel nuovo workflow | Da progettare dopo le estrazioni |
 
-Le esecuzioni MyHydra possono restituire classificazioni diverse tra run sulle pagine di confine. I fixture anonimizzati conservano risultati distinti; un risultato osservato non va trattato come ground truth se ha `review_required: true`.
+Le esecuzioni MyHydra possono restituire classificazioni diverse tra run sulle pagine di confine. I fixture anonimizzati conservano risultati distinti; un risultato osservato non va trattato come ground truth se ha `review_required: true`. Il `sequence_index` è posizionale nell'ordine di ricezione (gli upload arrivano in ordine casuale e il Medex decide il parsing): non identifica la pagina fisica tra run diverse. Per selezionare pagine in modo stabile usare `document_role` + `label`, mai l'indice.
 
 ## Contratti dei passaggi LV1
 
@@ -71,9 +71,10 @@ Nell'output MyHydra `review_required` appare come numero (`0`/`1`) e `review_war
 
 1. Confrontare i campi estratti Station con le pagine sorgente e mantenere i warning sulle pagine 11 e 12.
 2. Normalizzare `review_required` e `review_warnings` in modo esplicito prima dell'aggregazione.
-3. Configurare la LV2 Measurement secondo la scheda dedicata: per ogni VLM mettere `{edge.media}[n]` nel campo Prompt, lasciare Context vuoto e incollare la Powered identity indicata; poi raccogliere gli output grezzi per progettare l'assemblaggio per pagina.
-4. Definire come associare estrazioni Station e Measurement usando evidenze dei documenti, senza dedurre il PDF dal prefisso della chiave.
-5. Implementare aggregazione, revisione degli avvisi, normalizzazione e output finale solo dopo aver stabilizzato le estrazioni per pagina.
+3. Fare una run diagnostica Measurement con `{edge.media}[2]` nel campo Prompt e il probe breve in Powered identity. La piattaforma itera sulle pagine del ramo; confrontare intestazioni e righe restituite per le IOL 2–4 con le pagine sorgente.
+4. Se la trascrizione è corretta, semplificare la Powered identity di estrazione `MEASURES_BISON`; se non lo è, controllare il token media e la pagina ricevuta prima di cambiare le regole di estrazione.
+5. Definire come associare estrazioni Station e Measurement usando evidenze dei documenti, senza dedurre il PDF dal prefisso della chiave.
+6. Implementare aggregazione, revisione degli avvisi, normalizzazione e output finale solo dopo aver stabilizzato le estrazioni per pagina.
 
 ## Elementi parcheggiati
 
