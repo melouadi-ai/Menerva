@@ -161,20 +161,28 @@ if _pydantic_available:
     # Normalizza i chunk a livello di singola stazione (la fixture puo' essere
     # [{'stations':[...]}] oppure [{station}, {station}, ...]) e valida ogni
     # stazione contro lo schema Variable/Station del contratto intermedio.
-    def _iter_station_dicts(chunk_list):
-        result = []
-        for ch in chunk_list:
-            if isinstance(ch, dict):
-                if isinstance(ch.get("stations"), list):
-                    result.extend([x for x in ch["stations"] if isinstance(x, dict)])
-                elif isinstance(ch.get("variables"), list):
-                    result.append(ch)
-            elif isinstance(ch, list):
-                result.extend(_iter_station_dicts(ch))
-        return result
-
+    # Senza def/ricorsione: visita iterativa con stack esplicito (i pytool
+    # canvas accettano solo codice inline).
+    _all_stations = []
+    _stack = [chunks]
+    while _stack:
+        _ch = _stack.pop()
+        if isinstance(_ch, dict):
+            if isinstance(_ch.get("stations"), list):
+                _gi = 0
+                while _gi < len(_ch["stations"]):
+                    _gx = _ch["stations"][_gi]
+                    if isinstance(_gx, dict):
+                        _all_stations.append(_gx)
+                    _gi = _gi + 1
+            elif isinstance(_ch.get("variables"), list):
+                _all_stations.append(_ch)
+        elif isinstance(_ch, list):
+            _li = len(_ch) - 1
+            while _li >= 0:
+                _stack.append(_ch[_li])
+                _li = _li - 1
     _si = 0
-    _all_stations = _iter_station_dicts(chunks)
     while _si < len(_all_stations):
         _st = _all_stations[_si]
         _si = _si + 1
