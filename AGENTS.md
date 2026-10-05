@@ -38,11 +38,22 @@ Always communicate with the user in **Italian**. VLM prompts and code stay in En
 
 Sync habit in this repo is `sync.sh`: `git pull origin main`, `git add .`, timestamp commit, `git push origin main`.
 
+## Confronto con il legacy: il GT non è un riferimento di qualità
+
+`tests/compare_with_gt.py` confronta output vs `data/test_outputs/gaia_doublefile_result_6.json`, ma il legacy **ha errori propri**: letto riga per riga, `Mappatura_6_Cliente_SMI_1.pdf` dà 22 misure e **60** bitinfo, il GT ne ha 78. In dettaglio: 18 bitinfo fantasma (12 su righe senza TITOLO, più `PM-2601A/B` e i 4 ventilatori duplicati), due registri comandi sbagliati (430/431 invece di 431/432, shift di una riga su una riga bianca trattata come misura), `TEXTON` disallineati di una posizione, `QAL3` da `INT` scritti 250 invece di 150, e i nomi `STIMATA SO2`/`… ARI` troncati.
+
+Conseguenza: **le differenze di un confronto col GT non vanno colmate senza verifica sul PDF.** Il metodo è in `tests/test_adas_caso6_pdf_truth.py`, che fissa la tabella verità e registra anche dove il legacy sbaglia (`test_legacy_ha_errori_noti_il_nostro_no`), così nessuna correzione futura li riporta indietro per allineamento.
+
+Attenzione anche alle unità: nel PDF IOL del caso 6 **non esiste la colonna unità**. `mg/Nm3` e `°C` nel GT sono inferenze del legacy; noi emettiamo `mg/Nm3` solo dove la scala SO2 è dichiarata e `null` altrove. Non trattare `°C` come un dato mancante da recuperare: è una decisione di dominio (vedi `reports/CONFRONTO_QUALITA_LEGACY_VS_ATTUALE.md`).
+
 ## Stato attuale (5 ott 2026)
 
-- Single PDF: prompt v13 + `src/nodes/json_creator.py` v4.3. Registro verificato in `myhydra/single_pdf/PENDENZE.md` (A1 guardia copertura mai attivabile, A2 copia `myhydra/` ferma a v4.2 — entrambi aperti).
-- Double PDF caso 6: LV1 verificata (14 pagine uniche, filtri 6 Station / 7 Measurement / 1 Density); LV2 Station verificata (6 pagine associate); LV2 Measurement a 3 rami verificata; assemblatore per pagina cablato (nodo 8) e validato; `CONSOLIDA PRE-JSON CREATOR` cablato (edge diretti 10/11/12) con run 3.8 `OK` (69 variabili, fixture in `tests/case_6/outputs/observed_lv1_consolidator_qwen38_sanitized.json`).
+- Single PDF: prompt v13 + `src/nodes/json_creator.py` v4.4 (A1 soglia 100, A2 copia `myhydra/` allineata). Registro in `myhydra/single_pdf/PENDENZE.md`.
+- Double PDF: catena LV1→LV2→consolidatore→ADAS verificata end-to-end sui casi 6 e 7 con Qwen 3.8. Caso 6 ha il **verdetto completo**: 22 misure + 60 bitinfo confrontati riga per riga col PDF, 22/22 registri, tutti i bit, formati `INT`→150 e `REAL`→250, `UNITS mg/Nm3` su SO2/SO2 Raw, linkage intatto. Fixture `tests/double_pdf_outputs/observed_adas_case6_qwen38_datatype.json`, tabella verità `tests/test_adas_caso6_pdf_truth.py`.
+- Caso 7: uscita ADAS prodotta (39 misure + 42 bitinfo, `172.16.1.31:511`, 5 variabili scartate con warning) ma **non ancora confrontata riga per riga col PDF**.
 
 ## Prossimo passo
 
-Conversione ADAS finale: far digerire a `src/nodes/json_creator.py` il chunk del `CONSOLIDA PRE-JSON CREATOR` (run 3.8 salvata in `myhydra/double_pdf/tests/case_6/outputs/observed_lv1_consolidator_qwen38_sanitized.json`) e confrontare l'output col `verifica_pdf` / ground truth legacy. Nodi canvas già tutti cablati e verificati.
+1. Caso 7: stesso metodo del caso 6 — leggere il PDF IOL riga per riga, produrre la tabella verità, fissarla in un test. È l'unico pezzo di verifica che manca.
+2. Attendere dal cliente: fonte delle unità di misura, nome stazione in ADAS, BISON, zeri iniziali, regola V2.
+3. Terza coppia IOL+JOB mai vista, per allargare il campione oltre 6 e 7.

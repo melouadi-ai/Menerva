@@ -1,8 +1,8 @@
 # Benchmark di Qualità: Vecchio Sistema Legacy vs Nuovo Menerva MAS
 
 > **Documento ad uso Direzionale e Tecnico per Clienti**  
-> *Data ultimo aggiornamento: 5 Ottobre 2026*  
-> *Versione Pipeline Attuale: VLM Prompt v13 + Pytool json_creator v4.3 (Single PDF); Double PDF IOL+JOB in sviluppo (assemblatore + consolidatore cablati su MyHydra, caso 6; in attesa run Qwen 3.8 del consolidatore)*
+> *Data ultimo aggiornamento: 5 Ottobre 2026 (verdetto caso 6 su PDF riga per riga)*  
+> *Versione Pipeline Attuale: VLM Prompt v13 + Pytool json_creator v4.4 (Single PDF); Double PDF IOL+JOB: catena LV1→LV2→ADAS verificata end-to-end sui casi 6 e 7 con Qwen 3.8*
 
 ---
 
@@ -112,7 +112,7 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 
 ## 🏗️ Doppio PDF (IOL + JOB): Legacy vs Nuovo — stato al 5 Ottobre 2026
 
-> Perimetro diverso dal Single PDF sopra: qui i documenti arrivano in coppia (mappatura IOL + descrizione JOB) caricati insieme in chat, in ordine casuale e senza metadati di origine. I casi di riferimento sono la coppia 6 (`JOB.0139.23`, 5+9 pagine) e la coppia 7 (`JOB.0105.22`, 4+7 pagine). Stato: catena completa LV1→LV2→consolidatore cablata su MyHydra (caso 6); meccanica verificata con modello leggero; qualità in attesa della run Qwen 3.8 del consolidatore; conversione ADAS finale ancora da implementare.
+> Perimetro diverso dal Single PDF sopra: qui i documenti arrivano in coppia (mappatura IOL + descrizione JOB) caricati insieme in chat, in ordine casuale e senza metadati di origine. I casi di riferimento sono la coppia 6 (`JOB.0139.23`, 5+9 pagine) e la coppia 7 (`JOB.0105.22`, 4+7 pagine). Stato: catena completa LV1→LV2→consolidatore→ADAS eseguita su MyHydra e verificata riga per riga sul PDF su entrambi i casi (Qwen 3.8).
 
 ### Differenze architetturali (verificate su MyHydra)
 
@@ -133,18 +133,54 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 | 69 misure estratte (pagine IOL 2–5) | Confronto nomi/registri col testo PDF | Nomi radicati pagina per pagina; RAN `SO2 Raw` REG 17, `Temperatura fumi Raw` REG 33, QAL3 tempi REG 9/10/11 confermati |
 | Righe fantasma non inventate | Coordinate colonna REG/BIT | Riserve 420–424 e 428–430 saltate, `Ack allarmi` a 425 senza riempitivi (il legacy inventava `Comando riservato`); filler numerici 66.x/67.x scartati (16) |
 | Pagina 2 completa 30/30 | Riga per riga sul foglio Allarmi+Stati | Tutti i BIT da colonna (Sistema 8, Secondo campo 15, QAL3 0, Pompa 7, PLC life 13); bianche saltate |
-| Pagina 3: PM-302A/B | Colonna BIT foglio Stati 2 | PDF dice 1/2; run con rami concordi su 0/1 (errore condiviso, review muta), run con rami discordi flagged `bit_conflicts` (usato 0/1) — risoluzione per verità PDF favorisce il bitinfo |
-| REG ventilatori = 6 | Carry-over da colonna (ultimo esplicito PM-2600A) | Run leggera diceva 7 (sezione DBW), run 3.8 dice 6: decide il PDF, non il modello |
+| Pagina 3: PM-302A/B | Colonna BIT foglio Stati 2 | PDF dice BIT 1/2 (DBX 73.1/73.2): risolto — la run 3.8 completa emette 1/2/4/5 per PM-302A/B/310A/310B e 0–3 per i ventilatori REG 6, come il PDF |
+| REG ventilatori = 6 | Carry-over da colonna (ultimo esplicito PM-2600A) | PDF: DBX 74.0–75.7 → REG 6 BIT 8–13 e 0–3. Run 3.8 completa: 6/8–13/0–3 ✅ (il GT legacy ha 4–7, cioè righe bianche; la run leggera diceva 7) |
 | Pagina 4/5 pulite | Riga per riga fogli Misure/Comandi | SO2 49, TF 65, CMD 417–419/425–427/431–432, stimata SO2 433 e TF 441; `review: []` |
 | Stati ON/OFF | Testo tabella | Nelle righe non esiste testo di stato: TEXTON derivato dal nome, TEXTOFF `OFF` default — convenzione valida, dato derivato (non letto) |
 | Disciplina modelli | Confronto run leggero vs 3.8 | Leggero solo per plumbing (BIT posizionali, TEXTON fantasiosi, 4 pagine Station); qualità solo con Qwen 3.8 a parità di classificazione |
 
-### Punti aperti (non ancora misurabili)
+### Verdetto ADAS finale (caso 6) — output contro PDF, non contro il legacy
 
-* Run Qwen 3.8 del `CONSOLIDA PRE-JSON CREATOR` e confronto col PDF (meccanica già verde col leggero).
-* Conversione ADAS finale con riuso di `json_creator` dopo la run 3.8.
-* Scala `TF` non collegata (tag JOB `TF` vs misura `Temperatura fumi`; mappa in Tabella 6 JOB) e limiti orario/giornaliero (60 mg/Nm³) mai estratti da alcun ramo.
+Fixture: `tests/double_pdf_outputs/observed_adas_case6_qwen38_datatype.json` (run Qwen 3.8 completa, 5/10).
+Test di regressione che fissa la tabella verità: `tests/test_adas_caso6_pdf_truth.py`.
+Confronto meccanico legacy: `tests/double_pdf_outputs/confronto_adas_vs_gaia6.txt`.
+
+| Elemento | Verità PDF | Noi (3.8) | Legacy `gaia_doublefile_result_6.json` |
+|---|---|---|---|
+| Misure | 22 | 22 ✅ | 22 (nomi 2 diversi: `QAL3 … ARI` troncato, `STIMATA SO2` senza `MISURA`) |
+| Registri dei 22 | 1,3,4,5,6,9,10,11,17,33,49,65,417,418,419,425,426,427,**431,432**,433,441 | tutti ✅ | **2 sbagliati**: `Allarme supero ultima media` a 430 e `… previsionale` a 431 (dovevano essere 431/432) |
+| `bitinfo` | 60 (52 impaccati + 8 comandi) | 60 ✅ | **78**: 18 righe fantasma, di cui 12 su righe bianche, più `PM-2601A/B` e i 4 ventilatori duplicati due volte |
+| BIT REG 5 (PM-302x/310x) | 8–15, **1,2,4,5** | 8–15,1,2,4,5 ✅ | 8–15 + **0,1,2,3** e 4–7 riempiti con PM-2600/2601 (spostati di 1) |
+| BIT REG 6 (ventilatori) | 8–13, **0–3** | 8–13,0–3 ✅ | 8–15 con PM-2601/2604 duplicati + **4–7** duplicati dei ventilatori |
+| Formato analogico | `INT` → 150, `REAL` → 250 | ✅ (QAL3 = 150, SO2/TF = 250) | QAL3 a **250** (`INT` ignorato) |
+| Nomi bit | `Elettrovalvola cal da sonda` | ✅ senza `STATO` prefisso | ✅ |
+| `TEXTON` | non esiste nel PDF | derivato, coerente | **shiftato di una riga**: `ACK ALLARMI`→`MANUTENZIONE`, `IMPIANTO FUORI SERVIZIO`→`COMANDO`, `SECONDO CAMPO SO2`→`ALLARME` |
+| Bitinfo orfane | 0 | 0 ✅ | 1 (`MEASUREID` non presente tra le misure) |
+| `UNITS` | **il PDF non ha la colonna unità** | `mg/Nm3` su SO2 e SO2 Raw | `mg/Nm3` + `°C` su 6 misure: **inferenze, non dati del documento** |
+| Nome stazione | nel PDF: `Impianto lavorazione SO2` (OGGETTO), `Sistema Analisi Emissioni` | `Sistema Analisi SO2` (dedotto) | `SME` (placeholder) |
+
+**Conclusione caso 6: il ground truth legacy non è un riferimento di qualità.** Su 22 misure e 60 bit
+abbiamo il 100% del PDF; il legacy ha 2 registri errati, 18 bitinfo inventate e `TEXTON` disallineati.
+Il confronto tradizionale "output vs `gaia_doublefile_result_6.json`" non va letto come gap da colmare:
+le differenze vanno valutate una a una sul PDF. Il test
+`test_legacy_ha_errori_noti_il_nostro_no` fissa questi punti, così nessuna correzione futura li
+riporta indietro per allineare al legacy.
+
+Da discutere col cliente (non difetti): le unità di misura non esistono nel PDF. Se le vuole in ADAS
+vanno fornite (Tabella 6 JOB per il caso 6) o concordata una regola di inferenza; noi oggi emitto
+`mg/Nm3` dove la scala SO2 è dichiarata, `null` altrove — mai un valore inventato.
+
+### Punti aperti
+
+* Verdetto ADAS del caso 7 rilettosu PDF con lo stesso metodo del caso 6 (la run c'è:
+  39 misure + 42 bitinfo, ma nessun confronto riga per riga ancora).
+* Unità di misura e limiti orario/giornaliero: il PDF del caso 6 non li contiene (Tabella 6 JOB sì);
+  oggi emettiamo `mg/Nm3` dove la scala è dichiarata. Serve la regola dal cliente.
+* Scala `TF` non collegata (tag JOB `TF` vs misura `Temperatura fumi`; mappa in Tabella 6 JOB).
+* Verificare che `DATA_TYPE` arrivi anche alle misure `INT` di altri casi (nel caso 6 è arrivato:
+  QAL3 con formato 150 contro 250 del legacy).
 * Specifiche BISON/linearizzazioni dal cliente (come nel Single).
+* Terza coppia IOL+JOB mai vista, per allargare il campione oltre caso 6/7.
 * Chiave ufficiale di abbinamento IOL/JOB su riferimenti discordanti (caso Ospedale: IOL cita `JOB.0187.25`, accanto c'è `JOB.0007.18`).
 
 ---
@@ -159,37 +195,50 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 
 ### Sopra al legacy (con evidenza)
 
-* **Righe fantasma mai inventate** — riserve 420–424/428–430, filler numerici,
-  bianche: saltate e conteggiate. Il GT gaia6 ha 12 bitinfo fantasma su righe
-  bianche; il legacy inventava `Comando riservato`.
-* **BIT da colonna** — 6/6 da coordinate PDF; dove GT e noi differiamo
-  (PM-302x shiftati, off-by-one a 430), il PDF dà ragione a noi.
+* **Tutti i 22 registri e tutti i 60 bit del PDF** — verifica riga per riga sul foglio IOL del
+  caso 6, fissata in `tests/test_adas_caso6_pdf_truth.py`. Il GT gaia6 ha 2 registri sbagliati
+  (430/431 invece di 431/432) e **18 `bitinfo` fantasma** (12 su righe bianche, più duplicati di
+  `PM-2601A/B` e dei 4 ventilatori): 78 contro 60.
+* **Righe fantasma mai inventate** — riserve 420–424/428–430, filler numerici, bianche: saltate e
+  conteggiate. Il legacy ha trasformato la riga `DBW 922` (senza TITOLO) in un bit e ha lasciato un
+  `bitinfo` orfano senza `MEASUREID` valido.
+* **BIT da colonna** — 6/6 da coordinate PDF; dove GT e noi differiamo (PM-302x shiftati,
+  ventilatori a 4–7, off-by-one a 430), il PDF dà ragione a noi.
+* **`DATA_TYPE` → formato analogico** — i QAL3 sono `INT` nel PDF e vengono scritti 150; il legacy
+  li scrive 250 (`INT` ignorato).
 * **Niente default silenziosi** — disaccordi in `review`, mai fusi in silenzio.
 * **Struttura ADAS valida** — Pydantic `success: True`; XML con IP/porta veri
   (il legacy forzava IP o placeholder senza warning).
 
 ### Pari con riserve
 
-* **TEXTON** — nessuno li legge (nel PDF non esiste colonna di stato). Il GT ha
-  tabella più ricca ma con errori propri (`Pompa analisi`→`CALIBRAZIONE`); noi
-  con default + keyword. Da passare in review, non da automatizzare alla cieca.
-* **Nomi stazione** — la 3.8 trova `Sistema Analisi SO2`; il leggero ripiega su `SME`.
+* **TEXTON** — nessuno li legge (nel PDF non esiste colonna di stato). Il GT ha una tabella più
+  ricca ma disallineata di una riga (`ACK ALLARMI`→`MANUTENZIONE`): noi con default + keyword,
+  da passare in review e non da automatizzare alla cieca.
+* **Nomi stazione** — la 3.8 trova `Sistema Analisi SO2`; il leggero ripiega su `SME`. Nel PDF i
+  titoli sono `Impianto lavorazione SO2` e `Sistema Analisi Emissioni`: il nome va confermato.
+* **`UNITS`** — il GT ha `mg/Nm3` e `°C`, noi solo `mg/Nm3` dove la scala SO2 è dichiarata.
+  Ma il PDF **non ha la colonna unità**: i valori del GT sono inferenze. Non è un dato che si
+  può pretendere dagli altri senza discutere la fonte.
 
 ### Sotto al legacy (da dire al cliente)
 
 * **BISON/linearizzazione** — il legacy la faceva (`Json Creator & BISON`);
   noi emettiamo il default. Bloccato in attesa specifiche (TODO.md).
-* **UNITS e limiti** — GT ha mg/Nm³ e °C; noi `null`. Recuperabili da Tabella 6
-  JOB: lavoro nostro, non del cliente.
-* **Scala TF non collegata** (`TF` vs `Temperatura fumi`) — stesso lavoro di cui sopra.
-* **Campione** — verifica profonda su 1 coppia IOL/JOB + 3 Single; il legacy
-  girava su più casi. Caso 7 e SIEMENS_2 prima di allargare le conclusioni.
+* **Scala TF non collegata** (`TF` vs `Temperatura fumi`) e limiti orario/giornaliero mai estratti.
+* **Campione** — verifica profonda su 2 coppie IOL/JOB (6 e 7, di cui solo il 6 riletto riga per
+  riga) + 3 Single; il legacy girava su più casi. Una terza coppia mai vista prima di allargare le
+  conclusioni.
 
 ### Decisioni che spettano al cliente
 
 1. Zeri iniziali (`00033` = HMI→`40033` o registro `33`?).
 2. Specifiche BISON (mapping scale, template, funzioni Manager).
 3. Regola V2 sui nomi prefissati (`Riserva INPUT` dentro o fuori?).
+4. Unità di misura: il PDF IOL non le dichiara. Valgono le unità di Tabella 6 JOB, o si vuole
+   una regola di inferenza per grandezza nota (SO2 in mg/Nm³, temperatura fumi in °C)?
+5. Nome stazione atteso in ADAS (`Sistema Analisi SO2` dedotto vs `Impianto lavorazione SO2`
+   del PDF vs `SME` del legacy).
 
 ## 📓 Diario aggiornamenti
 
@@ -207,3 +256,4 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 | 05/10/2026 | Double PDF | Serie 3.8 canvas salvata (22+60, linkage intatto, TEXTON di qualità): PM-302A/B 0/1 da risolvere in review, stazione `SME` di default in questa run |
 | 05/10/2026 | Double PDF | Caso 7 serie 3.8 fino all'ADAS (39 misure + 42 bitinfo, IP `.31`:511): bit wrap REG 1 e bianche corretti; 5 variabili perse con warning (carry-over cross-pagina); aperto formato INT senza `data_type` |
 | 05/10/2026 | Double PDF | Senza-cliente implementati: A1+A2 Single (v4.4), `DATA_TYPE` da TIPO (prompt misure v4) con pass-through, unità/limiti da scale (prompt Station v5), suggerimento carry-over cross-pagina (mai applicato) |
+| 05/10/2026 | Double PDF | **Verdetto caso 6**: ADAS della run 3.8 completa confrontato riga per riga col PDF IOL (22 registri, 60 bit, formati, nomi). 100% del PDF; il GT legacy sbaglia 2 registri, 18 bit e i `TEXTON` (shift di una riga). `DATA_TYPE` confermato a valle (QAL3 `INT` → 150). Fixture `observed_adas_case6_qwen38_datatype.json`, test di verità `tests/test_adas_caso6_pdf_truth.py`, confronto meccanico rigenerato |

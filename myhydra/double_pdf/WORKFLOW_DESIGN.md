@@ -40,9 +40,10 @@ Il diagramma riporta i nodi verificati; lo screenshot conferma il cablaggio dell
 | Filtri e inoltro alle tre destinazioni | Output MyHydra: 6 Station, 7 Measurement, 1 Density nel caso 6 | Verificata in una run; gli indici 1–14 risultano partizionati una sola volta |
 | Recupero immagine da chiave nel ramo Station | Medex ha mostrato le sei immagini Station | Verificata per il ramo osservato |
 | Estrazione Station e associazione ai metadati | Dopo l'aggiornamento dell'associatore, tutte le 6 pagine terminano senza errori. Dati nelle pagine 6, 7 e 11; `[]` nelle 9, 10 e 12. | Catena tecnica verificata; classificazione e valori da revisionare |
-| Estrazione Measurement | Run Qwen 3.8: 7 envelope `OK` associati a pagina e ramo; zero righe estratte | Il tagging funziona, la qualità di lettura no; verificare il media con una trascrizione breve prima di progettare il merge |
+| Estrazione Measurement (3 rami) | Run Qwen 3.8: 69 misure IOL 2–5; ramo bitinfo e ramo stati acquisiti; assemblata per pagina con join su nome | Verificato il 5/10 su tutte le pagine IOL utili |
 | Consolidamento LV1 | `CONSOLIDA PRE-JSON CREATOR` cablato (edge diretti #10/#11/#12), run 3.8 `OK`: stazione `Sistema Analisi SO2`, 69 variabili, scale SO2 collegate | Verificato il 5/10; resta `TF` non collegata + `limit_*` nulli |
-| Aggregazione e JSON finale | Prima uscita ADAS caso 6 prodotta in locale il 5/10 (chunk 3.8 → `json_creator` v4.3) | Da confrontare col ground truth legacy + `verifica_pdf` |
+| Aggregazione e JSON finale | Uscita ADAS caso 6 (run 3.8) confrontata riga per riga col PDF IOL: 22 misure, 60 bitinfo, 22 registri, formati `INT`→150 / `REAL`→250, `UNITS mg/Nm3` su SO2 | **Verificato il 5/10.** Il confronto è contro il PDF, non contro `gaia_doublefile_result_6.json`: il legacy ha 2 registri errati, 18 `bitinfo` fantasma e `TEXTON` shiftati di una riga. Test di verità: `tests/test_adas_caso6_pdf_truth.py` |
+| Aggregazione e JSON finale, caso 7 | Uscita ADAS 39 misure + 42 bitinfo, `172.16.1.31:511`, 5 variabili scartate con avviso | Meccanica verificata il 5/10; **manca** il confronto riga per riga col PDF del caso 7 |
 
 Le esecuzioni MyHydra possono restituire classificazioni diverse tra run sulle pagine di confine. I fixture anonimizzati conservano risultati distinti; un risultato osservato non va trattato come ground truth se ha `review_required: true`. Il `sequence_index` è posizionale nell'ordine di ricezione (gli upload arrivano in ordine casuale e il Medex decide il parsing): non identifica la pagina fisica tra run diverse. Per selezionare pagine in modo stabile usare `document_role` + `label`, mai l'indice.
 
@@ -70,12 +71,13 @@ Nell'output MyHydra `review_required` appare come numero (`0`/`1`) e `review_war
 
 ## Prossime fasi
 
-1. Confrontare i campi estratti Station con le pagine sorgente e mantenere i warning sulle pagine 11 e 12.
-2. Normalizzare `review_required` e `review_warnings` in modo esplicito prima dell'aggregazione.
-3. Fare una run diagnostica Measurement con `{edge.media}[2]` nel campo Prompt e il probe breve in Powered identity. La piattaforma itera sulle pagine del ramo; confrontare intestazioni e righe restituite per le IOL 2–4 con le pagine sorgente.
-4. Se la trascrizione è corretta, semplificare la Powered identity di estrazione `MEASURES_BISON`; se non lo è, controllare il token media e la pagina ricevuta prima di cambiare le regole di estrazione.
-5. Definire come associare estrazioni Station e Measurement usando evidenze dei documenti, senza dedurre il PDF dal prefisso della chiave.
-6. Implementare aggregazione, revisione degli avvisi, normalizzazione e output finale solo dopo aver stabilizzato le estrazioni per pagina.
+1. Rifare il confronto riga per riga del caso 7 con lo stesso metodo del caso 6 (verità PDF, non legacy), e fissarlo in un test come `tests/test_adas_caso6_pdf_truth.py`.
+2. Decidere con il cliente la fonte delle unità di misura: il PDF IOL non ha la colonna, i valori del legacy sono inferenze.
+3. Confermare il nome stazione atteso in ADAS (`Sistema Analisi SO2` dedotto vs `Impianto lavorazione SO2` del PDF vs `SME` del legacy).
+4. Collegare la scala `TF` (tag JOB `TF` vs misura `Temperatura fumi`) e estrarre i limiti orario/giornaliero.
+5. Verificare che `DATA_TYPE` arrivi a valle anche in altri casi (nel caso 6 sì: QAL3 `INT` → formato 150).
+6. Conservare i warning sulle pagine Station 11 e 12 e normalizzare `review_required`/`review_warnings` in modo esplicito prima dell'aggregazione.
+7. Terza coppia IOL+JOB mai vista, prima di allargare le conclusioni di qualità.
 
 ## Elementi parcheggiati
 
