@@ -42,7 +42,7 @@ Il diagramma riporta i nodi verificati; lo screenshot conferma il cablaggio dell
 | Estrazione Station e associazione ai metadati | Dopo l'aggiornamento dell'associatore, tutte le 6 pagine terminano senza errori. Dati nelle pagine 6, 7 e 11; `[]` nelle 9, 10 e 12. | Catena tecnica verificata; classificazione e valori da revisionare |
 | Estrazione Measurement | Run Qwen 3.8: 7 envelope `OK` associati a pagina e ramo; zero righe estratte | Il tagging funziona, la qualità di lettura no; verificare il media con una trascrizione breve prima di progettare il merge |
 | Consolidamento LV1 | `CONSOLIDA PRE-JSON CREATOR` cablato (edge diretti #10/#11/#12), run 3.8 `OK`: stazione `Sistema Analisi SO2`, 69 variabili, scale SO2 collegate | Verificato il 5/10; resta `TF` non collegata + `limit_*` nulli |
-| Aggregazione e JSON finale | Non implementati nel nuovo workflow | Da progettare dopo le estrazioni |
+| Aggregazione e JSON finale | Prima uscita ADAS caso 6 prodotta in locale il 5/10 (chunk 3.8 → `json_creator` v4.3) | Da confrontare col ground truth legacy + `verifica_pdf` |
 
 Le esecuzioni MyHydra possono restituire classificazioni diverse tra run sulle pagine di confine. I fixture anonimizzati conservano risultati distinti; un risultato osservato non va trattato come ground truth se ha `review_required: true`. Il `sequence_index` è posizionale nell'ordine di ricezione (gli upload arrivano in ordine casuale e il Medex decide il parsing): non identifica la pagina fisica tra run diverse. Per selezionare pagine in modo stabile usare `document_role` + `label`, mai l'indice.
 
