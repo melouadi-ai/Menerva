@@ -192,7 +192,7 @@ Filtro debug a pagina singola (prima IOL + Measurement: sequenza 2) + sonda al p
 
 Verifiche sul canvas (da screenshot): campo Prompt di `ESTRAI MISURE E BISON` contiene esattamente `{edge.media}[2]`; core selezionato `marycoder - Qwen 3.8 Flash Next 180B 4 bit`; `Tipo messaggio: Testo`. Configurazione apparentemente corretta, ma il VLM dichiara immagine assente. Ipotesi rimaste: token media non risolto in questo nodo nonostante la sintassi giusta (la separazione dei campi non è mai stata verificata con successo su nessun VLM: anche le classificazioni post-separazione vanno ricontrollate), oppure Medex del ramo che non emette. Prossimo passo: confrontare campo per campo con un VLM che legge (classifier/Station) e, se identici, sonda Naive diretta sull'output Medex del ramo.
 
-Regola confermata: modello leggero solo per prove di plumbing; la qualità di estrazione si giudica solo con Qwen 3.8, e i confronti tra run valgono solo a parità di modello e di classificazione.
+Regola confermata: modello leggero 3.6 solo per prove di plumbing; la qualità di estrazione si giudica solo con Qwen 3.8, e i confronti tra run valgono solo a parità di modello e di classificazione.
 
 ## Prima raccolta output condivisa
 
