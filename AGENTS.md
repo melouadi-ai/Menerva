@@ -41,9 +41,8 @@ Sync habit in this repo is `sync.sh`: `git pull origin main`, `git add .`, times
 ## Stato attuale (5 ott 2026)
 
 - Single PDF: prompt v13 + `src/nodes/json_creator.py` v4.3. Registro verificato in `myhydra/single_pdf/PENDENZE.md` (A1 guardia copertura mai attivabile, A2 copia `myhydra/` ferma a v4.2 — entrambi aperti).
-- Double PDF caso 6: LV1 verificata (14 pagine uniche, filtri 6 Station / 7 Measurement / 1 Density); LV2 Station verificata (6 pagine associate); LV2 Measurement a 3 rami verificata (65 misure leggero, 69 misure serie Qwen 3.8, BIT ramo misure corretto 6/6 da coordinate PDF).
-- Lavoro non committato in corso: assemblatore per pagina `assemble_page_measurements.py` + `test_assemble_page_measurements.py` (5 test); consolidatore LV1 `consolidate_to_intermediate.py` + scheda `nodes/lv1_06_consolidator.md` + `test_consolidate_to_intermediate.py` (5 test); 7 nuovi fixture `observed_lv2_*` + 1 station; riallineamento edge tagger (`{edge}[8]`/`[4]`/`[5]`); doc (`WORKFLOW_DESIGN.md`, `lv2_06`, `platforms/README.md`, report qualità Double PDF).
+- Double PDF caso 6: LV1 verificata (14 pagine uniche, filtri 6 Station / 7 Measurement / 1 Density); LV2 Station verificata (6 pagine associate); LV2 Measurement a 3 rami verificata; assemblatore per pagina cablato (nodo 8) e validato; `CONSOLIDA PRE-JSON CREATOR` cablato (edge diretti 10/11/12) con run 3.8 `OK` (69 variabili, fixture in `tests/case_6/outputs/observed_lv1_consolidator_qwen38_sanitized.json`).
 
 ## Prossimo passo
 
-Cablare su canvas i due pytool non iterativi ancora solo locali: (1) assemblatore per pagina dentro la sottopiattaforma Measurement dopo i tagger (riportare nello script gli indici reali misure/bitinfo/stati e nel doc); (2) `CONSOLIDA INTERMEDIO VLM` dopo le iniezioni LV2 (impostare `STATION_EDGE`/`MEASURE_EDGE`/`DENSITY_EDGE` reali — con `None` lo script fallisce esplicitamente). Poi re-run fresca con script verificati identici al repo e confronto con i fixture serie prima di progettare l'output ADAS finale via `json_creator`.
+Conversione ADAS finale: far digerire a `src/nodes/json_creator.py` il chunk del `CONSOLIDA PRE-JSON CREATOR` (run 3.8 salvata in `myhydra/double_pdf/tests/case_6/outputs/observed_lv1_consolidator_qwen38_sanitized.json`) e confrontare l'output col `verifica_pdf` / ground truth legacy. Nodi canvas già tutti cablati e verificati.

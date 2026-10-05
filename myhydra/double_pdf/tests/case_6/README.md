@@ -43,6 +43,7 @@ Il payload completo di chiavi runtime è effimero e non viene archiviato. La for
 | [`outputs/observed_lv2_measurement_qwen38_serie_measures_sanitized.json`](outputs/observed_lv2_measurement_qwen38_serie_measures_sanitized.json) | **Riferimento serie Qwen 3.8**: 69 misure IOL 2–5, pagina 4 come oggetto singolo, split multi-station a pagina 3, mappe `NAME:BIT` per validare il join; bitinfo/stati serie analizzati a parte |
 | [`outputs/observed_lv2_measurement_assembly_light_sanitized.json`](outputs/observed_lv2_measurement_assembly_light_sanitized.json) | Prima run assemblatore (leggero): 9 pagine `OK`, review dove serve, pagina 4 pulita; verdetto struttura per pagina |
 | [`outputs/observed_lv2_station_information_light_run_sanitized.json`](outputs/observed_lv2_station_information_light_run_sanitized.json) | Run Station con VLM leggero, 4 pagine (6,7,9,10): attribuzione intatta e dati veri; prova che `{question}` funziona mentre i tagger Measurement la vedono vuota |
+| [`outputs/observed_lv1_consolidator_qwen38_sanitized.json`](outputs/observed_lv1_consolidator_qwen38_sanitized.json) | Consolidatore 3.8 (run 5/10): `OK`, stazione `Sistema Analisi SO2` `10.100.50.95:511`, 69 variabili, scale SO2 collegate, `bit_conflicts` p2/p3 con valori usati conformi al PDF |
 | [`outputs/expected_unique_page_labels.json`](outputs/expected_unique_page_labels.json) | Etichette deduplicate per chiave, 14 elementi |
 | [`outputs/expected_pytool_first_window.json`](outputs/expected_pytool_first_window.json) | Risultato atteso del Pytool sul primo giro |
 

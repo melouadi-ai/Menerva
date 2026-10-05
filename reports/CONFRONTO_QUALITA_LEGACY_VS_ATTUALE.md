@@ -1,8 +1,8 @@
 # Benchmark di Qualità: Vecchio Sistema Legacy vs Nuovo Menerva MAS
 
 > **Documento ad uso Direzionale e Tecnico per Clienti**  
-> *Data ultimo aggiornamento: 2 Ottobre 2026*  
-> *Versione Pipeline Attuale: VLM Prompt v13 + Pytool json_creator v4.3 (Single PDF); Double PDF IOL+JOB in sviluppo (LV2 Measurement validata su MyHydra, caso 6)*
+> *Data ultimo aggiornamento: 5 Ottobre 2026*  
+> *Versione Pipeline Attuale: VLM Prompt v13 + Pytool json_creator v4.3 (Single PDF); Double PDF IOL+JOB in sviluppo (assemblatore + consolidatore cablati su MyHydra, caso 6; in attesa run Qwen 3.8 del consolidatore)*
 
 ---
 
@@ -110,9 +110,9 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 
 ---
 
-## 🏗️ Doppio PDF (IOL + JOB): Legacy vs Nuovo — stato al 2 Ottobre 2026
+## 🏗️ Doppio PDF (IOL + JOB): Legacy vs Nuovo — stato al 5 Ottobre 2026
 
-> Perimetro diverso dal Single PDF sopra: qui i documenti arrivano in coppia (mappatura IOL + descrizione JOB) caricati insieme in chat, in ordine casuale e senza metadati di origine. I casi di riferimento sono la coppia 6 (`JOB.0139.23`, 5+9 pagine) e la coppia 7 (`JOB.0105.22`, 4+7 pagine). Stato: estrazione per pagina validata su MyHydra (caso 6); consolidamento cross-pagina e conversione ADAS finale ancora da implementare.
+> Perimetro diverso dal Single PDF sopra: qui i documenti arrivano in coppia (mappatura IOL + descrizione JOB) caricati insieme in chat, in ordine casuale e senza metadati di origine. I casi di riferimento sono la coppia 6 (`JOB.0139.23`, 5+9 pagine) e la coppia 7 (`JOB.0105.22`, 4+7 pagine). Stato: catena completa LV1→LV2→consolidatore cablata su MyHydra (caso 6); meccanica verificata con modello leggero; qualità in attesa della run Qwen 3.8 del consolidatore; conversione ADAS finale ancora da implementare.
 
 ### Differenze architetturali (verificate su MyHydra)
 
@@ -121,22 +121,29 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 | **Distinzione IOL/JOB** | Solo categoria pagina (`STATION_INFORMATION` / `MEASUREMENT_TECHNICAL_DATA` / `DENSITY_MAP`), nessun ruolo documento | Il VLM assegna anche `document_role` (`IOL` / `JOB` / `UNKNOWN`) da evidenze visive | Caso 6: 5 IOL + 9 JOB; caso 7: 4 IOL + 7 JOB, coerenti coi riferimenti interni dei PDF |
 | **Pagine ripetute** | Finestre sovrapposte senza deduplicazione generale | Deduplicazione per chiave media con avvisi sui disaccordi | 14 pagine uniche su 27 associazioni (caso 6) |
 | **Instradamento** | Rami condizionali su stringa aggregata (non funzionante su liste) | 3 Pytool filtro per `label`, una pagina alla volta | 6 Station + 7 Measurement + 1 Density, chiavi conservate |
-| **Merge misure/bitinfo** | 6 nodi (Better Measures, Merge Bitinfo, Biname, Delete Null, Check Group...) con rimappature ID fragili | 1 assemblatore per pagina con coda di revisione | 9 pagine `OK`, pagina 4 pulita (`review: []`); validato su MyHydra il 2/10 |
+| **Merge misure/bitinfo** | 6 nodi (Better Measures, Merge Bitinfo, Biname, Delete Null, Check Group...) con rimappature ID fragili | 1 assemblatore per pagina con coda di revisione | 7 pagine `OK` (run 3.8), pagina 4 pulita (`review: []`); validato su MyHydra il 5/10 |
 | **Errori di estrazione** | Default silenziosi (placeholder `SME`, stati inventati) | Conflitti in `review`, mai scelte silenziose | BIT discordanti tra rami segnalati invece che fusi |
+| **Cablaggio tagger** | Edge impliciti non documentati | Edge VLM→tagger verificati su screenshot (`#6`/`#4`/`#5`) e riallineati nel repo | Fix 5/10: `ETICHETTA OUTPUT MISURE E BISON` leggeva `{edge}[8]` invece di `[6]` |
+| **Consolidamento** | Merge per IP dentro LV2 iterativa | 1 Pytool non iterativo `CONSOLIDA PRE-JSON CREATOR` in LV1 (edge diretti `#10`/`#11`/`#12`), output chunk per `json_creator` | Meccanica `OK` con modello leggero il 5/10: 65 variabili, IP `10.100.50.95:511`, scale SO2 collegate |
 
-### Risultati verificati contro il PDF (caso 6, IOL)
+### Risultati verificati contro il PDF (caso 6, IOL+JOB, fogli visionati)
 
 | Verifica | Metodo | Esito |
 |---|---|---|
 | 69 misure estratte (pagine IOL 2–5) | Confronto nomi/registri col testo PDF | Nomi radicati pagina per pagina; RAN `SO2 Raw` REG 17, `Temperatura fumi Raw` REG 33, QAL3 tempi REG 9/10/11 confermati |
-| Righe fantasma non inventate | Coordinate colonna REG/BIT | Riserve 420–424 saltate, `Ack allarmi` a 425 senza riempitivi (il legacy inventava `Comando riservato`) |
-| BIT ramo misure corretto 6/6 | Coordinate colonna BIT | PM-302A=1, PM-310A=4, Sistema=8, Secondo campo=15, QAL3=0, Pompa=7 — il ramo bitinfo dava valori diversi (0, 2, 0, 7, 8, 15) |
+| Righe fantasma non inventate | Coordinate colonna REG/BIT | Riserve 420–424 e 428–430 saltate, `Ack allarmi` a 425 senza riempitivi (il legacy inventava `Comando riservato`); filler numerici 66.x/67.x scartati (16) |
+| Pagina 2 completa 30/30 | Riga per riga sul foglio Allarmi+Stati | Tutti i BIT da colonna (Sistema 8, Secondo campo 15, QAL3 0, Pompa 7, PLC life 13); bianche saltate |
+| Pagina 3: PM-302A/B | Colonna BIT foglio Stati 2 | PDF dice 1/2; run con rami concordi su 0/1 (errore condiviso, review muta), run con rami discordi flagged `bit_conflicts` (usato 0/1) — risoluzione per verità PDF favorisce il bitinfo |
 | REG ventilatori = 6 | Carry-over da colonna (ultimo esplicito PM-2600A) | Run leggera diceva 7 (sezione DBW), run 3.8 dice 6: decide il PDF, non il modello |
+| Pagina 4/5 pulite | Riga per riga fogli Misure/Comandi | SO2 49, TF 65, CMD 417–419/425–427/431–432, stimata SO2 433 e TF 441; `review: []` |
 | Stati ON/OFF | Testo tabella | Nelle righe non esiste testo di stato: TEXTON derivato dal nome, TEXTOFF `OFF` default — convenzione valida, dato derivato (non letto) |
+| Disciplina modelli | Confronto run leggero vs 3.8 | Leggero solo per plumbing (BIT posizionali, TEXTON fantasiosi, 4 pagine Station); qualità solo con Qwen 3.8 a parità di classificazione |
 
 ### Punti aperti (non ancora misurabili)
 
-* Consolidamento cross-pagina (unire le 7 pagine Measurement + dati Station) e conversione ADAS finale con riuso di `json_creator` — progettazione dopo l'assemblatore.
+* Run Qwen 3.8 del `CONSOLIDA PRE-JSON CREATOR` e confronto col PDF (meccanica già verde col leggero).
+* Conversione ADAS finale con riuso di `json_creator` dopo la run 3.8.
+* Scala `TF` non collegata (tag JOB `TF` vs misura `Temperatura fumi`; mappa in Tabella 6 JOB) e limiti orario/giornaliero (60 mg/Nm³) mai estratti da alcun ramo.
 * Specifiche BISON/linearizzazioni dal cliente (come nel Single).
 * Chiave ufficiale di abbinamento IOL/JOB su riferimenti discordanti (caso Ospedale: IOL cita `JOB.0187.25`, accanto c'è `JOB.0007.18`).
 
@@ -151,3 +158,5 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 | 01/10/2026 | Double PDF | LV1 verificata (14 + 11 pagine); filtri e iniezioni LV2 funzionanti; Station estratta (6 pagine) |
 | 02/10/2026 | Double PDF | Diagnosi input Medex (estratto-chiave superfluo) e layout VLM (inline e separato entrambi validi); sonda leggibilità `image_readable: true` con righe radicate nel PDF |
 | 02/10/2026 | Double PDF | Prima estrazione completa (65 misure, VLM leggero); run serie Qwen 3.8 (69 misure); assemblatore per pagina validato su MyHydra; 6 BIT verificati da coordinate PDF |
+| 05/10/2026 | Double PDF | Fix edge tagger misure (`[8]`→`[6]`); run con blocco DEBUG (pagina 2 pulita 30/30, pagina 3 `bit_conflicts` con verità PDF a favore bitinfo); verifica riga-per-riga sui fogli IOL; `CONSOLIDA PRE-JSON CREATOR` cablato (edge diretti 10/11/12) con meccanica OK in run leggera; disciplina leggero=plumbing / 3.8=qualità |
+| 05/10/2026 | Double PDF | Run 3.8 del consolidatore `OK` (69 variabili, IP `.95`:511, scale SO2): BIT misure corretti anche a pagina 3 (1/2/4/5 = verità PDF); restano TEXTON parziali su REG 3, scala TF e `Misura stimata SO2` in `W` da verificare |

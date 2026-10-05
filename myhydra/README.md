@@ -39,9 +39,9 @@ La distinzione fra i due livelli è nella struttura logica e nel nome dei file, 
 
 ## Stato attuale
 
-**Single PDF.** Il prompt v13 e il pytool `json_creator.py` v4.2 sono implementati, con 15 test automatici superati. Il flusso è completo su carta ma non è mai stato eseguito sulla piattaforma con il prompt v13. La lacuna principale è l'aggregazione multi-pagina del motore iterativo, mai verificata su dati reali. BISON e linearizzazione sono bloccate in attesa di specifiche del cliente. Dettagli in [`single_pdf/README.md`](single_pdf/README.md).
+**Single PDF.** Prompt v13 e pytool `json_creator.py` v4.3 in `src/`; la copia in `single_pdf/pytools/` è ferma a v4.2 (bloccante A2 in [`single_pdf/PENDENZE.md`](single_pdf/PENDENZE.md), da sincronizzare dopo A1). Stato verificato e registro in [`single_pdf/PENDENZE.md`](single_pdf/PENDENZE.md). Il flusso è completo su carta ma non è mai stato eseguito sulla piattaforma con il prompt v13. La lacuna principale è l'aggregazione multi-pagina del motore iterativo, mai verificata su dati reali. BISON e linearizzazione sono bloccate in attesa di specifiche del cliente. Dettagli in [`single_pdf/README.md`](single_pdf/README.md).
 
-**Double PDF.** Il caso 6 è arrivato alla classificazione VLM delle finestre di pagine. I risultati del test e la ricostruzione delle 14 pagine sono in [`double_pdf/tests/case_6/outputs/`](double_pdf/tests/case_6/outputs/). Il Pytool successivo deve associare le etichette locali alle chiavi ricevute nello stesso giro iterativo. Dettagli in [`double_pdf/README.md`](double_pdf/README.md).
+**Double PDF.** Caso 6: catena completa LV1→LV2→consolidatore cablata su canvas (filtri, 3 VLM Measurement + tagger, assemblatore per pagina, `CONSOLIDA PRE-JSON CREATOR`); meccanica verificata, qualità in attesa della run Qwen 3.8 del consolidatore. Stato di progettazione in [`double_pdf/WORKFLOW_DESIGN.md`](double_pdf/WORKFLOW_DESIGN.md), fixture in [`double_pdf/tests/case_6/outputs/`](double_pdf/tests/case_6/outputs/).
 
 **Avvertenza comune.** Le fixture di entrambi i workflow contengono dati di produzione presi alla lettera, indirizzi IP e nomi di clienti. Vanno sanitizzate prima di pubblicare il repository o di usarle in un prompt.
 
