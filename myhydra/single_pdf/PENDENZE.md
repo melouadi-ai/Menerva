@@ -218,8 +218,8 @@ Quindi il VLM ha trascritto fedelmente e il ground truth legacy è stato quello 
 
 | # | Voce | Tipo | Stato |
 |---|---|---|---|
-| A1 | Avviso di copertura mai attivabile | codice | bloccante |
-| A2 | Copia pytool in `myhydra/` ancora v4.2 | sincronizzazione | bloccante, dopo A1 |
+| A1 | Avviso di copertura mai attivabile | codice | ✅ risolto 5/10 (v4.4: stesso `page_no` + soglia 100; test dedicati) |
+| A2 | Copia pytool in `myhydra/` ancora v4.2 | sincronizzazione | ✅ risolto 5/10 (`json_creator_v4_4.py` + hash, v4.2 conservata come storico) |
 | A3 | Fixture storiche col difetto della v4.3 | informazione | da mantenere |
 | B1 | Zeri iniziali negli indirizzi | decisione cliente | aperto |
 | B2 | IP dichiarati e mai usati | prompt | da fare |

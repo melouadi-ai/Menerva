@@ -152,6 +152,100 @@ def test_multi_ip_keeps_first_and_flags_review():
     assert "multi_plc_unresolved" in rules
 
 
+def test_data_type_passthrough_never_inferred():
+    measure_pages = [
+        assembled_page(2, [{
+            "NAME": "S", "DRIVERNAME": "modbusplc", "DRIVERCONFIG": ":",
+            "ID": 1, "measures": [
+                {"NAME": "M_INT", "UNITS": None, "DRIVERDATA": 0, "TYPE": 0,
+                 "ID": 1, "MODBUSREGISTRO": 17, "BIT": None,
+                 "TEXTON": None, "TEXTOFF": None, "DATA_TYPE": "INT"},
+                {"NAME": "M_REAL", "UNITS": None, "DRIVERDATA": 0, "TYPE": 0,
+                 "ID": 1, "MODBUSREGISTRO": 49, "BIT": None,
+                 "TEXTON": None, "TEXTOFF": None, "DATA_TYPE": "REAL"},
+                {"NAME": "M_NONE", "UNITS": None, "DRIVERDATA": 0, "TYPE": 0,
+                 "ID": 1, "MODBUSREGISTRO": 65, "BIT": None,
+                 "TEXTON": None, "TEXTOFF": None},
+                {"NAME": "M_BLANK", "UNITS": None, "DRIVERDATA": 0, "TYPE": 0,
+                 "ID": 1, "MODBUSREGISTRO": 81, "BIT": None,
+                 "TEXTON": None, "TEXTOFF": None, "DATA_TYPE": "  "},
+            ],
+        }]),
+    ]
+    result = run_consolidator([], measure_pages, [])
+    assert result["status"] == "OK", result
+    by_name = {v["description"]: v for v in result["stations"][0]["variables"]}
+    assert by_name["M_INT"]["data_type"] == "INT"
+    assert by_name["M_REAL"]["data_type"] == "REAL"
+    assert by_name["M_NONE"]["data_type"] is None
+    assert by_name["M_BLANK"]["data_type"] is None
+
+
+def test_scales_link_units_and_limits_without_overwrite():
+    station_pages = [
+        station_page([{
+            "nome_stazione": None, "stazione": None, "protocollo": "ModBus TCP",
+            "ip_plc": "10.100.50.95", "port": 511, "campi_scala": [
+                {"segnale": "SO2", "tag": "SO2", "campo_da": 0, "campo_a": 300,
+                 "unita": "mg/Nm3", "limite_giornaliero": 60, "limite_orario": 60},
+                {"segnale": "Temperatura fumi", "tag": "TF", "campo_da": 0, "campo_a": 100,
+                 "unita": "°C", "limite_giornaliero": None, "limite_orario": None},
+            ],
+        }]),
+    ]
+    measure_pages = [
+        assembled_page(2, [{
+            "NAME": "S", "DRIVERNAME": "modbusplc", "DRIVERCONFIG": ":",
+            "ID": 1, "measures": [
+                {"NAME": "SO2", "UNITS": None, "DRIVERDATA": 0, "TYPE": 0,
+                 "ID": 1, "MODBUSREGISTRO": 49, "BIT": None,
+                 "TEXTON": None, "TEXTOFF": None},
+            ],
+        }]),
+    ]
+    result = run_consolidator(station_pages, measure_pages, [])
+    assert result["status"] == "OK", result
+    var = result["stations"][0]["variables"][0]
+    assert var["scale_eng_start"] == 0
+    assert var["scale_eng_end"] == 300
+    assert var["units"] == "mg/Nm3"
+    assert var["limit_day"] == 60
+    assert var["limit_hour"] == 60
+    assert result["counters"]["scales_linked"] == 1
+    assert [s["tag"] for s in result["unmatched_scales"]] == ["TF"]
+
+
+def test_carry_over_cross_pagina_suggerito_mai_applicato():
+    page2 = assembled_page(2, [{
+        "NAME": "S", "DRIVERNAME": "modbusplc", "DRIVERCONFIG": ":",
+        "ID": 1, "measures": [
+            {"NAME": "Stato valvola", "UNITS": None, "DRIVERDATA": 2, "TYPE": 1,
+             "ID": 1, "MODBUSREGISTRO": 4, "BIT": 13,
+             "TEXTON": "Attivo", "TEXTOFF": "OFF"},
+        ],
+    }])
+    page3 = assembled_page(3, [{
+        "NAME": "S", "DRIVERNAME": "modbusplc", "DRIVERCONFIG": ":",
+        "ID": 1, "measures": [
+            {"NAME": "Impianto in marcia", "UNITS": None, "DRIVERDATA": 2, "TYPE": 1,
+             "ID": 1, "MODBUSREGISTRO": None, "BIT": 0,
+             "TEXTON": "Marcia", "TEXTOFF": "OFF"},
+            {"NAME": "Riga calcolata", "UNITS": None, "DRIVERDATA": 0, "TYPE": 0,
+             "ID": 1, "MODBUSREGISTRO": None, "BIT": None,
+             "TEXTON": None, "TEXTOFF": None},
+        ],
+    }])
+    result = run_consolidator([], [page2, page3], [])
+    assert result["status"] == "OK", result
+    suggeriti = [r for r in result["review"] if r["rule"] == "registro_suggerito"]
+    assert len(suggeriti) == 1, result["review"]
+    assert suggeriti[0]["page_sequence"] == 3
+    assert "REG 4" in suggeriti[0]["detail"]
+    by_name = {v["description"]: v for v in result["stations"][0]["variables"]}
+    assert by_name["Impianto in marcia"]["modbus_register"] is None
+    assert by_name["Riga calcolata"]["modbus_register"] is None
+
+
 def test_empty_branches_and_dict_inputs_tolerated():
     result = run_consolidator([], [], [])
     assert result["status"] == "OK", result

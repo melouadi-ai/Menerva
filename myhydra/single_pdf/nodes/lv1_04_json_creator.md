@@ -2,7 +2,7 @@
 
 - **Tipo/nome:** Pytool — merge delle pagine e trasformazione in formato ADAS.
 - **Input:** JSON intermedi aggregati dal nodo LV1-03, letti da `raw = r'''{edge}[4]'''`.
-- **Script:** [`../pytools/json_creator_v4_2.py`](../pytools/json_creator_v4_2.py).
+- **Script:** [`../pytools/json_creator_v4_4.py`](../pytools/json_creator_v4_4.py).
 - **Output:** lista di stazioni in formato ADAS, con `measures` e `bitinfo`.
 - **Posizione nella catena:** primo nodo dopo il motore iterativo. È la modifica strutturale prevista dall'Opzione B di ADR-001.
 

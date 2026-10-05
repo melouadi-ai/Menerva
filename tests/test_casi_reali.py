@@ -142,21 +142,22 @@ def meta_v(out, nome):
     return None
 
 
+def _molte_variabili(n, registro_base=40001):
+    return [_variabili("Segnale %d" % i, registro_base + i) for i in range(n)]
+
+
 def test_warning_copertura():
-    """Più pagine in un solo chunk devono generare l'avviso di copertura."""
-    due_pagine = [
-        {"stations": [{"name": None, "ip": "192.168.0.1", "port": 502,
-                       "modbus_id": 1,
-                       "variables": [_variabili("Segnale A", 40001)]}]},
-        {"stations": [{"name": None, "ip": "192.168.0.1", "port": 502,
-                       "modbus_id": 1,
-                       "variables": [_variabili("Segnale B", 40002)]}]},
-    ]
-    out = _run(due_pagine)
+    """Un solo chunk con più stazioni e volume sopra soglia = accorpamento."""
+    accorpato = [{"stations": [
+        {"name": None, "ip": "192.168.0.1", "port": 502, "modbus_id": 1,
+         "variables": _molte_variabili(60, 40001)},
+        {"name": None, "ip": "192.168.0.2", "port": 502, "modbus_id": 1,
+         "variables": _molte_variabili(60, 40101)},
+    ]}]
+    out = _run(accorpato)
     warn = " ".join(out[0].get("_warnings") or [])
-    _test("l'avviso di copertura compare su due pagine in un chunk",
-          "COPERTURA SOSPETTA" in warn, warn[:120])
-    _test("l'avviso cita il numero di pagine", "2 pagine" in warn)
+    assert "COPERTURA SOSPETTA" in warn, warn[:200]
+    assert "2 stazioni" in warn, warn[:200]
 
 
 def test_nessun_avviso_su_documento_singola_pagina():
@@ -164,8 +165,20 @@ def test_nessun_avviso_su_documento_singola_pagina():
     una_pagina = [_chunk([_variabili("Solo", 40001)], ip="192.168.0.1")]
     out = _run(una_pagina)
     warn = " ".join(out[0].get("_warnings") or [])
-    _test("nessun avviso di copertura su una pagina",
-          "COPERTURA SOSPETTA" not in warn)
+    assert "COPERTURA SOSPETTA" not in warn, warn[:200]
+
+
+def test_nessun_avviso_su_documento_piccolo():
+    """Due stazioni nella stessa pagina ma volume sotto soglia (caso SMA_1)."""
+    sma = [{"stations": [
+        {"name": "E1", "ip": "192.168.6.20", "port": 502, "modbus_id": 1,
+         "variables": _molte_variabili(30, 40001)},
+        {"name": "E1 1", "ip": "xxx.xxx.xxx.xxx", "port": 502, "modbus_id": 1,
+         "variables": _molte_variabili(20, 40101)},
+    ]}]
+    out = _run(sma)
+    warn = " ".join(out[0].get("_warnings") or [])
+    assert "COPERTURA SOSPETTA" not in warn, warn[:200]
 
 
 def test_caso_reale_protec_1():

@@ -4,7 +4,7 @@
 
 - **Prompt:** `{edge.media}[2]`
 - **Context:** vuoto
-- **Powered identity:** [`prompts/current/station_information_extraction_v4.md`](prompts/current/station_information_extraction_v4.md)
+- **Powered identity:** [`prompts/current/station_information_extraction_v5.md`](prompts/current/station_information_extraction_v5.md) (v5: righe scala con `unita` e limiti; v4 in `prompts/history/`)
 - **Stato:** associatore e catena di estrazione verificati in una run precedente; la Powered identity v4 va ancora verificata con i campi VLM separati.
 
 ## Script

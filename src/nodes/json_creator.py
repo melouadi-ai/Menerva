@@ -1,7 +1,13 @@
-# pytool - Json Creator finale (contratto intermedio -> formato ADAS) - v4.3
+# pytool - Json Creator finale (contratto intermedio -> formato ADAS) - v4.4
 # Input : edge 4 = JSON intermedio aggregato dal nodo iterativo
 # Output: lista di stazioni nel formato finale ADAS (measures + bitinfo)
 #
+# Change-log v4.3 -> v4.4:
+#  - A1: la guardia di copertura (pages>1 and chunks==1) non scattava mai
+#    (pages ha un elemento per chunk). Nuovo segnale: piu' stazioni con lo
+#    stesso page_no e volume sopra soglia 100 (SIEMENS_2 si, SMA_1 no).
+#  - Self-check linkage bitinfo->misure in _warnings (difesa in profondita').
+#  - Blocco validazione senza def/ricorsione (solo codice inline per canvas).
 # Change-log v4.2 -> v4.3:
 #  - Scarta le variabili senza indirizzo Modbus. Prima restavano a zero e
 #    producevano una misura con DRIVERPRIVATE "0x0000...", formalmente valida
@@ -741,15 +747,24 @@ else:
     warnings.extend(validation_warnings)
     if len(validation_errors) > 0:
         warnings.append("VALIDAZIONE SCHEMA (Pydantic): " + str(len(validation_errors)) + " stazione/i con errori -> " + " | ".join(validation_errors[:5]))
-    # v4.3: segnalazione della copertura. Il pytool non puo' sapere quante
-    # righe il documento contiene, ma puo' dire se quello che ha ricevuto e'
-    # coerente con un'elaborazione pagina per pagina. Con piu' pagine
-    # dichiarate e un solo chunk, il motore iterativo ha probabilmente
-    # accorpato piu' pagine in una richiesta: e' il modo in cui una perdita di
-    # copertura si manifesta, e senza questo avviso resterebbe invisibile
-    # perche' l'output e' valido.
-    if len(pages) > 1 and len(chunks) == 1:
-        warnings.append("COPERTURA SOSPETTA: " + str(tv) + " variabili ricevute in un solo chunk per " + str(len(pages)) + " pagine. Il motore iterativo dovrebbe inviare un chunk per pagina: verificare che non stia accorpando piu' pagine in una richiesta.")
+    # v4.4 (A1): la guardia precedente (pages>1 and chunks==1) non scattava
+    # mai: pages ha un elemento per chunk, quindi len(pages)==len(chunks)
+    # sempre. Segnale reale di accorpamento: piu' stazioni con lo stesso
+    # page_no e volume sopra soglia. Soglia 100: sopra sta SIEMENS_2 (274
+    # variabili ricevute in un chunk), sotto restano silenti i documenti
+    # piccoli legittimi (SMA_1: 1 pagina, ~50 variabili). La soglia e' una
+    # scelta documentata, non un requisito: tararla se cambia il parco
+    # documenti. Il pytool non puo' sapere quante righe il documento
+    # contiene, ma puo' dire se quello che ha ricevuto e' coerente con
+    # un'elaborazione pagina per pagina.
+    if len(st_in) > 1:
+        _pnos = {}
+        _qi = 0
+        while _qi < len(st_in):
+            _pnos[st_in[_qi].get("page_no")] = True
+            _qi = _qi + 1
+        if len(_pnos) == 1 and tv > 100:
+            warnings.append("COPERTURA SOSPETTA: " + str(tv) + " variabili in " + str(len(st_in)) + " stazioni con stesso page_no (" + str(list(_pnos.keys())[0]) + "). Il motore iterativo dovrebbe inviare un chunk per pagina: verificare che non stia accorpando piu' pagine in una richiesta.")
     if len(zero_padded_tutto) > 0:
         kk = sorted(zero_padded_tutto.keys())
         warnings.append("INDIRIZZI CON ZERI INIZIALI: " + str(len(kk)) + " indirizzi scritti con zeri iniziali nel documento (" + ", ".join(kk[:8]) + ("..." if len(kk) > 8 else "") + "). Dopo la normalizzazione valgono come intero breve, che e' un registro diverso da quello scritto. Verificare se il documento li intende come indirizzi HMI o Modbus: la conversione non viene applicata perche' e' una decisione di dominio.")

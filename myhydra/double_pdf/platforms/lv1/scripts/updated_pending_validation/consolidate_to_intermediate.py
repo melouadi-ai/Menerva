@@ -155,6 +155,7 @@ try:
     seen_name_reg = []
     duplicate_pairs = []
     page_review_items = []
+    last_page_reg = None
     page_pos = 0
     while page_pos < len(ordered_pages):
         seq_value, inner_page, page_review = ordered_pages[page_pos]
@@ -201,12 +202,24 @@ try:
                     read_write_value = "W"
                 else:
                     read_write_value = "R"
+                # data_type dal ramo misure (prompt v4 lo trascrive dalla
+                # colonna TIPO); mai inferito qui: assente o vuoto resta None
+                # e json_creator applica il default V25.
+                data_type_value = measure_obj.get("DATA_TYPE")
+                if data_type_value is None:
+                    data_type_value = measure_obj.get("data_type")
+                if isinstance(data_type_value, str):
+                    data_type_value = data_type_value.strip()
+                    if not data_type_value:
+                        data_type_value = None
+                else:
+                    data_type_value = None
                 variable_obj = {
                     "description": measure_obj.get("NAME"),
                     "units": measure_obj.get("UNITS"),
                     "modbus_register": measure_obj.get("MODBUSREGISTRO"),
                     "bit": measure_obj.get("BIT"),
-                    "data_type": None,
+                    "data_type": data_type_value,
                     "kind": kind_value,
                     "read_write": read_write_value,
                     "state_on": measure_obj.get("TEXTON"),
@@ -223,6 +236,23 @@ try:
                     duplicate_pairs.append(str(measure_obj.get("NAME")) + " @ " + str(measure_obj.get("MODBUSREGISTRO")))
                 else:
                     seen_name_reg.append(name_reg_key)
+                # Carry-over cross-pagina: una riga digitale con BIT ma senza
+                # REG a inizio foglio eredita probabilmente l'ultimo REG
+                # esplicito visto in ordine di sequenza. Non si applica mai
+                # in automatico: si registra il suggerimento con la pagina,
+                # da confermare sul PDF (il valore resta null).
+                if (variable_obj.get("modbus_register") is None
+                        and variable_obj.get("bit") is not None
+                        and kind_value != "ANALOGICA"
+                        and last_page_reg is not None):
+                    review.append({
+                        "rule": "registro_suggerito",
+                        "page_sequence": seq_value,
+                        "detail": str(measure_obj.get("NAME")) + ": probabile REG "
+                        + str(last_page_reg) + " (carry-over cross-pagina, da confermare)",
+                    })
+                if isinstance(measure_obj.get("MODBUSREGISTRO"), int):
+                    last_page_reg = measure_obj.get("MODBUSREGISTRO")
                 variables.append(variable_obj)
                 measure_pos += 1
             station_pos += 1
@@ -234,6 +264,8 @@ try:
     counters["variables_total"] = len(variables)
 
     # Collega campi scala per tag: esatto oppure NAME == tag + " Raw".
+    # Se la riga scala porta unita' e limiti (prompt Station esteso), li
+    # riversa nella variabile senza mai sovrascrivere valori gia' presenti.
     unmatched_scales = []
     scale_pos = 0
     while scale_pos < len(scale_rows):
@@ -249,6 +281,15 @@ try:
                 if isinstance(var_name, str) and (var_name == scale_tag or var_name == scale_tag + " Raw"):
                     variable_obj["scale_eng_start"] = scale_row.get("campo_da")
                     variable_obj["scale_eng_end"] = scale_row.get("campo_a")
+                    scale_unit = scale_row.get("unita") if isinstance(scale_row, dict) else None
+                    if isinstance(scale_unit, str) and scale_unit.strip() and not variable_obj.get("units"):
+                        variable_obj["units"] = scale_unit.strip()
+                    scale_lim_h = scale_row.get("limite_orario") if isinstance(scale_row, dict) else None
+                    if scale_lim_h is not None and variable_obj.get("limit_hour") is None:
+                        variable_obj["limit_hour"] = scale_lim_h
+                    scale_lim_g = scale_row.get("limite_giornaliero") if isinstance(scale_row, dict) else None
+                    if scale_lim_g is not None and variable_obj.get("limit_day") is None:
+                        variable_obj["limit_day"] = scale_lim_g
                     counters["scales_linked"] += 1
                     linked = True
                 var_pos += 1
