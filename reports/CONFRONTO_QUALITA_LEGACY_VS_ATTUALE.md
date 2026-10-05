@@ -149,6 +149,48 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 
 ---
 
+---
+
+## 🧾 Stato pre-cliente (5/10/2026) — dove siamo sopra, pari, sotto al legacy
+
+> Sintesi onesta prima di parlare col cliente. Le percentuali 100% delle sezioni
+> Single PDF sopra vanno lette come esiti sui casi verificati, non come
+> certificazione generale (campione profondo: SMA_1, PROTEC_1/2, IOL JOB.0139.23).
+
+### Sopra al legacy (con evidenza)
+
+* **Righe fantasma mai inventate** — riserve 420–424/428–430, filler numerici,
+  bianche: saltate e conteggiate. Il GT gaia6 ha 12 bitinfo fantasma su righe
+  bianche; il legacy inventava `Comando riservato`.
+* **BIT da colonna** — 6/6 da coordinate PDF; dove GT e noi differiamo
+  (PM-302x shiftati, off-by-one a 430), il PDF dà ragione a noi.
+* **Niente default silenziosi** — disaccordi in `review`, mai fusi in silenzio.
+* **Struttura ADAS valida** — Pydantic `success: True`; XML con IP/porta veri
+  (il legacy forzava IP o placeholder senza warning).
+
+### Pari con riserve
+
+* **TEXTON** — nessuno li legge (nel PDF non esiste colonna di stato). Il GT ha
+  tabella più ricca ma con errori propri (`Pompa analisi`→`CALIBRAZIONE`); noi
+  con default + keyword. Da passare in review, non da automatizzare alla cieca.
+* **Nomi stazione** — la 3.8 trova `Sistema Analisi SO2`; il leggero ripiega su `SME`.
+
+### Sotto al legacy (da dire al cliente)
+
+* **BISON/linearizzazione** — il legacy la faceva (`Json Creator & BISON`);
+  noi emettiamo il default. Bloccato in attesa specifiche (TODO.md).
+* **UNITS e limiti** — GT ha mg/Nm³ e °C; noi `null`. Recuperabili da Tabella 6
+  JOB: lavoro nostro, non del cliente.
+* **Scala TF non collegata** (`TF` vs `Temperatura fumi`) — stesso lavoro di cui sopra.
+* **Campione** — verifica profonda su 1 coppia IOL/JOB + 3 Single; il legacy
+  girava su più casi. Caso 7 e SIEMENS_2 prima di allargare le conclusioni.
+
+### Decisioni che spettano al cliente
+
+1. Zeri iniziali (`00033` = HMI→`40033` o registro `33`?).
+2. Specifiche BISON (mapping scale, template, funzioni Manager).
+3. Regola V2 sui nomi prefissati (`Riserva INPUT` dentro o fuori?).
+
 ## 📓 Diario aggiornamenti
 
 | Data | Area | Cosa è cambiato |

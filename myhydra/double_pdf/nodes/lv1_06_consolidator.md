@@ -1,6 +1,6 @@
 # Nodo LV1-06 — CONSOLIDA INTERMEDIO VLM
 
-- **Tipo/nome canvas:** Pytool `CONSOLIDA PRE-JSON CREATOR` (nodo da creare dopo le iniezioni LV2).
+- **Tipo/nome canvas:** Pytool `PREPARAZIONE X JSON` (ex `CONSOLIDA PRE-JSON CREATOR`, nodo 11, dopo le iniezioni LV2).
 - **Posizione:** dopo le iniezioni Station e Measurement e il Naive Density; non iterativo (riceve array aggregati).
 - **Input:** tre array dalle tre destinazioni, con numeri edge scritti diretti nello script (verificato 05-10-2026: `#10` Station, `#11` Measurement, `#12` Density). Dopo ogni ricablaggio aggiornare i tre `{edge}[N]` in testa allo script.
 - **Script:** [`../platforms/lv1/scripts/updated_pending_validation/consolidate_to_intermediate.py`](../platforms/lv1/scripts/updated_pending_validation/consolidate_to_intermediate.py).
