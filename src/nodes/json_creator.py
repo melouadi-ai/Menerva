@@ -346,6 +346,7 @@ g = 0
 zero_padded_tutto = {}
 senza_registro_tutto = 0
 senza_registro_nomi_tutto = []
+link_issues_tutto = []
 while g < len(groups):
     nm = groups[g][0]
     ip = groups[g][1]
@@ -656,6 +657,28 @@ while g < len(groups):
             b[flds[f]] = t
             f = f + 1
         i = i + 1
+    # Linkage bitinfo -> misure (difesa in profondita'): ogni MEASUREID deve
+    # esistere tra gli ID delle misure; ogni misura packed deve avere almeno
+    # una riga bitinfo. Le divergenze (es. paste non aggiornata sul canvas)
+    # finiscono in review invece di passare silenziose.
+    mids = {}
+    mi = 0
+    while mi < len(measures):
+        mids[measures[mi].get("ID")] = True
+        mi = mi + 1
+    covered = {}
+    bi = 0
+    while bi < len(bitinfo):
+        bmid = bitinfo[bi].get("MEASUREID")
+        covered[bmid] = True
+        if bmid not in mids:
+            link_issues_tutto.append(str(bitinfo[bi].get("BITNAME")) + " -> misura " + str(bmid))
+        bi = bi + 1
+    mi = 0
+    while mi < len(measures):
+        if measures[mi].get("DRIVERDATA") == 2 and measures[mi].get("ID") not in covered:
+            link_issues_tutto.append("misura packed senza bitinfo: " + str(measures[mi].get("NAME")))
+        mi = mi + 1
     drv = "<configuration><commProto><p0 class=\"Protocollo MODBUS (master) via TCP/IP\" "
     drv = drv + "name=\"Protocollo MODBUS (master) via TCP/IP\" "
     drv = drv + "ipaddress=\"" + ip + "\" "
@@ -732,6 +755,8 @@ else:
         warnings.append("INDIRIZZI CON ZERI INIZIALI: " + str(len(kk)) + " indirizzi scritti con zeri iniziali nel documento (" + ", ".join(kk[:8]) + ("..." if len(kk) > 8 else "") + "). Dopo la normalizzazione valgono come intero breve, che e' un registro diverso da quello scritto. Verificare se il documento li intende come indirizzi HMI o Modbus: la conversione non viene applicata perche' e' una decisione di dominio.")
     if senza_registro_tutto > 0:
         warnings.append("VARIABILI SENZA INDIRIZZO: " + str(senza_registro_tutto) + " variabili scartate perche' non hanno un indirizzo Modbus, quindi non sono leggibili dal PLC (grandezze derivate, indicazione CALCOLATA). Nomi: " + ", ".join(senza_registro_nomi_tutto[:6]) + ("..." if len(senza_registro_nomi_tutto) > 6 else ""))
+    if len(link_issues_tutto) > 0:
+        warnings.append("BITINFO NON COLLEGATI: " + str(len(link_issues_tutto)) + " anomalie di linkage misure-bitinfo (" + ", ".join(link_issues_tutto[:6]) + ("..." if len(link_issues_tutto) > 6 else "") + "). Verificare che lo script sul canvas sia identico al repo.")
     if len(warnings) > 0:
         i = 0
         while i < len(out):
