@@ -205,3 +205,4 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 | 05/10/2026 | Double PDF | Prima uscita ADAS caso 6: chunk 3.8 in `json_creator` v4.3 → 22 misure + 60 bitinfo, Pydantic valido; `MEASUREID` = ID sequenziale (disegno, non registro) |
 | 05/10/2026 | Double PDF | Run leggera canvas nodo 12: misure tutte corrette vs PDF ma linkage bitinfo shiftato (6 ID packed vs 5 misure, 14 righe) — causa: paste non identica al repo; self-check `BITINFO NON COLLEGATI` aggiunto + re-paste verificata (linkage intatto) |
 | 05/10/2026 | Double PDF | Serie 3.8 canvas salvata (22+60, linkage intatto, TEXTON di qualità): PM-302A/B 0/1 da risolvere in review, stazione `SME` di default in questa run |
+| 05/10/2026 | Double PDF | Caso 7 serie 3.8 fino all'ADAS (39 misure + 42 bitinfo, IP `.31`:511): bit wrap REG 1 e bianche corretti; 5 variabili perse con warning (carry-over cross-pagina); aperto formato INT senza `data_type` |
