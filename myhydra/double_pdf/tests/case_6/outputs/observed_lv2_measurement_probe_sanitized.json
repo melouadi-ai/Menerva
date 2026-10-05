@@ -1,0 +1,9 @@
+{
+  "case": "CASE6",
+  "source": "MyHydra LV2 Measurement readability probe on ESTRAI MISURE E BISON, debug single-page filter (first IOL + MEASUREMENT page), user-provided, 2 Oct 2026",
+  "sanitized": true,
+  "note": "Runtime key replaced with CASE6_PAGE_nn by sequence_index. Probe schema followed correctly (valid JSON, no fences), but image_readable is false: the VLM reports no usable image. Debug filter worked (1 record). Extraction prompt rules are NOT the blocker; investigate model selection and Prompt media field on the measures VLM.",
+  "records": [
+    {"diagnostic": "LV2_MEASUREMENT_BRANCH", "status": "OK", "branch": "MEASURES_BISON", "page": {"key": "CASE6_PAGE_02", "sequence_index": 2, "document_role": "IOL", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": 0, "review_warnings": "[ ]"}, "output_format": "JSON", "vlm_output": {"image_readable": false, "page_heading": null, "table_found": false, "table_headers": [], "sample_rows": [], "unreadable_cells": []}}
+  ]
+}

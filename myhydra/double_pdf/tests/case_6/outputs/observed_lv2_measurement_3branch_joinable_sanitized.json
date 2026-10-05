@@ -1,0 +1,27 @@
+{
+  "case": "CASE6",
+  "source": "MyHydra LV2 Measurement 3-branch same-run output with lightweight VLM, user-provided, 2 Oct 2026",
+  "sanitized": true,
+  "note": "Structural proof run: all 3 branches share identical page keys (joinable), 27 OK envelopes, all JSON no fences. Content NOT fully transcribed here (see per-branch fixtures); this file records joinability and branch roles. Full-content reference awaits the Qwen 3.8 serie run.",
+  "keys_match_across_branches": true,
+  "pages": [
+    {"sequence_index": 2, "role": "IOL", "measures_rows": 30, "bitinfo_rows": 56, "states_rows": 64, "note": "measures REG 1/3/4; bitinfo MID 1-4 mixed named+numeric; states TEXTON varied, TEXTOFF always OFF"},
+    {"sequence_index": 3, "role": "IOL", "measures_rows": 27, "bitinfo_rows": 28, "states_rows": 32, "note": "measures split in 3 station objects ID 1/2/3 (digitals / QAL3 analogs / raw); bitinfo MID 5-6 with duplicate names at different BITNO; states Marcia/Allarme"},
+    {"sequence_index": 4, "role": "IOL", "measures_rows": 11, "bitinfo_rows": 16, "states_rows": 16, "note": "MID = raw registers 417-432 in bitinfo/states; phantom rows 420-424 skipped in measures but present (empty/Comando) in bitinfo/states"},
+    {"sequence_index": 5, "role": "IOL", "measures_rows": 1, "bitinfo_rows": 0, "states_rows": 0, "note": "single analog measure, correctly no bitinfo"},
+    {"sequence_index": 8, "role": "JOB", "measures_rows": 0, "bitinfo_rows": 0, "states_rows": 0, "note": "measures [] ; bitinfo/states SME shells with empty arrays"},
+    {"sequence_index": 11, "role": "JOB", "measures_rows": 0, "bitinfo_rows": 0, "states_rows": 0, "note": "same as 8"},
+    {"sequence_index": 12, "role": "JOB", "measures_rows": 0, "bitinfo_rows": 0, "states_rows": 0, "note": "same as 8"},
+    {"sequence_index": 13, "role": "JOB", "measures_rows": 0, "bitinfo_rows": 0, "states_rows": 0, "note": "same as 8"},
+    {"sequence_index": 14, "role": "JOB", "measures_rows": 0, "bitinfo_rows": 0, "states_rows": 0, "note": "same as 8"}
+  ],
+  "assembler_warnings": [
+    "MEASUREID semantics vary: group-positional (p2), running 16-row chunks (p3), raw registers (p4) — never use as sole join key",
+    "numeric-only BITNAMEs (bit indexes as strings) and empty BITNAMEs must be dropped (legacy Biname-Number + Delete-Null-names rules confirmed necessary)",
+    "orphan bitinfo with no measure match (PL_OUT, Sistema in misura, Calibrazione...) go to review queue, not silent attach/drop",
+    "states exist for blank/reserved rows (420-424 Comando): drop with their rows",
+    "TEXTOFF uniformly OFF across 100+ rows: probably prompt default, verify against PDF",
+    "same-page multi-station objects (p3 ID 1/2/3, all DRIVERCONFIG ':') must merge in assembly",
+    "empty conventions differ per branch ([] vs shell-with-empty-arrays): normalize before join"
+  ]
+}

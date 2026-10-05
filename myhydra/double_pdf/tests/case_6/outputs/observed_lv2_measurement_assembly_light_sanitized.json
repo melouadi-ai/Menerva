@@ -1,0 +1,17 @@
+{
+  "case": "CASE6",
+  "source": "MyHydra LV2 assembler runtime output with lightweight VLM, user-provided, 2 Oct 2026",
+  "sanitized": true,
+  "note": "First assembler runtime proof (structure only, light model). All 9 pages OK, no fences, no errors. Per-page summary; full measure rows omitted (see qwen38_serie_measures fixture for content reference). Review distribution matches design: conflicts/duplicates flagged, clean pages silent.",
+  "pages": [
+    {"sequence_index": 2, "role": "IOL", "stations": 1, "measures": 30, "all_with_bit": true, "texton_present": 18, "texton_null": 12, "review_rules": ["duplicate_bitinfo_names", "unverified_bits"], "review_required": true, "counters": {"dropped_empty_bitinfo": 0, "dropped_numeric_bitinfo": 0, "dropped_reserved_states": 10, "merged_stations": 0}, "note": "no measure-pairs in this run: all 30 packed BITs from bitinfo, flagged unverified; REG4 group without matching states"},
+    {"sequence_index": 3, "role": "IOL", "stations": 1, "measures": 27, "all_with_bit_for_digitals": true, "analogs_bit_null": 5, "review_rules": ["unverified_bits"], "review_required": true, "counters": {"dropped_reserved_states": 10}, "note": "22 packed BITs from bitinfo only; 5 analogs clean nulls"},
+    {"sequence_index": 4, "role": "IOL", "stations": 1, "measures": 11, "review_rules": [], "review_required": false, "counters": {"dropped_empty_bitinfo": 8, "dropped_reserved_states": 8}, "note": "completely clean page: CMD rows BIT 0 + TEXTON, analogs null, blank rows dropped with their states"},
+    {"sequence_index": 5, "role": "IOL", "stations": 1, "measures": 1, "review_rules": [], "review_required": false, "note": "single analog, BIT/TEXTON null"},
+    {"sequence_index": 8, "role": "JOB", "stations": 0, "measures": 0, "review_rules": [], "review_required": false},
+    {"sequence_index": 11, "role": "JOB", "stations": 0, "measures": 0, "review_rules": [], "review_required": false},
+    {"sequence_index": 12, "role": "JOB", "stations": 0, "measures": 0, "review_rules": [], "review_required": false},
+    {"sequence_index": 13, "role": "JOB", "stations": 0, "measures": 0, "review_rules": [], "review_required": false},
+    {"sequence_index": 14, "role": "JOB", "stations": 0, "measures": 0, "review_rules": [], "review_required": false}
+  ]
+}

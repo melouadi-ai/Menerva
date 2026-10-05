@@ -1,8 +1,8 @@
 # Benchmark di Qualità: Vecchio Sistema Legacy vs Nuovo Menerva MAS
 
 > **Documento ad uso Direzionale e Tecnico per Clienti**  
-> *Data ultimo aggiornamento: 25 Settembre 2026*  
-> *Versione Pipeline Attuale: VLM Prompt v13 + Pytool json_creator v4.2*
+> *Data ultimo aggiornamento: 2 Ottobre 2026*  
+> *Versione Pipeline Attuale: VLM Prompt v13 + Pytool json_creator v4.3 (Single PDF); Double PDF IOL+JOB in sviluppo (LV2 Measurement validata su MyHydra, caso 6)*
 
 ---
 
@@ -107,3 +107,47 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 ---
 
 *Questo documento viene progressivamente aggiornato con i risultati analitici di ciascun nuovo PDF processato dalla pipeline.*
+
+---
+
+## 🏗️ Doppio PDF (IOL + JOB): Legacy vs Nuovo — stato al 2 Ottobre 2026
+
+> Perimetro diverso dal Single PDF sopra: qui i documenti arrivano in coppia (mappatura IOL + descrizione JOB) caricati insieme in chat, in ordine casuale e senza metadati di origine. I casi di riferimento sono la coppia 6 (`JOB.0139.23`, 5+9 pagine) e la coppia 7 (`JOB.0105.22`, 4+7 pagine). Stato: estrazione per pagina validata su MyHydra (caso 6); consolidamento cross-pagina e conversione ADAS finale ancora da implementare.
+
+### Differenze architetturali (verificate su MyHydra)
+
+| Caratteristica | Vecchio Double PDF (Legacy) | Nuovo Double PDF | Evidenza |
+|---|---|---|---|
+| **Distinzione IOL/JOB** | Solo categoria pagina (`STATION_INFORMATION` / `MEASUREMENT_TECHNICAL_DATA` / `DENSITY_MAP`), nessun ruolo documento | Il VLM assegna anche `document_role` (`IOL` / `JOB` / `UNKNOWN`) da evidenze visive | Caso 6: 5 IOL + 9 JOB; caso 7: 4 IOL + 7 JOB, coerenti coi riferimenti interni dei PDF |
+| **Pagine ripetute** | Finestre sovrapposte senza deduplicazione generale | Deduplicazione per chiave media con avvisi sui disaccordi | 14 pagine uniche su 27 associazioni (caso 6) |
+| **Instradamento** | Rami condizionali su stringa aggregata (non funzionante su liste) | 3 Pytool filtro per `label`, una pagina alla volta | 6 Station + 7 Measurement + 1 Density, chiavi conservate |
+| **Merge misure/bitinfo** | 6 nodi (Better Measures, Merge Bitinfo, Biname, Delete Null, Check Group...) con rimappature ID fragili | 1 assemblatore per pagina con coda di revisione | 9 pagine `OK`, pagina 4 pulita (`review: []`); validato su MyHydra il 2/10 |
+| **Errori di estrazione** | Default silenziosi (placeholder `SME`, stati inventati) | Conflitti in `review`, mai scelte silenziose | BIT discordanti tra rami segnalati invece che fusi |
+
+### Risultati verificati contro il PDF (caso 6, IOL)
+
+| Verifica | Metodo | Esito |
+|---|---|---|
+| 69 misure estratte (pagine IOL 2–5) | Confronto nomi/registri col testo PDF | Nomi radicati pagina per pagina; RAN `SO2 Raw` REG 17, `Temperatura fumi Raw` REG 33, QAL3 tempi REG 9/10/11 confermati |
+| Righe fantasma non inventate | Coordinate colonna REG/BIT | Riserve 420–424 saltate, `Ack allarmi` a 425 senza riempitivi (il legacy inventava `Comando riservato`) |
+| BIT ramo misure corretto 6/6 | Coordinate colonna BIT | PM-302A=1, PM-310A=4, Sistema=8, Secondo campo=15, QAL3=0, Pompa=7 — il ramo bitinfo dava valori diversi (0, 2, 0, 7, 8, 15) |
+| REG ventilatori = 6 | Carry-over da colonna (ultimo esplicito PM-2600A) | Run leggera diceva 7 (sezione DBW), run 3.8 dice 6: decide il PDF, non il modello |
+| Stati ON/OFF | Testo tabella | Nelle righe non esiste testo di stato: TEXTON derivato dal nome, TEXTOFF `OFF` default — convenzione valida, dato derivato (non letto) |
+
+### Punti aperti (non ancora misurabili)
+
+* Consolidamento cross-pagina (unire le 7 pagine Measurement + dati Station) e conversione ADAS finale con riuso di `json_creator` — progettazione dopo l'assemblatore.
+* Specifiche BISON/linearizzazioni dal cliente (come nel Single).
+* Chiave ufficiale di abbinamento IOL/JOB su riferimenti discordanti (caso Ospedale: IOL cita `JOB.0187.25`, accanto c'è `JOB.0007.18`).
+
+---
+
+## 📓 Diario aggiornamenti
+
+| Data | Area | Cosa è cambiato |
+|---|---|---|
+| 28/09/2026 | Repo | Baseline: inventario, Single PDF cloud documentato, legacy intatto come riferimento |
+| 01/10/2026 | Single PDF | Registro `PENDENZE.md` (19 voci verificate); pytool v4.3 in `src/` |
+| 01/10/2026 | Double PDF | LV1 verificata (14 + 11 pagine); filtri e iniezioni LV2 funzionanti; Station estratta (6 pagine) |
+| 02/10/2026 | Double PDF | Diagnosi input Medex (estratto-chiave superfluo) e layout VLM (inline e separato entrambi validi); sonda leggibilità `image_readable: true` con righe radicate nel PDF |
+| 02/10/2026 | Double PDF | Prima estrazione completa (65 misure, VLM leggero); run serie Qwen 3.8 (69 misure); assemblatore per pagina validato su MyHydra; 6 BIT verificati da coordinate PDF |

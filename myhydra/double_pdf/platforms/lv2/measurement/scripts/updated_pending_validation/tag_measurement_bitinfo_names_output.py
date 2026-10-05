@@ -4,7 +4,7 @@ import re
 
 BRANCH = "BITINFO_NAMES"
 page_raw = r'''{question}'''.strip()
-vlm_raw = r'''{edge}[6]'''.strip()
+vlm_raw = r'''{edge}[4]'''.strip()
 
 try:
     page = json.loads(page_raw)

@@ -1,0 +1,12 @@
+{
+  "case": "CASE6",
+  "source": "MyHydra LV2 Station Information output with lightweight VLM, station-only run (measurement disconnected), user-provided, 2 Oct 2026",
+  "sanitized": true,
+  "note": "Runtime keys replaced with CASE6_PAGE_nn by sequence_index. 4 records (classifier assigned 4 Station pages this run: 6,7,9,10). Page attribution intact ({question} works); real data extracted even with lightweight model (IP, port, scale fields). Reference run proving iteration context delivery works while Measurement taggers report empty {question}.",
+  "records": [
+    {"key": "CASE6_PAGE_06", "sequence_index": 6, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": 0, "review_warnings": "[ ]", "station_info": [{"nome_stazione": null, "stazione": null, "protocollo": "ModBus TCP", "ip_plc": "10.100.50.95", "port": 511, "campi_scala": []}]},
+    {"key": "CASE6_PAGE_07", "sequence_index": 7, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": 0, "review_warnings": "[ ]", "station_info": [{"nome_stazione": null, "stazione": null, "protocollo": null, "ip_plc": null, "port": null, "campi_scala": [{"segnale": "SO2", "tag": "SO2", "campo_da": 0, "campo_a": 300}, {"segnale": "Temperatura fumi", "tag": "TF", "campo_da": 0, "campo_a": 100}]}]},
+    {"key": "CASE6_PAGE_09", "sequence_index": 9, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": 0, "review_warnings": "[ ]", "station_info": []},
+    {"key": "CASE6_PAGE_10", "sequence_index": 10, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": 0, "review_warnings": "[ ]", "station_info": []}
+  ]
+}

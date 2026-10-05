@@ -1,0 +1,9 @@
+{
+  "case": "CASE6",
+  "source": "MyHydra LV2 Measurement readability probe after Medex fix (content from {question}, no extract Pytool), debug single-page filter, user-provided, 2 Oct 2026",
+  "sanitized": true,
+  "note": "Runtime key replaced with CASE6_PAGE_nn by sequence_index. image_readable true with 5 verbatim rows; rows grounded in Mappatura_6_Cliente_SMI_1.pdf (AL_SONDA on IOL page 2, I/O List heading, DESCRIZIONE/REG/BIT columns). Canvas restructured: Medex is node 10, VLM edges renumbered to #1/#2/#3 — VLM Prompt media indices must be rechecked.",
+  "records": [
+    {"diagnostic": "LV2_MEASUREMENT_BRANCH", "status": "OK", "branch": "MEASURES_BISON", "page": {"key": "CASE6_PAGE_02", "sequence_index": 2, "document_role": "IOL", "label": "MEASUREMENT_TECHNICAL_DATA", "review_required": 0, "review_warnings": "[ ]"}, "output_format": "JSON", "vlm_output": {"image_readable": true, "page_heading": "I/O List", "table_found": true, "table_headers": ["INDIRIZZO", "TAG", "DESCRIZIONE", "REG", "BIT", "TIPO", "STRUCT", "BIT", "RANGE"], "sample_rows": [["DBX 64.0", "AL_SONDA", "Allarme sonda riscaldata", "1", "8", "BOOL", "ALM", "24", ""], ["DBX 64.1", "AL_LINEA", "Allarme linea riscaldata", "", "9", "BOOL", "ALM", "25", ""], ["DBX 64.2", "AL_FRIGO", "Allarme frigorifero", "", "10", "BOOL", "ALM", "26", ""], ["DBX 64.3", "AL_COND", "Allarme presenza condensa", "", "11", "BOOL", "ALM", "27", ""], ["DBX 64.4", "AL_FL", "Allarme mancanza flusso", "", "12", "BOOL", "ALM", "28", ""]], "unreadable_cells": []}}
+  ]
+}

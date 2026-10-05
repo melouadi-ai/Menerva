@@ -1,0 +1,1502 @@
+{
+  "case": "CASE6",
+  "source": "MyHydra LV2 Measurement MEASURES_BISON serie run with Qwen 3.8, user-provided, 2 Oct 2026",
+  "sanitized": true,
+  "note": "Runtime keys replaced with CASE6_PAGE_nn. Reference extraction: 69 measures on IOL 2-5 (30+27+11+1), [] on JOB. Page 4 vlm_output is a bare object (not array): normalize dict-to-list in assembly. Page 3 split in 3 same-page station objects (merge in assembly). measures_branch_bit_pairs map the (NAME,BIT) pairs emitted inside the measures branch for join validation against the bitinfo branch (BIT conflicts observed, e.g. PM-302A BIT 1 here vs BITNO 0 there). Bitinfo/states branches of this run analyzed separately; full transcription deferred to targeted repastes if assembly needs them.",
+  "measures_branch_bit_pairs": {
+    "CASE6_PAGE_02": {
+      "Allarme sonda riscaldata": 8,
+      "Allarme linea riscaldata": 9,
+      "Allarme frigorifero": 10,
+      "Allarme presenza condensa": 11,
+      "Allarme mancanza flusso": 12,
+      "Allarme analizzatore SO2": 13,
+      "Sistema in misura": 8,
+      "Calibrazione automatica in corso": 9,
+      "Analizzatore SO2 in calibrazione di zero": 10,
+      "Analizzatore SO2 in calibrazione di span": 11,
+      "Secondo campo SO2": 15,
+      "QAL3 in corso": 0,
+      "QAL3: elettrovalvola ARIA": 1,
+      "QAL3: elettrovalvola span SO2": 2,
+      "QAL3: lavaggio con N2": 3,
+      "QAL3: ciclo concluso senza errori": 5,
+      "QAL3: ciclo concluso con errori": 6,
+      "Pompa analisi": 7,
+      "Stato elettrovalvola cal zero": 8,
+      "Stato elettrovalvola N2": 9,
+      "Stato elettrovalvola cal span": 10,
+      "Elettrovalvola cal da sonda": 11,
+      "PLC life signal": 13,
+      "Impianto in marcia": 0,
+      "Impianto in minimo tecnico/funzionamento anomalo": 1,
+      "Impianto in avviamento": 2,
+      "Impianto in spegnimento": 3,
+      "SME in manutenzione": 5,
+      "Impianto in manutenzione": 6,
+      "Impianto fuori servizio per guasto": 7
+    },
+    "CASE6_PAGE_03": {
+      "Blocco da BSS2": 8,
+      "Allarme bassa portata FT-2611": 9,
+      "Allarme bassa portata FT-310": 10,
+      "Allarme bassa portata FT-313": 11,
+      "AI303A allarme basso pH": 12,
+      "AI303B allarme basso pH": 13,
+      "AI2602A allarme basso pH": 14,
+      "AI2602B allarme basso pH": 15,
+      "PM-302A in marcia": 1,
+      "PM-302B in marcia": 2,
+      "PM-310A in marcia": 4,
+      "PM-310B in marcia": 5,
+      "PM-2600A in marcia": 8,
+      "PM-2600B in marcia": 9,
+      "PM-2601A in marcia": 10,
+      "PM-2601B in marcia": 11,
+      "PM-2604A in marcia": 12,
+      "PM-2604B in marcia": 13,
+      "Ventilatore VN-400 in marcia": 0,
+      "Ventilatore VN-2504 in marcia": 1,
+      "Ventilatore 514K1 in marcia": 2,
+      "Ventilatore 514K2 in marcia": 3
+    }
+  },
+  "records": [
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "MEASURES_BISON",
+      "page": {
+        "key": "CASE6_PAGE_02",
+        "sequence_index": 2,
+        "document_role": "IOL",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": [
+        {
+          "NAME": "SME Impianto lavorazione SO2",
+          "DRIVERNAME": "modbusplc",
+          "DRIVERCONFIG": ":",
+          "ID": 1,
+          "measures": [
+            {
+              "STATIONID": 1,
+              "NAME": "Allarme sonda riscaldata",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 1,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Allarme linea riscaldata",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 1,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Allarme frigorifero",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 1,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Allarme presenza condensa",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 1,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Allarme mancanza flusso",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 1,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Allarme analizzatore SO2",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 1,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Sistema in misura",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 3,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Calibrazione automatica in corso",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 3,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Analizzatore SO2 in calibrazione di zero",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 3,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Analizzatore SO2 in calibrazione di span",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 3,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Secondo campo SO2",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 3,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "QAL3 in corso",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 3,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "QAL3: elettrovalvola ARIA",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 3,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "QAL3: elettrovalvola span SO2",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 3,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "QAL3: lavaggio con N2",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 3,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "QAL3: ciclo concluso senza errori",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 3,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "QAL3: ciclo concluso con errori",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 3,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Pompa analisi",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 3,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Stato elettrovalvola cal zero",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 4,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Stato elettrovalvola N2",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 4,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Stato elettrovalvola cal span",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 4,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Elettrovalvola cal da sonda",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 4,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "PLC life signal",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 4,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Impianto in marcia",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 4,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Impianto in minimo tecnico/funzionamento anomalo",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 4,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Impianto in avviamento",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 4,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Impianto in spegnimento",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 4,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "SME in manutenzione",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 4,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Impianto in manutenzione",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 4,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Impianto fuori servizio per guasto",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 4,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            }
+          ],
+          "bitinfo": [
+            {
+              "NAME": "Allarme sonda riscaldata",
+              "BIT": 8
+            },
+            {
+              "NAME": "Allarme linea riscaldata",
+              "BIT": 9
+            },
+            {
+              "NAME": "Allarme frigorifero",
+              "BIT": 10
+            },
+            {
+              "NAME": "Allarme presenza condensa",
+              "BIT": 11
+            },
+            {
+              "NAME": "Allarme mancanza flusso",
+              "BIT": 12
+            },
+            {
+              "NAME": "Allarme analizzatore SO2",
+              "BIT": 13
+            },
+            {
+              "NAME": "Sistema in misura",
+              "BIT": 8
+            },
+            {
+              "NAME": "Calibrazione automatica in corso",
+              "BIT": 9
+            },
+            {
+              "NAME": "Analizzatore SO2 in calibrazione di zero",
+              "BIT": 10
+            },
+            {
+              "NAME": "Analizzatore SO2 in calibrazione di span",
+              "BIT": 11
+            },
+            {
+              "NAME": "Secondo campo SO2",
+              "BIT": 15
+            },
+            {
+              "NAME": "QAL3 in corso",
+              "BIT": 0
+            },
+            {
+              "NAME": "QAL3: elettrovalvola ARIA",
+              "BIT": 1
+            },
+            {
+              "NAME": "QAL3: elettrovalvola span SO2",
+              "BIT": 2
+            },
+            {
+              "NAME": "QAL3: lavaggio con N2",
+              "BIT": 3
+            },
+            {
+              "NAME": "QAL3: ciclo concluso senza errori",
+              "BIT": 5
+            },
+            {
+              "NAME": "QAL3: ciclo concluso con errori",
+              "BIT": 6
+            },
+            {
+              "NAME": "Pompa analisi",
+              "BIT": 7
+            },
+            {
+              "NAME": "Stato elettrovalvola cal zero",
+              "BIT": 8
+            },
+            {
+              "NAME": "Stato elettrovalvola N2",
+              "BIT": 9
+            },
+            {
+              "NAME": "Stato elettrovalvola cal span",
+              "BIT": 10
+            },
+            {
+              "NAME": "Elettrovalvola cal da sonda",
+              "BIT": 11
+            },
+            {
+              "NAME": "PLC life signal",
+              "BIT": 13
+            },
+            {
+              "NAME": "Impianto in marcia",
+              "BIT": 0
+            },
+            {
+              "NAME": "Impianto in minimo tecnico/funzionamento anomalo",
+              "BIT": 1
+            },
+            {
+              "NAME": "Impianto in avviamento",
+              "BIT": 2
+            },
+            {
+              "NAME": "Impianto in spegnimento",
+              "BIT": 3
+            },
+            {
+              "NAME": "SME in manutenzione",
+              "BIT": 5
+            },
+            {
+              "NAME": "Impianto in manutenzione",
+              "BIT": 6
+            },
+            {
+              "NAME": "Impianto fuori servizio per guasto",
+              "BIT": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "MEASURES_BISON",
+      "page": {
+        "key": "CASE6_PAGE_03",
+        "sequence_index": 3,
+        "document_role": "IOL",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": [
+        {
+          "NAME": "Sistema Analisi Emissioni",
+          "DRIVERNAME": "modbusplc",
+          "DRIVERCONFIG": ":",
+          "ID": 1,
+          "measures": [
+            {
+              "STATIONID": 1,
+              "NAME": "Blocco da BSS2",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 5,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Allarme bassa portata FT-2611",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 5,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Allarme bassa portata FT-310",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 5,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Allarme bassa portata FT-313",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 5,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "AI303A allarme basso pH",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 5,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "AI303B allarme basso pH",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 5,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "AI2602A allarme basso pH",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 5,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "AI2602B allarme basso pH",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 5,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "PM-302A in marcia",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 5,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "PM-302B in marcia",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 5,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "PM-310A in marcia",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 5,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "PM-310B in marcia",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 5,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "PM-2600A in marcia",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 6,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "PM-2600B in marcia",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 6,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "PM-2601A in marcia",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 6,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "PM-2601B in marcia",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 6,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "PM-2604A in marcia",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 6,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "PM-2604B in marcia",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 6,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Ventilatore VN-400 in marcia",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 6,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Ventilatore VN-2504 in marcia",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 6,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Ventilatore 514K1 in marcia",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 6,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Ventilatore 514K2 in marcia",
+              "UNITS": null,
+              "DRIVERDATA": 2,
+              "TYPE": 1,
+              "ID": 1,
+              "MODBUSREGISTRO": 6,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            }
+          ],
+          "bitinfo": [
+            {
+              "NAME": "Blocco da BSS2",
+              "BIT": 8
+            },
+            {
+              "NAME": "Allarme bassa portata FT-2611",
+              "BIT": 9
+            },
+            {
+              "NAME": "Allarme bassa portata FT-310",
+              "BIT": 10
+            },
+            {
+              "NAME": "Allarme bassa portata FT-313",
+              "BIT": 11
+            },
+            {
+              "NAME": "AI303A allarme basso pH",
+              "BIT": 12
+            },
+            {
+              "NAME": "AI303B allarme basso pH",
+              "BIT": 13
+            },
+            {
+              "NAME": "AI2602A allarme basso pH",
+              "BIT": 14
+            },
+            {
+              "NAME": "AI2602B allarme basso pH",
+              "BIT": 15
+            },
+            {
+              "NAME": "PM-302A in marcia",
+              "BIT": 1
+            },
+            {
+              "NAME": "PM-302B in marcia",
+              "BIT": 2
+            },
+            {
+              "NAME": "PM-310A in marcia",
+              "BIT": 4
+            },
+            {
+              "NAME": "PM-310B in marcia",
+              "BIT": 5
+            },
+            {
+              "NAME": "PM-2600A in marcia",
+              "BIT": 8
+            },
+            {
+              "NAME": "PM-2600B in marcia",
+              "BIT": 9
+            },
+            {
+              "NAME": "PM-2601A in marcia",
+              "BIT": 10
+            },
+            {
+              "NAME": "PM-2601B in marcia",
+              "BIT": 11
+            },
+            {
+              "NAME": "PM-2604A in marcia",
+              "BIT": 12
+            },
+            {
+              "NAME": "PM-2604B in marcia",
+              "BIT": 13
+            },
+            {
+              "NAME": "Ventilatore VN-400 in marcia",
+              "BIT": 0
+            },
+            {
+              "NAME": "Ventilatore VN-2504 in marcia",
+              "BIT": 1
+            },
+            {
+              "NAME": "Ventilatore 514K1 in marcia",
+              "BIT": 2
+            },
+            {
+              "NAME": "Ventilatore 514K2 in marcia",
+              "BIT": 3
+            }
+          ]
+        },
+        {
+          "NAME": "Sistema Analisi Emissioni",
+          "DRIVERNAME": "modbusplc",
+          "DRIVERCONFIG": ":",
+          "ID": 2,
+          "measures": [
+            {
+              "STATIONID": 1,
+              "NAME": "QAL3: Tempo trascorso apertura elettrovalvola N2",
+              "UNITS": null,
+              "DRIVERDATA": 0,
+              "TYPE": 0,
+              "ID": 1,
+              "MODBUSREGISTRO": 9,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "QAL3: Tempo trascorso apertura elettrovalvola ARIA",
+              "UNITS": null,
+              "DRIVERDATA": 0,
+              "TYPE": 0,
+              "ID": 1,
+              "MODBUSREGISTRO": 10,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "QAL3: Tempo trascorso apertura elettrovalvola SO2",
+              "UNITS": null,
+              "DRIVERDATA": 0,
+              "TYPE": 0,
+              "ID": 1,
+              "MODBUSREGISTRO": 11,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            }
+          ],
+          "bitinfo": []
+        },
+        {
+          "NAME": "Sistema Analisi Emissioni",
+          "DRIVERNAME": "modbusplc",
+          "DRIVERCONFIG": ":",
+          "ID": 3,
+          "measures": [
+            {
+              "STATIONID": 1,
+              "NAME": "SO2 Raw",
+              "UNITS": null,
+              "DRIVERDATA": 0,
+              "TYPE": 0,
+              "ID": 1,
+              "MODBUSREGISTRO": 17,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            },
+            {
+              "STATIONID": 1,
+              "NAME": "Temperatura fumi Raw",
+              "UNITS": null,
+              "DRIVERDATA": 0,
+              "TYPE": 0,
+              "ID": 1,
+              "MODBUSREGISTRO": 33,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            }
+          ],
+          "bitinfo": []
+        }
+      ]
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "MEASURES_BISON",
+      "page": {
+        "key": "CASE6_PAGE_04",
+        "sequence_index": 4,
+        "document_role": "IOL",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": {
+        "NAME": "Sistema Analisi Emissioni",
+        "DRIVERNAME": "modbusplc",
+        "DRIVERCONFIG": ":",
+        "ID": 1,
+        "measures": [
+          {
+            "STATIONID": 1,
+            "NAME": "SO2",
+            "UNITS": null,
+            "DRIVERDATA": 0,
+            "TYPE": 0,
+            "ID": 1,
+            "MODBUSREGISTRO": 49,
+            "GROUP": "Ingresso_digitale",
+            "Int": false,
+            "Range_low": false,
+            "Range_high": false,
+            "Division": false,
+            "Division_value": false
+          },
+          {
+            "STATIONID": 1,
+            "NAME": "Temperatura fumi",
+            "UNITS": null,
+            "DRIVERDATA": 0,
+            "TYPE": 0,
+            "ID": 1,
+            "MODBUSREGISTRO": 65,
+            "GROUP": "Ingresso_digitale",
+            "Int": false,
+            "Range_low": false,
+            "Range_high": false,
+            "Division": false,
+            "Division_value": false
+          },
+          {
+            "STATIONID": 1,
+            "NAME": "PC life signal",
+            "UNITS": null,
+            "DRIVERDATA": 5,
+            "TYPE": 6,
+            "ID": 1,
+            "MODBUSREGISTRO": 417,
+            "GROUP": "Ingresso_digitale",
+            "Int": false,
+            "Range_low": false,
+            "Range_high": false,
+            "Division": false,
+            "Division_value": false
+          },
+          {
+            "STATIONID": 1,
+            "NAME": "Start autocal",
+            "UNITS": null,
+            "DRIVERDATA": 5,
+            "TYPE": 6,
+            "ID": 1,
+            "MODBUSREGISTRO": 418,
+            "GROUP": "Ingresso_digitale",
+            "Int": false,
+            "Range_low": false,
+            "Range_high": false,
+            "Division": false,
+            "Division_value": false
+          },
+          {
+            "STATIONID": 1,
+            "NAME": "Stop autocal",
+            "UNITS": null,
+            "DRIVERDATA": 5,
+            "TYPE": 6,
+            "ID": 1,
+            "MODBUSREGISTRO": 419,
+            "GROUP": "Ingresso_digitale",
+            "Int": false,
+            "Range_low": false,
+            "Range_high": false,
+            "Division": false,
+            "Division_value": false
+          },
+          {
+            "STATIONID": 1,
+            "NAME": "Ack allarmi",
+            "UNITS": null,
+            "DRIVERDATA": 5,
+            "TYPE": 6,
+            "ID": 1,
+            "MODBUSREGISTRO": 425,
+            "GROUP": "Ingresso_digitale",
+            "Int": false,
+            "Range_low": false,
+            "Range_high": false,
+            "Division": false,
+            "Division_value": false
+          },
+          {
+            "STATIONID": 1,
+            "NAME": "Impianto in manutenzione",
+            "UNITS": null,
+            "DRIVERDATA": 5,
+            "TYPE": 6,
+            "ID": 1,
+            "MODBUSREGISTRO": 426,
+            "GROUP": "Ingresso_digitale",
+            "Int": false,
+            "Range_low": false,
+            "Range_high": false,
+            "Division": false,
+            "Division_value": false
+          },
+          {
+            "STATIONID": 1,
+            "NAME": "Impianto fuori servizio per guasto",
+            "UNITS": null,
+            "DRIVERDATA": 5,
+            "TYPE": 6,
+            "ID": 1,
+            "MODBUSREGISTRO": 427,
+            "GROUP": "Ingresso_digitale",
+            "Int": false,
+            "Range_low": false,
+            "Range_high": false,
+            "Division": false,
+            "Division_value": false
+          },
+          {
+            "STATIONID": 1,
+            "NAME": "Allarme supero ultima media",
+            "UNITS": null,
+            "DRIVERDATA": 5,
+            "TYPE": 6,
+            "ID": 1,
+            "MODBUSREGISTRO": 431,
+            "GROUP": "Ingresso_digitale",
+            "Int": false,
+            "Range_low": false,
+            "Range_high": false,
+            "Division": false,
+            "Division_value": false
+          },
+          {
+            "STATIONID": 1,
+            "NAME": "Allarme supero media previsionale",
+            "UNITS": null,
+            "DRIVERDATA": 5,
+            "TYPE": 6,
+            "ID": 1,
+            "MODBUSREGISTRO": 432,
+            "GROUP": "Ingresso_digitale",
+            "Int": false,
+            "Range_low": false,
+            "Range_high": false,
+            "Division": false,
+            "Division_value": false
+          },
+          {
+            "STATIONID": 1,
+            "NAME": "Misura stimata SO2",
+            "UNITS": null,
+            "DRIVERDATA": 0,
+            "TYPE": 0,
+            "ID": 1,
+            "MODBUSREGISTRO": 433,
+            "GROUP": "Ingresso_digitale",
+            "Int": false,
+            "Range_low": false,
+            "Range_high": false,
+            "Division": false,
+            "Division_value": false
+          }
+        ],
+        "bitinfo": []
+      }
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "MEASURES_BISON",
+      "page": {
+        "key": "CASE6_PAGE_05",
+        "sequence_index": 5,
+        "document_role": "IOL",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": [
+        {
+          "NAME": "SME Impianto lavorazione SO2",
+          "DRIVERNAME": "modbusplc",
+          "DRIVERCONFIG": ":",
+          "ID": 1,
+          "measures": [
+            {
+              "STATIONID": 1,
+              "NAME": "Misura stimata Temperatura fumi",
+              "UNITS": null,
+              "DRIVERDATA": 0,
+              "TYPE": 0,
+              "ID": 1,
+              "MODBUSREGISTRO": 441,
+              "GROUP": "Ingresso_digitale",
+              "Int": false,
+              "Range_low": false,
+              "Range_high": false,
+              "Division": false,
+              "Division_value": false
+            }
+          ],
+          "bitinfo": []
+        }
+      ]
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "MEASURES_BISON",
+      "page": {
+        "key": "CASE6_PAGE_08",
+        "sequence_index": 8,
+        "document_role": "JOB",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": []
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "MEASURES_BISON",
+      "page": {
+        "key": "CASE6_PAGE_11",
+        "sequence_index": 11,
+        "document_role": "JOB",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": []
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "MEASURES_BISON",
+      "page": {
+        "key": "CASE6_PAGE_12",
+        "sequence_index": 12,
+        "document_role": "JOB",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": []
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "MEASURES_BISON",
+      "page": {
+        "key": "CASE6_PAGE_13",
+        "sequence_index": 13,
+        "document_role": "JOB",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": []
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "MEASURES_BISON",
+      "page": {
+        "key": "CASE6_PAGE_14",
+        "sequence_index": 14,
+        "document_role": "JOB",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": []
+    }
+  ]
+}

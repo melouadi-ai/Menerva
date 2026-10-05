@@ -1,0 +1,592 @@
+{
+  "case": "CASE6",
+  "source": "MyHydra LV2 Measurement BITINFO_NAMES output with lightweight VLM, full 9-page run, user-provided, 2 Oct 2026",
+  "sanitized": true,
+  "note": "Runtime keys replaced with CASE6_PAGE_nn by sequence_index. 82 bitinfo on IOL pages 2-4 (36+30+16), [] elsewhere. Different run from the measures fixture (keys DLUEE5GG8D vs DLUDS63GS2): cross-branch join by key only valid within the same run. Observations: MEASUREID semantics vary (small group ids on packed pages 2-3, raw registers 417-432 on page 4); 4 bitinfo names on page 2 with no matching measure (Sistema in misura, Calibrazione automatica in corso, Analizzatore SO2 in calibrazione di zero/span); reserved rows emitted with empty BITNAME (page 3 MID6 bits 0-7, page 4 regs 420-424/428-430).",
+  "records": [
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "BITINFO_NAMES",
+      "page": {
+        "key": "CASE6_PAGE_02",
+        "sequence_index": 2,
+        "document_role": "IOL",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": [
+        {
+          "NAME": "SME",
+          "DRIVERNAME": "modbusplc",
+          "DRIVERCONFIG": ":",
+          "ID": 1,
+          "measures": [],
+          "bitinfo": [
+            {
+              "MEASUREID": 1,
+              "BITNO": 8,
+              "BITNAME": "Allarme sonda riscaldata"
+            },
+            {
+              "MEASUREID": 1,
+              "BITNO": 9,
+              "BITNAME": "Allarme linea riscaldata"
+            },
+            {
+              "MEASUREID": 1,
+              "BITNO": 10,
+              "BITNAME": "Allarme frigorifero"
+            },
+            {
+              "MEASUREID": 1,
+              "BITNO": 11,
+              "BITNAME": "Allarme presenza condensa"
+            },
+            {
+              "MEASUREID": 1,
+              "BITNO": 12,
+              "BITNAME": "Allarme mancanza flusso"
+            },
+            {
+              "MEASUREID": 1,
+              "BITNO": 13,
+              "BITNAME": "Allarme analizzatore SO2"
+            },
+            {
+              "MEASUREID": 2,
+              "BITNO": 8,
+              "BITNAME": "QAL3 in corso"
+            },
+            {
+              "MEASUREID": 2,
+              "BITNO": 9,
+              "BITNAME": "QAL3: elettrovalvola ARIA"
+            },
+            {
+              "MEASUREID": 2,
+              "BITNO": 10,
+              "BITNAME": "QAL3: elettrovalvola span SO2"
+            },
+            {
+              "MEASUREID": 2,
+              "BITNO": 11,
+              "BITNAME": "QAL3: lavaggio con N2"
+            },
+            {
+              "MEASUREID": 2,
+              "BITNO": 12,
+              "BITNAME": "QAL3: ciclo concluso senza errori"
+            },
+            {
+              "MEASUREID": 2,
+              "BITNO": 13,
+              "BITNAME": "QAL3: ciclo concluso con errori"
+            },
+            {
+              "MEASUREID": 3,
+              "BITNO": 8,
+              "BITNAME": "Sistema in misura"
+            },
+            {
+              "MEASUREID": 3,
+              "BITNO": 9,
+              "BITNAME": "Calibrazione automatica in corso"
+            },
+            {
+              "MEASUREID": 3,
+              "BITNO": 10,
+              "BITNAME": "Analizzatore SO2 in calibrazione di zero"
+            },
+            {
+              "MEASUREID": 3,
+              "BITNO": 11,
+              "BITNAME": "Analizzatore SO2 in calibrazione di span"
+            },
+            {
+              "MEASUREID": 3,
+              "BITNO": 15,
+              "BITNAME": "Secondo campo SO2"
+            },
+            {
+              "MEASUREID": 3,
+              "BITNO": 0,
+              "BITNAME": "QAL3 in corso"
+            },
+            {
+              "MEASUREID": 3,
+              "BITNO": 1,
+              "BITNAME": "QAL3: elettrovalvola ARIA"
+            },
+            {
+              "MEASUREID": 3,
+              "BITNO": 2,
+              "BITNAME": "QAL3: elettrovalvola span SO2"
+            },
+            {
+              "MEASUREID": 3,
+              "BITNO": 3,
+              "BITNAME": "QAL3: lavaggio con N2"
+            },
+            {
+              "MEASUREID": 3,
+              "BITNO": 5,
+              "BITNAME": "QAL3: ciclo concluso senza errori"
+            },
+            {
+              "MEASUREID": 3,
+              "BITNO": 6,
+              "BITNAME": "QAL3: ciclo concluso con errori"
+            },
+            {
+              "MEASUREID": 3,
+              "BITNO": 7,
+              "BITNAME": "Pompa analisi"
+            },
+            {
+              "MEASUREID": 4,
+              "BITNO": 8,
+              "BITNAME": "Stato elettrovalvola cal zero"
+            },
+            {
+              "MEASUREID": 4,
+              "BITNO": 9,
+              "BITNAME": "Stato elettrovalvola N2"
+            },
+            {
+              "MEASUREID": 4,
+              "BITNO": 10,
+              "BITNAME": "Stato elettrovalvola cal span"
+            },
+            {
+              "MEASUREID": 4,
+              "BITNO": 11,
+              "BITNAME": "Elettrovalvola cal da sonda"
+            },
+            {
+              "MEASUREID": 4,
+              "BITNO": 13,
+              "BITNAME": "PLC life signal"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 0,
+              "BITNAME": "Impianto in marcia"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 1,
+              "BITNAME": "Impianto in minimo tecnico/funzionamento anomalo"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 2,
+              "BITNAME": "Impianto in avviamento"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 3,
+              "BITNAME": "Impianto in spegnimento"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 5,
+              "BITNAME": "SME in manutenzione"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 6,
+              "BITNAME": "Impianto in manutenzione"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 7,
+              "BITNAME": "Impianto fuori servizio per guasto"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "BITINFO_NAMES",
+      "page": {
+        "key": "CASE6_PAGE_03",
+        "sequence_index": 3,
+        "document_role": "IOL",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": [
+        {
+          "NAME": "SME",
+          "DRIVERNAME": "modbusplc",
+          "DRIVERCONFIG": ":",
+          "ID": 1,
+          "measures": [],
+          "bitinfo": [
+            {
+              "MEASUREID": 5,
+              "BITNO": 8,
+              "BITNAME": "Blocco da BSS2"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 9,
+              "BITNAME": "Allarme bassa portata FT-2611"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 10,
+              "BITNAME": "Allarme bassa portata FT-310"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 11,
+              "BITNAME": "Allarme bassa portata FT-313"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 12,
+              "BITNAME": "AI303A allarme basso pH"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 13,
+              "BITNAME": "AI303B allarme basso pH"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 14,
+              "BITNAME": "AI2602A allarme basso pH"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 15,
+              "BITNAME": "AI2602B allarme basso pH"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 0,
+              "BITNAME": "PM-302A in marcia"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 1,
+              "BITNAME": "PM-302B in marcia"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 2,
+              "BITNAME": "PM-310A in marcia"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 3,
+              "BITNAME": "PM-310B in marcia"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 4,
+              "BITNAME": "PM-2600A in marcia"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 5,
+              "BITNAME": "PM-2600B in marcia"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 6,
+              "BITNAME": "PM-2601A in marcia"
+            },
+            {
+              "MEASUREID": 5,
+              "BITNO": 7,
+              "BITNAME": "PM-2601B in marcia"
+            },
+            {
+              "MEASUREID": 6,
+              "BITNO": 8,
+              "BITNAME": "PM-2604A in marcia"
+            },
+            {
+              "MEASUREID": 6,
+              "BITNO": 9,
+              "BITNAME": "PM-2604B in marcia"
+            },
+            {
+              "MEASUREID": 6,
+              "BITNO": 10,
+              "BITNAME": "Ventilatore VN-400 in marcia"
+            },
+            {
+              "MEASUREID": 6,
+              "BITNO": 11,
+              "BITNAME": "Ventilatore VN-2504 in marcia"
+            },
+            {
+              "MEASUREID": 6,
+              "BITNO": 12,
+              "BITNAME": "Ventilatore 514K1 in marcia"
+            },
+            {
+              "MEASUREID": 6,
+              "BITNO": 13,
+              "BITNAME": "Ventilatore 514K2 in marcia"
+            },
+            {
+              "MEASUREID": 6,
+              "BITNO": 0,
+              "BITNAME": ""
+            },
+            {
+              "MEASUREID": 6,
+              "BITNO": 1,
+              "BITNAME": ""
+            },
+            {
+              "MEASUREID": 6,
+              "BITNO": 2,
+              "BITNAME": ""
+            },
+            {
+              "MEASUREID": 6,
+              "BITNO": 3,
+              "BITNAME": ""
+            },
+            {
+              "MEASUREID": 6,
+              "BITNO": 4,
+              "BITNAME": ""
+            },
+            {
+              "MEASUREID": 6,
+              "BITNO": 5,
+              "BITNAME": ""
+            },
+            {
+              "MEASUREID": 6,
+              "BITNO": 6,
+              "BITNAME": ""
+            },
+            {
+              "MEASUREID": 6,
+              "BITNO": 7,
+              "BITNAME": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "BITINFO_NAMES",
+      "page": {
+        "key": "CASE6_PAGE_04",
+        "sequence_index": 4,
+        "document_role": "IOL",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": [
+        {
+          "NAME": "SME",
+          "DRIVERNAME": "modbusplc",
+          "DRIVERCONFIG": ":",
+          "ID": 1,
+          "measures": [],
+          "bitinfo": [
+            {
+              "MEASUREID": 417,
+              "BITNO": 0,
+              "BITNAME": "PC life signal"
+            },
+            {
+              "MEASUREID": 418,
+              "BITNO": 0,
+              "BITNAME": "Start autocal"
+            },
+            {
+              "MEASUREID": 419,
+              "BITNO": 0,
+              "BITNAME": "Stop autocal"
+            },
+            {
+              "MEASUREID": 420,
+              "BITNO": 0,
+              "BITNAME": ""
+            },
+            {
+              "MEASUREID": 421,
+              "BITNO": 0,
+              "BITNAME": ""
+            },
+            {
+              "MEASUREID": 422,
+              "BITNO": 0,
+              "BITNAME": ""
+            },
+            {
+              "MEASUREID": 423,
+              "BITNO": 0,
+              "BITNAME": ""
+            },
+            {
+              "MEASUREID": 424,
+              "BITNO": 0,
+              "BITNAME": ""
+            },
+            {
+              "MEASUREID": 425,
+              "BITNO": 0,
+              "BITNAME": "Ack allarmi"
+            },
+            {
+              "MEASUREID": 426,
+              "BITNO": 0,
+              "BITNAME": "Impianto in manutenzione"
+            },
+            {
+              "MEASUREID": 427,
+              "BITNO": 0,
+              "BITNAME": "Impianto fuori servizio per guasto"
+            },
+            {
+              "MEASUREID": 428,
+              "BITNO": 0,
+              "BITNAME": ""
+            },
+            {
+              "MEASUREID": 429,
+              "BITNO": 0,
+              "BITNAME": ""
+            },
+            {
+              "MEASUREID": 430,
+              "BITNO": 0,
+              "BITNAME": ""
+            },
+            {
+              "MEASUREID": 431,
+              "BITNO": 0,
+              "BITNAME": "Allarme supero ultima media"
+            },
+            {
+              "MEASUREID": 432,
+              "BITNO": 0,
+              "BITNAME": "Allarme supero media previsionale"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "BITINFO_NAMES",
+      "page": {
+        "key": "CASE6_PAGE_05",
+        "sequence_index": 5,
+        "document_role": "IOL",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": [
+        {
+          "NAME": "SME",
+          "DRIVERNAME": "modbusplc",
+          "DRIVERCONFIG": ":",
+          "ID": 1,
+          "measures": [],
+          "bitinfo": []
+        }
+      ]
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "BITINFO_NAMES",
+      "page": {
+        "key": "CASE6_PAGE_08",
+        "sequence_index": 8,
+        "document_role": "JOB",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": []
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "BITINFO_NAMES",
+      "page": {
+        "key": "CASE6_PAGE_11",
+        "sequence_index": 11,
+        "document_role": "JOB",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": []
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "BITINFO_NAMES",
+      "page": {
+        "key": "CASE6_PAGE_12",
+        "sequence_index": 12,
+        "document_role": "JOB",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": []
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "BITINFO_NAMES",
+      "page": {
+        "key": "CASE6_PAGE_13",
+        "sequence_index": 13,
+        "document_role": "JOB",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": []
+    },
+    {
+      "diagnostic": "LV2_MEASUREMENT_BRANCH",
+      "status": "OK",
+      "branch": "BITINFO_NAMES",
+      "page": {
+        "key": "CASE6_PAGE_14",
+        "sequence_index": 14,
+        "document_role": "JOB",
+        "label": "MEASUREMENT_TECHNICAL_DATA",
+        "review_required": 0,
+        "review_warnings": "[ ]"
+      },
+      "output_format": "JSON",
+      "vlm_output": []
+    }
+  ]
+}

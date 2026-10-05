@@ -4,7 +4,7 @@ import re
 
 BRANCH = "MEASURES_BISON"
 page_raw = r'''{question}'''.strip()
-vlm_raw = r'''{edge}[5]'''.strip()
+vlm_raw = r'''{edge}[6]'''.strip()
 
 try:
     page = json.loads(page_raw)
