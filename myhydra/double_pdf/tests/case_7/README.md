@@ -15,6 +15,16 @@ Output anonimizzato: [`outputs/observed_role_v2_dedup_sanitized.json`](outputs/o
 
 Run canvas completa fino al nodo 12: [`outputs/observed_adas_case7_qwen38_run2.json`](outputs/observed_adas_case7_qwen38_run2.json) — stazione `172.16.1.31:511`, 39 misure (4 packed + 18 analogiche + 9 singoli + 8 stimate), 42 bitinfo, linkage intatto. Fixture precedente: [`outputs/observed_adas_case7_qwen38.json`](outputs/observed_adas_case7_qwen38.json).
 
+## Run4 con nodo 11 aggiornato + prompt v6 (6/10, riferimento attuale)
+
+Fixture: [`outputs/observed_adas_case7_qwen38_run4.json`](outputs/observed_adas_case7_qwen38_run4.json) — **40 misure, 47 bitinfo: 100% del PDF**.
+
+- **I 5 stati ci sono** (bit 3–7 di REG 4, TEXTON da keyword): il carry-over oltre il confine di pagina funziona, nessun warning, `review` con 5 voci `registro_applicato`. Fissato in `../test_adas_caso7_pdf_truth.py::test_stati_recuperati_con_carry_over`.
+- **16 unità su 18** (join per TAG): restano fuori solo `O2 Secco` e `O2 Umido` (`%`), caso noto da investigare sul chunk.
+- **REG 166 corretto**: esce come `Misura stimata COT` (era il duplicato sbagliato della run3).
+- Sentinel e `UNITS2` confermati. Unità in apice (`mg/Nm³`) come run2: il VLM alterna ASCII e apice tra run, i test normalizzano.
+- **Nome stazione `SME`**: il ramo Station ha restituito `null` in questa run e il merge è ripiegato sul default. IP/porta giusti, una sola stazione. Il nome resta una domanda per il cliente.
+
 ## Run3 con copia canvas + prompt v5 (6/10/2026)
 
 Fixture: [`outputs/observed_adas_case7_qwen38_run3.json`](outputs/observed_adas_case7_qwen38_run3.json) — 40 misure, 42 bitinfo, sentinel `∓3.40282e38` sulle analogiche (la divergenza dal repo è chiusa), `UNITS2` popolato sulle 4 misure con unità, unità in ASCII (`mg/Nm3`, come JOB e GT legacy).
@@ -41,17 +51,17 @@ Il JOB.0105.22 è parte della verità quanto l'IOL, e su questo caso dice cose c
 |---|---|
 | **Tabella 8**: `PC SME` due schede (192.168.70.103, 172.16.1.10), `PLC` **172.16.1.31:511** | ✅ Corretto: una sola stazione con l'IP del PLC e la porta giusta. I due IP del PC SME non generano stazioni |
 | **Oggetto/Titolo**: `Sistema Analisi Emissioni` | ✅ Il nome stazione coincide col titolo: qui è **dichiarato**, non dedotto (nel caso 6 era dedotto) |
-| **Tabella 9**: 19 righe di campi scala con unità e limiti | ❌ applicate 4 unità su 18 segnali, 0 limiti |
-| **4.7 Tabella 12 (validazioni)**: colonne `STATI IMPIANTO` = Fermo, Manutenzione, Fuori servizio, Lavaggio | ❌ Sono **esattamente i 5 bit persi**. La matrice di invalidazione delle misure non ha più input |
+| **Tabella 9**: 19 righe di campi scala con unità e limiti | ✅ 16 unità e scale collegate in run4 (restano fuori O2 Secco/Umido); limiti dichiarati ma mai applicati in ADAS |
+| **4.7 Tabella 12 (validazioni)**: colonne `STATI IMPIANTO` = Fermo, Manutenzione, Fuori servizio, Lavaggio | ✅ dal run4 sono i bit 3–7 di REG 4, presenti: la matrice ha di nuovo input |
 | **4.5.2**: misure non asteriscate con campo 0…10000 da riscalare; le 9 asteriscate già in unità ingegneristiche, "dividere 10" | ❌ L'istruzione è anche scritta nella colonna `RANGE` dell'IOL (`Dividere x10` sui registri 33-39, 41-42). Non la raccogliamo da nessuna delle due fonti |
 
-### Difetti aperti
+### Difetti aperti (run4)
 
-1. **Cinque stati d'impianto persi — carry-over del registro attraverso il confine di pagina.** La cella `REG 4` è unita e copre `DBX 70.0` (pagina 2) fino a `DBX 71.7` (pagina 3). A pagina 3 la colonna `REG` è visivamente vuota, il VLM restituisce `modbus_register: null` e `json_creator` scarta la riga come "variabile senza indirizzo". Persi: `Impianto in spegnimento` (bit 3), `Impianto in lavaggio` (4), `SME in manutenzione` (5), `Impianto in manutenzione` (6), `Impianto fuori servizio per guasto` (7). Il warning li elenca, ma il dato in ADAS non c'è. Nel caso 6 non si è manifestato perché lì la copertura `REG` non attraversa la pagina. **Gravità elevata**: sono le colonne `STATI IMPIANTO` della Tabella 12 del JOB.
-2. **Unità: 4 su 18. Il join è il colpevole, non il VLM.** Il JOB identifica i segnali con i **tag** (`CO`, `O2S`, `TF`, `P_MTR`…), l'IOL li descrive a parole (`CO`, `O2 Secco`, `Temperatura fumi`, `Potenza motore`). Il join del consolidatore è esatto: `description == tag` oppure `description == tag + " Raw"`. Le 4 unità applicate sono **esattamente** i 4 tag che coincidono col testo della descrizione; le altre 14 righe di Tabella 9 vengono scartate dal join. Il campo su cui agganciare è il **tag dell'IOL**, che il consolidatore non porta nel chunk.
+1. ~~Cinque stati d'impianto persi~~ **chiuso in run4** (carry-over oltre pagina, `registro_applicato`; erano le colonne `STATI IMPIANTO` di Tabella 12).
+2. ~~Join per uguaglianza esatta~~ **chiuso in run4** (TAG IOL nel chunk, 16/18 unità; restano fuori O2 Secco/Umido).
 3. **Limiti giornalieri e orari mai applicati.** Il JOB li dichiara (CO 40/50 mg/Nm3, NO 30/37.5, NH3 2/2.5, COT 10, PLV 10) e il consolidatore li mette nel chunk (`limit_day`, `limit_hour`), ma `json_creator` non li legge: scrive costanti sentinella.
 4. **I fattori "Dividere x10" delle 9 misure asteriscate non sono raccolti**, né dall'IOL (colonna RANGE) né dal JOB (4.5.2).
-5. **Lo script del nodo 12 non è quello del repo**, vedi [`../../nodes/lv1_07_json_creator_adas.md`](../../nodes/lv1_07_json_creator_adas.md).
+5. ~~Script del nodo 12 divergente~~ **chiuso il 6/10** (copia canvas AST-identica + test di parità).
 
 ## Lettura
 

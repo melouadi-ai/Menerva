@@ -56,36 +56,25 @@ Attenzione anche alle unità: nel PDF IOL del caso 6 **non esiste la colonna uni
 ## Stato attuale (5 ott 2026)
 
 - Single PDF: prompt v13 + `src/nodes/json_creator.py` v4.4 (A1 soglia 100, A2 copia `myhydra/` allineata). Registro in `myhydra/single_pdf/PENDENZE.md`.
-- Double PDF: catena LV1→LV2→consolidatore→ADAS verificata end-to-end sui casi 6 e 7 con Qwen 3.8. Caso 6 ha il **verdetto completo**: 22 misure + 60 bitinfo confrontati riga per riga col PDF, 22/22 registri, tutti i bit, formati `INT`→150 e `REAL`→250, `UNITS mg/Nm3` su SO2/SO2 Raw, linkage intatto. Fixture `tests/double_pdf_outputs/observed_adas_case6_qwen38_datatype.json`, tabella verità `tests/test_adas_caso6_pdf_truth.py`.
-- Caso 7: **verdetto completo** (39 misure + 42 bitinfo, `172.16.1.31:511`). Tutti i 39 registri
-  conformi al PDF IOL e `DATA_TYPE` applicato (`INT`→150, `WORD` stimate→250), ma 47 bit attesi
-  contro 42 emessi. Fixture `myhydra/double_pdf/tests/case_7/outputs/observed_adas_case7_qwen38_run2.json`,
+- Double PDF: catena LV1→LV2→consolidatore→ADAS verificata end-to-end sui casi 6 e 7 con Qwen 3.8. Caso 6 ha il **verdetto completo** (run4: 22 misure + 60 bitinfo, 100% del PDF; PM-302A/B ai bit 1/2; TEXTON da keyword). Fixture `tests/double_pdf_outputs/observed_adas_case6_qwen38_run4.json`, tabella verità `tests/test_adas_caso6_pdf_truth.py`.
+- Caso 7: **verdetto completo** (run4: 40 misure + 47 bitinfo, `172.16.1.31:511`, nessun warning).
+  47/47 bit del PDF (5 stati recuperati), 16/18 unità per TAG, REG 166 corretto, sentinel e
+  `UNITS2` confermati. Fixture `myhydra/double_pdf/tests/case_7/outputs/observed_adas_case7_qwen38_run4.json`,
   verità PDF e test in `myhydra/double_pdf/tests/test_adas_caso7_pdf_truth.py`.
 
-## Tre difetti aperti sul Double PDF, in ordine di gravità
+## Tre difetti aperti sul Double PDF — aggiornati alla run4 del caso 7 (6/10)
 
-1. **Lo script del nodo `JSON CREATOR` (12) non è `src/nodes/json_creator.py`.** Misure analogiche
-   con `LOWCRITICAL/HIGHCRITICAL/LOWRANGE/HIGHRANGE/LOWOFFSET/HIGHOFFSET/SQ* = null`, mentre repo e
-   tutti i GT legacy usano il sentinel `∓3.40282e38`. È la stessa classe dell'errore di linkage
-   bitinfo: copia modificata a mano sul canvas. **Nessun output Double è mai stato importato in un
-   ADAS reale**: la validazione è contro PDF e schema, non contro l'applicazione. Prima di ogni
-   altra cosa: riallineare il nodo 12 al repo e rifare le due run.
-2. **Carry-over del registro oltre il confine di pagina** (caso 7): la cella `REG 4` è unita e
-   copre DBX 70.0 (p2) → 71.7 (p3). A p3 la colonna è vuota, il VLM dà `null`, il pytool scarta:
-   5 stati d'impianto persi. Sono `Fermo`, `Lavaggio`, `SME in manutenzione`, `Impianto in
-   manutenzione`, `Fuori servizio`, cioè **le colonne `STATI IMPIANTO` della Tabella 12 del JOB**
-   (4.7 Validazioni): la matrice di invalidazione delle misure perde il suo input. Il Double ha già
-   `registro_suggerito` (suggerisce, non applica): va esteso al salto di pagina.
-3. **Il join scala↔misura è per uguaglianza esatta di stringa.** Nel `consolidate_to_intermediate.py`
-   la scala del JOB si aggancia con `description == tag` o `description == tag + " Raw"`. Ma il JOB
-   identifica i segnali per **tag** (`TF`, `O2S`, `P_MTR`) e l'IOL li descrive a parole
-   (`Temperatura fumi`, `O2 Secco`, `Potenza motore`). Sul caso 7 le 4 unità applicate sono
-   **esattamente** i 4 tag che coincidono col testo: le altre 14 righe di Tabella 9 muoiono nel
-   join, non nell'estrazione. **Il fix non è nel prompt**: è portare il `tag` dell'IOL nel chunk e
-   agganciare su quello. Vale anche per i limiti (5 dichiarati, 0 applicati) e per i fattori
-   "Dividere x10" delle 9 misure asteriscate (JOB 4.5.2, anche nella colonna RANGE dell'IOL).
-   Manca inoltre un warning per "il JOB dichiara unità e non le troviamo", così la lacuna resta
-   silenziosa invece di essere un `null` inerte.
+Chiusi e verificati:
+1. ~~Script del nodo 12 divergente~~ — copia canvas AST-identica + test di parità; sentinel confermato in run3/run4.
+2. ~~Carry-over oltre pagina~~ — `registro_applicato` nel consolidatore; i 5 stati ci sono (47/47 bit).
+3. ~~Join per uguaglianza esatta~~ — TAG IOL nel chunk (prompt v6); 16/18 unità; REG 166 col nome giusto.
+
+Restano, in ordine di gravità:
+1. **Limiti mai applicati in ADAS.** Il chunk li porta (`limit_day`, `limit_hour`), `json_creator` scrive costanti sentinella. Vale per entrambi i casi.
+2. **Fattori `Dividere x10`** delle 9 misure asteriscate (JOB 4.5.2, colonna RANGE IOL): non raccolti.
+3. **O2 Secco/Umido senza unità** (caso 7): le uniche 2 scale non collegate; da investigare sul chunk.
+4. **Nome stazione variabile per run** (`Sistema Analisi Emissioni` vs `SME`): il ramo Station a volte dà `null`. Domanda per il cliente insieme a BISON, zeri iniziali, regola V2.
+5. **Nessun output Double importato in ADAS reale**; terza coppia mai vista.
 
 ## Prossimo passo
 
@@ -102,15 +91,12 @@ Attenzione anche alle unità: nel PDF IOL del caso 6 **non esiste la colonna uni
    di flusso: è così che la divergenza è entrata. Non mescolarli.
    Subito dopo, prova di importazione di un output in un ADAS reale: è l'unica verifica che manca
    davvero.
-2. Prompt misure v5 (`measurement_measures_bison_v5.md`) nel nodo `ESTRAI MISURE E BISON`:
-   self-check copia letterale del BIT (la regressione PM-302A/B 0/1 invece di 1/2 è
-   variabilità VLM: i rami concordi sull'errore restano muti in review, il self-check
-   la previene alla fonte).
-3. Estendere `registro_suggerito` al salto di pagina nel consolidatore LV1 (nodo 11).
-4. Applicare `units`/`scale_eng_*`/`limit_day`/`limit_hour` in `json_creator`, con un warning
-   esplicito per "il JOB dichiara unità e non le troviamo" invece di un `null` silenzioso.
+2. Prompt misure v6 (`measurement_measures_bison_v6.md`) già nel nodo `ESTRAI MISURE E BISON`
+   (TAG trascritto + self-check BIT). Non toccare senza motivo.
+3. Applicare `limit_day`/`limit_hour` in `json_creator` (il chunk li porta, l'ADAS riceve costanti).
+4. Investigare O2 Secco/Umido senza unità sul chunk della run4.
 5. Attendere dal cliente: BISON, zeri iniziali, regola V2, nome stazione in ADAS.
-5. Terza coppia IOL+JOB mai vista, per allargare il campione oltre 6 e 7.
+6. Prova di importazione in ADAS reale + terza coppia mai vista.
 
 ## Single PDF — non è perfetto (verificato 5/10, nessuna modifica al codice)
 

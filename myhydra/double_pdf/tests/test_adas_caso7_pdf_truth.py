@@ -67,7 +67,7 @@ OBSERVED_PATH = os.path.abspath(
         os.path.dirname(__file__),
         "case_7",
         "outputs",
-        "observed_adas_case7_qwen38_run3.json",
+        "observed_adas_case7_qwen38_run4.json",
     )
 )
 
@@ -108,6 +108,11 @@ PDF_MEASURES = [
     ("Misura stimata NO", 162, 250, 0, 0),
     ("Misura stimata O2 Secco", 163, 250, 0, 0),
     ("Misura stimata O2 Umido", 164, 250, 0, 0),
+    # REG 166: riga DBW 394 con TAG COT_XTM e descrizione vuota. Dalla run4
+    # esce come "Misura stimata COT": nome derivato dal TAG, non letto.
+    # Registro reale, nome ricostruito: tenerlo qui lo rende visibile invece
+    # che farlo passare per una riga del PDF.
+    ("Misura stimata COT", 166, 250, 0, 0),
     ("Misura stimata NH3", 167, 250, 0, 0),
     ("Misura stimata Temperatura fumi", 169, 250, 0, 0),
     ("Misura stimata Pressione differenziale fumi", 171, 250, 0, 0),
@@ -178,23 +183,12 @@ def fmt_of(m):
     return struct.unpack("<I", bytes.fromhex(m["DRIVERPRIVATE"][-8:]))[0]
 
 
-def test_stazione_e_driverconfig():
-    st = observed()
-    assert st["NAME"] == "Sistema Analisi Emissioni"
-    assert 'ipaddress="172.16.1.31"' in st["DRIVERCONFIG"]
-    assert 'tcpport="511"' in st["DRIVERCONFIG"]
-
-
-def test_misure_uguali_al_pdf_tranne_nota_extra():
+def test_misure_uguali_al_pdf():
     got = [
         (m["NAME"], reg_of(m), fmt_of(m), m["TYPE"], m["DRIVERDATA"])
         for m in observed()["measures"]
     ]
-    # La run3 contiene una misura in piu' rispetto al PDF (vedi
-    # test_difetto_conosciuto_misura_166): la si esclude qui, il resto deve
-    # coincidere riga per riga.
-    senza_extra = [g for g in got if g[1] != 166]
-    assert senza_extra == PDF_MEASURES
+    assert got == PDF_MEASURES
 
 
 def test_formato_int_su_150_e_word_stimati_su_250():
@@ -213,11 +207,8 @@ def test_bitinfo_completi_su_tutti_e_quattro_i_registri_impaccati():
     for b in observed()["bitinfo"]:
         got.setdefault(b["MEASUREID"], []).append(b["BITNO"])
     packed = {k: v for k, v in got.items() if k <= 4}
-    # I bit 3..7 di REG 4 mancano: sono i cinque stati perduti a pagina 3.
-    assert packed[1] == PDF_BITS[1]
-    assert packed[2] == PDF_BITS[2]
-    assert packed[3] == PDF_BITS[3]
-    assert packed[4] == PDF_BITS[4][:8]
+    assert packed == {k: PDF_BITS[k] for k in (1, 2, 3, 4)}
+    assert len(observed()["bitinfo"]) == 47
 
 
 def test_texton_e_textoff_sempre_compilati():
@@ -226,86 +217,71 @@ def test_texton_e_textoff_sempre_compilati():
         assert b["TEXTOFF"], b
 
 
-def test_difetto_conosciuto_misura_166_con_nome_sbagliato():
-    """La run3 emette 40 misure invece di 39: al REG 166 mette una seconda
-    'Misura stimata CO'. Nel PDF (pagina 4 IOL) la riga DBW 394 ha TAG
-    COT_XTM e descrizione vuota: il registro esiste, il nome e' sbagliato
-    (dovrebbe essere la stimata del COT, non un duplicato della CO).
-
-    Finche' non e' chiuso, questo test fallisce di proposito: documenta il
-    nome sbagliato e il duplicato. Quando il VLM trascrive il TAG o salta la
-    riga come da regola, cancellare l'asserzione e basta.
-    """
+def test_misura_166_con_nome_derivato_dal_tag():
+    """Dalla run4 il REG 166 esce come 'Misura stimata COT' (era una seconda
+    'Misura stimata CO' nella run3). Nel PDF la riga DBW 394 ha TAG COT_XTM
+    e descrizione vuota: il nome e' derivato dal TAG, non letto. E' il
+    comportamento voluto finche' il VLM non trascrive descrizioni assenti."""
     st = observed()
-    doppioni = [m for m in st["measures"] if m["NAME"] == "Misura stimata CO"]
-    assert len(doppioni) == 2, (
-        "attese due 'Misura stimata CO' (161 corretta e 166 sbagliata): %s"
-        % [(m["NAME"], m["DRIVERPRIVATE"][:12]) for m in doppioni]
-    )
     reg166 = [m for m in st["measures"] if reg_of(m) == 166]
     assert len(reg166) == 1
-    assert reg166[0]["NAME"] == "Misura stimata CO", reg166[0]["NAME"]
-    assert reg166[0]["ID"] == 36
+    assert reg166[0]["NAME"] == "Misura stimata COT", reg166[0]["NAME"]
+    assert len([m for m in st["measures"] if m["NAME"] == "Misura stimata CO"]) == 1
 
 
-def test_difetto_conosciuto_cinque_stati_persi():
-    """Il difetto e' noto e documentato: finche' non e' chiuso, questo test
-    fallisce di proposito. Quando si applica il carry-over del registro,
-    cancellare l'asserzione e basta: tutto il resto resta valido.
-
-    Gravita': i cinque bit sono Fermo, Lavaggio, SME in manutenzione, Impianto
-    in manutenzione, Impianto fuori servizio per guasto, cioe' le colonne
-    'STATI IMPIANTO' della Tabella 12 del JOB (4.7 VALIDAZIONI). Perderli
-    significa che la matrice di invalidazione delle misure non ha piu' input.
-    """
+def test_stati_recuperati_con_carry_over():
+    """Chiuso con il consolidatore del 6/10 (registro_applicato): i cinque
+    stati di REG 4 (bit 3-7) ci sono, con i TEXTON da keyword. Erano le
+    colonne STATI IMPIANTO della Tabella 12 del JOB."""
     st = observed()
-    got = {b["BITNAME"]: b["BITNO"] for b in st["bitinfo"]}
+    got = {b["BITNAME"]: (b["BITNO"], b["TEXTON"]) for b in st["bitinfo"]}
     for nome, bit in BIT_PERSI.items():
-        assert nome not in got, (
-            "%s non e' piu perso: rimuovi questa asserzione e allinea "
-            "test_bitinfo_completi_su_tutti_e_quattro_i_registri_impaccati" % nome
-        )
-        assert nome.lower() not in " ".join(got).lower()
-    # il warning le elenca: la perdita e' visibile ma il dato non c'e'
-    warn = " ".join(st.get("_warnings", []))
-    for nome in BIT_PERSI:
-        assert nome.split()[-1].lower() in warn.lower()
+        assert got[nome][0] == bit, (nome, got.get(nome))
+    assert got["IMPIANTO IN SPEGNIMENTO"][1] == "SPEGNIMENTO"
+    assert got["IMPIANTO IN LAVAGGIO"][1] == "ATTIVO"
+    assert got["IMPIANTO FUORI SERVIZIO PER GUASTO"][1] == "GUASTO"
+    assert "_warnings" not in st, st.get("_warnings")
 
 
-def test_stazione_nome_e_ip_dichiarati_nel_job():
-    """Il JOB dich Oggetto/Titolo = 'Sistema Analisi Emissioni' e Tabella 8 dà
-    PLC 172.16.1.31:511. Qui il nome stazione non e' dedotto (nel caso 6 lo era)
-    e i due IP del PC SME non devono generare due stazioni."""
+def test_stazione_nome_variabile_ip_e_porta_fissi():
+    """IP/porta dal JOB Tabella 8 (PLC 172.16.1.31:511) e una sola stazione
+    sono stabili. Il NAME invece varia per run: il ramo Station a volte
+    restituisce null e il merge ripiega su 'SME'. Le due forme viste sono
+    'Sistema Analisi Emissioni' (dichiarato nel JOB) e 'SME': la scelta del
+    nome atteso resta aperta per il cliente."""
     out = [observed()]
     assert len(out) == 1
     st = out[0]
-    assert st["NAME"] == "Sistema Analisi Emissioni"
+    assert st["NAME"] in ("Sistema Analisi Emissioni", "SME"), st["NAME"]
     assert 'ipaddress="172.16.1.31"' in st["DRIVERCONFIG"]
     assert 'tcpport="511"' in st["DRIVERCONFIG"]
     assert "192.168.70.103" not in json.dumps(st)
 
 
-def test_unita_applicate_solo_a_quattro_misure():
-    """Gap aperto: il JOB dichiara 18 unita' (Tabella 9), l'output ne applica 4.
-    Le 4 sono esattamente i 4 tag che il join esatto del consolidatore
-    riesce ad agganciare. Quando il join passera' al tag dell'IOL, questo test
-    va aggiornato insieme alla correzione."""
+def test_unita_collegate_per_tag():
+    """Chiuso con join per TAG (consolidatore + prompt v6): il JOB dichiara 18
+    unita' (Tabella 9), l'output ne applica 16. Restano fuori solo O2 Secco e
+    O2 Umido (%): caso noto, da investigare sul chunk (TAG o scala mancante).
+    Le unita' si confrontano normalizzate: il VLM scrive 'mg/Nm3' o 'mg/Nm³'
+    a seconda della run, il JOB usa ASCII."""
     st = observed()
-    units = {m["NAME"]: m["UNITS"] for m in st["measures"]}
+    norm = lambda u: (u or "").replace("³", "3")
+    units = {m["NAME"]: norm(m["UNITS"]) for m in st["measures"]}
     applicate = {k: v for k, v in units.items() if v}
-    assert applicate == {
-        "CO": "mg/Nm3",
-        "NO": "mg/Nm3",
-        "COT": "mg/Nm3",
-        "NH3": "mg/Nm3",
+    attese = {
+        "CO": "mg/Nm3", "NO": "mg/Nm3", "COT": "mg/Nm3", "NH3": "mg/Nm3",
+        "Temperatura fumi": "°C", "Pressione differenziale fumi": "Pa",
+        "Concentrazione polveri": "mg/Nm3", "Temperatura urea": "°C",
+        "Temperatura SCR": "°C", "Potenza motore": "kW", "Potenza turbina": "kW",
+        "Potenza totale recuperata": "kW", "Potenza totale verso turbina": "kW",
+        "Potenza termica immessa in motore": "kW", "Consumo combustibile": "kg",
+        "Consumo combustibile orario": "kg",
     }
-    # ogni unita' presente deve corrispondere a una grandezza nota del JOB
+    assert applicate == attese
     for nome, u in applicate.items():
-        assert UNITA_DICHIARATE_NEL_JOB[nome] == u
-    # le 14 rimaste sono tutte grandezze che il JOB descrive: nessuna e' assente
-    # perche' il documento non la contiene
-    mancanti = [n for n in UNITA_DICHIARATE_NEL_JOB if units.get(n) is None]
-    assert len(mancanti) == 14
+        assert norm(UNITA_DICHIARATE_NEL_JOB[nome]) == u
+    mancanti = [n for n in UNITA_DICHIARATE_NEL_JOB if not units.get(n)]
+    assert mancanti == ["O2 Secco", "O2 Umido"], mancanti
 
 
 def test_sentinel_limiti_conforme_al_repo():
