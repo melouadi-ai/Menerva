@@ -4,7 +4,8 @@
 
 | File | Versione | Nodo | Stato |
 |---|---|---|---|
-| [`json_creator_v4_4.py`](json_creator_v4_4.py) | `v4.4` | LV1-04 | In uso. |
+| [`json_creator_v4_5.py`](json_creator_v4_5.py) | `v4.5` | LV1-04 | In uso. |
+| [`json_creator_v4_4.py`](json_creator_v4_4.py) | `v4.4` | — | Storico, superato. |
 | [`json_creator_v4_2.py`](json_creator_v4_2.py) | `v4.2` | — | Storico, superato. |
 
 ## Sorgente e sincronizzazione
@@ -12,16 +13,17 @@
 Lo script è mantenuto in `src/nodes/json_creator.py` e copiato qui. La copia è byte-identica; verificarla con:
 
 ```sh
-sha256sum ../../../src/nodes/json_creator.py json_creator_v4_4.py
+sha256sum ../../../src/nodes/json_creator.py json_creator_v4_5.py
 ```
 
-Hash atteso: `7d60929795a34fb3c8d70884335bb80bcc95004586e10c55b118694d525c0c6b`
+Hash atteso: `0f52c52896504abb70e3a58b2f21213a7df91c46747099ffe9bd5b8abc83caa2`
 
 **Se i due hash divergono, la fonte autorevole è `src/nodes/`.**
 
 Questo file ha `{edge}[4]` ed è del solo Single PDF. Il Double PDF ha una copia
 separata con `{edge}[13}` in
-[`../../double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13.py`](../../double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13.py):
+[`../../double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13_canvas.py`](../../double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13_canvas.py)
+(copia canvas senza commenti; il documentato è `json_creator_edge13.py`):
 i due flussi condividono il trasformatore ma non l'indice dell'edge, quindi
 restano in cartelle diverse.
 
@@ -35,7 +37,8 @@ La copia non ha header aggiuntivo per un motivo preciso: il file è un corpo Pyt
 | v4.1 | `src/nodes/legacy/json_creator_v4_1.py` | `{edge}[4]` | Filtro sulle descrizioni contenenti `riservat`. |
 | v4.2 | questo file (`json_creator_v4_2.py`) | `{edge}[4]` | Formato analogico da `data_type`, flag `CAMPO_SCALA_AS_MEASURES`. |
 | v4.3 | `src/nodes/json_creator.py` (storico) | `{edge}[4]` | Scarto senza-registro, avvisi zeri iniziali e copertura (guardia morta). |
-| v4.4 | questo file (`json_creator_v4_4.py`) | `{edge}[4]` | Guardia copertura funzionante (stesso `page_no` + soglia 100), self-check linkage, validazione senza `def`. |
+| v4.4 | `json_creator_v4_4.py` (storico) | `{edge}[4]` | Guardia copertura funzionante (stesso `page_no` + soglia 100), self-check linkage, validazione senza `def`. |
+| v4.5 | questo file (`json_creator_v4_5.py`) | `{edge}[4]` | Fondo scala → `LOWRANGE`/`HIGHRANGE`; limiti e divisori solo in review (mapping BISON). |
 
 Le variabili con prefisso `P` nella change-log dell'intestazione sono le correzioni portate dal v3 al v4: dedup delle misure, fold dei digitali singoli con registro condiviso, parsing robusto del registro, filtro dei nomi generici, pulizia delle parentesi e sanitizzazione degli stati.
 

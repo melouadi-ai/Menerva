@@ -1,4 +1,4 @@
-# pytool - Json Creator finale (contratto intermedio -> formato ADAS) - v4.4 + fix Double
+# pytool - Json Creator finale (contratto intermedio -> formato ADAS) - v4.5 + fix Double
 # Input : edge 13 = chunk JSON del nodo PREPARAZIONE X JSON (11)
 # Output: lista di stazioni nel formato finale ADAS (measures + bitinfo)
 #
@@ -11,6 +11,8 @@
 #    invariati (state_on se presente, altrimenti keyword).
 #  - tabella KW estesa per riprodurre tutti i TEXTON validati (MARCIA,
 #    AVVIAMENTO, SPEGNIMENTO, MISURA, BLOCCO, OK/ERRORE, WARM-UP, STAND-BY...).
+#  - v4.5 come src: fondo scala -> LOWRANGE/HIGHRANGE; limiti e divisori solo
+#    in review (mapping BISON col cliente).
 #
 # Change-log v4.3 -> v4.4:
 #  - A1: la guardia di copertura (pages>1 and chunks==1) non scattava mai
@@ -382,6 +384,8 @@ zero_padded_tutto = {}
 senza_registro_tutto = 0
 senza_registro_nomi_tutto = []
 link_issues_tutto = []
+limiti_ign_tutto = []
+divisioni_tutto = []
 while g < len(groups):
     nm = groups[g][0]
     ip = groups[g][1]
@@ -624,6 +628,26 @@ while g < len(groups):
                 bitinfo.append({"MEASUREID": mid_seq, "BITNO": 0, "BITNAME": desc.upper(), "TEXTON": ton, "TEXTOFF": toff})
         else:
             mid_seq = mid_seq + 1
+            # v4.5: fondo scala dichiarato -> LOWRANGE/HIGHRANGE, sentinel se
+            # assente. Limiti e divisori solo in review (mapping BISON).
+            lowrange = NEGBIG
+            highrange = BIG
+            se0 = v.get("scale_eng_start")
+            se1 = v.get("scale_eng_end")
+            try:
+                if se0 is not None and se1 is not None and str(se0).strip() != "" and str(se1).strip() != "":
+                    lowrange = float(str(se0).replace(",", "."))
+                    highrange = float(str(se1).replace(",", "."))
+            except Exception:
+                lowrange = NEGBIG
+                highrange = BIG
+            ld = v.get("limit_day")
+            lh = v.get("limit_hour")
+            if ld is not None or lh is not None:
+                limiti_ign_tutto.append(desc + " (giornaliero=" + str(ld) + ", orario=" + str(lh) + ")")
+            divflag = v.get("Division")
+            if divflag is True or (isinstance(divflag, str) and divflag.strip().lower() == "true"):
+                divisioni_tutto.append(desc + " (divisione x" + str(v.get("Division_value")) + ")")
             priv = "0x"
             priv = priv + struct.pack('<I', regval).hex().upper()
             priv = priv + "00000000"
@@ -631,7 +655,7 @@ while g < len(groups):
             priv = priv + struct.pack('<I', 0).hex().upper()
             priv = priv + struct.pack('<I', mid).hex().upper()
             priv = priv + struct.pack('<I', fmt_analog).hex().upper()
-            measures.append({"STATIONID": sid, "NAME": desc, "DISABLED": 0, "DIGITAL": None, "DOWNLOAD": 0, "SNAPSHOT": 1, "IGNOREERRORS": 0, "LOWCRITICAL": NEGBIG, "HIGHCRITICAL": BIG, "LOWRANGE": NEGBIG, "HIGHRANGE": BIG, "LOWOFFSET": NEGBIG, "HIGHOFFSET": BIG, "SQRAW": BIG, "SQ1HOURMEAN": BIG, "SQ3HOURMEAN": BIG, "SQ8HOURMEAN": BIG, "SQDAILYMEAN": BIG, "UNITS": units, "STANDARDRANGEID": None, "DRIVERDATA": 0, "TYPE": 0, "DRIVERPRIVATE": priv, "ONLY_POSITIVES": 0, "VM_SOURCE_CODE": VM_DEFAULT, "PERIOD": 5, "SNAPSIZE": 1000, "DRIVERCONFIG": MCFG, "ID": mid_seq, "UNITS2": units})
+            measures.append({"STATIONID": sid, "NAME": desc, "DISABLED": 0, "DIGITAL": None, "DOWNLOAD": 0, "SNAPSHOT": 1, "IGNOREERRORS": 0, "LOWCRITICAL": NEGBIG, "HIGHCRITICAL": BIG, "LOWRANGE": lowrange, "HIGHRANGE": highrange, "LOWOFFSET": NEGBIG, "HIGHOFFSET": BIG, "SQRAW": BIG, "SQ1HOURMEAN": BIG, "SQ3HOURMEAN": BIG, "SQ8HOURMEAN": BIG, "SQDAILYMEAN": BIG, "UNITS": units, "STANDARDRANGEID": None, "DRIVERDATA": 0, "TYPE": 0, "DRIVERPRIVATE": priv, "ONLY_POSITIVES": 0, "VM_SOURCE_CODE": VM_DEFAULT, "PERIOD": 5, "SNAPSIZE": 1000, "DRIVERCONFIG": MCFG, "ID": mid_seq, "UNITS2": units})
     # ---------- P5 pulizia parentesi (Nodo 8) duplicate-aware ----------
     all_names = []
     i = 0
@@ -802,6 +826,10 @@ else:
         warnings.append("INDIRIZZI CON ZERI INIZIALI: " + str(len(kk)) + " indirizzi scritti con zeri iniziali nel documento (" + ", ".join(kk[:8]) + ("..." if len(kk) > 8 else "") + "). Dopo la normalizzazione valgono come intero breve, che e' un registro diverso da quello scritto. Verificare se il documento li intende come indirizzi HMI o Modbus: la conversione non viene applicata perche' e' una decisione di dominio.")
     if senza_registro_tutto > 0:
         warnings.append("VARIABILI SENZA INDIRIZZO: " + str(senza_registro_tutto) + " variabili scartate perche' non hanno un indirizzo Modbus, quindi non sono leggibili dal PLC (grandezze derivate, indicazione CALCOLATA). Nomi: " + ", ".join(senza_registro_nomi_tutto[:6]) + ("..." if len(senza_registro_nomi_tutto) > 6 else ""))
+    if len(limiti_ign_tutto) > 0:
+        warnings.append("LIMITI DICHIARATI NON APPLICATI IN ADAS: " + str(len(limiti_ign_tutto)) + " misure con limite giornaliero/orario nel chunk ma senza campo ADAS dedicato (mapping in fase BISON col cliente). Nomi: " + ", ".join(limiti_ign_tutto[:6]) + ("..." if len(limiti_ign_tutto) > 6 else ""))
+    if len(divisioni_tutto) > 0:
+        warnings.append("DIVISIONE NON APPLICATA IN ADAS: " + str(len(divisioni_tutto)) + " misure con fattore di divisione PLC nel chunk (da trattare nel BISON). Nomi: " + ", ".join(divisioni_tutto[:6]) + ("..." if len(divisioni_tutto) > 6 else ""))
     if len(link_issues_tutto) > 0:
         warnings.append("BITINFO NON COLLEGATI: " + str(len(link_issues_tutto)) + " anomalie di linkage misure-bitinfo (" + ", ".join(link_issues_tutto[:6]) + ("..." if len(link_issues_tutto) > 6 else "") + "). Verificare che lo script sul canvas sia identico al repo.")
     if len(warnings) > 0:

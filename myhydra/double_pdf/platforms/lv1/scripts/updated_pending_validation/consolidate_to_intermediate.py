@@ -242,6 +242,13 @@ try:
                     "scale_eng_end": None,
                     "limit_hour": None,
                     "limit_day": None,
+                    # Flag di acquisizione dal ramo misure (prompt v6): mai
+                    # inferiti qui, passano nel chunk per json_creator/BISON.
+                    "Int": measure_obj.get("Int"),
+                    "Range_low": measure_obj.get("Range_low"),
+                    "Range_high": measure_obj.get("Range_high"),
+                    "Division": measure_obj.get("Division"),
+                    "Division_value": measure_obj.get("Division_value"),
                 }
                 name_reg_key = (measure_obj.get("NAME"), measure_obj.get("MODBUSREGISTRO"))
                 if name_reg_key in seen_name_reg:

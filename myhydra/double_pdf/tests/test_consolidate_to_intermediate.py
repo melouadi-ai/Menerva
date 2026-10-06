@@ -181,6 +181,34 @@ def test_data_type_passthrough_never_inferred():
     assert by_name["M_BLANK"]["data_type"] is None
 
 
+def test_int_range_division_passthrough():
+    measure_pages = [
+        assembled_page(3, [{
+            "NAME": "S", "DRIVERNAME": "modbusplc", "DRIVERCONFIG": ":",
+            "ID": 1, "measures": [
+                {"NAME": "CO", "UNITS": None, "DRIVERDATA": 0, "TYPE": 0,
+                 "ID": 1, "MODBUSREGISTRO": 17, "BIT": None,
+                 "TEXTON": None, "TEXTOFF": None,
+                 "Int": True, "Range_low": 0, "Range_high": 10000,
+                 "Division": False, "Division_value": False},
+                {"NAME": "Temperatura urea", "UNITS": None, "DRIVERDATA": 0,
+                 "TYPE": 0, "ID": 1, "MODBUSREGISTRO": 33, "BIT": None,
+                 "TEXTON": None, "TEXTOFF": None,
+                 "Int": True, "Range_low": False, "Range_high": False,
+                 "Division": True, "Division_value": 10},
+            ],
+        }]),
+    ]
+    result = run_consolidator([], measure_pages, [])
+    assert result["status"] == "OK", result
+    by_name = {v["description"]: v for v in result["stations"][0]["variables"]}
+    assert by_name["CO"]["Int"] is True
+    assert (by_name["CO"]["Range_low"], by_name["CO"]["Range_high"]) == (0, 10000)
+    assert by_name["CO"]["Division"] is False
+    assert by_name["Temperatura urea"]["Division"] is True
+    assert by_name["Temperatura urea"]["Division_value"] == 10
+
+
 def test_scales_link_units_and_limits_without_overwrite():
     station_pages = [
         station_page([{

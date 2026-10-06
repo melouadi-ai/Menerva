@@ -29,15 +29,19 @@ intenzionali e documentate** dal sorgente (decisione 6/10/2026, solo Double):
 | `TEXTON` packed | `state_on` se presente, altrimenti keyword | **sempre keyword** (l'IOL non ha colonna di stato) |
 | `TEXTOFF` packed | `state_off` se presente, altrimenti keyword | invariato (resta dal chunk: `OFF`) |
 | Singoli | `state_on` se presente, altrimenti keyword | invariato |
+| `LOWRANGE`/`HIGHRANGE` analogiche | sempre sentinel | fondo scala dichiarato, sentinel se assente (v4.5, anche in `src/`) |
+| Limiti/divisori | ignorati | solo in review con i nomi (v4.5, anche in `src/`) |
 
-Tutto il resto è identico a `src/nodes/json_creator.py` v4.4. Verificare con:
+Tutto il resto è identico a `src/nodes/json_creator.py` v4.5. Verificare con:
 
 ```sh
 diff ../../../../src/nodes/json_creator.py scripts/in_use/json_creator_edge13.py
 ```
 
-Il `diff` deve mostrare **solo** queste aree. Hash atteso del file
-Double: `c82102460b60266222a28341b255ad6ee75921928d19c35778799270b46e7300`.
+Il `diff` deve mostrare **solo** queste aree. Hash attesi:
+
+- documentato (`json_creator_edge13.py`, NON da incollare): `75181f27f974324a04321a79ed45e19855b80265ab2f5e2a2271d19142d1306d`
+- copia canvas (`json_creator_edge13_canvas.py`, da incollare): `fc82daa39184cc17f58133b4b866650b97e0a8eefe18782071ca4b846a4aee1d`
 
 **Se il `diff` mostra altro, la copia è divergente: non usarla.** È esattamente
 come è successo il 5/10, quando la copia sul canvas aveva i campi limite a
