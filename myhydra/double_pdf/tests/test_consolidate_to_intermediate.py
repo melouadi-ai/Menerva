@@ -215,7 +215,7 @@ def test_scales_link_units_and_limits_without_overwrite():
     assert [s["tag"] for s in result["unmatched_scales"]] == ["TF"]
 
 
-def test_carry_over_cross_pagina_suggerito_mai_applicato():
+def test_carry_over_cross_pagina_applicato_con_review():
     page2 = assembled_page(2, [{
         "NAME": "S", "DRIVERNAME": "modbusplc", "DRIVERCONFIG": ":",
         "ID": 1, "measures": [
@@ -237,13 +237,46 @@ def test_carry_over_cross_pagina_suggerito_mai_applicato():
     }])
     result = run_consolidator([], [page2, page3], [])
     assert result["status"] == "OK", result
-    suggeriti = [r for r in result["review"] if r["rule"] == "registro_suggerito"]
-    assert len(suggeriti) == 1, result["review"]
-    assert suggeriti[0]["page_sequence"] == 3
-    assert "REG 4" in suggeriti[0]["detail"]
+    applicati = [r for r in result["review"] if r["rule"] == "registro_applicato"]
+    assert len(applicati) == 1, result["review"]
+    assert applicati[0]["page_sequence"] == 3
+    assert "REG 4" in applicati[0]["detail"]
+    assert result["counters"]["registri_applicati"] == 1
     by_name = {v["description"]: v for v in result["stations"][0]["variables"]}
-    assert by_name["Impianto in marcia"]["modbus_register"] is None
+    assert by_name["Impianto in marcia"]["modbus_register"] == 4
     assert by_name["Riga calcolata"]["modbus_register"] is None
+
+
+def test_scale_si_agganciano_al_tag_iol():
+    station_pages = [
+        station_page([{
+            "nome_stazione": None, "stazione": None, "protocollo": "ModBus TCP",
+            "ip_plc": "172.16.1.31", "port": 511, "campi_scala": [
+                {"segnale": "Temperatura fumi", "tag": "TF", "campo_da": 0,
+                 "campo_a": 500, "unita": "°C",
+                 "limite_giornaliero": None, "limite_orario": None},
+            ],
+        }]),
+    ]
+    measure_pages = [
+        assembled_page(3, [{
+            "NAME": "S", "DRIVERNAME": "modbusplc", "DRIVERCONFIG": ":",
+            "ID": 1, "measures": [
+                {"NAME": "Temperatura fumi", "TAG": "TF", "UNITS": None,
+                 "DRIVERDATA": 0, "TYPE": 0, "ID": 1, "MODBUSREGISTRO": 25,
+                 "BIT": None, "TEXTON": None, "TEXTOFF": None},
+            ],
+        }]),
+    ]
+    result = run_consolidator(station_pages, measure_pages, [])
+    assert result["status"] == "OK", result
+    var = result["stations"][0]["variables"][0]
+    assert var["tag"] == "TF"
+    assert var["scale_eng_start"] == 0
+    assert var["scale_eng_end"] == 500
+    assert var["units"] == "°C"
+    assert result["counters"]["scales_linked"] == 1
+    assert result["unmatched_scales"] == []
 
 
 def test_empty_branches_and_dict_inputs_tolerated():

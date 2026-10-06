@@ -44,6 +44,7 @@ try:
         "scales_linked": 0,
         "scales_unmatched": 0,
         "duplicate_measures_kept": 0,
+        "registri_applicati": 0,
     }
 
     # Configurazioni stazione: primo valore non nullo per campo; IP distinti.
@@ -214,8 +215,19 @@ try:
                         data_type_value = None
                 else:
                     data_type_value = None
+                # TAG dalla colonna TAG dell'IOL (prompt v6 lo trascrive);
+                # e' la chiave di join con le scale del JOB (che usano i tag).
+                # Assente o vuoto resta None e vale il join per descrizione.
+                tag_value = measure_obj.get("TAG")
+                if isinstance(tag_value, str):
+                    tag_value = tag_value.strip()
+                    if not tag_value:
+                        tag_value = None
+                else:
+                    tag_value = None
                 variable_obj = {
                     "description": measure_obj.get("NAME"),
+                    "tag": tag_value,
                     "units": measure_obj.get("UNITS"),
                     "modbus_register": measure_obj.get("MODBUSREGISTRO"),
                     "bit": measure_obj.get("BIT"),
@@ -236,20 +248,25 @@ try:
                     duplicate_pairs.append(str(measure_obj.get("NAME")) + " @ " + str(measure_obj.get("MODBUSREGISTRO")))
                 else:
                     seen_name_reg.append(name_reg_key)
-                # Carry-over cross-pagina: una riga digitale con BIT ma senza
-                # REG a inizio foglio eredita probabilmente l'ultimo REG
-                # esplicito visto in ordine di sequenza. Non si applica mai
-                # in automatico: si registra il suggerimento con la pagina,
-                # da confermare sul PDF (il valore resta null).
+                # Carry-over cross-pagina (decisione 6/10/2026, caso 7): la LV2
+                # gira una pagina alla volta, quindi una cella REG unita a
+                # cavallo di due pagine arriva qui come null e nessun prompt
+                # puo' recuperarla. Una riga digitale con BIT ma senza REG
+                # eredita l'ultimo REG esplicito visto in ordine di sequenza;
+                # ogni applicazione resta tracciata in review con la pagina.
+                # Le analogiche senza REG restano null (non leggibili dal PLC,
+                # scartate a valle dal json_creator).
                 if (variable_obj.get("modbus_register") is None
                         and variable_obj.get("bit") is not None
                         and kind_value != "ANALOGICA"
                         and last_page_reg is not None):
+                    variable_obj["modbus_register"] = last_page_reg
+                    counters["registri_applicati"] += 1
                     review.append({
-                        "rule": "registro_suggerito",
+                        "rule": "registro_applicato",
                         "page_sequence": seq_value,
-                        "detail": str(measure_obj.get("NAME")) + ": probabile REG "
-                        + str(last_page_reg) + " (carry-over cross-pagina, da confermare)",
+                        "detail": str(measure_obj.get("NAME")) + ": REG "
+                        + str(last_page_reg) + " applicato (carry-over cross-pagina, verificare sul PDF)",
                     })
                 if isinstance(measure_obj.get("MODBUSREGISTRO"), int):
                     last_page_reg = measure_obj.get("MODBUSREGISTRO")
@@ -263,9 +280,11 @@ try:
     review.extend(page_review_items)
     counters["variables_total"] = len(variables)
 
-    # Collega campi scala per tag: esatto oppure NAME == tag + " Raw".
-    # Se la riga scala porta unita' e limiti (prompt Station esteso), li
-    # riversa nella variabile senza mai sovrascrivere valori gia' presenti.
+    # Collega campi scala per tag IOL (se trascritto, prompt v6) oppure per
+    # descrizione esatta (NAME == tag o NAME == tag + " Raw", comportamento
+    # precedente conservato per i chunk senza TAG). Se la riga scala porta
+    # unita' e limiti, li riversa nella variabile senza mai sovrascrivere
+    # valori gia' presenti.
     unmatched_scales = []
     scale_pos = 0
     while scale_pos < len(scale_rows):
@@ -278,7 +297,9 @@ try:
             while var_pos < len(variables):
                 variable_obj = variables[var_pos]
                 var_name = variable_obj.get("description")
-                if isinstance(var_name, str) and (var_name == scale_tag or var_name == scale_tag + " Raw"):
+                var_tag = variable_obj.get("tag")
+                tag_match = isinstance(var_tag, str) and var_tag and var_tag == scale_tag
+                if isinstance(var_name, str) and (tag_match or var_name == scale_tag or var_name == scale_tag + " Raw"):
                     variable_obj["scale_eng_start"] = scale_row.get("campo_da")
                     variable_obj["scale_eng_end"] = scale_row.get("campo_a")
                     scale_unit = scale_row.get("unita") if isinstance(scale_row, dict) else None
