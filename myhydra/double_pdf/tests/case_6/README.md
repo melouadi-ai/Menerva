@@ -44,7 +44,7 @@ Il payload completo di chiavi runtime è effimero e non viene archiviato. La for
 | [`outputs/observed_lv2_measurement_assembly_light_sanitized.json`](outputs/observed_lv2_measurement_assembly_light_sanitized.json) | Prima run assemblatore (leggero): 9 pagine `OK`, review dove serve, pagina 4 pulita; verdetto struttura per pagina |
 | [`outputs/observed_lv2_station_information_light_run_sanitized.json`](outputs/observed_lv2_station_information_light_run_sanitized.json) | Run Station con VLM leggero, 4 pagine (6,7,9,10): attribuzione intatta e dati veri; prova che `{question}` funziona mentre i tagger Measurement la vedono vuota |
 | [`outputs/observed_lv1_consolidator_qwen38_sanitized.json`](outputs/observed_lv1_consolidator_qwen38_sanitized.json) | Consolidatore 3.8 (run 5/10): `OK`, stazione `Sistema Analisi SO2` `10.100.50.95:511`, 69 variabili, scale SO2 collegate, `bit_conflicts` p2/p3 con valori usati conformi al PDF |
-| [`../../../tests/double_pdf_outputs/observed_adas_case6_qwen38_datatype.json`](../../../tests/double_pdf_outputs/observed_adas_case6_qwen38_datatype.json) | **Uscita ADAS della run 3.8 completa** (22 misure + 60 bitinfo): `DATA_TYPE` e unità applicati, `UNITS mg/Nm3` su SO2/SO2 Raw. Verdetto in `tests/test_adas_caso6_pdf_truth.py` |
+| [`../../../tests/double_pdf_outputs/observed_adas_case6_qwen38_run4.json`](../../../tests/double_pdf_outputs/observed_adas_case6_qwen38_run4.json) | **Uscita ADAS di riferimento** (copia canvas + prompt v5, 6/10): 22 misure + 60 bitinfo, 100% del PDF. Fixture precedente con datatype in `../../../tests/double_pdf_outputs/observed_adas_case6_qwen38_datatype.json` |
 | [`outputs/expected_unique_page_labels.json`](outputs/expected_unique_page_labels.json) | Etichette deduplicate per chiave, 14 elementi |
 | [`outputs/expected_pytool_first_window.json`](outputs/expected_pytool_first_window.json) | Risultato atteso del Pytool sul primo giro |
 
@@ -92,3 +92,13 @@ Verità PDF, per registro: `1` (allarmi, bit 8–13), `3` (stati, 8–11/15/0–
 Il nostro output è corretto su tutti questi punti. Il legacy `gaia_doublefile_result_6.json` sbaglia: due registri (430/431 invece di 431/432, per la riga bianca che ha trattato come misura), 18 `bitinfo` in più (12 su righe bianche, `PM-2601A/B` e i quattro ventilatori duplicati) e `TEXTON` spostati di una riga. La tabella completa e i test che la fissano sono in `tests/test_adas_caso6_pdf_truth.py`; il confronto meccanico è in `tests/double_pdf_outputs/confronto_adas_vs_gaia6.txt`.
 
 Due osservazioni restano aperte e non sono difetti: le **unità di misura non esistono nel PDF** (i `mg/Nm3`/`°C` del legacy sono inferenze; noi emettiamo `mg/Nm3` solo dove la scala SO2 è dichiarata) e il **nome stazione** è dedotto (`Sistema Analisi SO2`; nel PDF: `Impianto lavorazione SO2`).
+
+## Run4 con copia canvas + prompt v5 (6/10/2026, riferimento attuale)
+
+Fixture: `tests/double_pdf_outputs/observed_adas_case6_qwen38_run4.json`, verdetto in `tests/test_adas_caso6_pdf_truth.py`.
+
+- **22/22 misure e 60/60 bit conformi al PDF**, stessi del verdetto sopra.
+- **PM-302A/B tornati ai bit del PDF (1/2)**: la regressione a 0/1 è chiusa dal self-check di copia letterale del BIT nel prompt v5.
+- **TEXTON packed da keyword** (decisione 6/10): i 5 `ALLARME` su heartbeat ed elettrovalvole tornati ad `ATTIVO`/`APERTO`.
+- Sentinel `∓3.40282e38` sulle analogiche, `UNITS2` su SO2/SO2 Raw, nessun warning.
+- Unica anomalia minore dal chunk: `QAL3: CICLO CONCLUSO SENZA ERRORI` ha `TEXTOFF` = `ERRORE` invece di `OFF` (state_off del VLM; il fix riguarda solo TEXTON). Fissata in `test_textoff_anomalia_nota_su_senza_errori`.

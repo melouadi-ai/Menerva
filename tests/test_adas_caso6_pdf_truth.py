@@ -34,7 +34,7 @@ OBSERVED_PATH = os.path.abspath(
     os.path.join(
         os.path.dirname(__file__),
         "double_pdf_outputs",
-        "observed_adas_case6_qwen38_datatype.json",
+        "observed_adas_case6_qwen38_run4.json",
     )
 )
 LEGACY_PATH = os.path.abspath(
@@ -140,6 +140,40 @@ def test_texton_e_textoff_sempre_compilati():
     for b in observed()["bitinfo"]:
         assert b["TEXTON"], b
         assert b["TEXTOFF"], b
+
+
+def test_pm302ab_sui_bit_del_pdf():
+    """Regressione chiusa con il prompt v5 (run4): PM-302A a BIT 1 e PM-302B
+    a BIT 2, come stampato su DBX 73.1/73.2. La run precedente li aveva a
+    0/1, sulla riga bianca DBX 73.0."""
+    by_name = {b["BITNAME"]: b for b in observed()["bitinfo"]}
+    assert by_name["PM-302A IN MARCIA"]["BITNO"] == 1
+    assert by_name["PM-302B IN MARCIA"]["BITNO"] == 2
+    assert by_name["PM-310A IN MARCIA"]["BITNO"] == 4
+    assert by_name["PM-310B IN MARCIA"]["BITNO"] == 5
+
+
+def test_texton_da_keyword_mai_allarme_su_vita_e_valvole():
+    """Decisione 6/10/2026: TEXTON packed da keyword. Il VLM aveva scritto
+    ALLARME su heartbeat ed elettrovalvole; il JOB 4.8 descrive l'heartbeat
+    come segnale periodico, non un allarme."""
+    by_name = {b["BITNAME"]: b for b in observed()["bitinfo"]}
+    assert by_name["PLC LIFE SIGNAL"]["TEXTON"] == "ATTIVO"
+    assert by_name["STATO ELETTROVALVOLA CAL ZERO"]["TEXTON"] == "APERTO"
+    assert by_name["STATO ELETTROVALVOLA N2"]["TEXTON"] == "APERTO"
+    assert by_name["STATO ELETTROVALVOLA CAL SPAN"]["TEXTON"] == "APERTO"
+    assert by_name["ELETTROVALVOLA CAL DA SONDA"]["TEXTON"] == "APERTO"
+
+
+def test_textoff_anomalia_nota_su_senza_errori():
+    """Una sola anomalia minore dal chunk: 'QAL3: CICLO CONCLUSO SENZA
+    ERRORI' ha TEXTOFF 'ERRORE' invece di 'OFF' (state_off del VLM, non
+    toccato dal fix che riguarda solo TEXTON). Le altre 59 righe hanno OFF.
+    Se cambia, rivalutare: o il chunk si e' corretto da solo o si e' rotto
+    altrove."""
+    offs = [(b["BITNAME"], b["TEXTOFF"]) for b in observed()["bitinfo"]]
+    anomali = [n for n, t in offs if t != "OFF"]
+    assert anomali == ["QAL3: CICLO CONCLUSO SENZA ERRORI"], anomali
 
 
 def test_nessuna_riga_fantasma_da_riga_bianca():
