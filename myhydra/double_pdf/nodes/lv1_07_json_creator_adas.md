@@ -19,9 +19,19 @@
   ancora più vecchia non aveva le chiavi. Verificato confrontando tutte le
   fixture Double con le quattro Single e con i GT.
 
+  Finché non è fatto, ogni output Double è un formato non validato: nessun
+  Double PDF è mai stato importato in un ADAS reale.
+
   **Prima di incollare:** `diff` contro `src/nodes/json_creator.py` deve
-  mostrare solo le righe 2 e 45. Hash atteso:
-  `e75c101395dcfaf9086edc393c4ea32ee8c0008333e88699b7869d471c629c91`.
+  mostrare solo le aree elencate in
+  [`../platforms/lv1/scripts/in_use/README.md`](../platforms/lv1/scripts/in_use/README.md).
+  Hash atteso:
+  `c82102460b60266222a28341b255ad6ee75921928d19c35778799270b46e7300`.
+
+  **Decisione 6/10/2026 (TEXTON):** il `TEXTON` delle packed viene sempre dalla
+  tabella keyword, mai da `state_on` nel chunk: l'IOL non ha colonna di stato,
+  quindi ogni `state_on` è un'inferenza del VLM (in una run ha scritto ALLARME
+  su `PLC LIFE SIGNAL` e sulle elettrovalvole). I singoli restano invariati.
 - **Output atteso (caso 6, run 3.8):** lista con 1 stazione `Sistema Analisi SO2`
   (`10.100.50.95:511`), 22 misure (5 packed + 9 analogiche + 8 singoli),
   60 bitinfo; fixture in `tests/double_pdf_outputs/observed_adas_case6_qwen38.json`.

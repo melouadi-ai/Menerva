@@ -50,7 +50,7 @@ Incollare il contenuto completo del file corrispondente:
 
 | Nodo | Prompt |
 |---:|---|
-| 3 — `ESTRAI MISURE E BISON` | Powered identity [`measurement_measures_bison_v4.md`](../platforms/lv2/measurement/prompts/current/measurement_measures_bison_v4.md) (v4 aggiunge `DATA_TYPE` trascritto da TIPO, mai inferito); campo Prompt `{edge.media}[1]` |
+| 3 — `ESTRAI MISURE E BISON` | Powered identity [`measurement_measures_bison_v5.md`](../platforms/lv2/measurement/prompts/current/measurement_measures_bison_v5.md) (v5 aggiunge il self-check copia letterale del BIT; v4 in `prompts/history/`); campo Prompt `{edge.media}[1]` |
 | 4 — `ESTRAI BITINFO E NOMI` | Powered identity [`measurement_bitinfo_names_v3.md`](../platforms/lv2/measurement/prompts/current/measurement_bitinfo_names_v3.md); campo Prompt `{edge.media}[3]` |
 | 5 — `ESTRAI STATI TEXTON TEXTOFF` | Powered identity [`measurement_bitinfo_states_v3.md`](../platforms/lv2/measurement/prompts/current/measurement_bitinfo_states_v3.md); campo Prompt `{edge.media}[4]` |
 

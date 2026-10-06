@@ -4,13 +4,17 @@
 
 [`scripts/in_use/json_creator_edge13.py`](scripts/in_use/json_creator_edge13.py) — v4.4, placeholder `{edge}[13]`.
 
-È la stessa trasformazione finale che usa il Single PDF, con **due sole righe
-diverse** dal sorgente:
+È la stessa trasformazione finale che usa il Single PDF, con **divergenze
+intenzionali e documentate** dal sorgente (decisione 6/10/2026, solo Double):
 
-| Riga | Single PDF | Double PDF |
+| Area | `src/nodes/json_creator.py` | Questa copia |
 |---|---|---|
-| 2 (commento) | `edge 4 = JSON intermedio aggregato dal nodo iterativo` | `edge 13 = chunk JSON del nodo PREPARAZIONE X JSON (11)` |
-| 45 | `raw = r'''{edge}[4]'''` | `raw = r'''{edge}[13]'''` |
+| Riga 2 (commento) | `edge 4 = JSON intermedio aggregato dal nodo iterativo` | `edge 13 = chunk JSON del nodo PREPARAZIONE X JSON (11)` |
+| Riga raw | `raw = r'''{edge}[4]'''` | `raw = r'''{edge}[13]'''` |
+| Tabella `KW` | 11 voci (VALVOLA, ALLARME, ZERO, SPAN...) | 31 voci: stesse + MARCIA, AVVIAMENTO, SPEGNIMENTO, MISURA, BLOCCO, OK/ERRORE, WARM-UP, STAND-BY, LIFE SIGNAL... |
+| `TEXTON` packed | `state_on` se presente, altrimenti keyword | **sempre keyword** (l'IOL non ha colonna di stato) |
+| `TEXTOFF` packed | `state_off` se presente, altrimenti keyword | invariato (resta dal chunk: `OFF`) |
+| Singoli | `state_on` se presente, altrimenti keyword | invariato |
 
 Tutto il resto è identico a `src/nodes/json_creator.py` v4.4. Verificare con:
 
@@ -18,8 +22,8 @@ Tutto il resto è identico a `src/nodes/json_creator.py` v4.4. Verificare con:
 diff ../../../../src/nodes/json_creator.py scripts/in_use/json_creator_edge13.py
 ```
 
-Le uniche differenze devono essere le righe 2 e 45. Hash atteso del file
-Double: `e75c101395dcfaf9086edc393c4ea32ee8c0008333e88699b7869d471c629c91`.
+Il `diff` deve mostrare **solo** queste aree. Hash atteso del file
+Double: `c82102460b60266222a28341b255ad6ee75921928d19c35778799270b46e7300`.
 
 **Se il `diff` mostra altro, la copia è divergente: non usarla.** È esattamente
 come è successo il 5/10, quando la copia sul canvas aveva i campi limite a

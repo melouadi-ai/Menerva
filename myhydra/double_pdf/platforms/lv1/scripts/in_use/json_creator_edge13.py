@@ -1,6 +1,16 @@
-# pytool - Json Creator finale (contratto intermedio -> formato ADAS) - v4.4
+# pytool - Json Creator finale (contratto intermedio -> formato ADAS) - v4.4 + fix Double
 # Input : edge 13 = chunk JSON del nodo PREPARAZIONE X JSON (11)
 # Output: lista di stazioni nel formato finale ADAS (measures + bitinfo)
+#
+# Divergenze intenzionali rispetto a src/nodes/json_creator.py (solo Double):
+#  - riga raw con {edge}[13] invece di {edge}[4];
+#  - TEXTON delle DIGITALE_IMPACCATO sempre da tabella keyword (decisione
+#    6/10/2026: l'IOL non ha colonna di stato, quindi state_on nel chunk e'
+#    un'inferenza del VLM; in una run ha scritto ALLARME su PLC LIFE SIGNAL
+#    e sulle elettrovalvole). TEXTOFF resta da chunk (OFF). I SINGOLI restano
+#    invariati (state_on se presente, altrimenti keyword).
+#  - tabella KW estesa per riprodurre tutti i TEXTON validati (MARCIA,
+#    AVVIAMENTO, SPEGNIMENTO, MISURA, BLOCCO, OK/ERRORE, WARM-UP, STAND-BY...).
 #
 # Change-log v4.3 -> v4.4:
 #  - A1: la guardia di copertura (pages>1 and chunks==1) non scattava mai
@@ -328,17 +338,36 @@ NEGBIG = -3.40282e+38
 VM_DEFAULT = "if elapsed() then    storep(11);else store(8);fi;"
 MCFG = "<configuration SynopticAnalogicFormat=\"%7.2f\"/>"
 KW = [
-    ["VALVOLA", "APERTO", "CHIUSO"],
-    ["BY-PASS", "BYPASS", "CHIUSO"],
-    ["BYPASS", "BYPASS", "CHIUSO"],
     ["ALLARME", "ALLARME", "OFF"],
     ["FAULT", "GUASTO", "OFF"],
     ["GUASTO", "GUASTO", "OFF"],
+    ["FUORI SERVIZIO", "GUASTO", "OFF"],
+    ["MINIMO TECNICO", "ANOMALIA", "OFF"],
+    ["FUNZIONAMENTO ANOMALO", "ANOMALIA", "OFF"],
     ["ANOMALIA", "ANOMALIA", "OFF"],
     ["MANUTENZIONE", "MANUTENZIONE", "OFF"],
     ["CALIBRAZIONE", "CALIBRAZIONE", "OFF"],
+    ["VALVOLA", "APERTO", "CHIUSO"],
+    ["VALVE", "APERTO", "CHIUSO"],
+    ["BY-PASS", "BYPASS", "CHIUSO"],
+    ["BYPASS", "BYPASS", "CHIUSO"],
     ["ZERO", "ZERO", "OFF"],
-    ["SPAN", "SPAN", "OFF"]
+    ["SPAN", "SPAN", "OFF"],
+    ["MARCIA", "MARCIA", "OFF"],
+    ["AVVIAMENTO", "AVVIAMENTO", "OFF"],
+    ["SPEGNIMENTO", "SPEGNIMENTO", "OFF"],
+    ["MISURA", "MISURA", "OFF"],
+    ["LIFE SIGNAL", "ATTIVO", "OFF"],
+    ["HEARTBIT", "ATTIVO", "OFF"],
+    ["HEARTBEAT", "ATTIVO", "OFF"],
+    ["BLOCCO", "BLOCCO", "OFF"],
+    ["WARM-UP", "WARM-UP", "OFF"],
+    ["WARMUP", "WARM-UP", "OFF"],
+    ["STAND-BY", "STAND-BY", "OFF"],
+    ["STANDBY", "STAND-BY", "OFF"],
+    ["SENZA ERRORI", "OK", "OFF"],
+    ["ERRORI", "ERRORE", "OFF"],
+    ["ERRORE", "ERRORE", "OFF"]
 ]
 
 # ---------- generazione misure/bitinfo per stazione ----------
@@ -572,7 +601,10 @@ while g < len(groups):
             bkey = str(mid_target) + ":" + str(bitval)
             if bkey not in seen_bits:
                 seen_bits[bkey] = True
-                bitinfo.append({"MEASUREID": mid_target, "BITNO": bitval, "BITNAME": desc.upper(), "TEXTON": ton, "TEXTOFF": toff})
+                # Double, decisione 6/10/2026: TEXTON packed sempre da keyword
+                # (kton), mai da state_on nel chunk (l'IOL non ha colonna di
+                # stato). TEXTOFF resta da chunk (toff) come nelle run validate.
+                bitinfo.append({"MEASUREID": mid_target, "BITNO": bitval, "BITNAME": desc.upper(), "TEXTON": kton, "TEXTOFF": toff})
         elif kind == "DIGITALE_SINGOLO":
             mid_seq = mid_seq + 1
             dd = 1
