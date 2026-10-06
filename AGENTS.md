@@ -38,6 +38,12 @@ Always communicate with the user in **Italian**. VLM prompts and code stay in En
 
 Sync habit in this repo is `sync.sh`: `git pull origin main`, `git add .`, timestamp commit, `git push origin main`.
 
+## Vincolo operativo utente (6 ott 2026)
+
+- L'utente **non può fare tap sui nodi né usare il debugger** sul canvas MyHydra: va in timeout.
+- Non chiedere mai ispezioni via tap/debug. Chiedere solo output già incollabili (testo/JSON completo) o conferme su edge/nomi nodi.
+- Le diagnosi devono funzionare con self-check dentro l'output (`_warnings`, `_meta`, `review`) invece che con ispezioni live.
+
 ## Confronto con il legacy: il GT non è un riferimento di qualità
 
 `tests/compare_with_gt.py` confronta output vs `data/test_outputs/gaia_doublefile_result_6.json`, ma il legacy **ha errori propri**: letto riga per riga, `Mappatura_6_Cliente_SMI_1.pdf` dà 22 misure e **60** bitinfo, il GT ne ha 78. In dettaglio: 18 bitinfo fantasma (12 su righe senza TITOLO, più `PM-2601A/B` e i 4 ventilatori duplicati), due registri comandi sbagliati (430/431 invece di 431/432, shift di una riga su una riga bianca trattata come misura), `TEXTON` disallineati di una posizione, `QAL3` da `INT` scritti 250 invece di 150, e i nomi `STIMATA SO2`/`… ARI` troncati.
