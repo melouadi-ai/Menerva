@@ -228,11 +228,22 @@ def test_unita_applicate_solo_a_quattro_misure():
         assert UNITA_DICHIARATE_NEL_JOB[nome] == u
 
 
-def test_limiti_giornalieri_non_applicati():
-    """Il JOB dichiara i limiti (CO 40/50 mg/Nm3, NO 30/37.5, NH3 2/2.5,
-    COT 10, PLV 10) ma `json_creator` scrive costanti NEGBIG/BIG e ignora
-    `limit_day`/`limit_hour`. Nessun limite arriva in ADAS."""
+def test_difetto_conosciuto_sentinel_dei_limiti_assente():
+    """Lo script sul canvas non e' `src/nodes/json_creator.py`.
+
+    Il repo e tutti e quattro i ground truth legacy emettono
+    LOWCRITICAL = -3.40282e38 / HIGHCRITICAL = +3.40282e38 sulle misure
+    analogiche: e' il sentinel ADAS per "nessun limite". L'output Double PDF
+    emette `null`. Non e' una scelta: e' una divergenza, probabilmente una
+    copia modificata a mano del nodo 12 (la stessa classe di errore che aveva
+    rotto il linkage dei bitinfo). Da correggere riallineando il nodo al repo,
+    poi questo test va invertito.
+
+    Finche' resta cosi', i limiti veri del JOB (CO 40/50 mg/Nm3, NO 30/37.5,
+    NH3 2/2.5, COT 10, PLV 10) non hanno un campo su cui scriversi: il pytool
+    scrive costanti e non legge `limit_day`/`limit_hour` in nessun caso.
+    """
     for m in observed()["measures"]:
         if m["TYPE"] == 0:
-            assert m["LOWCRITICAL"] == -3.40282e38
-            assert m["HIGHCRITICAL"] == 3.40282e38
+            assert m["LOWCRITICAL"] is None
+            assert m["HIGHCRITICAL"] is None

@@ -172,16 +172,23 @@ vanno fornite (Tabella 6 JOB per il caso 6) o concordata una regola di inferenza
 
 ### Punti aperti
 
-* Verdetto ADAS del caso 7 rilettosu PDF con lo stesso metodo del caso 6 (la run c'è:
-  39 misure + 42 bitinfo, ma nessun confronto riga per riga ancora).
-* Unità di misura e limiti orario/giornaliero: il PDF del caso 6 non li contiene (Tabella 6 JOB sì);
-  oggi emettiamo `mg/Nm3` dove la scala è dichiarata. Serve la regola dal cliente.
+* **Lo script del nodo 12 non è quello del repo** (priorità massima): i campi limite delle
+  analogiche escono a `null` invece del sentinel `∓3.40282e38` che il repo e tutti i ground truth
+  legacy emettono. Finché non è riallineato, gli output Double non sono un formato validato.
+* **5 stati d'impianto persi sul caso 7**: carry-over del registro oltre il confine di pagina.
+* **Unità e limiti**: nel caso 6 il JOB non li dichiara e il legacy si inventa `mg/Nm³` e `°C`; nel
+  caso 7 il JOB li dichiara tutti (18 unità, 5 limiti) e noi ne applichiamo 4. La regola da
+  applicare è "quello che è dichiarato", non "quello che si deduce".
 * Scala `TF` non collegata (tag JOB `TF` vs misura `Temperatura fumi`; mappa in Tabella 6 JOB).
-* Verificare che `DATA_TYPE` arrivi anche alle misure `INT` di altri casi (nel caso 6 è arrivato:
-  QAL3 con formato 150 contro 250 del legacy).
 * Specifiche BISON/linearizzazioni dal cliente (come nel Single).
 * Terza coppia IOL+JOB mai vista, per allargare il campione oltre caso 6/7.
 * Chiave ufficiale di abbinamento IOL/JOB su riferimenti discordanti (caso Ospedale: IOL cita `JOB.0187.25`, accanto c'è `JOB.0007.18`).
+
+### Cosa non va detto al cliente
+
+* Nessun output Double PDF è stato importato in un ADAS reale. La validazione fatta è contro il
+  PDF e contro lo schema, non contro l'applicazione. La prova d'importazione manca ed è il
+  controllo da fare prima di parlare di consegna.
 
 ---
 
@@ -257,3 +264,5 @@ vanno fornite (Tabella 6 JOB per il caso 6) o concordata una regola di inferenza
 | 05/10/2026 | Double PDF | Caso 7 serie 3.8 fino all'ADAS (39 misure + 42 bitinfo, IP `.31`:511): bit wrap REG 1 e bianche corretti; 5 variabili perse con warning (carry-over cross-pagina); aperto formato INT senza `data_type` |
 | 05/10/2026 | Double PDF | Senza-cliente implementati: A1+A2 Single (v4.4), `DATA_TYPE` da TIPO (prompt misure v4) con pass-through, unità/limiti da scale (prompt Station v5), suggerimento carry-over cross-pagina (mai applicato) |
 | 05/10/2026 | Double PDF | **Verdetto caso 6**: ADAS della run 3.8 completa confrontato riga per riga col PDF IOL (22 registri, 60 bit, formati, nomi). 100% del PDF; il GT legacy sbaglia 2 registri, 18 bit e i `TEXTON` (shift di una riga). `DATA_TYPE` confermato a valle (QAL3 `INT` → 150). Fixture `observed_adas_case6_qwen38_datatype.json`, test di verità `tests/test_adas_caso6_pdf_truth.py`, confronto meccanico rigenerato |
+| 05/10/2026 | Double PDF | **Verdetto caso 7**: 39 misure e 42 bitinfo contro 47 attesi dal PDF. Tutti i 39 registri corretti e `DATA_TYPE` letto (`INT`→150, `WORD` stimate→250, contro 250 ovunque nella run precedente), ma 5 stati persi: la cella `REG 4` è unita e attraversa il confine di pagina, il VLM restituisce `null` e il pytool scarta. Unità 4/18 (il JOB le dichiara tutte), limiti giornalieri ignorati. Test `myhydra/double_pdf/tests/test_adas_caso7_pdf_truth.py` |
+| 05/10/2026 | Double PDF | **Lo script del nodo 12 non è il repo**: le misure analogiche Double escono con i campi limite a `null` invece del sentinel `∓3.40282e38` presente nel repo e in tutti i GT. Stessa classe dell'errore di linkage bitinfo: copia modificata a mano. Nessun output Double è mai stato importato in un ADAS reale |

@@ -13,7 +13,24 @@ Output anonimizzato: [`outputs/observed_role_v2_dedup_sanitized.json`](outputs/o
 
 ## Uscita ADAS 3.8 (5/10/2026)
 
-Run canvas completa fino al nodo 12: [`outputs/observed_adas_case7_qwen38.json`](outputs/observed_adas_case7_qwen38.json) — stazione `172.16.1.31:511`, 39 misure (4 packed + 18 analogiche + 9 singoli + 8 stimate), 42 bitinfo, linkage intatto, 5 variabili scartate con warning (`Impianto in spegnimento/lavaggio/manutenzioni/fuori servizio`: REG nullo a inizio foglio, carry-over cross-pagina non risolvibile in LV2). Verifiche: bit wrap REG 1 (16 righe), bianche saltate, comandi/stimate tutti presenti; aperto il formato analogico delle misure INT senza `data_type` (250 = default, da decidere).
+Run canvas completa fino al nodo 12: [`outputs/observed_adas_case7_qwen38_run2.json`](outputs/observed_adas_case7_qwen38_run2.json) — stazione `172.16.1.31:511`, 39 misure (4 packed + 18 analogiche + 9 singoli + 8 stimate), 42 bitinfo, linkage intatto. Fixture precedente: [`outputs/observed_adas_case7_qwen38.json`](outputs/observed_adas_case7_qwen38.json).
+
+### Verdetto contro il PDF IOL (5/10, `../test_adas_caso7_pdf_truth.py`)
+
+Il PDF `Mappatura_7_Cliente_SMI_2.pdf` (4 pagine) dà **39 misure e 47 bitinfo**. L'output ha 39 misure corrette e **42** bitinfo: ne mancano 5.
+
+Tutto il resto è conforme al PDF, riga per riga:
+
+- **Registri**: 1, 2, 3, 4 (impaccati), 17–42 (`Misure`), 145–158 (`Comandi`), 161–172 (`Dati stimati`). Tutti corretti, nessuno spostato.
+- **Bit**: REG 1 ha i 16 bit con wrap 8→15 poi 0→7; REG 2 un solo bit (8); REG 3 ha 8, 10–15, 7 saltando i bianchi 9 e 0–6; REG 4 ha 8, 10–13, 0–2 più i 5 perduti.
+- **Formato**: `TIPO=INT` nel PDF sul blocco `Misure` → 150 sulle 18 analogiche; `TIPO=WORD` su `Dati stimati` → 250 sulle 8 stimate. `DATA_TYPE` letto correttamente, a differenza della run precedente che dava 250 ovunque.
+
+### Difetti aperti
+
+1. **Cinque stati d'impianto persi — carry-over del registro attraverso il confine di pagina.** La cella `REG 4` è unita e copre `DBX 70.0` (pagina 2) fino a `DBX 71.7` (pagina 3). A pagina 3 la colonna `REG` è visivamente vuota, il VLM restituisce `modbus_register: null` e `json_creator` scarta la riga come "variabile senza indirizzo". Persi: `Impianto in spegnimento` (bit 3), `Impianto in lavaggio` (4), `SME in manutenzione` (5), `Impianto in manutenzione` (6), `Impianto fuori servizio per guasto` (7). Il warning li elenca, ma il dato in ADAS non c'è. Nel caso 6 non si è manifestato perché lì la copertura `REG` non attraversa la pagina.
+2. **Unità: 4 su 18.** A differenza del caso 6, il JOB **dichiara** le unità (Tabella 9: CO/NO 0…200 mg/Nm3, O2 0…25 %, COT 0…20 mg/Nm3, NH3 0…15 mg/Nm3, TF 0…500 °C, dP 0…750 Pa, PLV 0…25 mg/Nm3, T_UREA/T_SCR °C, potenze kW, consumi kg). L'output applica `mg/Nm³` a CO, NO, COT, NH3 e `null` alle altre 14.
+3. **Limiti giornalieri e orari mai applicati.** Il JOB li dichiara (CO 40/50 mg/Nm3, NO 30/37.5, NH3 2/2.5, COT 10, PLV 10) e il consolidatore li mette nel chunk (`limit_day`, `limit_hour`), ma `json_creator` non li legge: scrive costanti sentinella.
+4. **Lo script del nodo 12 non è quello del repo**, vedi [`../../nodes/lv1_07_json_creator_adas.md`](../../nodes/lv1_07_json_creator_adas.md).
 
 ## Lettura
 

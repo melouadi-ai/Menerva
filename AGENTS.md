@@ -50,10 +50,63 @@ Attenzione anche alle unità: nel PDF IOL del caso 6 **non esiste la colonna uni
 
 - Single PDF: prompt v13 + `src/nodes/json_creator.py` v4.4 (A1 soglia 100, A2 copia `myhydra/` allineata). Registro in `myhydra/single_pdf/PENDENZE.md`.
 - Double PDF: catena LV1→LV2→consolidatore→ADAS verificata end-to-end sui casi 6 e 7 con Qwen 3.8. Caso 6 ha il **verdetto completo**: 22 misure + 60 bitinfo confrontati riga per riga col PDF, 22/22 registri, tutti i bit, formati `INT`→150 e `REAL`→250, `UNITS mg/Nm3` su SO2/SO2 Raw, linkage intatto. Fixture `tests/double_pdf_outputs/observed_adas_case6_qwen38_datatype.json`, tabella verità `tests/test_adas_caso6_pdf_truth.py`.
-- Caso 7: uscita ADAS prodotta (39 misure + 42 bitinfo, `172.16.1.31:511`, 5 variabili scartate con warning) ma **non ancora confrontata riga per riga col PDF**.
+- Caso 7: **verdetto completo** (39 misure + 42 bitinfo, `172.16.1.31:511`). Tutti i 39 registri
+  conformi al PDF IOL e `DATA_TYPE` applicato (`INT`→150, `WORD` stimate→250), ma 47 bit attesi
+  contro 42 emessi. Fixture `myhydra/double_pdf/tests/case_7/outputs/observed_adas_case7_qwen38_run2.json`,
+  verità PDF e test in `myhydra/double_pdf/tests/test_adas_caso7_pdf_truth.py`.
+
+## Tre difetti aperti sul Double PDF, in ordine di gravità
+
+1. **Lo script del nodo `JSON CREATOR` (12) non è `src/nodes/json_creator.py`.** Misure analogiche
+   con `LOWCRITICAL/HIGHCRITICAL/LOWRANGE/HIGHRANGE/LOWOFFSET/HIGHOFFSET/SQ* = null`, mentre repo e
+   tutti i GT legacy usano il sentinel `∓3.40282e38`. È la stessa classe dell'errore di linkage
+   bitinfo: copia modificata a mano sul canvas. **Nessun output Double è mai stato importato in un
+   ADAS reale**: la validazione è contro PDF e schema, non contro l'applicazione. Prima di ogni
+   altra cosa: riallineare il nodo 12 al repo e rifare le due run.
+2. **Carry-over del registro oltre il confine di pagina** (caso 7): la cella `REG 4` è unita e
+   copre DBX 70.0 (p2) → 71.7 (p3). A p3 la colonna è vuota, il VLM dà `null`, il pytool scarta:
+   5 stati d'impianto persi. Il Double ha già `registro_suggerito` (suggerisce, non applica): va
+   esteso al salto di pagina.
+3. **Unità e limiti mai applicati.** Il consolidatore li mette nel chunk (`units`, `scale_eng_*`,
+   `limit_day`, `limit_hour`), `json_creator` legge solo `units`. Sul caso 7 il JOB dichiara 18
+   unità e 5 limiti, ne applichiamo 4. Manca anche il caso "unità assente" distinguibile da
+   "unità non collegata".
 
 ## Prossimo passo
 
-1. Caso 7: stesso metodo del caso 6 — leggere il PDF IOL riga per riga, produrre la tabella verità, fissarla in un test. È l'unico pezzo di verifica che manca.
-2. Attendere dal cliente: fonte delle unità di misura, nome stazione in ADAS, BISON, zeri iniziali, regola V2.
-3. Terza coppia IOL+JOB mai vista, per allargare il campione oltre 6 e 7.
+1. **Riallineare il nodo `JSON CREATOR` (12) a `src/nodes/json_creator.py` v4.4** e rifare le due run
+   (6 e 7). Il file è `src/nodes/json_creator.py`; consegnarlo all'utente **per intero**, mai un
+   frammento. Subito dopo, prova di importazione di un output in un ADAS reale: è l'unica verifica
+   che manca davvero.
+2. Estendere `registro_suggerito` al salto di pagina nel consolidatore LV1 (nodo 11).
+3. Applicare `units`/`scale_eng_*`/`limit_day`/`limit_hour` in `json_creator`, con un warning
+   esplicito per "il JOB dichiara unità e non le troviamo" invece di un `null` silenzioso.
+4. Attendere dal cliente: BISON, zeri iniziali, regola V2, nome stazione in ADAS.
+5. Terza coppia IOL+JOB mai vista, per allargare il campione oltre 6 e 7.
+
+## Single PDF — non è perfetto (verificato 5/10, nessuna modifica al codice)
+
+Resta aperto tutto il Blocco B/C di `myhydra/single_pdf/PENDENZE.md`. In più, dal confronto coi PDF:
+
+- **`UNITS: "Unità"`** emesso sulla misura `Polveri (GR)` (reg 40008): nel PDF quella cella contiene
+  `mg/Nm³` e la parola `Unità` è un'intestazione di sottocolonna. Causa: **V3 del prompt v13 elenca
+  `"Unità"` fra gli esempi di unità valide**, quindi insegna l'errore. Il GT legacy ha lo stesso bug.
+- **Refuso corretto contro V13**: `Allarme 1 Ossiegno umido` → `Ossigeno` nel PDF, noi correggiamo,
+  il legacy no. Comportamento incoerente (D3 dice che su PROTEC_1 il refuso è stato rispettato):
+  è affidabilità del VLM, serve un test dedicato.
+- **I 2 "difetto" di SMA_1 nel verdetto sono falsi positivi**: `verifica_pdf/confronta.py` confronta
+  per registro ignorando la stazione, e 40001 compare in due tabelle diverse. Noi le separiamo
+  correttamente.
+- **`DATA_TYPE` → formato**: SIEMENS_2 dichiara `INT16` e noi emettiamo 150 su 21 misure, il legacy
+  250 su tutte. Chiude C3 con evidenza reale.
+- **Copertura SIEMENS_2**: 104 misure contro 339 del legacy su 1116 righe; 129 righe non coperte. È
+  B3/C1, a monte dell'estrazione, non difetto del pytool.
+- **B2 è più grave di quanto scritto**: PROTEC_1 dichiara 2 IP e ne usa 1, PROTEC_2 dichiara 3 e ne
+  usa 1; in entrambi i casi viene emesso `127.0.0.1` come default, cioè un IP fabbricato.
+- **Carry-over del registro assente nel prompt Single** (V4 dice `cella vuota → null`): non si è
+  mai manifestato sui 4 documenti noti, ma è un buco latente.
+
+Ordine proposto: (1) V3 del prompt, (2) match su `(stazione, registro, bit)` in `confronta.py`,
+(3) `registro_suggerito` anche nel Single, (4) test di fedeltà sui refusi, (5) aggiornare
+`PENDENZE.md` (dice `13 passed, 2 failed`, oggi è `12 passed, 0 failed`) e la tabella KPI del report,
+ dove "Copertura Bitinfo 100%" non è sostenibile.
