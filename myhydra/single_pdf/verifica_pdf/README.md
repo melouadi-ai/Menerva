@@ -36,7 +36,7 @@ Per ogni caso, tre file in `per_caso/<caso>/`:
 | `caso_3_protec_2` | PROTEC | 2 | `protec` | 79 righe, 39 presenti, 40 saltate da regola, 0 assenti. |
 | `caso_4_siemens_2` | SIEMENS | 29 | `siemens` | 1116 righe, 236 presenti, 726 assenti. Perdita a monte, vedi sotto. |
 
-I PDF stanno in `../PDFs per il confronto/`, gli output in `../Outputs MYHYDRA/`. Gli output sono byte-identici a quelli in `tests/single_pdf_outputs/`: è lo stesso run, copiato per comodità.
+I PDF stanno in `../PDFs per il confronto/` (hash e note in quel README), gli output in `../Outputs MYHYDRA/`. Gli output sono byte-identici a quelli in `tests/single_pdf_outputs/`: è lo stesso run, copiato per comodità.
 
 ## Le classi di scostamento
 
@@ -77,7 +77,7 @@ L'estrattore SIEMENS, per parte sua, regge: 28 pagine su 29, registri e nomi coe
 ## Limiti noti
 
 - **Le fixture contengono dati di produzione**, presi alla lettera: IP reali e nomi di clienti. Prima di pubblicare il repository vanno sanitizzati.
-- **L'abbinamento è per registro e bit**, non per nome. Quando due misure condividono un registro, l'abbinamento può assegnare la riga sbagliata; in quel caso l'esito è `nome_diverso` e la tabella lo mostra.
+- **L'abbinamento è per registro e bit**, non per nome né per stazione. Quando due misure condividono un registro, l'abbinamento può assegnare la riga sbagliata; in quel caso l'esito è `nome_diverso` e la tabella lo mostra. Il caso peggiore è SMA_1, dove il registro 40001 compare in due tabelle diverse (`CO` a IP reale, `Temperatura Fumi` a IP placeholder): l'output le separa correttamente e il confronto lo segnala come due difetti. Sono falsi positivi dello strumento, non difetti dell'output. Correzione prevista: abbinare su `(stazione, registro, bit)`.
 - **Il confronto non conosce l'input effettivo del run.** Se un output è stato prodotto da un PDF diverso o parziale, la copertura risulterà bassa senza che sia un difetto. Il report mostra la copertura per pagina proprio per rendere questo distinguibile.
 - **Gli output non sono stati rigenerati.** Sono i file presenti in `Outputs MYHYDRA/`, prodotti dal pytool in un momento che non è stato registrato. Rifare il confronto dopo una modifica al prompt o al pytool richiede prima di rigenerarli.
 - **Lo script contiene estrazioni specifiche per cliente.** I tre formati sono separati perché i documenti hanno strutture diverse; non c'è un parser unificato.
