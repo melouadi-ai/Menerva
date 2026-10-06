@@ -177,8 +177,13 @@ vanno fornite (Tabella 6 JOB per il caso 6) o concordata una regola di inferenza
   legacy emettono. Finché non è riallineato, gli output Double non sono un formato validato.
 * **5 stati d'impianto persi sul caso 7**: carry-over del registro oltre il confine di pagina.
 * **Unità e limiti**: nel caso 6 il JOB non li dichiara e il legacy si inventa `mg/Nm³` e `°C`; nel
-  caso 7 il JOB li dichiara tutti (18 unità, 5 limiti) e noi ne applichiamo 4. La regola da
-  applicare è "quello che è dichiarato", non "quello che si deduce".
+  caso 7 il JOB li dichiara tutti (18 unità, 5 limiti) e noi ne applichiamo 4. La causa non è il
+  VLM: è il **join esatto del consolidatore**, che aggancia la scala del JOB per uguaglianza fra
+  tag (`TF`) e descrizione IOL (`Temperatura fumi`). Le 4 unità applicate sono esattamente i 4
+  tag che coincidono. La regola da applicare è "quello che è dichiarato", non "quello che si
+  deduce".
+* **Fattori di scala "Dividere x10"** (9 misure asteriscate nel JOB 4.5.2, anche scritte nella
+  colonna RANGE dell'IOL): non raccolti da nessuna delle due fonti.
 * Scala `TF` non collegata (tag JOB `TF` vs misura `Temperatura fumi`; mappa in Tabella 6 JOB).
 * Specifiche BISON/linearizzazioni dal cliente (come nel Single).
 * Terza coppia IOL+JOB mai vista, per allargare il campione oltre caso 6/7.

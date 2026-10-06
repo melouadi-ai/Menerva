@@ -65,12 +65,20 @@ Attenzione anche alle unità: nel PDF IOL del caso 6 **non esiste la colonna uni
    altra cosa: riallineare il nodo 12 al repo e rifare le due run.
 2. **Carry-over del registro oltre il confine di pagina** (caso 7): la cella `REG 4` è unita e
    copre DBX 70.0 (p2) → 71.7 (p3). A p3 la colonna è vuota, il VLM dà `null`, il pytool scarta:
-   5 stati d'impianto persi. Il Double ha già `registro_suggerito` (suggerisce, non applica): va
-   esteso al salto di pagina.
-3. **Unità e limiti mai applicati.** Il consolidatore li mette nel chunk (`units`, `scale_eng_*`,
-   `limit_day`, `limit_hour`), `json_creator` legge solo `units`. Sul caso 7 il JOB dichiara 18
-   unità e 5 limiti, ne applichiamo 4. Manca anche il caso "unità assente" distinguibile da
-   "unità non collegata".
+   5 stati d'impianto persi. Sono `Fermo`, `Lavaggio`, `SME in manutenzione`, `Impianto in
+   manutenzione`, `Fuori servizio`, cioè **le colonne `STATI IMPIANTO` della Tabella 12 del JOB**
+   (4.7 Validazioni): la matrice di invalidazione delle misure perde il suo input. Il Double ha già
+   `registro_suggerito` (suggerisce, non applica): va esteso al salto di pagina.
+3. **Il join scala↔misura è per uguaglianza esatta di stringa.** Nel `consolidate_to_intermediate.py`
+   la scala del JOB si aggancia con `description == tag` o `description == tag + " Raw"`. Ma il JOB
+   identifica i segnali per **tag** (`TF`, `O2S`, `P_MTR`) e l'IOL li descrive a parole
+   (`Temperatura fumi`, `O2 Secco`, `Potenza motore`). Sul caso 7 le 4 unità applicate sono
+   **esattamente** i 4 tag che coincidono col testo: le altre 14 righe di Tabella 9 muoiono nel
+   join, non nell'estrazione. **Il fix non è nel prompt**: è portare il `tag` dell'IOL nel chunk e
+   agganciare su quello. Vale anche per i limiti (5 dichiarati, 0 applicati) e per i fattori
+   "Dividere x10" delle 9 misure asteriscate (JOB 4.5.2, anche nella colonna RANGE dell'IOL).
+   Manca inoltre un warning per "il JOB dichiara unità e non le troviamo", così la lacuna resta
+   silenziosa invece di essere un `null` inerte.
 
 ## Prossimo passo
 

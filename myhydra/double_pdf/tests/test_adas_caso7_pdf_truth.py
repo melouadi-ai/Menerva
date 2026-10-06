@@ -23,10 +23,40 @@ indirizzo". Cinque stati reali di impianto spariscono. Il warning lo dice, ma
 il dato in ADAS non c'e': per laeta' di questo progetto un warning non e'
 un substitutes del valore.
 
-Nota sulle unita': qui, a differenza del caso 6, il JOB **dichiara** campi scala
-e unita' (Tabella 9: CO/NO 0...200 mg/Nm3, O2 0...25 %, TF 0...500 °C, dP
-0...750 Pa, PLV 0...25 mg/Nm3, T_UREA/T_SCR °C, potenze kW, consumi kg) e i
-limiti giornalieri/orari. L'output ne applica 4 su 19: il resto arriva `null`.
+## La coppia, non il solo IOL
+
+Il JOB.0105.22 (7 pagine) e' parte della verita' quanto l'IOL.0105.22:
+
+* **Tabella 8 (indirizzi)**: `PC SME` due schede (192.168.70.103 e 172.16.1.10),
+  `PLC` **172.16.1.31 porta 511** (comunicazione ADAS). L'output ha la
+  combinazione giusta e una sola stazione: i due IP del PC SME non devono
+  generare due stazioni.
+* **Oggetto/Titolo**: `Sistema Analisi Emissioni`. Il nome stazione dell'output
+  coincide con il titolo del JOB: qui il nome e' **dichiarato**, non dedotto
+  (nel caso 6 invece non lo e').
+* **Tabella 9 (campi scala)**: 19 righe, unita' e limiti per 18 segnali. Sono
+  applicate 4.
+* **Tabella 12 (validazioni)**: la matrice che dice quando una misura non e'
+  valida ha come colonne gli stati d'impianto `Fermo`, `Manutenzione`, `Fuori
+  servizio`, `Lavaggio`. **Sono esattamente i bit 3-7 di REG 4**, cioe' i cinque
+  che perdiamo. La perdita non e' cosmetica: distrugge l'input della matrice di
+  validazione che il cliente ha specificato.
+* **4.5.2 e le asteriscate**: le misure non asteriscate si acquisiscono con
+  campo 0...10000 da riscalare; le asteriscate (T_UREA, T_SCR, P_MTR, P_TRB,
+  P_TOT, P_TOT_TRB, PT_MTR, Q_OIL, Q_OIL_H: 9) sono gia' in unita'
+  ingegneristiche e vanno divise per 10. La stessa istruzione "Dividere x10" e'
+  scritta nella colonna RANGE dell'IOL sui registri 33-39 e 41-42. Non la
+  raccogliamo da nessuna delle due fonti.
+
+## Perche' le unita' sono 4 e non 18
+
+Il JOB identifica i segnali con i **tag** (`CO`, `O2S`, `TF`, `P_MTR`, ...),
+l'IOL li descrive a parole (`CO`, `O2 Secco`, `Temperatura fumi`, `Potenza
+motore`). Il join del consolidatore (`consolidate_to_intermediate.py`) e'
+esatto: `description == tag` oppure `description == tag + " Raw"`. Le 4 unita'
+applicate sono esattamente i 4 tag che coincidono col testo della descrizione.
+Quindi il join scarta 14 righe su 18. Il campo giusto su cui agganciare e' il
+**tag dell'IOL**, che il consolidatore non porta nel chunk.
 """
 import json
 import os
@@ -195,7 +225,13 @@ def test_texton_e_textoff_sempre_compilati():
 def test_difetto_conosciuto_cinque_stati_persi():
     """Il difetto e' noto e documentato: finche' non e' chiuso, questo test
     fallisce di proposito. Quando si applica il carry-over del registro,
-    cancellare l'asserzione e basta: tutto il resto resta valido."""
+    cancellare l'asserzione e basta: tutto il resto resta valido.
+
+    Gravita': i cinque bit sono Fermo, Lavaggio, SME in manutenzione, Impianto
+    in manutenzione, Impianto fuori servizio per guasto, cioe' le colonne
+    'STATI IMPIANTO' della Tabella 12 del JOB (4.7 VALIDAZIONI). Perderli
+    significa che la matrice di invalidazione delle misure non ha piu' input.
+    """
     st = observed()
     got = {b["BITNAME"]: b["BITNO"] for b in st["bitinfo"]}
     for nome, bit in BIT_PERSI.items():
@@ -210,10 +246,24 @@ def test_difetto_conosciuto_cinque_stati_persi():
         assert nome.split()[-1].lower() in warn.lower()
 
 
+def test_stazione_nome_e_ip_dichiarati_nel_job():
+    """Il JOB dich Oggetto/Titolo = 'Sistema Analisi Emissioni' e Tabella 8 dà
+    PLC 172.16.1.31:511. Qui il nome stazione non e' dedotto (nel caso 6 lo era)
+    e i due IP del PC SME non devono generare due stazioni."""
+    out = [observed()]
+    assert len(out) == 1
+    st = out[0]
+    assert st["NAME"] == "Sistema Analisi Emissioni"
+    assert 'ipaddress="172.16.1.31"' in st["DRIVERCONFIG"]
+    assert 'tcpport="511"' in st["DRIVERCONFIG"]
+    assert "192.168.70.103" not in json.dumps(st)
+
+
 def test_unita_applicate_solo_a_quattro_misure():
     """Gap aperto: il JOB dichiara 18 unita' (Tabella 9), l'output ne applica 4.
-    Le righe sotto sono la verita' del JOB; quando il collegamento scala->unita'
-    viene chiuso, questo test va aggiornato insieme alla correzione."""
+    Le 4 sono esattamente i 4 tag che il join esatto del consolidatore
+    riesce ad agganciare. Quando il join passera' al tag dell'IOL, questo test
+    va aggiornato insieme alla correzione."""
     st = observed()
     units = {m["NAME"]: m["UNITS"] for m in st["measures"]}
     applicate = {k: v for k, v in units.items() if v}
@@ -226,6 +276,10 @@ def test_unita_applicate_solo_a_quattro_misure():
     # ogni unita' presente deve corrispondere a una grandezza nota del JOB
     for nome, u in applicate.items():
         assert UNITA_DICHIARATE_NEL_JOB[nome] == u
+    # le 14 rimaste sono tutte grandezze che il JOB descrive: nessuna e' assente
+    # perche' il documento non la contiene
+    mancanti = [n for n in UNITA_DICHIARATE_NEL_JOB if units.get(n) is None]
+    assert len(mancanti) == 14
 
 
 def test_difetto_conosciuto_sentinel_dei_limiti_assente():
