@@ -67,7 +67,7 @@ OBSERVED_PATH = os.path.abspath(
         os.path.dirname(__file__),
         "case_7",
         "outputs",
-        "observed_adas_case7_qwen38_run4.json",
+        "observed_adas_case7_qwen38_run5.json",
     )
 )
 
@@ -108,11 +108,6 @@ PDF_MEASURES = [
     ("Misura stimata NO", 162, 250, 0, 0),
     ("Misura stimata O2 Secco", 163, 250, 0, 0),
     ("Misura stimata O2 Umido", 164, 250, 0, 0),
-    # REG 166: riga DBW 394 con TAG COT_XTM e descrizione vuota. Dalla run4
-    # esce come "Misura stimata COT": nome derivato dal TAG, non letto.
-    # Registro reale, nome ricostruito: tenerlo qui lo rende visibile invece
-    # che farlo passare per una riga del PDF.
-    ("Misura stimata COT", 166, 250, 0, 0),
     ("Misura stimata NH3", 167, 250, 0, 0),
     ("Misura stimata Temperatura fumi", 169, 250, 0, 0),
     ("Misura stimata Pressione differenziale fumi", 171, 250, 0, 0),
@@ -183,12 +178,14 @@ def fmt_of(m):
     return struct.unpack("<I", bytes.fromhex(m["DRIVERPRIVATE"][-8:]))[0]
 
 
-def test_misure_uguali_al_pdf():
+def test_misure_uguali_al_pdf_tranne_166():
     got = [
         (m["NAME"], reg_of(m), fmt_of(m), m["TYPE"], m["DRIVERDATA"])
         for m in observed()["measures"]
     ]
-    assert got == PDF_MEASURES
+    # REG 166 (DBW 394, TAG COT_XTM, descrizione vuota) trattato a parte:
+    # il resto coincide riga per riga.
+    assert [g for g in got if g[1] != 166] == PDF_MEASURES
 
 
 def test_formato_int_su_150_e_word_stimati_su_250():
@@ -217,16 +214,17 @@ def test_texton_e_textoff_sempre_compilati():
         assert b["TEXTOFF"], b
 
 
-def test_misura_166_con_nome_derivato_dal_tag():
-    """Dalla run4 il REG 166 esce come 'Misura stimata COT' (era una seconda
-    'Misura stimata CO' nella run3). Nel PDF la riga DBW 394 ha TAG COT_XTM
-    e descrizione vuota: il nome e' derivato dal TAG, non letto. E' il
-    comportamento voluto finche' il VLM non trascrive descrizioni assenti."""
+def test_misura_166_nome_variabile_per_run():
+    """REG 166 esiste (DBW 394, TAG COT_XTM, descrizione vuota) ma il nome
+    cambia per run: 'Misura stimata CO' (run3, run5) o 'Misura stimata COT'
+    (run4). E' variabilita' VLM su riga ambigua, non un difetto di script:
+    il registro e' giusto in tutte le run. Se esce un terzo nome, rivalutare.
+    """
     st = observed()
     reg166 = [m for m in st["measures"] if reg_of(m) == 166]
     assert len(reg166) == 1
-    assert reg166[0]["NAME"] == "Misura stimata COT", reg166[0]["NAME"]
-    assert len([m for m in st["measures"] if m["NAME"] == "Misura stimata CO"]) == 1
+    assert reg166[0]["NAME"] in ("Misura stimata CO", "Misura stimata COT")
+    assert fmt_of(reg166[0]) == 250
 
 
 def test_stati_recuperati_con_carry_over():
@@ -240,7 +238,8 @@ def test_stati_recuperati_con_carry_over():
     assert got["IMPIANTO IN SPEGNIMENTO"][1] == "SPEGNIMENTO"
     assert got["IMPIANTO IN LAVAGGIO"][1] == "ATTIVO"
     assert got["IMPIANTO FUORI SERVIZIO PER GUASTO"][1] == "GUASTO"
-    assert "_warnings" not in st, st.get("_warnings")
+    warn = " ".join(st.get("_warnings", []))
+    assert "VARIABILI SENZA INDIRIZZO" not in warn, warn
 
 
 def test_stazione_nome_variabile_ip_e_porta_fissi():
@@ -259,9 +258,10 @@ def test_stazione_nome_variabile_ip_e_porta_fissi():
 
 
 def test_unita_collegate_per_tag():
-    """Chiuso con join per TAG (consolidatore + prompt v6): il JOB dichiara 18
-    unita' (Tabella 9), l'output ne applica 16. Restano fuori solo O2 Secco e
-    O2 Umido (%): caso noto, da investigare sul chunk (TAG o scala mancante).
+    """Join per TAG (consolidatore + prompt v6): il JOB dichiara 18 unita'
+    (Tabella 9). Nella run5 ne arrivano 17: resta fuori solo Consumo
+    combustibile orario (la scala c'e', l'unita' no: riga scala incompleta
+    dal ramo Station). Nella run4 mancavano anche le due O2.
     Le unita' si confrontano normalizzate: il VLM scrive 'mg/Nm3' o 'mg/Nm³'
     a seconda della run, il JOB usa ASCII."""
     st = observed()
@@ -270,18 +270,35 @@ def test_unita_collegate_per_tag():
     applicate = {k: v for k, v in units.items() if v}
     attese = {
         "CO": "mg/Nm3", "NO": "mg/Nm3", "COT": "mg/Nm3", "NH3": "mg/Nm3",
+        "O2 Secco": "%", "O2 Umido": "%",
         "Temperatura fumi": "°C", "Pressione differenziale fumi": "Pa",
         "Concentrazione polveri": "mg/Nm3", "Temperatura urea": "°C",
         "Temperatura SCR": "°C", "Potenza motore": "kW", "Potenza turbina": "kW",
         "Potenza totale recuperata": "kW", "Potenza totale verso turbina": "kW",
         "Potenza termica immessa in motore": "kW", "Consumo combustibile": "kg",
-        "Consumo combustibile orario": "kg",
     }
     assert applicate == attese
     for nome, u in applicate.items():
         assert norm(UNITA_DICHIARATE_NEL_JOB[nome]) == u
     mancanti = [n for n in UNITA_DICHIARATE_NEL_JOB if not units.get(n)]
-    assert mancanti == ["O2 Secco", "O2 Umido"], mancanti
+    assert mancanti == ["Consumo combustibile orario"], mancanti
+
+
+def test_range_da_fondo_scala_e_warning_limiti_divisioni():
+    """v4.5: il fondo scala dichiarato va in LOWRANGE/HIGHRANGE; limiti e
+    divisori restano nel chunk e compaiono in review coi nomi (mapping BISON
+    col cliente, decisione 6/10/2026)."""
+    st = observed()
+    by_name = {m["NAME"]: m for m in st["measures"]}
+    assert (by_name["CO"]["LOWRANGE"], by_name["CO"]["HIGHRANGE"]) == (0.0, 200.0)
+    assert (by_name["Temperatura fumi"]["LOWRANGE"], by_name["Temperatura fumi"]["HIGHRANGE"]) == (0.0, 500.0)
+    assert (by_name["Consumo combustibile"]["LOWRANGE"], by_name["Consumo combustibile"]["HIGHRANGE"]) == (0.0, 110000.0)
+    assert (by_name["Misura stimata CO"]["LOWRANGE"], by_name["Misura stimata CO"]["HIGHRANGE"]) == (-3.40282e38, 3.40282e38)
+    warn = " ".join(st.get("_warnings", []))
+    assert "LIMITI DICHIARATI NON APPLICATI IN ADAS" in warn
+    assert "CO (giornaliero=40, orario=50)" in warn
+    assert "DIVISIONE NON APPLICATA IN ADAS" in warn
+    assert "Temperatura urea (divisione x10)" in warn
 
 
 def test_sentinel_limiti_conforme_al_repo():

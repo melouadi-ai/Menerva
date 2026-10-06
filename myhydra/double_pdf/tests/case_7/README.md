@@ -15,7 +15,17 @@ Output anonimizzato: [`outputs/observed_role_v2_dedup_sanitized.json`](outputs/o
 
 Run canvas completa fino al nodo 12: [`outputs/observed_adas_case7_qwen38_run2.json`](outputs/observed_adas_case7_qwen38_run2.json) — stazione `172.16.1.31:511`, 39 misure (4 packed + 18 analogiche + 9 singoli + 8 stimate), 42 bitinfo, linkage intatto. Fixture precedente: [`outputs/observed_adas_case7_qwen38.json`](outputs/observed_adas_case7_qwen38.json).
 
-## Run4 con nodo 11 aggiornato + prompt v6 (6/10, riferimento attuale)
+## Run5 con nodo 11 v4.5 e prompt v6 (6/10, riferimento attuale)
+
+Fixture: [`outputs/observed_adas_case7_qwen38_run5.json`](outputs/observed_adas_case7_qwen38_run5.json) — **40 misure, 47 bitinfo**.
+
+- **17 unità su 18** (anche le due O2 con `%` e range 0/25; resta fuori solo `Consumo combustibile orario`, la cui riga scala non porta l'unità).
+- **Range reali ovunque dichiarati** (CO 0/200, TF 0/500, Q_OIL 0/110000...), sentinel solo sulle stimate.
+- **Warning nuovi v4.5**: limiti (5 misure) e divisioni (9) elencati coi nomi, come da decisione.
+- REG 166 tornato a `Misura stimata CO`: il nome oscilla per run (CO/COT), fissato in `test_misura_166_nome_variabile_per_run`.
+- Stazione di nuovo `SME` (ramo Station null).
+
+## Run4 con nodo 11 aggiornato + prompt v6 (6/10)
 
 Fixture: [`outputs/observed_adas_case7_qwen38_run4.json`](outputs/observed_adas_case7_qwen38_run4.json) — **40 misure, 47 bitinfo: 100% del PDF**.
 
