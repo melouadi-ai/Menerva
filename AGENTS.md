@@ -22,6 +22,7 @@ System `python3` lacks dependencies (`pymupdf` missing). Never use it.
 ## MyHydra script constraints (non-negotiable on canvas)
 
 Pytool scripts pasted into MyHydra nodes must be standalone: inline code only, **no `def`/`class`/`lambda`**, output assigned to the `result` variable. They cannot import `src.*` — pydantic validation is skipped by design on the platform (`_pydantic_available = False`, pipeline continues identically). Paste clean: a stray non-Python line (e.g. an annotation like `riga 5` copied from chat) is a compile-time SyntaxError — `result` is never assigned, the node exposes nothing and downstream starves **silently** (blank output, not even an ERROR JSON, because `try/except` never runs).
+Keep pasted scripts **under ~32 KB**: on 6 Oct 2026 a 34,365-byte paste turned node 12 red while the 32,766-byte predecessor passed and a 26,731-byte AST-identical copy passes. If a script outgrows the limit, ship a comment-stripped canvas copy with a parity test (same AST, same output on fixtures), never hand edits.
 
 - `{question}` = current iteration input; `{edge}[N]` = another node's text output (`N` is canvas-local, re-check after rewiring). **Edges can carry match conditions**: a leftover placeholder condition (seen: `pippo` on a filter→injection edge) silently blocks the wire — the downstream injection starves with no error. After any rewiring, inspect edge settings and remove stray conditions.
 - VLM nodes: two verified working layouts — legacy single Prompt field with instructions **and** `{edge.media}[N]` inline (legacy screenshots show `[19]`–`[23]`), and the split layout (`{edge.media}[N]` alone in Prompt, instructions in Powered identity, Context empty; verified 2 Oct 2026 with `image_readable: true`). The empty shells were a Medex input problem, never a field-layout problem.
@@ -88,11 +89,13 @@ Attenzione anche alle unità: nel PDF IOL del caso 6 **non esiste la colonna uni
 
 ## Prossimo passo
 
-1. **Riallineare il nodo `JSON CREATOR` (12)** incollando
-   `myhydra/double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13.py`
-   (v4.4 + fix Double, `{edge}[13]`, hash
-   `c82102460b60266222a28341b255ad6ee75921928d19c35778799270b46e7300`),
-   e rifare le due run (6 e 7). Consegnare il file **per intero**, mai un frammento.
+1. **Nodo `JSON CREATOR` (12)**: incollare la **copia canvas**
+   `myhydra/double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13_canvas.py`
+   (fix Double, `{edge}[13]`, hash
+   `b004ec4a173b64836eb70d691c2b90b91f1fa108c6cf7c63b07887dac80eb704`).
+   Il file documentato `json_creator_edge13.py` NON va incollato: il canvas
+   rifiuta i paste oltre ~32 KB (34.365 byte → rosso, 26.731 → verde, stessa
+   logica). Parità AST+output garantita da test.
 
    I due flussi hanno **copie separate** dello stesso trasformatore, perché l'indice dell'edge
    è diverso (`[4]` Single, `[13]` Double) e un file unico costringerebbe a editarlo a ogni switch

@@ -22,11 +22,12 @@
   Finché non è fatto, ogni output Double è un formato non validato: nessun
   Double PDF è mai stato importato in un ADAS reale.
 
-  **Prima di incollare:** `diff` contro `src/nodes/json_creator.py` deve
-  mostrare solo le aree elencate in
-  [`../platforms/lv1/scripts/in_use/README.md`](../platforms/lv1/scripts/in_use/README.md).
-  Hash atteso:
-  `c82102460b60266222a28341b255ad6ee75921928d19c35778799270b46e7300`.
+  **Prima di incollare:** incollare `json_creator_edge13_canvas.py`, non il
+  file documentato (il canvas non accetta paste oltre ~32 KB: il documentato
+  ne pesa 34.365). Parità garantita da
+  `myhydra/double_pdf/tests/test_json_creator_edge13_canvas.py` (stesso AST,
+  stesso output sul chunk caso 6). Hash atteso della copia canvas:
+  `b004ec4a173b64836eb70d691c2b90b91f1fa108c6cf7c63b07887dac80eb704`.
 
   **Decisione 6/10/2026 (TEXTON):** il `TEXTON` delle packed viene sempre dalla
   tabella keyword, mai da `state_on` nel chunk: l'IOL non ha colonna di stato,

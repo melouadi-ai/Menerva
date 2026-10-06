@@ -1,8 +1,22 @@
 # Pytool — Double PDF, nodo `JSON CREATOR` (nodo 12)
 
-## File
+## File: quale incollare
 
-[`scripts/in_use/json_creator_edge13.py`](scripts/in_use/json_creator_edge13.py) — v4.4, placeholder `{edge}[13]`.
+[`scripts/in_use/json_creator_edge13_canvas.py`](scripts/in_use/json_creator_edge13.py)
+— è **questo** il file da incollare nel nodo (non quello documentato sotto).
+Stessa logica del documentato (stesso AST, verificato da test), senza righe
+di commento: 26.731 byte.
+
+Il 6/10/2026 il file documentato (34.365 byte) ha mandato in rosso il nodo 12,
+mentre la versione precedente (32.766 byte) passava. Evidenza: il paste oltre
+una certa dimensione fallisce a parità di logica. Soglia di sicurezza nei
+test: 32.000 byte (`test_json_creator_edge13_canvas.py`).
+
+## File documentato (riferimento, NON da incollare)
+
+[`scripts/in_use/json_creator_edge13.py`](scripts/in_use/json_creator_edge13.py)
+— v4.4 + fix Double, placeholder `{edge}[13]`. Versione leggibile e commentata,
+riferimento per ogni modifica futura.
 
 È la stessa trasformazione finale che usa il Single PDF, con **divergenze
 intenzionali e documentate** dal sorgente (decisione 6/10/2026, solo Double):
