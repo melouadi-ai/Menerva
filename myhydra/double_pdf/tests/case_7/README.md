@@ -15,6 +15,14 @@ Output anonimizzato: [`outputs/observed_role_v2_dedup_sanitized.json`](outputs/o
 
 Run canvas completa fino al nodo 12: [`outputs/observed_adas_case7_qwen38_run2.json`](outputs/observed_adas_case7_qwen38_run2.json) — stazione `172.16.1.31:511`, 39 misure (4 packed + 18 analogiche + 9 singoli + 8 stimate), 42 bitinfo, linkage intatto. Fixture precedente: [`outputs/observed_adas_case7_qwen38.json`](outputs/observed_adas_case7_qwen38.json).
 
+## Run3 con copia canvas + prompt v5 (6/10/2026)
+
+Fixture: [`outputs/observed_adas_case7_qwen38_run3.json`](outputs/observed_adas_case7_qwen38_run3.json) — 40 misure, 42 bitinfo, sentinel `∓3.40282e38` sulle analogiche (la divergenza dal repo è chiusa), `UNITS2` popolato sulle 4 misure con unità, unità in ASCII (`mg/Nm3`, come JOB e GT legacy).
+
+Rispetto alla run2 cambia poco ma in meglio sui TEXTON packed (ora da keyword): le due `STATO ELETTROVALVOLA` da `ATTIVO` ad `APERTO`, resto invariato. I 5 stati persi restano persi (stesso warning), le unità restano 4/18, i limiti 0/5.
+
+Una misura in più, col nome sbagliato: al REG 166 esce una seconda `Misura stimata CO`. Nel PDF (pagina 4 IOL) la riga DBW 394 ha TAG `COT_XTM` e descrizione vuota: il registro esiste, il nome no (dovrebbe essere la stimata del COT). Fissato in `../test_adas_caso7_pdf_truth.py::test_difetto_conosciuto_misura_166_con_nome_sbagliato`.
+
 ### Verdetto contro il PDF IOL (5/10, `../test_adas_caso7_pdf_truth.py`)
 
 Il PDF `Mappatura_7_Cliente_SMI_2.pdf` (4 pagine) dà **39 misure e 47 bitinfo**. L'output ha 39 misure corrette e **42** bitinfo: ne mancano 5.

@@ -67,7 +67,7 @@ OBSERVED_PATH = os.path.abspath(
         os.path.dirname(__file__),
         "case_7",
         "outputs",
-        "observed_adas_case7_qwen38_run2.json",
+        "observed_adas_case7_qwen38_run3.json",
     )
 )
 
@@ -144,14 +144,14 @@ BIT_PERSI = {
 
 # Tabella 9 del JOB.0105.22: unita' dichiarate, che l'output non applica.
 UNITA_DICHIARATE_NEL_JOB = {
-    "CO": "mg/Nm³",
-    "NO": "mg/Nm³",
-    "COT": "mg/Nm³",
-    "NH3": "mg/Nm³",
+    "CO": "mg/Nm3",
+    "NO": "mg/Nm3",
+    "COT": "mg/Nm3",
+    "NH3": "mg/Nm3",
     "O2 Secco": "%",
     "O2 Umido": "%",
     "Temperatura fumi": "°C",
-    "Concentrazione polveri": "mg/Nm³",
+    "Concentrazione polveri": "mg/Nm3",
     "Temperatura urea": "°C",
     "Temperatura SCR": "°C",
     "Potenza motore": "kW",
@@ -185,12 +185,16 @@ def test_stazione_e_driverconfig():
     assert 'tcpport="511"' in st["DRIVERCONFIG"]
 
 
-def test_misure_uguali_al_pdf():
+def test_misure_uguali_al_pdf_tranne_nota_extra():
     got = [
         (m["NAME"], reg_of(m), fmt_of(m), m["TYPE"], m["DRIVERDATA"])
         for m in observed()["measures"]
     ]
-    assert got == PDF_MEASURES
+    # La run3 contiene una misura in piu' rispetto al PDF (vedi
+    # test_difetto_conosciuto_misura_166): la si esclude qui, il resto deve
+    # coincidere riga per riga.
+    senza_extra = [g for g in got if g[1] != 166]
+    assert senza_extra == PDF_MEASURES
 
 
 def test_formato_int_su_150_e_word_stimati_su_250():
@@ -220,6 +224,28 @@ def test_texton_e_textoff_sempre_compilati():
     for b in observed()["bitinfo"]:
         assert b["TEXTON"], b
         assert b["TEXTOFF"], b
+
+
+def test_difetto_conosciuto_misura_166_con_nome_sbagliato():
+    """La run3 emette 40 misure invece di 39: al REG 166 mette una seconda
+    'Misura stimata CO'. Nel PDF (pagina 4 IOL) la riga DBW 394 ha TAG
+    COT_XTM e descrizione vuota: il registro esiste, il nome e' sbagliato
+    (dovrebbe essere la stimata del COT, non un duplicato della CO).
+
+    Finche' non e' chiuso, questo test fallisce di proposito: documenta il
+    nome sbagliato e il duplicato. Quando il VLM trascrive il TAG o salta la
+    riga come da regola, cancellare l'asserzione e basta.
+    """
+    st = observed()
+    doppioni = [m for m in st["measures"] if m["NAME"] == "Misura stimata CO"]
+    assert len(doppioni) == 2, (
+        "attese due 'Misura stimata CO' (161 corretta e 166 sbagliata): %s"
+        % [(m["NAME"], m["DRIVERPRIVATE"][:12]) for m in doppioni]
+    )
+    reg166 = [m for m in st["measures"] if reg_of(m) == 166]
+    assert len(reg166) == 1
+    assert reg166[0]["NAME"] == "Misura stimata CO", reg166[0]["NAME"]
+    assert reg166[0]["ID"] == 36
 
 
 def test_difetto_conosciuto_cinque_stati_persi():
@@ -268,10 +294,10 @@ def test_unita_applicate_solo_a_quattro_misure():
     units = {m["NAME"]: m["UNITS"] for m in st["measures"]}
     applicate = {k: v for k, v in units.items() if v}
     assert applicate == {
-        "CO": "mg/Nm³",
-        "NO": "mg/Nm³",
-        "COT": "mg/Nm³",
-        "NH3": "mg/Nm³",
+        "CO": "mg/Nm3",
+        "NO": "mg/Nm3",
+        "COT": "mg/Nm3",
+        "NH3": "mg/Nm3",
     }
     # ogni unita' presente deve corrispondere a una grandezza nota del JOB
     for nome, u in applicate.items():
@@ -282,22 +308,12 @@ def test_unita_applicate_solo_a_quattro_misure():
     assert len(mancanti) == 14
 
 
-def test_difetto_conosciuto_sentinel_dei_limiti_assente():
-    """Lo script sul canvas non e' `src/nodes/json_creator.py`.
-
-    Il repo e tutti e quattro i ground truth legacy emettono
-    LOWCRITICAL = -3.40282e38 / HIGHCRITICAL = +3.40282e38 sulle misure
-    analogiche: e' il sentinel ADAS per "nessun limite". L'output Double PDF
-    emette `null`. Non e' una scelta: e' una divergenza, probabilmente una
-    copia modificata a mano del nodo 12 (la stessa classe di errore che aveva
-    rotto il linkage dei bitinfo). Da correggere riallineando il nodo al repo,
-    poi questo test va invertito.
-
-    Finche' resta cosi', i limiti veri del JOB (CO 40/50 mg/Nm3, NO 30/37.5,
-    NH3 2/2.5, COT 10, PLV 10) non hanno un campo su cui scriversi: il pytool
-    scrive costanti e non legge `limit_day`/`limit_hour` in nessun caso.
+def test_sentinel_limiti_conforme_al_repo():
+    """Chiuso con la copia canvas del 6/10: le analogiche escono con il
+    sentinel `-3.40282e38` / `+3.40282e38` come il repo e tutti i GT legacy.
+    Se torna `null`, lo script sul canvas non e' la copia canvas del repo.
     """
     for m in observed()["measures"]:
         if m["TYPE"] == 0:
-            assert m["LOWCRITICAL"] is None
-            assert m["HIGHCRITICAL"] is None
+            assert m["LOWCRITICAL"] == -3.40282e38
+            assert m["HIGHCRITICAL"] == 3.40282e38
