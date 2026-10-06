@@ -82,10 +82,16 @@ Attenzione anche alle unità: nel PDF IOL del caso 6 **non esiste la colonna uni
 
 ## Prossimo passo
 
-1. **Riallineare il nodo `JSON CREATOR` (12) a `src/nodes/json_creator.py` v4.4** e rifare le due run
-   (6 e 7). Il file è `src/nodes/json_creator.py`; consegnarlo all'utente **per intero**, mai un
-   frammento. Subito dopo, prova di importazione di un output in un ADAS reale: è l'unica verifica
-   che manca davvero.
+1. **Riallineare il nodo `JSON CREATOR` (12)** incollando
+   `myhydra/double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13.py` (v4.4, `{edge}[13]`),
+   e rifare le due run (6 e 7). Consegnare il file **per intero**, mai un frammento.
+
+   I due flussi hanno **copie separate** dello stesso trasformatore, perché l'indice dell'edge
+   è diverso (`[4]` Single, `[13]` Double) e un file unico costringerebbe a editarlo a ogni switch
+   di flusso: è così che la divergenza è entrata. Non mescolarli.
+   Hash Double: `e75c101395dcfaf9086edc393c4ea32ee8c0008333e88699b7869d471c629c91`.
+   Subito dopo, prova di importazione di un output in un ADAS reale: è l'unica verifica che manca
+   davvero.
 2. Estendere `registro_suggerito` al salto di pagina nel consolidatore LV1 (nodo 11).
 3. Applicare `units`/`scale_eng_*`/`limit_day`/`limit_hour` in `json_creator`, con un warning
    esplicito per "il JOB dichiara unità e non le troviamo" invece di un `null` silenzioso.

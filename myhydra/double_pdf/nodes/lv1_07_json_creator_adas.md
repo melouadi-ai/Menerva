@@ -5,18 +5,23 @@
 - **Input:** chunk intermedio dal nodo 11 via edge `#13` (verificato 05-10-2026).
   Riga da impostare nello script: `raw = r'''{edge}[13]'''.strip()`.
   Dopo ogni ricablaggio aggiornare il numero con quello reale del filo 11→12.
-- **Script:** **NON è** `src/nodes/json_creator.py`. La copia incollata nel nodo 12
-  è una variante ridotta: sulle misure analogiche emette `LOWCRITICAL/HIGHCRITICAL/
-  LOWRANGE/HIGHRANGE/LOWOFFSET/HIGHOFFSET/SQ* = null`, mentre il repo e tutti e
-  quattro i ground truth legacy emettono il sentinel `-3.40282e38` / `+3.40282e38`.
-  Una versione ancora più vecchia (`observed_adas_case6_qwen38_serie.json`) non
-  aveva addirittura le chiavi. Verificato il 05-10-2026 confrontando tutte le
+- **Script:** [`../platforms/lv1/scripts/in_use/json_creator_edge13.py`](../platforms/lv1/scripts/in_use/json_creator_edge13.py).
+  Copia dedicata al Double PDF, v4.4 con `{edge}[13]`. È il trasformatore
+  condiviso col Single PDF, ma in una cartella separata: il Single sta in
+  `myhydra/single_pdf/pytools/json_creator_v4_4.py` con `{edge}[4]`. Non
+  mescolare i due file e non editare l'indice dentro uno dei due per passare da
+  un flusso all'altro.
+
+  **Non è questo file (5/10-2026):** la copia incollata nel nodo 12 era una
+  variante ridotta, con `LOWCRITICAL/HIGHCRITICAL/LOWRANGE/HIGHRANGE/LOWOFFSET/
+  HIGHOFFSET/SQ* = null` sulle misure analogiche, mentre il repo e tutti e
+  quattro i ground truth legacy emettono il sentinel `∓3.40282e38`. Una versione
+  ancora più vecchia non aveva le chiavi. Verificato confrontando tutte le
   fixture Double con le quattro Single e con i GT.
-  **Da fare:** riallineare il nodo 12 a `src/nodes/json_creator.py` v4.4
-  (stessa versione del Single PDF: i due flussi condividono solo questo
-  trasformatore finale, mai prompt né estrazioni) e rifare una run.
-  Finché non è fatto, ogni output Double è un formato non validato: nessun
-  Double PDF è mai stato importato in un ADAS reale.
+
+  **Prima di incollare:** `diff` contro `src/nodes/json_creator.py` deve
+  mostrare solo le righe 2 e 45. Hash atteso:
+  `e75c101395dcfaf9086edc393c4ea32ee8c0008333e88699b7869d471c629c91`.
 - **Output atteso (caso 6, run 3.8):** lista con 1 stazione `Sistema Analisi SO2`
   (`10.100.50.95:511`), 22 misure (5 packed + 9 analogiche + 8 singoli),
   60 bitinfo; fixture in `tests/double_pdf_outputs/observed_adas_case6_qwen38.json`.

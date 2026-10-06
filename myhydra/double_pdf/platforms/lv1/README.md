@@ -11,6 +11,7 @@ Questi sono i Pytool del flusso LV1 corrente, verificati nel caso 6/7 o nella ru
 | [`scripts/in_use/filter_station_information_pages.py`](scripts/in_use/filter_station_information_pages.py) | Filtra le pagine Station Information |
 | [`scripts/in_use/filter_measurement_technical_data_pages.py`](scripts/in_use/filter_measurement_technical_data_pages.py) | Filtra le pagine Measurement Technical Data |
 | [`scripts/in_use/filter_density_map_pages.py`](scripts/in_use/filter_density_map_pages.py) | Filtra Density Map |
+| [`scripts/in_use/json_creator_edge13.py`](scripts/in_use/json_creator_edge13.py) | JSON finale ADAS, placeholder `{edge}[13]`. Copia dedicata del Double: vedi [`scripts/in_use/README.md`](scripts/in_use/README.md) |
 
 ## Non collegati al flusso corrente
 

@@ -19,7 +19,13 @@ Hash atteso: `7d60929795a34fb3c8d70884335bb80bcc95004586e10c55b118694d525c0c6b`
 
 **Se i due hash divergono, la fonte autorevole è `src/nodes/`.**
 
-La copia non ha header aggiuntivo per un motivo preciso: il file è un corpo Pytool pronto da incollare nel nodo, con il placeholder `{edge}[4]` alla riga 39. Aggiungere un header sposterebbe i numeri di riga e romperebbe i riferimenti incrociati fra questo README, le schede dei nodi e i contratti. La documentazione sta qui, il file resta incollabile.
+Questo file ha `{edge}[4]` ed è del solo Single PDF. Il Double PDF ha una copia
+separata con `{edge}[13}` in
+[`../../double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13.py`](../../double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13.py):
+i due flussi condividono il trasformatore ma non l'indice dell'edge, quindi
+restano in cartelle diverse.
+
+La copia non ha header aggiuntivo per un motivo preciso: il file è un corpo Pytool pronto da incollare nel nodo, con il placeholder `{edge}[4]` alla riga 45. Aggiungere un header sposterebbe i numeri di riga e romperebbe i riferimenti incrociati fra questo README, le schede dei nodi e i contratti. La documentazione sta qui, il file resta incollabile.
 
 ## Storico delle versioni
 
