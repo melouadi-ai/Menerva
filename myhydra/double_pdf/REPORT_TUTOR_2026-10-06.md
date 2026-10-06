@@ -26,9 +26,9 @@ Run4 (riferimento): **22 misure e 60 bitinfo, tutti conformi** al foglio IOL (re
 
 Run3: **39 registri su 39 conformi** (`INT`→150 sulle 18 analogiche, `WORD`→250 sulle stimate; stazione `Sistema Analisi Emissioni`, `172.16.1.31:511` da Tabella 8 JOB; sentinel e `UNITS2` corretti), ma **42 bitinfo contro 47** e una misura col nome sbagliato (vedi sotto). Run4 chiude entrambi i punti.
 
-### Caso 7 — quasi tutto (run4: 47/47 bit, 16/18 unità)
+### Caso 7 — quasi tutto (run5: 47/47 bit, 17/18 unità, range reali)
 
-Run4 (riferimento): **40 misure e 47 bitinfo, 100% del PDF**. I 5 stati recuperati dal carry-over oltre pagina, 16 unità collegate per TAG (restano fuori solo le due O2), REG 166 col nome giusto, sentinel e `UNITS2` confermati, nessun warning. Unica variabilità: nome stazione `SME` (il ramo Station ha dato `null`), unità in apice.
+Run5 (riferimento): **40 misure e 47 bitinfo**. I 5 stati recuperati, 17 unità collegate per TAG (resta fuori solo `Consumo combustibile orario`, la cui riga scala non porta l'unità), fondi scala in `LOWRANGE`/`HIGHRANGE`, warning con nomi per i 5 limiti e le 9 divisioni (mapping in fase BISON). REG 166 col nome che oscilla per run (CO/COT), stazione `SME` (ramo Station null).
 
 ### Il ground truth storico non è un riferimento
 
