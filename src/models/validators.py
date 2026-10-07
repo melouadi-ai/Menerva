@@ -92,6 +92,34 @@ def safe_validate_vlm(json_input: Union[str, dict]) -> ValidationResult:
             success=False,
             errors=["Campo 'stations' mancante nel JSON"]
         )
+
+    # Step 2b (v14): description nulla o vuota è errore esplicito.
+    # Il controllo è qui (non solo in Pydantic) per un messaggio chiaro
+    # indipendente dal dettaglio dell'errore di tipo.
+    desc_errors = []
+    stations_raw = json_data["stations"]
+    if isinstance(stations_raw, list):
+        for si, st in enumerate(stations_raw):
+            if not isinstance(st, dict):
+                continue
+            variables_raw = st.get("variables")
+            if not isinstance(variables_raw, list):
+                continue
+            for vi, var in enumerate(variables_raw):
+                if not isinstance(var, dict):
+                    continue
+                desc = var.get("description")
+                if desc is None or (isinstance(desc, str) and not desc.strip()):
+                    desc_errors.append(
+                        f"Campo 'stations -> {si} -> variables -> {vi} -> description': "
+                        f"description nulla o vuota non ammessa"
+                    )
+    if desc_errors:
+        return ValidationResult(
+            success=False,
+            errors=desc_errors,
+            warnings=warnings
+        )
     
     # Step 3: Validazione Pydantic
     try:

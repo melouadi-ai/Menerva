@@ -29,7 +29,11 @@ Questo documento definisce lo schema JSON che il VLM deve produrre per ogni pagi
           "scale_eng_start": "number | null",
           "scale_eng_end": "number | null",
           "limit_hour": "number | null",
-          "limit_day": "number | null"
+          "limit_day": "number | null",
+          "zona": "string | null",
+          "tag": "string | null",
+          "pagina": "int | null",
+          "riga": "int | null"
         }
       ]
     }
@@ -62,6 +66,10 @@ Questo documento definisce lo schema JSON che il VLM deve produrre per ogni pagi
 - `units`: null per digitali; copia testo non numerico per analogiche
 - `scale_*`: null per digitali; elettrica solo se unità V/mA; ingegneristica da colonne scala
 - `limit_hour` / `limit_day`: solo se le colonne esistono davvero nel documento
+- `zona`: sezione/zona della tabella Modbus (es. ALLARMI, MISURE); stringhe vuote → null
+- `tag`: TAG strumentale se presente nel documento, altrimenti null
+- `pagina` / `riga`: tracciabilità riga-PDF (1-based, se presenti devono essere ≥ 1)
+- `description`: nulla o vuota è **errore** di validazione (`safe_validate_vlm` fallisce)
 
 ### Divieti
 - Mai calcolare DRIVERPRIVATE, ID, DRIVERDATA, TYPE, XML
@@ -71,3 +79,11 @@ Questo documento definisce lo schema JSON che il VLM deve produrre per ogni pagi
 
 ## Versione Prompt di Riferimento
 `src/prompts/vlm_extraction_v11.md`
+
+## v14 — decisioni config
+- Campi extra sconosciuti: **ignorati** (default Pydantic, nessun `extra="forbid"`).
+  Motivo: `json_creator` v4.5 legge campi extra dal chunk (`Division`,
+  `Division_value`); rifiutarli romperebbe il flusso live
+  (cfr. `tests/test_scale_range_limits.py::test_divisione_in_review`).
+- `description` nulla/vuota: errore esplicito in `safe_validate_vlm`
+  (controllo dedicato in `src/models/validators.py`, oltre al validatore Pydantic).

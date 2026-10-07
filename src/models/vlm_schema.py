@@ -17,10 +17,16 @@ from pydantic import BaseModel, Field, field_validator
 class Variable(BaseModel):
     """
     Una singola variabile estratta dal PDF (misura, digitale singolo o impacchettato).
-    
+
     Corrisponde a una riga della tabella Modbus.
+
+    v14: aggiunti `zona`, `tag`, `pagina`, `riga` per tracciabilità riga-PDF.
+    Decisione config: nessun `extra="forbid"` — il default pydantic (`ignore`)
+    è voluto perché `json_creator` v4.5 legge campi extra dal chunk
+    (`Division`, `Division_value`, cfr. test_divisione_in_review): rifiutarli
+    romperebbe il flusso live.
     """
-    
+
     description: str = Field(..., description="Nome della variabile (dalla colonna Description)")
     units: Optional[str] = Field(None, description="Unità di misura (es. mg/Nm³, %, °C)")
     modbus_register: Optional[int] = Field(None, description="Registro Modbus (es. 40001, 40002)")
@@ -57,6 +63,12 @@ class Variable(BaseModel):
     # Limiti (solo se colonne esistono nel documento)
     limit_hour: Optional[float] = Field(None, description="Limite orario")
     limit_day: Optional[float] = Field(None, description="Limite giornaliero")
+
+    # Tracciabilità riga-PDF (v14)
+    zona: Optional[str] = Field(None, description="Sezione/zona della tabella (es. ALLARMI, MISURE)")
+    tag: Optional[str] = Field(None, description="TAG strumentale se presente nel documento")
+    pagina: Optional[int] = Field(None, description="Numero di pagina PDF (1-based)")
+    riga: Optional[int] = Field(None, description="Numero di riga nella pagina (1-based)")
     
     @field_validator('bit')
     @classmethod
@@ -86,6 +98,23 @@ class Variable(BaseModel):
         v = v.strip()
         if v in ["", "1", "0"]:
             return None
+        return v
+
+    @field_validator('zona', 'tag')
+    @classmethod
+    def validate_zona_tag_strip(cls, v: Optional[str]) -> Optional[str]:
+        """Stringhe vuote o whitespace-only diventano null."""
+        if v is None:
+            return None
+        v = v.strip()
+        return v or None
+
+    @field_validator('pagina', 'riga')
+    @classmethod
+    def validate_pagina_riga_positive(cls, v: Optional[int]) -> Optional[int]:
+        """Pagina e riga sono 1-based: se presenti devono essere >= 1."""
+        if v is not None and v < 1:
+            raise ValueError(f"Valore {v} non valido (atteso >= 1)")
         return v
 
 
