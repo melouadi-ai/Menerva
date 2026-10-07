@@ -7,6 +7,8 @@
 | [`json_creator_v4_5.py`](json_creator_v4_5.py) | `v4.5` | LV1-04 | In uso. |
 | [`json_creator_v4_4.py`](json_creator_v4_4.py) | `v4.4` | — | Storico, superato. |
 | [`json_creator_v4_2.py`](json_creator_v4_2.py) | `v4.2` | — | Storico, superato. |
+| [`consolidator.py`](consolidator.py) | `v14` | CONSOLIDADATORE (nuovo) | Documentato, da incollare dopo rewiring Task 8. |
+| [`consolidator_canvas.py`](consolidator_canvas.py) | `v14` | CONSOLIDADATORE (nuovo) | Copia canvas senza commenti, stesso AST. |
 
 ## Sorgente e sincronizzazione
 
@@ -19,6 +21,23 @@ sha256sum ../../../src/nodes/json_creator.py json_creator_v4_5.py
 Hash atteso: `0f52c52896504abb70e3a58b2f21213a7df91c46747099ffe9bd5b8abc83caa2`
 
 **Se i due hash divergono, la fonte autorevole è `src/nodes/`.**
+
+## Consolidatore (redesign v14, Task 4)
+
+Riferimento testabile: `src/nodes/single_consolidator.py`. Copia
+documentata `consolidator.py` (stile inline, `{edge}[5]` da ricontrollare
+dopo il rewiring Task 8) + copia canvas `consolidator_canvas.py` senza
+commenti. Parità AST+output pinnata in
+`tests/test_single_consolidator_canvas.py`; la copia canvas resta sotto
+i 28 KB. Se gli hash divergono, vince `src/`.
+
+```sh
+sha256sum myhydra/single_pdf/pytools/consolidator.py myhydra/single_pdf/pytools/consolidator_canvas.py
+```
+
+Hash attesi:
+- `consolidator.py`: `66797224e31ae9b8bd6204ddd77bddff4cf33393456cc599d9c2b2ea9db18436`
+- `consolidator_canvas.py`: `1039c1650e09f3e0a3a20c380e5b9689d1a28e151cf59575b869cda83228cd7f`
 
 Questo file ha `{edge}[4]` ed è del solo Single PDF. Il Double PDF ha una copia
 separata con `{edge}[13}` in
