@@ -65,6 +65,35 @@ def _normalize_text(value: object) -> str:
     return " ".join(str(value).strip().split()).lower()
 
 
+def _read_description(row: Mapping):
+    """Return the description value, else None.
+
+    The lookup is case-insensitive but limited to the ``description`` key
+    itself (``Description``/``DESCRIPTION`` accepted). No other alias is
+    ever read as description (never Tag, name, label, ...).
+    """
+    get = getattr(row, "get", None)
+    if get is None:
+        return None
+    try:
+        value = get("description", None)
+    except Exception:
+        value = None
+    if value is not None:
+        return value
+    try:
+        keys = row.keys()
+    except Exception:
+        return None
+    for key in keys:
+        if isinstance(key, str) and key.lower() == "description":
+            try:
+                return get(key)
+            except Exception:
+                continue
+    return None
+
+
 def _read_note(row: Mapping) -> str:
     """Return the first non-empty annotation found, else an empty string."""
     get = getattr(row, "get", None)
@@ -106,7 +135,7 @@ def classify_row_with_reason(row: Mapping) -> Tuple[str, Optional[str]]:
     carries its rule code so discards are counted, never silent.
     """
     get = getattr(row, "get", None)
-    raw_description = get("description") if get else None
+    raw_description = _read_description(row) if get else None
 
     # V2: empty description.
     if raw_description is None:

@@ -11,3 +11,9 @@ from nodes.single_filters import classify_row
 def test_riserva_input_contata_non_silente():
     assert classify_row({"description": "Riserva INPUT", "zona": "INPUT_HW"}) in ("V2", "V21")
     assert classify_row({"description": "COG2: ALLARME FRIGO", "zona": "ALLARMI"}) == "keep"
+
+
+def test_description_solo_chiave_description_case_insensitive():
+    assert classify_row({"Description": "Riserva"}) == "V2"
+    assert classify_row({"Description": "COG2: ALLARME FRIGO"}) == "keep"
+    assert classify_row({"name": "COG2: ALLARME FRIGO"}) == "V2"
