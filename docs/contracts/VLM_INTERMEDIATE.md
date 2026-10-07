@@ -78,7 +78,7 @@ Questo documento definisce lo schema JSON che il VLM deve produrre per ogni pagi
 - Rispondere SOLO con JSON valido
 
 ## Versione Prompt di Riferimento
-`src/prompts/vlm_extraction_v11.md`
+`src/prompts/vlm_measures_v14.md`, `src/prompts/vlm_bitnames_v14.md`, `src/prompts/vlm_bitstates_v14.md` (split v14 in 3 rami; `vlm_extraction_v11.md` resta solo storico)
 
 ## v14 — decisioni config
 - Campi extra sconosciuti: **ignorati** (default Pydantic, nessun `extra="forbid"`).

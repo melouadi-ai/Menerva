@@ -27,7 +27,7 @@ verificato a metà: non uniformare senza motivo.
 | Nodo | Emissione | Errore | Stato verifica |
 |---|---|---|---|
 | CONSOLIDATORE (nuovo, LV1-04) | `result = json.dumps(...)` | ERROR JSON in `result`: `{"status": "ERROR", "error": ...}` — mai blank | Mai eseguito sul canvas: alla prima run confermare che il nodo esponga `result` |
-| JSON CREATOR v15 (LV1-05) | `print(output)` + variabile `output` | Nessun `try/except` globale: un'eccezione = output blank (limite noto, ereditato) | Meccanismo legacy, verificato sul canvas dal Double (nodo 12, run3/run4 casi 6/7) |
+| JSON CREATOR v15 (LV1-05) | `print(output)` + variabile `output` | `try/except` globale: in errore stampa `{"status": "ERROR", ...}`, mai blank (fix Task 8 round 1/5) | Meccanismo legacy, verificato sul canvas dal Double (nodo 12, run3/run4 casi 6/7) |
 
 Regola per il futuro: i nuovi Pytool usano `result` + ERROR JSON
 (convenzione corrente). Il creator v15 resta `print`-based perché è il

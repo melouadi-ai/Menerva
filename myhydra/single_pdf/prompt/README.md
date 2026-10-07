@@ -5,9 +5,9 @@
 | File | Versione | Nodo | Stato |
 |---|---|---|---|
 | [`vlm_extraction_v13.md`](vlm_extraction_v13.md) | `v13` | LV2-02 — parsing JSON principale | Storico. Copia byte-identica di `src/prompts/vlm_extraction_v13.md`. |
-| [`vlm_measures_v14.md`](vlm_measures_v14.md) | `v14` | LV2 misure+dati tecnici (ramo 1 di 3) | In uso. Copia byte-identica di `src/prompts/vlm_measures_v14.md`. |
-| [`vlm_bitnames_v14.md`](vlm_bitnames_v14.md) | `v14` | LV2 nomi-bit (ramo 2 di 3) | In uso. Copia byte-identica di `src/prompts/vlm_bitnames_v14.md`. |
-| [`vlm_bitstates_v14.md`](vlm_bitstates_v14.md) | `v14` | LV2 stati (ramo 3 di 3) | In uso. Copia byte-identica di `src/prompts/vlm_bitstates_v14.md`. |
+| [`vlm_measures_v14.md`](vlm_measures_v14.md) | `v14` | LV2 misure+dati tecnici (ramo 1 di 3) | Pronto da incollare al rewiring. Copia byte-identica di `src/prompts/vlm_measures_v14.md`. |
+| [`vlm_bitnames_v14.md`](vlm_bitnames_v14.md) | `v14` | LV2 nomi-bit (ramo 2 di 3) | Pronto da incollare al rewiring. Copia byte-identica di `src/prompts/vlm_bitnames_v14.md`. |
+| [`vlm_bitstates_v14.md`](vlm_bitstates_v14.md) | `v14` | LV2 stati (ramo 3 di 3) | Pronto da incollare al rewiring. Copia byte-identica di `src/prompts/vlm_bitstates_v14.md`. |
 
 ## Sorgente e sincronizzazione
 
@@ -59,9 +59,9 @@ split senza nuove regole di scarto (solo V2/V20/V21 in tutti i rami):
 - ramo stati: solo `state_on`/`state_off` + `riga`; V7/V8 copie esatte,
   stati da keyword restano compito dichiarato del pytool.
 
-## Disallineamento con la documentazione
+## Disallineamento con la documentazione (chiuso 2026-10-07)
 
-`docs/contracts/VLM_INTERMEDIATE.md` dichiara ancora **v11** come prompt di riferimento, pur includendo già il campo `data_type` introdotto da v12. Il contratto non è stato aggiornato.
+`docs/contracts/VLM_INTERMEDIATE.md` dichiara ora i 3 prompt v14 come riferimento (prima: `vlm_extraction_v11.md`, pur includendo già il campo `data_type` introdotto da v12).
 
 ## Regole di versione
 

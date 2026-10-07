@@ -4,11 +4,11 @@
 
 | File | Versione | Nodo | Stato |
 |---|---|---|---|
-| [`json_creator_v15.py`](json_creator_v15.py) | `v15` | LV1-05 | In uso (redesign). |
+| [`json_creator_v15.py`](json_creator_v15.py) | `v15` | LV1-05 | Pronto da incollare al rewiring (redesign). |
 | [`json_creator_v4_5.py`](json_creator_v4_5.py) | `v4.5` | — | Storico, superato. |
 | [`json_creator_v4_4.py`](json_creator_v4_4.py) | `v4.4` | — | Storico, superato. |
 | [`json_creator_v4_2.py`](json_creator_v4_2.py) | `v4.2` | — | Storico, superato. |
-| [`consolidator.py`](consolidator.py) | `v14` | CONSOLIDADATORE (LV1-04) | Documentato, da incollare dopo rewiring Task 8. |
+| [`consolidator.py`](consolidator.py) | `v14` | CONSOLIDATORE (LV1-04) | Documentato, da incollare dopo rewiring Task 8. |
 | [`consolidator_canvas.py`](consolidator_canvas.py) | `v14` | CONSOLIDATORE (LV1-04) | Copia canvas senza commenti, stesso AST. |
 
 ## Sorgente e sincronizzazione
