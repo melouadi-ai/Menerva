@@ -156,6 +156,18 @@ def test_v14_v3_parola_unita_non_e_unita_valida():
     assert '"Nm³/h", "Unità"' not in text
 
 
+def test_parola_intestazione_unita_non_finisce_in_units():
+    out = pipeline([{"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Polveri (GR)", 1, reg=40001, units="Unità", zona="MISURE"),
+        _var("Polveri TQ", 2, reg=40002, units="Unita", zona="MISURE"),
+    ])]}])
+    by_name = {m["NAME"]: m for m in out[0]["measures"]}
+    assert by_name["Polveri (GR)"]["UNITS"] is None
+    assert by_name["Polveri (GR)"]["UNITS2"] is None
+    assert by_name["Polveri TQ"]["UNITS"] is None
+    assert by_name["Polveri TQ"]["UNITS2"] is None
+
+
 def test_nessun_ip_fabbricato_senza_warning():
     out = pipeline([{"page_no": 1, "stations": [_station(None, [
         _var("Polveri", 1, reg=40001, zona="MISURE"),

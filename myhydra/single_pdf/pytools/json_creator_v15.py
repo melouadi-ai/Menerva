@@ -10,6 +10,8 @@
 #    tutte le "(...)" e le "[...]": cancellava "(GR)" dal NAME.
 #  - NAME misure troncato a 49 caratteri (legacy/ADAS nvarchar(50)).
 #    Il ramo duplicate-aware di P5 non serve piu': dedup resta P1 a monte.
+#  - Fix Task 6 (V3 difesa in profondita'): units con la sola
+#    parola-intestazione "Unita"/"Unità" -> null (mai in ADAS).
 # Change-log v4.4 -> v4.5:
 #  - Fondo scala dichiarato (scale_eng_start/end) -> LOWRANGE/HIGHRANGE,
 #    sentinel se assente. Limiti giornalieri/orari e divisori non hanno un
@@ -485,6 +487,11 @@ while g < len(groups):
             units = str(units).strip()
             if units == "":
                 units = None
+        # V3 (prompt v14): la cella con la sola parola-intestazione "Unita"
+        # non e' un'unita (difesa in profondita': il VLM deve gia' emettere
+        # null, ma se la parola filtra viene neutralizzata qui e non in ADAS).
+        if units is not None and units.lower() in ("unita", "unità"):
+            units = None
         son = v.get("state_on")
         soff = v.get("state_off")
         if son is not None:

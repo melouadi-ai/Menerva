@@ -390,6 +390,8 @@ while g < len(groups):
             units = str(units).strip()
             if units == "":
                 units = None
+        if units is not None and units.lower() in ("unita", "unità"):
+            units = None
         son = v.get("state_on")
         soff = v.get("state_off")
         if son is not None:
