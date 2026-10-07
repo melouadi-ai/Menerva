@@ -358,10 +358,7 @@ def _group_branches(blocks, warnings, counters):
 
     for block in blocks:
         if not isinstance(block, dict):
-            _warn(warnings, counters, "blocco_non_valido",
-                  "blocco ignorato: %r" % (block,),
-                  counter="blocchi_non_validi")
-            continue
+            raise ValueError("blocco non valido: %r" % (block,))
         if isinstance(block.get("stations"), list) and (
                 _is_int(block.get("page_no"))
                 or block.get("bitnames") is not None
@@ -382,21 +379,42 @@ def _group_branches(blocks, warnings, counters):
             continue
         rows = block.get("rows")
         if not isinstance(rows, list):
-            _warn(warnings, counters, "blocco_non_valido",
-                  "blocco senza stations ne rows: chiavi %s" % sorted(
-                      [k for k in block]),
-                  counter="blocchi_non_validi")
-            continue
+            raise ValueError(
+                "blocco senza stations ne rows: chiavi %s tipi {%s}" % (
+                    sorted([k for k in block]),
+                    ", ".join(sorted(set(
+                        type(block[k]).__name__ for k in block)))))
+        dict_rows = [r for r in rows if isinstance(r, dict)]
+        has_names_keys = any(
+            "description" in r or "modbus_register" in r or "bit" in r
+            for r in dict_rows)
+        has_state_keys = any(
+            "state_on" in r or "state_off" in r for r in dict_rows)
+        if not dict_rows:
+            if current is None:
+                continue
+            rows = []
         if current is None:
             current = _open()
             _warn(warnings, counters, "righe_senza_misure",
                   "%d righe ramo senza pagina misure: in attesa di join"
-                  % len([r for r in rows if isinstance(r, dict)]),
+                  % len(dict_rows),
                   counter="righe_senza_misure")
-        if _is_names_rows(rows):
+        if has_names_keys and not has_state_keys:
             current["bitnames"] = {"rows": rows}
-        else:
+        elif has_state_keys and not has_names_keys:
             current["bitstates"] = {"rows": rows}
+        elif has_names_keys and has_state_keys:
+            current["bitnames"] = {"rows": rows}
+            _warn(warnings, counters, "ramo_misto",
+                  "blocco rows con chiavi nomi e stati: assegnato a nomi",
+                  counter="ramo_misto")
+        elif dict_rows:
+            raise ValueError(
+                "blocco rows non riconoscibile: chiavi %s" % sorted(set(
+                    k for r in dict_rows for k in r)))
+        else:
+            current["bitnames"] = {"rows": rows}
     cleaned = []
     for page in pages:
         if page.get("_raw_group"):

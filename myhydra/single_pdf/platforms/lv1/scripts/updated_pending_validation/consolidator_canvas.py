@@ -62,6 +62,19 @@ try:
    blocks.append(item)
  if len(blocks) == 0 and isinstance(raw, str) and raw.strip() != "":
   raise ValueError("consolidate: input non interpretabile come JSON")
+ warnings = []
+ counters = {}
+ counters["pagine"] = 0
+ counters["variabili"] = 0
+ counters["scarti_V2"] = 0
+ counters["scarti_V20"] = 0
+ counters["scarti_V21"] = 0
+ counters["scale_collegate"] = 0
+ counters["registri_applicati"] = 0
+ counters["packed_fold"] = 0
+ counters["riga_mismatch"] = 0
+ counters["buchi_sequenza"] = 0
+ counters["duplicati"] = 0
  pages = []
  current = None
  bi = 0
@@ -69,7 +82,7 @@ try:
   block = blocks[bi]
   bi = bi + 1
   if not isinstance(block, dict):
-   raise ValueError("blocco non valido in posizione " + str(bi))
+   raise ValueError("blocco non valido: " + str(block)[:120])
   is_envelope = False
   if isinstance(block.get("stations"), list):
    if type(block.get("page_no")) is int:
@@ -90,18 +103,12 @@ try:
    continue
   rows = block.get("rows")
   if not isinstance(rows, list):
-   raise ValueError("blocco senza stations ne rows in posizione " + str(bi))
-  if current is None:
-   current = {"stations": [], "bitnames": None, "bitstates": None, "orphan_rows": 0}
-   pages.append(current)
-  nr = 0
-  ri0 = 0
-  while ri0 < len(rows):
-   if isinstance(rows[ri0], dict):
-    nr = nr + 1
-   ri0 = ri0 + 1
-  if "orphan_rows" in current:
-   current["orphan_rows"] = current["orphan_rows"] + nr
+   raise ValueError("blocco " + str(bi) + " senza stations ne rows: chiavi "
+    + str(sorted([k for k in block])) + " tipi {"
+    + ", ".join(sorted(set(
+     type(block[k]).__name__ for k in block)))
+    + "}")
+  dict_n = 0
   is_names = False
   is_states = False
   ri = 0
@@ -110,40 +117,41 @@ try:
    ri = ri + 1
    if not isinstance(rk, dict):
     continue
+   dict_n = dict_n + 1
    if "description" in rk or "modbus_register" in rk or "bit" in rk:
     is_names = True
    if "state_on" in rk or "state_off" in rk:
     is_states = True
+  if dict_n == 0 and current is None:
+   continue
+  if dict_n == 0:
+   rows = []
+  if current is None:
+   current = {"stations": [], "bitnames": None, "bitstates": None}
+   pages.append(current)
+   warnings.append({"rule": "righe_senza_misure", "page_no": None,
+       "riga": None,
+       "detail": str(dict_n) + " righe ramo senza pagina misure: in attesa di join"})
+   counters["righe_senza_misure"] = counters.get(
+    "righe_senza_misure", 0) + 1
   if is_names and not is_states:
    current["bitnames"] = {"rows": rows}
   elif is_states and not is_names:
    current["bitstates"] = {"rows": rows}
   elif is_names and is_states:
    current["bitnames"] = {"rows": rows}
+   warnings.append({"rule": "ramo_misto", "page_no": None,
+       "riga": None,
+       "detail": "blocco rows con chiavi nomi e stati: assegnato a nomi"})
+   counters["ramo_misto"] = counters.get("ramo_misto", 0) + 1
+  elif dict_n > 0:
+   raise ValueError("blocco rows non riconoscibile in posizione " + str(bi)
+    + ": chiavi " + str(sorted(set(
+     k for r in rows if isinstance(r, dict) for k in r))))
   else:
-   raise ValueError("blocco rows non riconoscibile in posizione " + str(bi))
+   current["bitnames"] = {"rows": rows}
  if not isinstance(pages, list):
   raise ValueError("Il consolidatore attende una lista di pagine.")
- warnings = []
- counters = {}
- counters["pagine"] = 0
- counters["variabili"] = 0
- counters["scarti_V2"] = 0
- counters["scarti_V20"] = 0
- counters["scarti_V21"] = 0
- counters["scale_collegate"] = 0
- counters["registri_applicati"] = 0
- counters["packed_fold"] = 0
- counters["riga_mismatch"] = 0
- counters["buchi_sequenza"] = 0
- counters["duplicati"] = 0
- oi = 0
- while oi < len(pages):
-  if isinstance(pages[oi], dict) and pages[oi].pop("orphan_rows", 0) > 0:
-   warnings.append({"rule": "righe_senza_misure", "page_no": None,
-       "riga": None,
-       "detail": "righe ramo senza pagina misure: in attesa di join"})
-  oi = oi + 1
  v2_spare = ("disponibile", "disponibile/", "disponible", "riserva",
     "spare", "reserve", "non utilizzato", "non utilizzata",
     "non usato", "libero", "---")

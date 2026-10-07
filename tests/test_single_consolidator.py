@@ -246,3 +246,23 @@ def test_input_spazzatura_resta_errore_mai_output_vuoto():
     import pytest
     with pytest.raises(ValueError):
         consolidate("ciao mondo ]]]")
+
+
+def test_blocco_rows_misto_avvisato_e_assegnato_a_nomi():
+    out = consolidate([{"stations": []}, {"rows": [
+        {"description": "X", "state_on": "On", "riga": 1},
+    ]}])
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "ramo_misto" in rules
+
+
+def test_blocco_rows_irriconoscibile_resta_errore_forte():
+    import pytest
+    with pytest.raises(ValueError):
+        consolidate([{"stations": []}, {"rows": [{"foo": 1}]}])
+
+
+def test_blocco_rows_vuoto_nessun_rumore():
+    out = consolidate([{"rows": []}])
+    assert out["stations"] == []
+    assert out["warnings"] == []
