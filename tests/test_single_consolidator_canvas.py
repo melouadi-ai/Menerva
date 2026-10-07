@@ -62,6 +62,46 @@ def fixture_pages():
                  "zona": "ALLARMI", "tag": None, "pagina": None,
                  "riga": 1},
             ]}]},
+        {"page_no": 3, "stations": [{
+            "name": None, "protocol": "ModBus TCP", "ip": "192.168.2.11",
+            "port": 502, "modbus_id": None, "variables": [
+                {"description": "CO", "units": None,
+                 "modbus_register": 51, "bit": None, "data_type": None,
+                 "kind": "ANALOGICA", "read_write": "R",
+                 "state_on": None, "state_off": None,
+                 "scale_elec_start": None, "scale_elec_end": None,
+                 "scale_eng_start": None, "scale_eng_end": None,
+                 "limit_hour": None, "limit_day": None,
+                 "zona": "MISURE", "tag": None, "pagina": None,
+                 "riga": 1},
+                {"description": "Riserva", "units": None,
+                 "modbus_register": 52, "bit": None, "data_type": None,
+                 "kind": "ANALOGICA", "read_write": "R",
+                 "state_on": None, "state_off": None,
+                 "scale_elec_start": None, "scale_elec_end": None,
+                 "scale_eng_start": None, "scale_eng_end": None,
+                 "limit_hour": None, "limit_day": None,
+                 "zona": "MISURE", "tag": None, "pagina": None,
+                 "riga": 2},
+                {"description": "Sonda", "units": None,
+                 "modbus_register": 53, "bit": None, "data_type": None,
+                 "kind": "ANALOGICA", "read_write": "R",
+                 "state_on": None, "state_off": None,
+                 "scale_elec_start": None, "scale_elec_end": None,
+                 "scale_eng_start": None, "scale_eng_end": None,
+                 "limit_hour": None, "limit_day": None,
+                 "zona": "INPUT_HW", "tag": None, "pagina": None,
+                 "riga": 3},
+                {"description": "Pompa", "units": None,
+                 "modbus_register": 54, "bit": None, "data_type": None,
+                 "kind": "ANALOGICA", "read_write": "R",
+                 "state_on": None, "state_off": None,
+                 "scale_elec_start": None, "scale_elec_end": None,
+                 "scale_eng_start": None, "scale_eng_end": None,
+                 "limit_hour": None, "limit_day": None,
+                 "zona": "CAMPO", "tag": None, "pagina": None,
+                 "riga": 4, "note": "NO PC SME"},
+            ]}]},
     ]
 
 
@@ -101,6 +141,22 @@ def test_riferimento_src_allineato_al_documentato():
     ref = consolidate([json.loads(json.dumps(p)) for p in pages])
     doc = run_script(DOCUMENTED, pages)
     assert ref == doc
+
+
+def test_scarti_v2_v20_v21_con_reason_letterali():
+    pages = fixture_pages()
+    ref = consolidate([json.loads(json.dumps(p)) for p in pages])
+    scarti = {w["rule"]: w["detail"] for w in ref["warnings"]
+              if w["rule"].startswith("scarto_")}
+    assert scarti["scarto_V2"] == \
+        "Riserva - description is a spare/placeholder token: 'Riserva'"
+    assert scarti["scarto_V21"] == \
+        "Sonda - zona is a hardware zone: 'INPUT_HW'"
+    assert scarti["scarto_V20"] == \
+        "Pompa - annotation contains 'NO PC SME'"
+    assert ref["counters"]["scarti_V2"] == 1
+    assert ref["counters"]["scarti_V21"] == 1
+    assert ref["counters"]["scarti_V20"] == 1
 
 
 def test_canvas_senza_def_lambda_class():

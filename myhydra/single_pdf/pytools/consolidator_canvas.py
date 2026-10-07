@@ -281,10 +281,10 @@ try:
                     normed_desc = " ".join(desc.strip().split()).lower()
                     if normed_desc in v2_spare:
                         decision = "V2"
-                        reason = "spare/placeholder: " + desc.strip()
+                        reason = "description is a spare/placeholder token: " + repr(desc.strip())
                     elif normed_desc in v2_headers:
                         decision = "V2"
-                        reason = "section header: " + desc.strip()
+                        reason = "description is a section header: " + repr(desc.strip())
                 zona = None
                 for zk in ("zona", "area", "ZONA", "AREA"):
                     try:
@@ -299,7 +299,7 @@ try:
                     if ("INPUT_HW" in zkey or "OUTPUT_HW" in zkey
                             or zkey.endswith("_HW")):
                         decision = "V21"
-                        reason = "hardware zone: " + zona.strip()
+                        reason = "zona is a hardware zone: " + repr(zona.strip())
                 if decision == "keep":
                     note = ""
                     ki = 0
@@ -318,7 +318,7 @@ try:
                         while pj < len(v20_phrases):
                             if v20_phrases[pj] in lowered:
                                 decision = "V20"
-                                reason = "annotation contains " + v20_phrases[pj].upper()
+                                reason = "annotation contains " + repr(v20_phrases[pj].upper())
                                 break
                             pj = pj + 1
                 if decision != "keep":
