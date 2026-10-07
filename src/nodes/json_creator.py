@@ -1,7 +1,15 @@
-# pytool - Json Creator finale (contratto intermedio -> formato ADAS) - v4.5
+# pytool - Json Creator finale (contratto intermedio -> formato ADAS) - v15
 # Input : edge 4 = JSON intermedio aggregato dal nodo iterativo
 # Output: lista di stazioni nel formato finale ADAS (measures + bitinfo)
 #
+# Change-log v4.5 -> v15 (Single redesign Task 5):
+#  - V19 vince su P5: la pulizia nomi rimuove SOLO parentesi tonde vuote
+#    "()" / "( )", SOLO virgolette a inizio E fine stringa, collassa gli
+#    spazi multipli. MAI rimosse parentesi con contenuto ("(GR)" resta),
+#    parole, refusi, punteggiatura interna, quadre. Il vecchio P5 rimuoveva
+#    tutte le "(...)" e le "[...]": cancellava "(GR)" dal NAME.
+#  - NAME misure troncato a 49 caratteri (legacy/ADAS nvarchar(50)).
+#    Il ramo duplicate-aware di P5 non serve piu': dedup resta P1 a monte.
 # Change-log v4.4 -> v4.5:
 #  - Fondo scala dichiarato (scale_eng_start/end) -> LOWRANGE/HIGHRANGE,
 #    sentinel se assente. Limiti giornalieri/orari e divisori non hanno un
@@ -630,47 +638,22 @@ while g < len(groups):
             priv = priv + struct.pack('<I', mid).hex().upper()
             priv = priv + struct.pack('<I', fmt_analog).hex().upper()
             measures.append({"STATIONID": sid, "NAME": desc, "DISABLED": 0, "DIGITAL": None, "DOWNLOAD": 0, "SNAPSHOT": 1, "IGNOREERRORS": 0, "LOWCRITICAL": NEGBIG, "HIGHCRITICAL": BIG, "LOWRANGE": lowrange, "HIGHRANGE": highrange, "LOWOFFSET": NEGBIG, "HIGHOFFSET": BIG, "SQRAW": BIG, "SQ1HOURMEAN": BIG, "SQ3HOURMEAN": BIG, "SQ8HOURMEAN": BIG, "SQDAILYMEAN": BIG, "UNITS": units, "STANDARDRANGEID": None, "DRIVERDATA": 0, "TYPE": 0, "DRIVERPRIVATE": priv, "ONLY_POSITIVES": 0, "VM_SOURCE_CODE": VM_DEFAULT, "PERIOD": 5, "SNAPSIZE": 1000, "DRIVERCONFIG": MCFG, "ID": mid_seq, "UNITS2": units})
-    # ---------- P5 pulizia parentesi (Nodo 8) duplicate-aware ----------
-    all_names = []
-    i = 0
-    while i < len(measures):
-        all_names.append(str(measures[i]["NAME"]))
-        i = i + 1
-    bases = []
-    i = 0
-    while i < len(all_names):
-        b = all_names[i]
-        prev = None
-        while prev != b:
-            prev = b
-            b = re.sub(r'\([^()]*\)', '', b)
-        prev = None
-        while prev != b:
-            prev = b
-            b = re.sub(r'\[[^\[\]]*\]', '', b)
-        b = b.replace('"', '').replace("'", '')
-        b = re.sub(r' {2,}', ' ', b).strip()
-        bases.append(b)
-        i = i + 1
+    # ---------- V19 pulizia nomi (vince su P5) ----------
+    # Solo parentesi tonde vuote, solo virgolette esterne appaiate,
+    # spazi collassati; parentesi con contenuto mai toccate. NAME a 49.
     i = 0
     while i < len(measures):
         t = str(measures[i]["NAME"])
-        if bases.count(bases[i]) > 1:
-            prev = None
-            while prev != t:
-                prev = t
-                t = re.sub(r'\(\s*\)', '', t)
-        else:
-            prev = None
-            while prev != t:
-                prev = t
-                t = re.sub(r'\([^()]*\)', '', t)
         prev = None
         while prev != t:
             prev = t
-            t = re.sub(r'\[[^\[\]]*\]', '', t)
-        t = t.replace('"', '').replace("'", '')
+            t = re.sub(r'\(\s*\)', '', t)
+        t = t.strip()
+        while len(t) >= 2 and ((t[:1] == '"' and t[-1:] == '"') or (t[:1] == "'" and t[-1:] == "'")):
+            t = t[1:-1].strip()
         t = re.sub(r' {2,}', ' ', t).strip()
+        if len(t) > 49:
+            t = t[:49]
         measures[i]["NAME"] = t
         i = i + 1
     i = 0
@@ -683,12 +666,10 @@ while g < len(groups):
             prev = None
             while prev != t:
                 prev = t
-                t = re.sub(r'\([^()]*\)', '', t)
-            prev = None
-            while prev != t:
-                prev = t
-                t = re.sub(r'\[[^\[\]]*\]', '', t)
-            t = t.replace('"', '').replace("'", '')
+                t = re.sub(r'\(\s*\)', '', t)
+            t = t.strip()
+            while len(t) >= 2 and ((t[:1] == '"' and t[-1:] == '"') or (t[:1] == "'" and t[-1:] == "'")):
+                t = t[1:-1].strip()
             t = re.sub(r' {2,}', ' ', t).strip()
             b[flds[f]] = t
             f = f + 1
