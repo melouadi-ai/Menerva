@@ -36,7 +36,8 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 ### Caso 1: Mappatura 1 — Cliente SMA (`Mappatura_1_Cliente_SMA_1.pdf`)
 
 * **Tipologia:** Documento a pagina singola con 51 variabili (misure analogiche, allarmi digitali e comandi elettrovalvole).
-* **Esito Generale:** **Tutte le 51 variabili estratte con esatta corrispondenza dei registri Modbus e degli hex `DRIVERPRIVATE` (100% match).**
+* **Esito Generale (verdetto per stazione, `verifica_pdf/per_caso/caso_1_sma_1`):** **44 righe su 45 con indirizzo in corrispondenza corretta; 0 difetti di abbinamento.** Lo stesso registro esiste in due tabelle diverse (40001 = `CO` su `192.168.6.20` e `Temperatura Fumi` sull'IP placeholder): l'output le separa correttamente in due stazioni e il confronto le abbina per `(stazione, registro, bit)`. I 2 `nome_diverso` del vecchio verdetto erano falsi positivi del match per solo registro, chiusi senza toccare la pipeline.
+* **Resta dallo storico (non della pipeline nuova):** 1 refuso corretto (`Ossiegno` → `Ossigeno`, la policy attuale Task 6 impone trascrizione fedele), `UNITS: "Unità"` su `Polveri (GR)` (parola-intestazione scambiata per unità; stesso bug nel GT legacy), 5 righe `CALCOLATA` senza indirizzo emesse come misure a registro 0.
 
 #### Confronto Risultati
 
@@ -86,23 +87,30 @@ Il passaggio dal vecchio sistema (*Legacy MAS*) alla nuova architettura **Menerv
 ---
 
 ### Caso 3: Mappatura 4 — Cliente SIEMENS (`Mappatura_4_Cliente_SIEMENS_2.pdf`)
-* **Tipologia:** Documento complesso ad alto volume (**29 pagine**).
-* **Stato:** *In attesa di esecuzione con VLM v13.*
-* **Miglioramento atteso dal Nuovo Sistema:**
-  * Nel vecchio sistema, la ridondanza produceva 148 misure sparse con duplicazioni di registri.
-  * Il nuovo pytool v4.2 applica le regole **P1-P6** (deduplicazione registri condivisi, raggruppamento e filtro *"riservato"*), mirando al target consolidato di **108 misure ottimizzate e ~211 bitinfo**, eliminando l'overhead per il database ADAS.
+* **Tipologia:** Documento complesso ad alto volume (**29 pagine**, 1116 righe estratte, 591 registri distinti).
+* **Esito Generale (verdetto `verifica_pdf/per_caso/caso_4_siemens_2`, su output storico):** **236 righe presenti** (157 corrispondenze + 51 refusi corretti), **751 saltate da regola** (676 righe vuote, 64 zone escluse V20, 11 nomi generici V2), **129 non coperte senza spiegazione**.
+* **Dove si perde:** a monte del pytool — l'output storico dichiara 274 variabili ricevute in un solo chunk contro 638 righe utilizzabili nel PDF (12 pagine senza alcuna copertura). Il pytool non può produrre misure per righe mai ricevute (rischio VLM, non difetto di trasformazione).
+* **Punto fermo contro il PDF (test `tests/test_single_truth_siemens.py`):** registro 40014 a pagina 5 con 16/16 bit nell'ordine del PDF (8..15, 0..7) e testo pieno (`BL1`, `(Da Resettare)`). Il GT legacy `Json_4_Cliente_SIEMENS_2.json` numera gli stessi bit 1..16 (N.Bit grezzo senza -1) e scrive `SONDADI`: non è un riferimento, è regressione pinnata.
+* **Non ancora verificato sulla pipeline nuova:** copertura end-to-end sulle 29 pagine (il confronto sopra è sullo storico v4.2; la pipeline Task 4+5 è pinnata su fixture di pagina).
 
 ---
 
 ## 📈 Tabella di Sintesi KPI di Qualità
 
-| Metrica di Qualità | Obiettivo di Progetto | Vecchio Sistema | Menerva MAS Attuale |
+> I valori sotto sono esiti sui casi verificati contro il PDF (`verifica_pdf/per_caso`),
+> non certificazione generale. Gli output confrontati sono gli storici v4.2, salvo
+> dove indicato; la pipeline nuova (Task 4+5) è pinnata su fixture di verità PDF in
+> `tests/test_single_truth_siemens.py` e `tests/test_single_regressions.py`.
+
+| Metrica di Qualità | SMA_1 (50 righe) | PROTEC_1 (89) / PROTEC_2 (79) | SIEMENS_2 (1116 righe) |
 |---|:---:|:---:|:---:|
-| **Precisione Registri Modbus** | 100% | ~95% (errori su registri spezzati) | **100%** |
-| **Completezza Testuale Descrizioni** | 100% | ~75% (troncamenti frequenti) | **100%** |
-| **Corretta Tipizzazione Read/Write** | 100% | <50% (tutto marcato Read) | **100%** |
-| **Copertura Bitinfo Segnali Digitali** | 100% | <40% (omessi o separati) | **100%** |
-| **Conformità Schema ADAS Import** | 100% | Variabile (richiedeva fix manuali) | **100% Validato Pydantic** |
+| **Righe con indirizzo abbinate per `(stazione, registro, bit)`** | 44/45 ok, 0 difetti | 45/45 e 39/39 senza `non_coperte` né fantasma | 236/1116; 129 non coperte (perdita VLM a monte) |
+| **Righe scartate da regola (classi `riga_vuota` / `v2_nome_generico` / `v20_zona_esclusa`)** | 0 (+ 5 derivate senza indirizzo) | 44 V2 / 32 V2 + 8 V20 | 676 / 11 / 64 |
+| **Precisione registri Modbus sulle righe abbinate** | 100% | 100% (1 ex-bug 40004 già corretto) | 100% sulle 236 abbinate; 40014 a 16 bit come il PDF |
+| **Fedeltà nomi (refusi mai corretti, policy Task 6)** | storica: 1 correzione (`Ossiegno`); nuova pipeline pinnata fedele | storica: 1 refuso corretto su PROTEC_2 | storica: 51 correzioni; estrattore che tronca i testi lunghi (`BL1`) |
+| **Unità in `UNITS`** | storica: `Unità`-intestazione su `Polveri (GR)` (bug, anche nel GT) | da verificare sul chunk | non dichiarate riga per riga nel PDF ruotato |
+| **IP fabbricati** | nessuno (2 IP dichiarati, 2 usati) | `127.0.0.1` di default su pagina senza IP (noto, warning) | 4 IP dichiarati mai usati (una sola stazione emessa) |
+| **Errori noti del GT legacy (regressione, non gap)** | `UNITS: "Unità"` condiviso col GT | — | 40014 a bit 1..16 invece di 8..15+0..7; `SONDADI` |
 
 ---
 
@@ -271,3 +279,4 @@ vanno fornite (Tabella 6 JOB per il caso 6) o concordata una regola di inferenza
 | 05/10/2026 | Double PDF | **Verdetto caso 6**: ADAS della run 3.8 completa confrontato riga per riga col PDF IOL (22 registri, 60 bit, formati, nomi). 100% del PDF; il GT legacy sbaglia 2 registri, 18 bit e i `TEXTON` (shift di una riga). `DATA_TYPE` confermato a valle (QAL3 `INT` → 150). Fixture `observed_adas_case6_qwen38_datatype.json`, test di verità `tests/test_adas_caso6_pdf_truth.py`, confronto meccanico rigenerato |
 | 05/10/2026 | Double PDF | **Verdetto caso 7**: 39 misure e 42 bitinfo contro 47 attesi dal PDF. Tutti i 39 registri corretti e `DATA_TYPE` letto (`INT`→150, `WORD` stimate→250, contro 250 ovunque nella run precedente), ma 5 stati persi: la cella `REG 4` è unita e attraversa il confine di pagina, il VLM restituisce `null` e il pytool scarta. Unità 4/18 (il JOB le dichiara tutte), limiti giornalieri ignorati. Test `myhydra/double_pdf/tests/test_adas_caso7_pdf_truth.py` |
 | 05/10/2026 | Double PDF | **Lo script del nodo 12 non è il repo**: le misure analogiche Double escono con i campi limite a `null` invece del sentinel `∓3.40282e38` presente nel repo e in tutti i GT. Stessa classe dell'errore di linkage bitinfo: copia modificata a mano. Nessun output Double è mai stato importato in un ADAS reale |
+| 07/10/2026 | Single PDF | **Verità PDF e fix `confronta` per stazione**: match su `(stazione, registro, bit)` (2 falsi `nome_diverso` SMA chiusi, 44 ok + 1 refuso), classi di scarto (`riga_vuota`/`v2_nome_generico`/`v20_zona_esclusa`), verità 40014 dal layer PDF (`BL1` che l'estrattore tronca), GT legacy pinnato come regressione (bit 1..16, `SONDADI`). KPI riscritti per caso. Test `tests/test_single_truth_siemens.py` |

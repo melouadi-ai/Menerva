@@ -28,6 +28,16 @@ Le cinque categorie sommano a 1116 contro 1116 righe estratte.
 
 Le scostamenti non sono tutti difetti. `correzione di refuso del documento` significa che il testo nel PDF e' sbagliato e l'output lo ha corretto; `scelta di progetto` significa che la pipeline ha fatto qualcosa di deliberato e diverso. Solo la classe `difetto` richiede una decisione.
 
+### Motivi di scarto
+
+Le righe scartate non sono un mucchio indistinto: ogni classe segue una regola diversa del prompt.
+
+| Classe di scarto | Righe |
+|---|---|
+| riga senza descrizione | 676 |
+| zona esclusa da regola V20 del prompt | 64 |
+| nome generico da regola V2 del prompt | 11 |
+
 ## Registri e indirizzi
 
 - Registri distinti nel PDF: **591**, nell'output: **104**
@@ -95,68 +105,68 @@ Non è possibile attribuire queste mancanze a un difetto senza decidere quale co
 
 ## Scostamenti
 
-| Registro | Bit | Esito | PDF | Output |
-|---|---|---|---|---|
-| 40001 | 12 | `saltata_da_regola_di_prompt` |  | — |
-| 40001 | 13 | `nome_diverso` | COG2: COMANDO Autocal ULTRAMAT 23 | COG2: COMANDO AUTOCAL ULTRAMAT 23 NO+CO+ |
-| 40001 | 14 | `nome_diverso` | COG3: COMANDO Autocal ULTRAMAT 23 | COG3: COMANDO AUTOCAL ULTRAMAT 23 NO+CO+ |
-| 40001 | 15 | `saltata_da_regola_di_prompt` |  | — |
-| 40001 | 0 | `nome_diverso` | COG2: COMANDO START VERIFICA QAL 3 | COG2: COMANDO START VERIFICA QAL 3 CO+NO |
-| 40001 | 1 | `nome_diverso` | COG2: COMANDO STOP VERIFICA QAL 3 | COG2: COMANDO STOP VERIFICA QAL 3 CO+NO+ |
-| 40001 | 2 | `nome_diverso` | COG2: COMANDO SET BYPASS CONVERTITORE | COG2: COMANDO SET BYPASS CONVERTITORE NO |
-| 40001 | 3 | `nome_diverso` | COG2: COMANDO RESET BYPASS CONVERTITORE | COG2: COMANDO RESET BYPASS CONVERTITORE  |
-| 40001 | 4 | `nome_diverso` | COG3: COMANDO START VERIFICA QAL 3 | COG3: COMANDO START VERIFICA QAL 3 CO+NO |
-| 40001 | 5 | `nome_diverso` | COG3: COMANDO STOP VERIFICA QAL 3 | COG3: COMANDO STOP VERIFICA QAL 3 CO+NO+ |
-| 40001 | 6 | `nome_diverso` | COG3: COMANDO SET BYPASS CONVERTITORE | COG3: COMANDO SET BYPASS CONVERTITORE NO |
-| 40001 | 7 | `nome_diverso` | COG3: COMANDO RESET BYPASS CONVERTITORE | COG3: COMANDO RESET BYPASS CONVERTITORE  |
-| 40002 | 8 | `saltata_da_regola_di_prompt` |  | — |
-| 40002 | 9 | `saltata_da_regola_di_prompt` |  | — |
-| 40002 | 10 | `saltata_da_regola_di_prompt` |  | — |
-| 40002 | 11 | `saltata_da_regola_di_prompt` |  | — |
-| 40002 | 12 | `saltata_da_regola_di_prompt` |  | — |
-| 40002 | 13 | `saltata_da_regola_di_prompt` |  | — |
-| 40002 | 14 | `saltata_da_regola_di_prompt` |  | — |
-| 40002 | 15 | `saltata_da_regola_di_prompt` |  | — |
-| 40002 | 0 | `saltata_da_regola_di_prompt` |  | — |
-| 40002 | 1 | `saltata_da_regola_di_prompt` |  | — |
-| 40002 | 2 | `saltata_da_regola_di_prompt` |  | — |
-| 40002 | 3 | `saltata_da_regola_di_prompt` |  | — |
-| 40002 | 4 | `saltata_da_regola_di_prompt` |  | — |
-| 40002 | 5 | `saltata_da_regola_di_prompt` |  | — |
-| 40002 | 6 | `saltata_da_regola_di_prompt` |  | — |
-| 40002 | 7 | `saltata_da_regola_di_prompt` |  | — |
-| 40003 | 11 | `saltata_da_regola_di_prompt` |  | — |
-| 40003 | 12 | `saltata_da_regola_di_prompt` |  | — |
-| 40003 | 13 | `saltata_da_regola_di_prompt` |  | — |
-| 40003 | 14 | `saltata_da_regola_di_prompt` |  | — |
-| 40003 | 15 | `saltata_da_regola_di_prompt` |  | — |
-| 40003 | 3 | `saltata_da_regola_di_prompt` |  | — |
-| 40003 | 4 | `saltata_da_regola_di_prompt` |  | — |
-| 40003 | 5 | `saltata_da_regola_di_prompt` |  | — |
-| 40003 | 6 | `saltata_da_regola_di_prompt` |  | — |
-| 40003 | 7 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 8 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 9 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 10 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 11 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 12 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 13 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 14 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 15 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 0 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 1 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 2 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 3 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 4 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 5 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 6 | `saltata_da_regola_di_prompt` |  | — |
-| 40004 | 7 | `saltata_da_regola_di_prompt` |  | — |
-| 40005 | — | `saltata_da_regola_di_prompt` | Libero | — |
-| 40006 | 8 | `saltata_da_regola_di_prompt` |  | — |
-| 40006 | 9 | `saltata_da_regola_di_prompt` |  | — |
-| 40006 | 10 | `saltata_da_regola_di_prompt` |  | — |
-| 40006 | 11 | `saltata_da_regola_di_prompt` |  | — |
-| 40006 | 12 | `saltata_da_regola_di_prompt` |  | — |
+| Registro | Bit | Stazione PDF | Esito | PDF | Output |
+|---|---|---|---|---|---|
+| 40001 | 12 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40001 | 13 | — | `nome_diverso` | COG2: COMANDO Autocal ULTRAMAT 23 | COG2: COMANDO AUTOCAL ULTRAMAT 23 NO+CO+ |
+| 40001 | 14 | — | `nome_diverso` | COG3: COMANDO Autocal ULTRAMAT 23 | COG3: COMANDO AUTOCAL ULTRAMAT 23 NO+CO+ |
+| 40001 | 15 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40001 | 0 | — | `nome_diverso` | COG2: COMANDO START VERIFICA QAL 3 | COG2: COMANDO START VERIFICA QAL 3 CO+NO |
+| 40001 | 1 | — | `nome_diverso` | COG2: COMANDO STOP VERIFICA QAL 3 | COG2: COMANDO STOP VERIFICA QAL 3 CO+NO+ |
+| 40001 | 2 | — | `nome_diverso` | COG2: COMANDO SET BYPASS CONVERTITORE | COG2: COMANDO SET BYPASS CONVERTITORE NO |
+| 40001 | 3 | — | `nome_diverso` | COG2: COMANDO RESET BYPASS CONVERTITORE | COG2: COMANDO RESET BYPASS CONVERTITORE  |
+| 40001 | 4 | — | `nome_diverso` | COG3: COMANDO START VERIFICA QAL 3 | COG3: COMANDO START VERIFICA QAL 3 CO+NO |
+| 40001 | 5 | — | `nome_diverso` | COG3: COMANDO STOP VERIFICA QAL 3 | COG3: COMANDO STOP VERIFICA QAL 3 CO+NO+ |
+| 40001 | 6 | — | `nome_diverso` | COG3: COMANDO SET BYPASS CONVERTITORE | COG3: COMANDO SET BYPASS CONVERTITORE NO |
+| 40001 | 7 | — | `nome_diverso` | COG3: COMANDO RESET BYPASS CONVERTITORE | COG3: COMANDO RESET BYPASS CONVERTITORE  |
+| 40002 | 8 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40002 | 9 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40002 | 10 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40002 | 11 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40002 | 12 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40002 | 13 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40002 | 14 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40002 | 15 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40002 | 0 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40002 | 1 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40002 | 2 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40002 | 3 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40002 | 4 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40002 | 5 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40002 | 6 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40002 | 7 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40003 | 11 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40003 | 12 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40003 | 13 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40003 | 14 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40003 | 15 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40003 | 3 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40003 | 4 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40003 | 5 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40003 | 6 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40003 | 7 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 8 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 9 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 10 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 11 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 12 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 13 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 14 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 15 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 0 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 1 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 2 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 3 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 4 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 5 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 6 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40004 | 7 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40005 | — | — | `saltata_da_regola_di_prompt` | Libero | — |
+| 40006 | 8 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40006 | 9 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40006 | 10 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40006 | 11 | — | `saltata_da_regola_di_prompt` |  | — |
+| 40006 | 12 | — | `saltata_da_regola_di_prompt` |  | — |
 
 _Mostrate le prime 60 righe su 959._
 

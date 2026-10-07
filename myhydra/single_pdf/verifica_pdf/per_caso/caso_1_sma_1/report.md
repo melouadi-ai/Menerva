@@ -19,8 +19,7 @@ Le cinque categorie sommano a 50 contro 50 righe estratte.
 
 | Classe | Righe |
 |---|---|
-| corrispondenza corretta | 42 |
-| difetto | 2 |
+| corrispondenza corretta | 44 |
 | correzione di refuso del documento | 1 |
 
 Le scostamenti non sono tutti difetti. `correzione di refuso del documento` significa che il testo nel PDF e' sbagliato e l'output lo ha corretto; `scelta di progetto` significa che la pipeline ha fatto qualcosa di deliberato e diverso. Solo la classe `difetto` richiede una decisione.
@@ -58,9 +57,7 @@ Il PDF contiene 50 righe utilizzabili. Il pytool ne ha viste altrettante.
 
 ## Scostamenti
 
-| Registro | Bit | Esito | PDF | Output |
-|---|---|---|---|---|
-| 40001 | — | `nome_diverso` | Temperatura Fumi | CO |
-| 40005 | — | `nome_diverso` | CO | Pressione |
-| 45 | — | `nome_diverso` | Allarme 1 Ossiegno umido | ALLARME 1 OSSIGENO UMIDO |
+| Registro | Bit | Stazione PDF | Esito | PDF | Output |
+|---|---|---|---|---|---|
+| 45 | — | 192.168.6.20 | `nome_diverso` | Allarme 1 Ossiegno umido | ALLARME 1 OSSIGENO UMIDO |
 

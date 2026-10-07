@@ -169,6 +169,45 @@ def chiave_nome(s):
     return re.sub(r"\s+", " ", s).strip()
 
 
+def chiave_stazione(ip):
+    """Stazione normalizzata per l'abbinamento, o None se non dichiarata.
+
+    Nel PDF di SMA la stessa tabella usa due forme (`192.168.6.20` e
+    `IP xxx,xxx,xxx,xxx`), l'output altre due (`192.168.6.20` e
+    `xxx.xxx.xxx.xxx`): senza normalizzazione non si incontrano mai.
+    Quando il documento non dichiara la stazione (PROTEC, SIEMENS: ip
+    vuoto) la chiave e' None e l'abbinamento ricade su (registro, bit).
+    """
+    s = norm(ip).lower()
+    if not s:
+        return None
+    s = re.sub(r"^ip\s+", "", s)
+    s = s.replace(",", ".")
+    return re.sub(r"\s+", "", s) or None
+
+
+SCARTI = {
+    "riga_vuota": "riga senza descrizione",
+    "v2_nome_generico": "nome generico da regola V2 del prompt",
+    "v20_zona_esclusa": "zona esclusa da regola V20 del prompt",
+}
+
+
+def classe_scarto(descrizione, riga):
+    """Motivo dello scarto di una riga che l'output non deve coprire.
+
+    Le righe scartate non sono tutte uguali: una riga vuota, un nome
+    generico esatto e una zona esclusa seguono regole diverse e vanno
+    conteggiate a parte, altrimenti restano un mucchio indistinto.
+    """
+    d = norm(descrizione)
+    if not d:
+        return "riga_vuota"
+    if riga.get("da_scartare") or RE_SKIP_ZONA.search(d):
+        return "v20_zona_esclusa"
+    return "v2_nome_generico"
+
+
 def ind_parte(s):
     """Divide '40001.2' o '40001_2' in (40001, 2). None se non e' un indirizzo."""
     m = RE_IND.match(norm(s))
@@ -610,29 +649,41 @@ def confronta(righe_pdf, stazioni):
     documento appare con due forme diverse. L'abbinamento prova quindi la
     chiave esatta e, se non trova nulla, le forme equivalenti, annotando quale
     e' stata usata.
+
+    La chiave comprende la stazione: lo stesso registro puo' esistere in due
+    tabelle diverse (SMA usa 40001 sia per `CO` su 192.168.6.20 sia per
+    `Temperatura Fumi` sull'IP placeholder) e l'output le separa in stazioni
+    diverse. Abbinare per solo registro le confonde e produce falsi
+    `nome_diverso`. Dove il documento non dichiara la stazione (PROTEC,
+    SIEMENS) si ricade su (registro, bit); dove l'output non la dichiara si
+    abbina solo se una stazione sola dichiara quella chiave, mai in
+    ambiguita' silenziosa.
     """
     truth = {}
     truth_senza_reg = {}
-    # Una stessa chiave (registro, bit) puo' comparire piu' volte nel
-    # documento: righe diverse che puntano allo stesso indirizzo. Se si tiene
-    # solo la prima, le altre spariscono dal confronto e la quadratura non
-    # chiude. Si conservano tutte in un elenco secondario, cosi' il confronto
-    # resta uno a uno e le righe in piu' restano visibili.
+    # Una stessa chiave (stazione, registro, bit) puo' comparire piu' volte
+    # nel documento: righe diverse che puntano allo stesso indirizzo. Se si
+    # tiene solo la prima, le altre spariscono dal confronto e la quadratura
+    # non chiude. Si conservano tutte in un elenco secondario, cosi' il
+    # confronto resta uno a uno e le righe in piu' restano visibili.
     truth_dup = {}
     for r in righe_pdf:
         if r["registro"] is None:
             truth_senza_reg.setdefault(chiave_nome(r["descrizione"]), r)
             continue
-        k = (r["registro"], r["bit"] if r["bit"] is not None else ANALOGICO)
+        k = (chiave_stazione(r.get("ip")),
+             r["registro"], r["bit"] if r["bit"] is not None else ANALOGICO)
         if k in truth:
             truth_dup.setdefault(k, []).append(r)
         else:
             truth[k] = r
 
-    def abbina(registro, bit_out, nome=None):
+    def abbina(registro, bit_out, staz_out, nome=None):
         """Chiave di verita' corrispondente, o None.
 
-        Se il registro non esiste nel documento si prova ad abbinare per
+        Prima la chiave con stazione, poi le forme equivalenti, poi la
+        chiave senza stazione (documento che non la dichiara). Se il
+        registro non esiste nel documento si prova ad abbinare per
         nome. Serve a classificare le misure che l'output ha emesso contro
         righe del documento che non hanno indirizzo, come le CALCOLATA: senza
         questo passaggio sembrerebbero misure inventate dal nulla.
@@ -642,9 +693,21 @@ def confronta(righe_pdf, stazioni):
             candidati += [(registro, 0), (registro, ANALOGICO)]
         else:
             candidati += [(registro, ANALOGICO)]
-        for k in candidati:
-            if k in truth:
-                return k
+        if staz_out is not None:
+            for rg, bt in candidati:
+                if (staz_out, rg, bt) in truth:
+                    return (staz_out, rg, bt)
+        for rg, bt in candidati:
+            if (None, rg, bt) in truth:
+                return (None, rg, bt)
+        if staz_out is None:
+            # Output senza stazione: si abbina solo se non c'e' ambiguita',
+            # cioe' se una stazione sola del documento dichiara la chiave.
+            for rg, bt in candidati:
+                quali = sorted({s for (s, r2, b2) in truth
+                                if r2 == rg and b2 == bt and s is not None})
+                if len(quali) == 1:
+                    return (quali[0], rg, bt)
         if nome is not None and chiave_nome(nome) in truth_senza_reg:
             return ("senza-registro", chiave_nome(nome))
         return None
@@ -654,6 +717,7 @@ def confronta(righe_pdf, stazioni):
     per_output_senza_reg = []
     dettaglio_misure = []
     for st in stazioni:
+        staz_out = chiave_stazione(st.get("ip"))
         for m in st["misure"]:
             reg = m["registro"]
             if reg is None:
@@ -665,7 +729,7 @@ def confronta(righe_pdf, stazioni):
                 continue
             if m["bits"]:
                 for b in m["bits"]:
-                    k = (reg, b.get("BITNO"))
+                    k = (staz_out, reg, b.get("BITNO"))
                     coperte.setdefault(k, []).append({
                         "stazione": st["nome"], "ip": st["ip"],
                         "nome_misura": m["nome"],
@@ -675,7 +739,7 @@ def confronta(righe_pdf, stazioni):
                         "e_bit": True,
                     })
             else:
-                k = (reg, ANALOGICO)
+                k = (staz_out, reg, ANALOGICO)
                 coperte.setdefault(k, []).append({
                     "stazione": st["nome"], "ip": st["ip"],
                     "nome_misura": m["nome"],
@@ -686,10 +750,11 @@ def confronta(righe_pdf, stazioni):
     # abbinamento: ogni chiave di verita' puo' essere coperta una volta sola
     assegnate = {}
     senza_reg_assegnate = set()
-    for k in sorted(coperte.keys(), key=lambda x: (x[0], -1 if x[1] is None else x[1])):
+    for k in sorted(coperte.keys(),
+                    key=lambda x: (x[1], -1 if x[2] is None else x[2])):
         for h in coperte[k]:
             nome = h["bitname"] or h["nome_misura"]
-            tk = abbina(k[0], k[1], nome)
+            tk = abbina(k[1], k[2], k[0], nome)
             if tk is None:
                 continue
             if tk[0] == "senza-registro":
@@ -699,7 +764,7 @@ def confronta(righe_pdf, stazioni):
                         "esito": "riga_senza_indirizzo_trasformata_in_misura",
                         "pdf_descrizione": truth_senza_reg[tk[1]]["descrizione"],
                         "pdf_tipo": truth_senza_reg[tk[1]]["tipo"],
-                        "registro_emesso": k[0],
+                        "registro_emesso": k[1],
                         "stazione": h["stazione"], "ip": h["ip"],
                         "nome_misura": nome,
                     })
@@ -712,10 +777,13 @@ def confronta(righe_pdf, stazioni):
     for r in righe_pdf:
         if r["registro"] is None:
             continue
-        k = (r["registro"], r["bit"] if r["bit"] is not None else ANALOGICO)
+        staz = chiave_stazione(r.get("ip"))
+        k = (staz, r["registro"],
+             r["bit"] if r["bit"] is not None else ANALOGICO)
         voce = {
-            "registro": k[0],
-            "bit": None if k[1] == ANALOGICO else k[1],
+            "registro": k[1],
+            "bit": None if k[2] == ANALOGICO else k[2],
+            "stazione_pdf": staz,
             "pdf_descrizione": r["descrizione"],
             "pdf_stato": r["stato"],
             "pdf_unita": r["unita"],
@@ -725,6 +793,7 @@ def confronta(righe_pdf, stazioni):
         if h is None:
             if da_saltare(r["descrizione"]) or r.get("da_scartare"):
                 voce["esito"] = "saltata_da_regola_di_prompt"
+                voce["scarto"] = classe_scarto(r["descrizione"], r)
             elif riclassificata(r["descrizione"], assegnate, truth):
                 voce["esito"] = "riclassificata_dal_pytool"
             else:
@@ -755,14 +824,15 @@ def confronta(righe_pdf, stazioni):
 
     # l'output che non trova riscontro nel documento
     per_output = []
-    for k, hits in sorted(coperte.items(), key=lambda x: (x[0][0], -1 if x[0][1] is None else x[0][1])):
-        if any(abbina(k[0], k[1], h["bitname"] or h["nome_misura"]) is not None
+    for k, hits in sorted(coperte.items(),
+                          key=lambda x: (x[0][1], -1 if x[0][2] is None else x[0][2])):
+        if any(abbina(k[1], k[2], k[0], h["bitname"] or h["nome_misura"]) is not None
                for h in hits):
             continue
         for h in hits:
             per_output.append({
-                "registro": k[0],
-                "bit": None if k[1] == ANALOGICO else k[1],
+                "registro": k[1],
+                "bit": None if k[2] == ANALOGICO else k[2],
                 "esito": "non_esiste_nel_pdf",
                 "stazione": h["stazione"], "ip": h["ip"],
                 "nome_misura": h["nome_misura"], "bitname": h["bitname"],
@@ -869,9 +939,13 @@ def scrivi_report(caso, per_chiave, per_output, per_senza_reg, trasversali,
 
     conteggio = {}
     classi = {}
+    scarti = {}
     for v in per_chiave:
         conteggio[v["esito"]] = conteggio.get(v["esito"], 0) + 1
         classi[v["classe"]] = classi.get(v["classe"], 0) + 1
+        if v["esito"] == "saltata_da_regola_di_prompt":
+            s = v.get("scarto", "non_classificato")
+            scarti[s] = scarti.get(s, 0) + 1
 
     L = []
     A = L.append
@@ -938,6 +1012,17 @@ def scrivi_report(caso, per_chiave, per_output, per_senza_reg, trasversali,
       "qualcosa di deliberato e diverso. Solo la classe `difetto` richiede "
       "una decisione.")
     A("")
+    if scarti:
+        A("### Motivi di scarto")
+        A("")
+        A("Le righe scartate non sono un mucchio indistinto: ogni classe "
+          "segue una regola diversa del prompt.")
+        A("")
+        A("| Classe di scarto | Righe |")
+        A("|---|---|")
+        for k in sorted(scarti, key=lambda x: -scarti[x]):
+            A("| %s | %d |" % (SCARTI.get(k, k), scarti[k]))
+        A("")
 
     if per_senza_reg:
         A("## Righe del documento trasformate in misure senza indirizzo")
@@ -1091,13 +1176,14 @@ def scrivi_report(caso, per_chiave, per_output, per_senza_reg, trasversali,
     if difetti:
         A("## Scostamenti")
         A("")
-        A("| Registro | Bit | Esito | PDF | Output |")
-        A("|---|---|---|---|---|")
+        A("| Registro | Bit | Stazione PDF | Esito | PDF | Output |")
+        A("|---|---|---|---|---|---|")
         for v in difetti[:60]:
             out = v["output"] or {}
             testo_out = out.get("bitname") or out.get("nome_misura") or "—"
-            A("| %s | %s | `%s` | %s | %s |" % (
+            A("| %s | %s | %s | `%s` | %s | %s |" % (
                 v["registro"], v["bit"] if v["bit"] is not None else "—",
+                v.get("stazione_pdf") or "—",
                 v["esito"],
                 (v["pdf_descrizione"] or "")[:40].replace("|", "\\|"),
                 str(testo_out)[:40].replace("|", "\\|")))
@@ -1137,6 +1223,7 @@ def scrivi_report(caso, per_chiave, per_output, per_senza_reg, trasversali,
                 "quadratura": scarto,
                 "per_esito": conteggio,
                 "per_classe": classi,
+                "per_scarto": scarti,
             },
             "trasversali": trasversali,
             "per_riga_pdf": per_chiave,

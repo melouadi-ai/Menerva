@@ -16,14 +16,14 @@
   "fantasma_output": 0,
   "quadratura": 0,
   "per_esito": {
-   "ok": 42,
-   "nome_diverso": 3
+   "ok": 44,
+   "nome_diverso": 1
   },
   "per_classe": {
-   "ok": 42,
-   "difetto": 2,
+   "ok": 44,
    "correzione_di_refuso_del_documento": 1
-  }
+  },
+  "per_scarto": {}
  },
  "trasversali": {
   "registri_nel_pdf": 43,
@@ -66,7 +66,7 @@
   "copertura_per_pagina": {
    "1": {
     "totale": 45,
-    "coperte": 43,
+    "coperte": 45,
     "saltate": 0
    }
   },
@@ -98,6 +98,7 @@
   {
    "registro": 40001,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "CO",
    "pdf_stato": "",
    "pdf_unita": "mg/Nm3",
@@ -116,6 +117,7 @@
   {
    "registro": 40002,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "NO",
    "pdf_stato": "",
    "pdf_unita": "mg/Nm3",
@@ -134,6 +136,7 @@
   {
    "registro": 40003,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "O2 secco",
    "pdf_stato": "",
    "pdf_unita": "%",
@@ -152,6 +155,7 @@
   {
    "registro": 40004,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "O2 umido",
    "pdf_stato": "",
    "pdf_unita": "%",
@@ -170,6 +174,7 @@
   {
    "registro": 40005,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Pressione",
    "pdf_stato": "",
    "pdf_unita": "mBar",
@@ -188,6 +193,7 @@
   {
    "registro": 40006,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "TEMPERATURA FUMI",
    "pdf_stato": "",
    "pdf_unita": "°C",
@@ -206,6 +212,7 @@
   {
    "registro": 40007,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Pressione Diff.",
    "pdf_stato": "",
    "pdf_unita": "mBar",
@@ -224,6 +231,7 @@
   {
    "registro": 40008,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Polveri (GR)",
    "pdf_stato": "",
    "pdf_unita": "Unità",
@@ -242,42 +250,45 @@
   {
    "registro": 40001,
    "bit": null,
+   "stazione_pdf": "xxx.xxx.xxx.xxx",
    "pdf_descrizione": "Temperatura Fumi",
    "pdf_stato": "",
    "pdf_unita": "",
    "pagina": 1,
    "output": {
-    "stazione": "E1",
-    "ip": "192.168.6.20",
-    "nome_misura": "CO",
+    "stazione": "E1 1",
+    "ip": "xxx.xxx.xxx.xxx",
+    "nome_misura": "Temperatura Fumi",
     "bitname": null,
     "texton": null,
     "textoff": null
    },
-   "esito": "nome_diverso",
-   "classe": "difetto"
+   "esito": "ok",
+   "classe": "ok"
   },
   {
    "registro": 40005,
    "bit": null,
+   "stazione_pdf": "xxx.xxx.xxx.xxx",
    "pdf_descrizione": "CO",
    "pdf_stato": "",
    "pdf_unita": "",
    "pagina": 1,
    "output": {
-    "stazione": "E1",
-    "ip": "192.168.6.20",
-    "nome_misura": "Pressione",
+    "stazione": "E1 1",
+    "ip": "xxx.xxx.xxx.xxx",
+    "nome_misura": "CO",
     "bitname": null,
     "texton": null,
     "textoff": null
    },
-   "esito": "nome_diverso",
-   "classe": "difetto"
+   "esito": "ok",
+   "classe": "ok"
   },
   {
    "registro": 40009,
    "bit": null,
+   "stazione_pdf": "xxx.xxx.xxx.xxx",
    "pdf_descrizione": "NOX",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -296,6 +307,7 @@
   {
    "registro": 40013,
    "bit": null,
+   "stazione_pdf": "xxx.xxx.xxx.xxx",
    "pdf_descrizione": "Polveri",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -314,6 +326,7 @@
   {
    "registro": 40017,
    "bit": null,
+   "stazione_pdf": "xxx.xxx.xxx.xxx",
    "pdf_descrizione": "O2",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -332,6 +345,7 @@
   {
    "registro": 40021,
    "bit": null,
+   "stazione_pdf": "xxx.xxx.xxx.xxx",
    "pdf_descrizione": "PORTATA FUMI umida",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -350,6 +364,7 @@
   {
    "registro": 40242,
    "bit": null,
+   "stazione_pdf": "xxx.xxx.xxx.xxx",
    "pdf_descrizione": "Stato impianto",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -368,6 +383,7 @@
   {
    "registro": 33,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Allarme Sonda riscaldata",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -386,6 +402,7 @@
   {
    "registro": 34,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Allarme Linea riscaldata",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -404,6 +421,7 @@
   {
    "registro": 35,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Allarme gruppo frigo",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -422,6 +440,7 @@
   {
    "registro": 36,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Allarme presenza condensa",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -440,6 +459,7 @@
   {
    "registro": 37,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Anomalia flusso/pressione",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -458,6 +478,7 @@
   {
    "registro": 38,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Allarme temp. convertitore NO2-NO",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -476,6 +497,7 @@
   {
    "registro": 39,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Fault/Anomalia Analizzatore CO/NO/O2",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -494,6 +516,7 @@
   {
    "registro": 40,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Manutenzione richiesta Analizzatore CO/NO/O2",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -512,6 +535,7 @@
   {
    "registro": 41,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Manutenzione/Cal. Analizzatore CO/NO/O2",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -530,6 +554,7 @@
   {
    "registro": 42,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Fault Sonda Polveri",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -548,6 +573,7 @@
   {
    "registro": 43,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Manutenzione Sonda Polveri",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -566,6 +592,7 @@
   {
    "registro": 44,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Fault Ossigeno umido",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -584,6 +611,7 @@
   {
    "registro": 45,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Allarme 1 Ossiegno umido",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -602,6 +630,7 @@
   {
    "registro": 46,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Allarme 2 Ossigeno umido",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -620,6 +649,7 @@
   {
    "registro": 47,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Portata",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -638,6 +668,7 @@
   {
    "registro": 48,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Allarme temp. armadio",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -656,6 +687,7 @@
   {
    "registro": 49,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Manutenzione in corso",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -674,6 +706,7 @@
   {
    "registro": 50,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Allarme PSU",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -692,6 +725,7 @@
   {
    "registro": 51,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Allarme apertura quadro",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -710,6 +744,7 @@
   {
    "registro": 52,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Calibrazione di zero Manuale da selettore",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -728,6 +763,7 @@
   {
    "registro": 53,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Calibrazione di span Manuale da selettore",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -746,6 +782,7 @@
   {
    "registro": 54,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Stato di zero Analizzatore CO/NO/O2",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -764,6 +801,7 @@
   {
    "registro": 55,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Stato di span Analizzatore CO/NO/O2",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -782,6 +820,7 @@
   {
    "registro": 56,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "By-pass convertitore NO2-NO",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -800,6 +839,7 @@
   {
    "registro": 57,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Fault switch",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -818,6 +858,7 @@
   {
    "registro": 65,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Valvola EVC",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -836,6 +877,7 @@
   {
    "registro": 66,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Valvola EVZ",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -854,6 +896,7 @@
   {
    "registro": 67,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Valvola EVS",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -872,6 +915,7 @@
   {
    "registro": 68,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "By-pass convertitore NO2-NO remoto",
    "pdf_stato": "",
    "pdf_unita": "",
@@ -890,6 +934,7 @@
   {
    "registro": 69,
    "bit": null,
+   "stazione_pdf": "192.168.6.20",
    "pdf_descrizione": "Manutenzione Sistema",
    "pdf_stato": "",
    "pdf_unita": "",

@@ -25,6 +25,15 @@ Le cinque categorie sommano a 79 contro 79 righe estratte.
 
 Le scostamenti non sono tutti difetti. `correzione di refuso del documento` significa che il testo nel PDF e' sbagliato e l'output lo ha corretto; `scelta di progetto` significa che la pipeline ha fatto qualcosa di deliberato e diverso. Solo la classe `difetto` richiede una decisione.
 
+### Motivi di scarto
+
+Le righe scartate non sono un mucchio indistinto: ogni classe segue una regola diversa del prompt.
+
+| Classe di scarto | Righe |
+|---|---|
+| nome generico da regola V2 del prompt | 32 |
+| zona esclusa da regola V20 del prompt | 8 |
+
 ## Registri e indirizzi
 
 - Registri distinti nel PDF: **19**, nell'output: **19**
@@ -51,47 +60,47 @@ Su questo caso la spiegazione plausibile e' la modalita' di invio: **un solo chu
 
 ## Scostamenti
 
-| Registro | Bit | Esito | PDF | Output |
-|---|---|---|---|---|
-| 40001 | 1 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40001 | 2 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40001 | 3 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40001 | 4 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40001 | 5 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40001 | 6 | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
-| 40001 | 7 | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
-| 40001 | 13 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40002 | 0 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40002 | 1 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40002 | 2 | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
-| 40002 | 3 | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
-| 40002 | 4 | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
-| 40002 | 5 | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
-| 40002 | 6 | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
-| 40002 | 7 | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
-| 40002 | 10 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40002 | 11 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40002 | 12 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40002 | 13 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40002 | 14 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40002 | 15 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40003 | 0 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40003 | 1 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40003 | 2 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40003 | 3 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40003 | 4 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40003 | 5 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40003 | 6 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40003 | 7 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40003 | 11 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40003 | 12 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40004 | 4 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40004 | 5 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40004 | 6 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40004 | 7 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40004 | 10 | `nome_diverso` | RC Pressione Diferenziale | RC PRESSIONE DIFFERENZIALE |
-| 40004 | 12 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40004 | 13 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40004 | 14 | `saltata_da_regola_di_prompt` | Disponibile | — |
-| 40004 | 15 | `saltata_da_regola_di_prompt` | Disponibile | — |
+| Registro | Bit | Stazione PDF | Esito | PDF | Output |
+|---|---|---|---|---|---|
+| 40001 | 1 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40001 | 2 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40001 | 3 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40001 | 4 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40001 | 5 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40001 | 6 | — | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
+| 40001 | 7 | — | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
+| 40001 | 13 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40002 | 0 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40002 | 1 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40002 | 2 | — | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
+| 40002 | 3 | — | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
+| 40002 | 4 | — | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
+| 40002 | 5 | — | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
+| 40002 | 6 | — | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
+| 40002 | 7 | — | `saltata_da_regola_di_prompt` | Non Utilizzato | — |
+| 40002 | 10 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40002 | 11 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40002 | 12 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40002 | 13 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40002 | 14 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40002 | 15 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40003 | 0 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40003 | 1 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40003 | 2 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40003 | 3 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40003 | 4 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40003 | 5 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40003 | 6 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40003 | 7 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40003 | 11 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40003 | 12 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40004 | 4 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40004 | 5 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40004 | 6 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40004 | 7 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40004 | 10 | — | `nome_diverso` | RC Pressione Diferenziale | RC PRESSIONE DIFFERENZIALE |
+| 40004 | 12 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40004 | 13 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40004 | 14 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
+| 40004 | 15 | — | `saltata_da_regola_di_prompt` | Disponibile | — |
 
