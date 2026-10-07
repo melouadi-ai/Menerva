@@ -171,3 +171,78 @@ def test_pagina_compilata_dal_contatore_motore_e_stati_dal_ramo_stati():
     assert var["pagina"] == 7
     assert var["state_on"] == "Attivo"
     assert var["state_off"] == "OFF"
+
+
+def _triple_misure():
+    return {"stations": [_station("192.168.6.20", [
+        _var("CO", 1, reg=40001, data_type="ANALOGICO",
+             units="mg/Nm3", eng=(0, 200)),
+        _var("Allarme sonda", 2, reg=33, bit=None,
+             kind="DIGITALE_SINGOLO", data_type="INPUT DIGITALE"),
+    ], name="E1")]}
+
+
+def _triple_nomi():
+    return {"rows": [
+        {"description": "CO", "modbus_register": 40001, "bit": None,
+         "riga": 1},
+        {"description": "Allarme sonda", "modbus_register": 33, "bit": 0,
+         "riga": 2},
+    ]}
+
+
+def _triple_stati(n=2):
+    return {"rows": [
+        {"state_on": None, "state_off": None, "riga": i} for i in
+        range(1, n + 1)
+    ]}
+
+
+def test_tripla_grezza_motore_in_fence_raggruppata_in_una_pagina():
+    import json
+    raw = ("[```json\n" + json.dumps(_triple_misure())
+           + "\n```\n```json\n" + json.dumps(_triple_nomi())
+           + "\n```\n```json\n" + json.dumps(_triple_stati())
+           + "\n```]")
+    out = consolidate(raw)
+    assert out["counters"]["pagine"] == 1
+    by_desc = {v["description"]: v
+               for s in out["stations"] for v in s["variables"]}
+    assert by_desc["Allarme sonda"]["bit"] == 0
+    assert by_desc["CO"]["units"] == "mg/Nm3"
+
+
+def test_mismatch_conteggi_rami_sempre_avvisato_su_tripla():
+    import json
+    raw = ("```json\n" + json.dumps(_triple_misure()) + "\n```"
+           + "```json\n" + json.dumps(_triple_stati(n=5)) + "```")
+    out = consolidate(raw)
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "riga_mismatch" in rules
+
+
+def test_righe_orfane_senza_misure_avvisate_mai_silenziose():
+    out = consolidate([_triple_nomi()])
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "righe_senza_misure" in rules
+    assert out["stations"] == []
+
+
+def test_buste_con_page_no_e_triple_grezze_convivono():
+    import json
+    envelope = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("X", 1, reg=40001),
+    ])]}
+    raw = (json.dumps(envelope) + "```json\n"
+           + json.dumps(_triple_misure()) + "```")
+    out = consolidate(raw)
+    assert out["counters"]["pagine"] == 2
+    descs = [v["description"] for s in out["stations"]
+             for v in s["variables"]]
+    assert "X" in descs and "CO" in descs
+
+
+def test_input_spazzatura_resta_errore_mai_output_vuoto():
+    import pytest
+    with pytest.raises(ValueError):
+        consolidate("ciao mondo ]]]")

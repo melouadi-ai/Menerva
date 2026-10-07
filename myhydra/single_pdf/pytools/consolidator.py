@@ -1,7 +1,10 @@
 # Consolidatore Single PDF - copia documentata (nodo CONSOLIDADATORE).
 # CONFIG CANVAS: edge 5 = array dei chunk per pagina dal motore iterativo.
 # Ricontrollare N dopo ogni ricablaggio (Task 8) e togliere match-condition spurie.
-# Un chunk per pagina: {page_no, stations[] v14} + rami {bitnames, bitstates} con riga.
+# Accetta anche l'output grezzo del motore: i 3 blocchi VLM concatenati
+# (misure {stations}, nomi {rows}, stati {rows}), con fence ```json e/o
+# array esterno. I blocchi stations aprono una pagina, i blocchi rows si
+# agganciano alla pagina aperta (nomi vs stati dalla forma delle righe).
 # Unisce i 3 rami per pagina su riga, fonde le pagine in ordine di page_no.
 # Precedenza scritta: nomi-bit vince bit/registro, misure il resto, stati gli stati.
 # Ogni disaccordo e ogni scarto V2/V20/V21 e' un warning, mai silenzio.
@@ -9,13 +12,125 @@
 import json
 raw = r'''{edge}[5]'''
 try:
-    pages = raw
-    if isinstance(pages, str):
-        pages = json.loads(pages)
-        while isinstance(pages, str):
-            pages = json.loads(pages)
-    if isinstance(pages, dict):
-        pages = [pages]
+    blocks = []
+    queue = [raw]
+    while len(queue) > 0:
+        item = queue.pop(0)
+        if isinstance(item, str):
+            ss = item.strip()
+            dec = json.JSONDecoder()
+            pos = 0
+            n = len(ss)
+            while pos < n:
+                while pos < n and ss[pos] in " \n\r\t,;":
+                    pos = pos + 1
+                if pos >= n:
+                    break
+                if ss[pos] != "{" and ss[pos] != "[":
+                    n1 = ss.find("{", pos)
+                    n2 = ss.find("[", pos)
+                    cand = -1
+                    if n1 >= 0 and n2 >= 0:
+                        if n1 < n2:
+                            cand = n1
+                        else:
+                            cand = n2
+                    elif n1 >= 0:
+                        cand = n1
+                    elif n2 >= 0:
+                        cand = n2
+                    if cand < 0:
+                        break
+                    pos = cand
+                    continue
+                try:
+                    obj, end = dec.raw_decode(ss, pos)
+                    queue.append(obj)
+                    pos = end
+                except Exception:
+                    n1 = ss.find("{", pos + 1)
+                    n2 = ss.find("[", pos + 1)
+                    cand = -1
+                    if n1 >= 0 and n2 >= 0:
+                        if n1 < n2:
+                            cand = n1
+                        else:
+                            cand = n2
+                    elif n1 >= 0:
+                        cand = n1
+                    elif n2 >= 0:
+                        cand = n2
+                    if cand < 0:
+                        break
+                    pos = cand
+        elif isinstance(item, list):
+            queue = list(item) + queue
+        elif isinstance(item, dict):
+            blocks.append(item)
+        elif item is not None:
+            blocks.append(item)
+    if len(blocks) == 0 and isinstance(raw, str) and raw.strip() != "":
+        raise ValueError("consolidate: input non interpretabile come JSON")
+    pages = []
+    current = None
+    bi = 0
+    while bi < len(blocks):
+        block = blocks[bi]
+        bi = bi + 1
+        if not isinstance(block, dict):
+            raise ValueError("blocco non valido in posizione " + str(bi))
+        is_envelope = False
+        if isinstance(block.get("stations"), list):
+            if type(block.get("page_no")) is int:
+                is_envelope = True
+            elif block.get("bitnames") is not None:
+                is_envelope = True
+            elif block.get("bitstates") is not None:
+                is_envelope = True
+        if type(block.get("page_no")) is int and not isinstance(block.get("stations"), list) and block.get("rows") is None:
+            is_envelope = True
+        if is_envelope:
+            pages.append(block)
+            current = None
+            continue
+        if isinstance(block.get("stations"), list):
+            current = {"stations": block["stations"], "bitnames": None, "bitstates": None}
+            pages.append(current)
+            continue
+        rows = block.get("rows")
+        if not isinstance(rows, list):
+            raise ValueError("blocco senza stations ne rows in posizione " + str(bi))
+        if current is None:
+            current = {"stations": [], "bitnames": None, "bitstates": None, "orphan_rows": 0}
+            pages.append(current)
+        nr = 0
+        ri0 = 0
+        while ri0 < len(rows):
+            if isinstance(rows[ri0], dict):
+                nr = nr + 1
+            ri0 = ri0 + 1
+        if "orphan_rows" in current:
+            current["orphan_rows"] = current["orphan_rows"] + nr
+        is_names = False
+        is_states = False
+        ri = 0
+        while ri < len(rows):
+            rk = rows[ri]
+            ri = ri + 1
+            if not isinstance(rk, dict):
+                continue
+            if "description" in rk or "modbus_register" in rk or "bit" in rk:
+                is_names = True
+            if "state_on" in rk or "state_off" in rk:
+                is_states = True
+        if is_names and not is_states:
+            current["bitnames"] = {"rows": rows}
+        elif is_states and not is_names:
+            current["bitstates"] = {"rows": rows}
+        elif is_names and is_states:
+            current["bitnames"] = {"rows": rows}
+        else:
+            raise ValueError("blocco rows non riconoscibile in posizione " + str(bi))
     if not isinstance(pages, list):
         raise ValueError("Il consolidatore attende una lista di pagine.")
     warnings = []
@@ -31,6 +146,14 @@ try:
     counters["riga_mismatch"] = 0
     counters["buchi_sequenza"] = 0
     counters["duplicati"] = 0
+    # Righe ramo senza pagina misure: mai silenziose.
+    oi = 0
+    while oi < len(pages):
+        if isinstance(pages[oi], dict) and pages[oi].pop("orphan_rows", 0) > 0:
+            warnings.append({"rule": "righe_senza_misure", "page_no": None,
+                             "riga": None,
+                             "detail": "righe ramo senza pagina misure: in attesa di join"})
+        oi = oi + 1
     # V2: scarti per match esatto (case-insensitive dopo strip).
     v2_spare = ("disponibile", "disponibile/", "disponible", "riserva",
                 "spare", "reserve", "non utilizzato", "non utilizzata",

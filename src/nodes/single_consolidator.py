@@ -14,6 +14,14 @@ Input: list of page chunks, one per PDF page, in any order. Each page::
      "bitstates": {"rows": [{"state_on", "state_off",
                              "riga"}]}}  # optional branch 3
 
+Raw engine output is also accepted: the 3 VLM branch blocks concatenated
+(measures ``{"stations": [...]}``, names ``{"rows": [...]}``, states
+``{"rows": [...]}``), optionally wrapped in ```json fences or a JSON
+array. Branch blocks are grouped into pages in arrival order: every
+``stations`` block opens a new page, ``rows`` blocks attach to the open
+page (classified names vs states by row keys). Pages keep arrival order
+(``page_no`` None) unless envelopes carry one.
+
 The ``bitnames``/``bitstates`` branches carry the same ``riga`` numbering
 as the measures rows so the page assembler can join on ``riga``.
 
@@ -255,23 +263,171 @@ def _merge_meta(old, new):
     return old
 
 
+def _split_blocks(raw):
+    """Split raw engine output into a flat list of blocks.
+
+    Accepts fence-wrapped Markdown, concatenated JSON objects, a JSON
+    array, or an already-parsed structure. Strings are decoded, lists
+    flattened one level, anything else kept for the grouper to reject
+    loudly (never silent).
+    """
+    import re as _re
+    import json as _json
+
+    def _decode_text(text):
+        cleaned = _re.sub(r"^```[a-zA-Z]*\s*", "", text.strip())
+        cleaned = _re.sub(r"```", "", cleaned).strip()
+        if not cleaned:
+            return []
+        decoder = _json.JSONDecoder()
+        found = []
+        pos = 0
+        end = len(cleaned)
+        while pos < end:
+            while pos < end and cleaned[pos] in " \n\r\t,;":
+                pos += 1
+            if pos >= end:
+                break
+            if cleaned[pos] not in "{[":
+                nxt_open = cleaned.find("{", pos)
+                nxt_arr = cleaned.find("[", pos)
+                cands = [n for n in (nxt_open, nxt_arr) if n >= 0]
+                if not cands:
+                    break
+                pos = min(cands)
+                continue
+            try:
+                obj, stop = decoder.raw_decode(cleaned, pos)
+                found.append(obj)
+                pos = stop
+            except Exception:
+                nxt_open = cleaned.find("{", pos + 1)
+                nxt_arr = cleaned.find("[", pos + 1)
+                cands = [n for n in (nxt_open, nxt_arr) if n >= 0]
+                if not cands:
+                    break
+                pos = min(cands)
+        return found
+
+    blocks = []
+    queue = [raw]
+    while queue:
+        item = queue.pop(0)
+        if isinstance(item, str):
+            for obj in _decode_text(item):
+                queue.append(obj)
+        elif isinstance(item, list):
+            queue = list(item) + queue
+        elif isinstance(item, dict):
+            blocks.append(item)
+        elif item is not None:
+            blocks.append(item)
+    return blocks
+
+
+def _is_names_rows(rows):
+    """True when rows look like the bit-names branch output."""
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        keys = set(row)
+        if keys & {"description", "modbus_register", "bit"}:
+            return True
+        if keys & {"state_on", "state_off"}:
+            return False
+    return False
+
+
+def _group_branches(blocks, warnings, counters):
+    """Group raw branch blocks into page envelopes in arrival order.
+
+    A block with a ``stations`` list opens a new page (full envelopes
+    with ``page_no``/``bitnames``/``bitstates`` pass through untouched).
+    A ``rows`` block attaches to the open page as names or states by
+    row shape. Orphan rows (no open page) open an empty-stations page
+    with a warning so nothing is lost silently.
+    """
+    pages = []
+    current = None
+
+    def _open():
+        page = {"stations": [], "bitnames": None, "bitstates": None,
+                "_raw_group": True}
+        pages.append(page)
+        return page
+
+    for block in blocks:
+        if not isinstance(block, dict):
+            _warn(warnings, counters, "blocco_non_valido",
+                  "blocco ignorato: %r" % (block,),
+                  counter="blocchi_non_validi")
+            continue
+        if isinstance(block.get("stations"), list) and (
+                _is_int(block.get("page_no"))
+                or block.get("bitnames") is not None
+                or block.get("bitstates") is not None):
+            pages.append(block)
+            current = None
+            continue
+        if _is_int(block.get("page_no")):
+            pages.append(block)
+            current = None
+            continue
+        if isinstance(block.get("stations"), list):
+            current = _open()
+            current["stations"] = block["stations"]
+            for key in ("page_no",):
+                if _is_int(block.get(key)):
+                    current[key] = block[key]
+            continue
+        rows = block.get("rows")
+        if not isinstance(rows, list):
+            _warn(warnings, counters, "blocco_non_valido",
+                  "blocco senza stations ne rows: chiavi %s" % sorted(
+                      [k for k in block]),
+                  counter="blocchi_non_validi")
+            continue
+        if current is None:
+            current = _open()
+            _warn(warnings, counters, "righe_senza_misure",
+                  "%d righe ramo senza pagina misure: in attesa di join"
+                  % len([r for r in rows if isinstance(r, dict)]),
+                  counter="righe_senza_misure")
+        if _is_names_rows(rows):
+            current["bitnames"] = {"rows": rows}
+        else:
+            current["bitstates"] = {"rows": rows}
+    cleaned = []
+    for page in pages:
+        if page.get("_raw_group"):
+            page = {k: v for k, v in page.items() if k != "_raw_group"}
+            if page.get("bitnames") is None:
+                page.pop("bitnames", None)
+            if page.get("bitstates") is None:
+                page.pop("bitstates", None)
+        cleaned.append(page)
+    return cleaned
+
+
 def consolidate(pages):
     """Merge page chunks into one intermediate output (see module doc)."""
-    if isinstance(pages, str):
-        pages = json.loads(pages)
-    if not isinstance(pages, list):
+    if isinstance(pages, dict):
+        pages = [pages]
+    if isinstance(pages, (str, list)):
+        pass
+    else:
         raise ValueError("consolidate attende una lista di pagine")
     warnings = []
     counters = {"pagine": 0, "variabili": 0, "scarti_V2": 0,
                 "scarti_V20": 0, "scarti_V21": 0, "scale_collegate": 0,
                 "registri_applicati": 0, "packed_fold": 0,
                 "riga_mismatch": 0, "buchi_sequenza": 0, "duplicati": 0}
+    blocks = _split_blocks(pages)
+    if not blocks and isinstance(pages, str) and pages.strip():
+        raise ValueError("consolidate: input non interpretabile come JSON")
+    pages = _group_branches(blocks, warnings, counters)
     normed = []
     for pos, page in enumerate(pages):
-        if isinstance(page, str):
-            page = json.loads(page)
-        if not isinstance(page, dict):
-            raise ValueError("pagina %d non valida" % pos)
         if (not _is_int(page.get("page_no"))
                 and not isinstance(page.get("stations"), list)):
             raise ValueError("pagina %d senza page_no ne stations" % pos)
