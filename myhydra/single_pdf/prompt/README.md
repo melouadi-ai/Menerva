@@ -4,17 +4,30 @@
 
 | File | Versione | Nodo | Stato |
 |---|---|---|---|
-| [`vlm_extraction_v13.md`](vlm_extraction_v13.md) | `v13` | LV2-02 — parsing JSON principale | In uso. Copia byte-identica di `src/prompts/vlm_extraction_v13.md`. |
+| [`vlm_extraction_v13.md`](vlm_extraction_v13.md) | `v13` | LV2-02 — parsing JSON principale | Storico. Copia byte-identica di `src/prompts/vlm_extraction_v13.md`. |
+| [`vlm_measures_v14.md`](vlm_measures_v14.md) | `v14` | LV2 misure+dati tecnici (ramo 1 di 3) | In uso. Copia byte-identica di `src/prompts/vlm_measures_v14.md`. |
+| [`vlm_bitnames_v14.md`](vlm_bitnames_v14.md) | `v14` | LV2 nomi-bit (ramo 2 di 3) | In uso. Copia byte-identica di `src/prompts/vlm_bitnames_v14.md`. |
+| [`vlm_bitstates_v14.md`](vlm_bitstates_v14.md) | `v14` | LV2 stati (ramo 3 di 3) | In uso. Copia byte-identica di `src/prompts/vlm_bitstates_v14.md`. |
 
 ## Sorgente e sincronizzazione
 
-Il prompt è mantenuto in `src/prompts/` e copiato qui. La copia è byte-identica; verificarla con:
+I prompt sono mantenuti in `src/prompts/` e copiati qui. Le copie sono byte-identiche; verificarle con:
 
 ```sh
 sha256sum ../../../src/prompts/vlm_extraction_v13.md vlm_extraction_v13.md
+sha256sum ../../../src/prompts/vlm_measures_v14.md vlm_measures_v14.md
+sha256sum ../../../src/prompts/vlm_bitnames_v14.md vlm_bitnames_v14.md
+sha256sum ../../../src/prompts/vlm_bitstates_v14.md vlm_bitstates_v14.md
 ```
 
-Hash atteso: `7fe80cd5ea7bcfcfeb751647dbfc7b1ad96f057efb653cf87f9c29259e851fb3`
+Hash attesi:
+
+| File | sha256 |
+|---|---|
+| `vlm_extraction_v13.md` | `7fe80cd5ea7bcfcfeb751647dbfc7b1ad96f057efb653cf87f9c29259e851fb3` |
+| `vlm_measures_v14.md` | `783982679817d94e0e774496a536d3325d7009de1f59435eb97a1797b75dc16d` |
+| `vlm_bitnames_v14.md` | `b134800c1d7d1ec7146ecb5236549ff87813a32daff9323d651088867ea7529a` |
+| `vlm_bitstates_v14.md` | `fb96b76f0f4c86aa05e89d6e6ef3182a8069f8a28499fc2308c7b882b8ccf42b` |
 
 **Se i due hash divergono, la fonte autorevole è `src/prompts/`.** Quando il prompt cambia lì, va ricopiato qui e questo file aggiornato con il nuovo hash.
 
@@ -32,6 +45,19 @@ Hash atteso: `7fe80cd5ea7bcfcfeb751647dbfc7b1ad96f057efb653cf87f9c29259e851fb3`
 | **V26, fedeltà del bit** | — | — | **novità** |
 
 Le due novità di v13 corrispondono alle due novità di `json_creator.py` v4.2: il formato analogico dedotto da `data_type` e il flag `CAMPO_SCALA_AS_MEASURES`. La coerenza è voluta, non casuale: il prompt raccoglie il dato, il pytool lo trasforma in modo deterministico.
+
+## v14 — split in 3 rami (redesign Single, 2026-10-07)
+
+`vlm_extraction_v13.md` resta storico e immutato. I 3 rami v14 ne sono lo
+split senza nuove regole di scarto (solo V2/V20/V21 in tutti i rami):
+
+- ramo misure: tutto v13 tranne gli stati (contratto di ramo: gli stati li
+  emette il ramo stati, join su `riga`); aggiunge `zona`/`tag`/`pagina`/`riga`
+  e il self-check BIT "point-to-cell". V3 senza `"Unità"` fra gli esempi
+  (era un esempio che insegnava l'errore su `Polveri (GR)`).
+- ramo nomi-bit: solo registro/bit/descrizione + `riga`; V23/V26 fedeltà bit.
+- ramo stati: solo `state_on`/`state_off` + `riga`; V7/V8 copie esatte,
+  stati da keyword restano compito dichiarato del pytool.
 
 ## Disallineamento con la documentazione
 
