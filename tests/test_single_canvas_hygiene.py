@@ -98,12 +98,32 @@ def run_creator_canvas(raw_value):
     assert patched != source
     ns = {"__INJECTED_RAW__": raw_value}
     old_stdout = sys.stdout
-    sys.stdout = io.StringIO()
+    sys.stdout = buf = io.StringIO()
     try:
         exec(compile(patched, str(CREATOR_CANVAS), "exec"), ns)
     finally:
         sys.stdout = old_stdout
+    printed = buf.getvalue().strip()
+    if printed:
+        return json.loads(printed)
     return json.loads(ns.get("output", "null"))
+
+
+class _Unserializable:
+    def __str__(self):
+        raise RuntimeError("boom-canvas")
+
+    __repr__ = __str__
+
+
+def test_creator_error_json_mai_blank():
+    out = run_creator_canvas(_Unserializable())
+    assert out["status"] == "ERROR"
+    assert out["error"] != ""
+    ok = run_creator_canvas([{"stations": [_station(
+        "A", "10.0.0.1", [_analogica("M", 40001)])]}])
+    assert isinstance(ok, list)
+    assert "status" not in ok[0]
 
 
 def _analogica(desc, reg):
@@ -159,9 +179,9 @@ def test_v15_hashes_nel_readme_pytools():
     readme = (STORE_PYTOOLS / "README.md").read_text(encoding="utf-8")
     assert "json_creator_v15.py" in readme
     assert "json_creator_v15_canvas.py" in readme
-    assert "af0628f9eb65a91fa7019ea38284ebb55ef7c0fe393a2f903a2484d492b2c02d" \
+    assert "4262d9f1c4a911bdf67b7752bf716342316949f430572eb8e3b67a154cf99f03" \
         in readme
-    assert "0523dab5010fcc6eaa72a5d4ed116d4212e1145d14dd70d5c6b0ddc316187593" \
+    assert "c990a12bf500ccfe9f93ba4a0dd7b52daca285a63dabdaf07a39dc0db84696b2" \
         in readme
 
 

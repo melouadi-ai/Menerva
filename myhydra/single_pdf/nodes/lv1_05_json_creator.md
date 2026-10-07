@@ -3,8 +3,8 @@
 - **Tipo/nome:** Pytool — trasformazione dell'intermedio unificato in formato ADAS.
 - **Input:** `{"stations": [...]}` dal nodo LV1-04 CONSOLIDATORE, letto da `raw = r'''{edge}[4]'''`.
 - **CONFIG:** il `4` è locale al canvas — **ricontrollare N a ogni rewiring** (l'inserimento del consolidatore sposta gli indici a valle; ispezionare anche le match-condition dell'edge).
-- **Script:** [`../platforms/lv1/scripts/updated_pending_validation/json_creator_v15_canvas.py`](../platforms/lv1/scripts/updated_pending_validation/json_creator_v15_canvas.py) (copia canvas, 26.857 byte; documentata byte-identica a `src/nodes/json_creator.py` in [`../pytools/json_creator_v15.py`](../pytools/json_creator_v15.py)).
-- **Output:** lista di stazioni in formato ADAS, con `measures` e `bitinfo`. Emissione via `print(output)` (meccanismo legacy, verificato sul canvas dal Double, nodo 12).
+- **Script:** [`../platforms/lv1/scripts/updated_pending_validation/json_creator_v15_canvas.py`](../platforms/lv1/scripts/updated_pending_validation/json_creator_v15_canvas.py) (copia canvas, 23.324 byte, indentazione compatta, stesso AST; documentata byte-identica a `src/nodes/json_creator.py` in [`../pytools/json_creator_v15.py`](../pytools/json_creator_v15.py)).
+- **Output:** lista di stazioni in formato ADAS, con `measures` e `bitinfo`. Emissione via `print(output)` (meccanismo legacy, verificato sul canvas dal Double, nodo 12); `try/except` globale: in errore stampa `{"status": "ERROR", ...}`, mai blank.
 - **Posizione nella catena:** ultimo nodo, dopo il consolidatore. Con l'Opzione B di ADR-001 il merge vive nel consolidatore: qui solo trasformazione deterministica.
 
 ## Cosa fa, in ordine (v15)
@@ -21,9 +21,12 @@
 - **Copertura A1**: più stazioni con lo stesso `page_no` e volume sopra soglia 100 → `COPERTURA SOSPETTA` (SIEMENS_2 sì, SMA_1 no).
 - **Self-check linkage** bitinfo→misure; **avviso zeri iniziali** (`00033`); misure a registro 0 scartate (grandezze `CALCOLATA`).
 
+## Robustezza runtime (fix Task 8 round 1/5)
+
+- **`try/except` globale**: qualsiasi eccezione emette `{"status": "ERROR", "error": ...}` via `print(output)` (stesso modello del consolidatore, adattato al contratto `print`). Percorso normale invariato.
+
 ## Limiti noti (ereditati, non risolti qui)
 
-- **Nessun `try/except` globale**: un'eccezione = output blank senza ERROR JSON (il consolidatore a monte invece lo garantisce). In diagnosi, il blank del creator si riconosce così: edge e indice ok, ma nessun output.
 - **`_meta` e `_warnings` duplicati** in ogni stazione (scelta pragmatica per non rompere l'import ADAS).
 - **Il Double ha una copia separata** con `{edge}[13]` (`../../double_pdf/platforms/lv1/scripts/in_use/`): non mescolarle, l'indice è diverso perché diverso è il filo.
 

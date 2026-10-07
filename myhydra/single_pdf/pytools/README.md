@@ -19,11 +19,12 @@ Lo script è mantenuto in `src/nodes/json_creator.py` (v15) e copiato qui. La co
 sha256sum ../../../src/nodes/json_creator.py json_creator_v15.py
 ```
 
-Hash atteso: `af0628f9eb65a91fa7019ea38284ebb55ef7c0fe393a2f903a2484d492b2c02d`
+Hash atteso: `4262d9f1c4a911bdf67b7752bf716342316949f430572eb8e3b67a154cf99f03`
 
-La copia canvas senza commenti (`json_creator_v15_canvas.py`) vive in
+La copia canvas senza commenti (`json_creator_v15_canvas.py`, indentazione
+compatta a 1 spazio/livello, stesso AST della documentata) vive in
 `../platforms/lv1/scripts/updated_pending_validation/`; hash atteso:
-`0523dab5010fcc6eaa72a5d4ed116d4212e1145d14dd70d5c6b0ddc316187593`.
+`c990a12bf500ccfe9f93ba4a0dd7b52daca285a63dabdaf07a39dc0db84696b2`.
 
 **Se gli hash divergono, la fonte autorevole è `src/nodes/`.**
 
@@ -93,7 +94,7 @@ Le variabili con prefisso `P` nella change-log dell'intestazione sono le correzi
 
 ## Limiti noti
 
-- **Nessun `try/except` globale.** Il legacy restituiva un JSON di errore; qui le eccezioni si propagano e un errore non gestito significa nessun output.
+- **`try/except` globale di runtime** (fix Task 8 round 1/5): le eccezioni emettono `{"status": "ERROR", ...}` via `print(output)`, mai blank (modello: consolidatore v14).
 - **`NAME` non viene troncato.** La colonna è `nvarchar(50)`; il legacy tagliava a 49 caratteri. Nomi più lunghi verranno rifiutati dal database.
 - **`_meta` e `_warnings` sono iniettati in ogni stazione**, quindi duplicati N volte nell'output. È una scelta pragmatica per non aggiungere un involucro che romperebbe l'import in ADAS, ma appesantisce il payload.
 - **`_meta.raw_sample` e `raw_head` contengono estratti grezzi dell'ingresso**, che possono includere indirizzi IP e nomi di stazione dei clienti. `docs/architettura/analisi_progetto.md` avverte che i documenti caricati contengono anche credenziali operative: se l'output deve girare su dati reali, questi campi vanno filtrati.
