@@ -8,20 +8,20 @@ Ogni voce ha la sua evidenza e il comando per ricontrollarla. Ordinato per impat
 
 ## Dove siamo
 
-Il Single PDF ha il prompt v13 e il pytool v4.3. La pipeline funziona ed è stata verificata contro i PDF reali, ma restano tre difetti aperti e un disallineamento fra le due copie del pytool.
+Il redesign (v14/v15) è completato: prompt v14, consolidatore v14, JSON CREATOR v15. La pipeline pre-redesign (prompt v13, pytool v4.3) resta verificata contro i PDF reali come baseline.
 
 Stato verificato oggi:
 
 ```sh
 cd /home/next/Desktop/Menerva_MAS
 .venv/bin/python tests/test_casi_reali.py
-# RESULT: 13 passed, 2 failed
+# RESULT: 12 passed, 0 failed
 
 .venv/bin/python tests/test_multipage.py
 # RESULT: 33 passed, 0 failed
 ```
 
-I due fallimenti sono lo stesso difetto, trattato in A1.
+I due fallimenti erano lo stesso difetto (A1), risolto dal redesign.
 
 ---
 
@@ -139,6 +139,8 @@ Quindi la perdita è nell'estrazione VLM, e `chunks_parsed: 1` su 29 pagine sugg
 
 **Da fare**: guardare come il motore raggruppa le richieste. Non serve per A1, che è comunque da correggere, ma serve per chiudere la domanda.
 
+**Aggiornamento 7/10 (redesign):** il motore iterativo invia una richiesta per pagina (ADR-001 Opzione B), quindi l'accorpamento nel nodo è strutturalmente escluso. La perdita di copertura resta da attribuire (VLM o pipeline): verificare con la nuova pipeline.
+
 ---
 
 ## Blocco C — verifiche non riproducibili
@@ -150,6 +152,8 @@ Il confronto mostra 1116 righe e 236 presenti nell'output, con copertura discont
 L'estrattore funziona (28 pagine su 29, registri e nomi coerenti) ma il confronto non distingue perdita della pipeline da perdita dell'estrattore.
 
 **Da fare**: non tentare di correggerlo senza sapere come è stato generato l'output. Se l'input era un PDF parziale, il confronto va rifatto con l'input completo; se era completo, le 726 righe assenti sono un problema reale e la copertura discontinua ne è il sintomo.
+
+**Aggiornamento 7/10 (redesign):** la validazione va rifatta con la nuova pipeline (motore iterativo + consolidatore + creator v15). Il confronto col legacy resta il riferimento.
 
 ### C2. La regola V2 non copre i nomi prefissati
 

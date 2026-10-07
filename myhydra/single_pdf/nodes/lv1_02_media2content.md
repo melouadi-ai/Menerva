@@ -8,4 +8,5 @@
 - **Output atteso:** una sequenza di gruppi, ciascuno contenente una chiave media.
 - **Stato:** configurazione nota, ereditata dal legacy. Non verificata sulla piattaforma corrente.
 - **Da confermare:** numero di chiavi per gruppo e comportamento con PDF a una sola pagina.
+- **Checklist edge-settings al rewiring:** `nkeysgrp: 1` (un gruppo = una pagina = un giro del motore); `{edge.media}[1]` ricontrollato; ispezionare le impostazioni di ogni edge e rimuovere match-condition spurie (checklist completa in [`../platforms/README.md`](../platforms/README.md)).
 - **Riferimenti:** [`lv1_03_single_pdf_engine.md`](lv1_03_single_pdf_engine.md) per l'uso dei gruppi; [Double PDF LV1-02](../../double_pdf/nodes/lv1_02_media2content.md) per il nodo equivalente con output a finestre.

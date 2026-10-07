@@ -4,23 +4,28 @@
 
 | File | Versione | Nodo | Stato |
 |---|---|---|---|
-| [`json_creator_v4_5.py`](json_creator_v4_5.py) | `v4.5` | LV1-04 | In uso. |
+| [`json_creator_v15.py`](json_creator_v15.py) | `v15` | LV1-05 | In uso (redesign). |
+| [`json_creator_v4_5.py`](json_creator_v4_5.py) | `v4.5` | — | Storico, superato. |
 | [`json_creator_v4_4.py`](json_creator_v4_4.py) | `v4.4` | — | Storico, superato. |
 | [`json_creator_v4_2.py`](json_creator_v4_2.py) | `v4.2` | — | Storico, superato. |
-| [`consolidator.py`](consolidator.py) | `v14` | CONSOLIDADATORE (nuovo) | Documentato, da incollare dopo rewiring Task 8. |
-| [`consolidator_canvas.py`](consolidator_canvas.py) | `v14` | CONSOLIDADATORE (nuovo) | Copia canvas senza commenti, stesso AST. |
+| [`consolidator.py`](consolidator.py) | `v14` | CONSOLIDADATORE (LV1-04) | Documentato, da incollare dopo rewiring Task 8. |
+| [`consolidator_canvas.py`](consolidator_canvas.py) | `v14` | CONSOLIDATORE (LV1-04) | Copia canvas senza commenti, stesso AST. |
 
 ## Sorgente e sincronizzazione
 
-Lo script è mantenuto in `src/nodes/json_creator.py` e copiato qui. La copia è byte-identica; verificarla con:
+Lo script è mantenuto in `src/nodes/json_creator.py` (v15) e copiato qui. La copia è byte-identica; verificarla con:
 
 ```sh
-sha256sum ../../../src/nodes/json_creator.py json_creator_v4_5.py
+sha256sum ../../../src/nodes/json_creator.py json_creator_v15.py
 ```
 
-Hash atteso: `0f52c52896504abb70e3a58b2f21213a7df91c46747099ffe9bd5b8abc83caa2`
+Hash atteso: `af0628f9eb65a91fa7019ea38284ebb55ef7c0fe393a2f903a2484d492b2c02d`
 
-**Se i due hash divergono, la fonte autorevole è `src/nodes/`.**
+La copia canvas senza commenti (`json_creator_v15_canvas.py`) vive in
+`../platforms/lv1/scripts/updated_pending_validation/`; hash atteso:
+`0523dab5010fcc6eaa72a5d4ed116d4212e1145d14dd70d5c6b0ddc316187593`.
+
+**Se gli hash divergono, la fonte autorevole è `src/nodes/`.**
 
 ## Consolidatore (redesign v14, Task 4)
 

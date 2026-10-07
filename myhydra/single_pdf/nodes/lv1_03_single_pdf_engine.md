@@ -14,9 +14,8 @@ Il pytool LV1-04 è stato scritto per essere difensivo proprio per questo: accet
 
 ## Differenza rispetto al legacy
 
-Nel flusso legacy questo nodo non aggregava nulla: il merge era demandato a un pytool dedicato, il "Pages Merger". Con l'Opzione B di ADR-001 il merge si è spostato dentro `json_creator.py`, che ora riceve già i JSON intermedi di tutte le pagine e li unisce prima di trasformarli. Per questo il Livello 2 non ha più bisogno di nodi di merge interni.
+Nel flusso ridisegnato (v14/v15) l'uscita del motore va al nodo LV1-04 CONSOLIDATORE, che unisce i 3 rami VLM per pagina e fonde le pagine; il pytool LV1-05 JSON CREATOR trasforma poi l'unificato in ADAS. È la modifica strutturale prevista dall'Opzione B di ADR-001, con il merge spostato fuori dal creator.
 
-- **Da confermare:** forma esatta del payload aggregato dal motore.
-- **Da confermare:** comportamento in caso di errore o timeout su una singola pagina. Se il motore si ferma, si salta la pagina o fallisce l'intero flusso? Il pytool non ha un `try/except` globale, quindi un payload malformato non viene trattato.
-- **Da confermare:** se e come avviene il retry.
-- **Riferimenti:** [`lv1_04_json_creator.md`](lv1_04_json_creator.md), [ADR-001](../../../docs/architettura/ADR-001-merge-multi-page.md).
+- **Da confermare:** l'indice `{edge}[4]` del creator (scheda LV1-05) è fragile, perché l'inserimento del consolidatore sposta gli indici a valle. Verificare sul canvas a ogni rewiring, con la checklist in [`../platforms/README.md`](../platforms/README.md).
+- **Da confermare (invariati):** forma esatta del payload aggregato; comportamento su errore/timeout di una singola pagina (il creator non ha `try/except` globale); retry.
+- **Riferimenti:** [`lv1_04_consolidatore.md`](lv1_04_consolidatore.md), [`lv1_05_json_creator.md`](lv1_05_json_creator.md), [ADR-001](../../../docs/architettura/ADR-001-merge-multi-page.md).

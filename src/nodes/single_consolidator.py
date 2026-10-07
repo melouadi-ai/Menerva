@@ -272,6 +272,9 @@ def consolidate(pages):
             page = json.loads(page)
         if not isinstance(page, dict):
             raise ValueError("pagina %d non valida" % pos)
+        if (not _is_int(page.get("page_no"))
+                and not isinstance(page.get("stations"), list)):
+            raise ValueError("pagina %d senza page_no ne stations" % pos)
         normed.append((pos, page))
     numbered = [(pg.get("page_no"), pos, pg) for pos, pg in normed
                 if _is_int(pg.get("page_no"))]

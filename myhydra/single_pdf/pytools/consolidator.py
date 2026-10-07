@@ -55,6 +55,10 @@ try:
         if not isinstance(pg, dict):
             raise ValueError("Pagina non valida in posizione " + str(pi)
                              + ".")
+        if (type(pg.get("page_no")) is not int
+                and not isinstance(pg.get("stations"), list)):
+            raise ValueError("Pagina in posizione " + str(pi)
+                             + " senza page_no ne stations.")
         norm.append([pi, pg])
         pi = pi + 1
     # Ordine: prima le numerate (crescente), poi le senza numero.
