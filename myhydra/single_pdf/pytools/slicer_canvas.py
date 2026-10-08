@@ -9,11 +9,16 @@ try:
   groups = json.loads(groups.strip())
  if not isinstance(groups, list):
   raise ValueError("slicer: input non interpretabile come lista di gruppi")
+ if START < 1 or END < START:
+  raise ValueError("slicer: configurazione invalida [%d:%d]"
+      % (START, END))
  total = len(groups)
- if not (1 <= START <= END <= total):
-  raise ValueError("slicer: fetta [%d:%d] fuori dai %d gruppi"
-      % (START, END, total))
- out = groups[START - 1:END]
+ out = []
+ if START <= total:
+  last = END
+  if last > total:
+   last = total
+  out = groups[START - 1:last]
  result = json.dumps(out, ensure_ascii=False)
 except Exception as error:
  tb = traceback.format_exc(limit=3).replace("\n", " | ")[:900]

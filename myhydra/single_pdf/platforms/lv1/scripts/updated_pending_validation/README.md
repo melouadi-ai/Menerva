@@ -27,8 +27,8 @@ Hash attesi:
 
 - `consolidator_canvas.py`: `34192dc8055ac865c9e4c1f4d1b2e59a4367d0fa2f5c78177f40560fa5f20b3b`
 - `json_creator_v15_canvas.py`: `c990a12bf500ccfe9f93ba4a0dd7b52daca285a63dabdaf07a39dc0db84696b2`
-- `slicer_canvas.py`: `ce83dffaaa0b4b3b7e082140b5a9a8365996db084a8ef1cf034577fca4977bba`
-- `merger_canvas.py`: `1ddf6169d347a3a43649b959f544728834b97b8bf2bab329aa7adfe9fb3c5b43`
+- `slicer_canvas.py`: `af615ec3d73bcecfeaba7b07c8224c5fd1970be4a4cc1885d7c0887102168f60`
+- `merger_canvas.py`: `50614896814d0f7c8d034d868235b9a9857e4973216d72017d14fe0609a2f347`
 
 Byte-identiche alle copie in `../../../pytools/` (pinnato da
 `tests/test_single_canvas_hygiene.py`). Se divergono, vince `src/nodes/`

@@ -78,13 +78,20 @@ def test_slicer_fette_siemens():
 
 
 def test_slicer_range_impossibile_errore_forte():
-    for start, end in ((0, 5), (5, 4), (1, 30), (30, 30)):
+    for start, end in ((0, 5), (5, 4), (1, 0)):
         out = run_slicer(SLICER_DOC, GROUPS_29, start, end)
         assert out["status"] == "ERROR"
-        assert "fetta" in out["error"]
+        assert "configurazione" in out["error"]
         assert out["tb"] != ""
     out = run_slicer(SLICER_DOC, {"non": "lista"}, 1, 1)
     assert out["status"] == "ERROR"
+
+
+def test_slicer_universale_fuori_portata_e_fondo_aperto():
+    assert run_slicer(SLICER_DOC, GROUPS_29, 11, 20) == GROUPS_29[10:20]
+    assert run_slicer(SLICER_DOC, GROUPS_29, 21, 10000) == GROUPS_29[20:]
+    assert run_slicer(SLICER_DOC, GROUPS_29[:2], 11, 20) == []
+    assert run_slicer(SLICER_DOC, GROUPS_29[:2], 1, 10) == GROUPS_29[:2]
 
 
 def test_slicer_input_stringa_json():
@@ -109,13 +116,22 @@ def test_merger_stringhe_con_fence():
     assert out == [{"stations": []}, {"rows": []}, {"stations": []}]
 
 
-def test_merger_shard_vuoto_errore_forte():
-    out = run_merger_canvas_model(MERGER_CANVAS, [{"stations": []}], [])
+def test_merger_shard_vuoto_saltato_errore_propagato():
+    a = [{"stations": [{"name": "P1"}]}]
+    out = run_merger_canvas_model(MERGER_CANVAS, a, [])
+    assert out == a
+    out = run_merger_canvas_model(MERGER_CANVAS, [], [])
     assert out["status"] == "ERROR"
-    assert "shard B" in out["error"]
-    out = run_merger_canvas_model(MERGER_CANVAS, "spazzatura ]]]", [{"x": 1}])
+    err = {"status": "ERROR", "error": "motore caduto", "tb": "x"}
+    out = run_merger_canvas_model(MERGER_CANVAS, err, a)
     assert out["status"] == "ERROR"
     assert "shard A" in out["error"]
+    assert "motore caduto" in out["error"]
+    out = run_merger_canvas_model(MERGER_CANVAS, "spazzatura ]]]", a)
+    assert out == a
+    out = run_merger_canvas_model(MERGER_CANVAS, "spazzatura ]]]", [])
+    assert out["status"] == "ERROR"
+    assert "entrambi" in out["error"]
 
 
 def test_copie_canvas_identico_ast_e_budget():

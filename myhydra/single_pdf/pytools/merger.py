@@ -1,10 +1,14 @@
 # Merger Single PDF - concatena i chunk di 2 shard in ordine (A poi B).
+# TOPOLOGIA UNIVERSALE: per 3 shard usare due merger in cascata (AB, poi ABC
+# con l'output del primo in A). Stessi file e stessi nodi per ogni documento.
 # CONFIG CANVAS: ricontrollare N dei due {edge} dopo ogni rewiring e togliere
-# match-condition spurie. Per 3 shard usare due merger in cascata (AB, poi ABC).
+# match-condition spurie.
 # Input: output grezzi dei motori (stringhe con fence ```json, array o dict).
 # Output: array unico dei blocchi (A+B), pronto per il CONSOLIDATORE che li
 # raggruppa in pagine in ordine di arrivo. page_no non serve qui.
-# Shard vuoto -> ERROR JSON con tb (mai silenzio, mai blank).
+# Shard senza pagine (lista vuota) -> saltato: e' fuori portata, non un buco.
+# Shard in errore (dict con status ERROR) o illeggibile -> ERROR JSON con tb
+# e nome dello shard (mai silenzio, mai blank).
 import json
 import traceback
 raw_a = r'''{edge}[7]'''
@@ -21,6 +25,8 @@ try:
             item = queue.pop(0)
             if isinstance(item, str):
                 ss = item.strip()
+                if ss == "":
+                    break
                 dec = json.JSONDecoder()
                 pos = 0
                 n = len(ss)
@@ -69,13 +75,17 @@ try:
             elif isinstance(item, list):
                 queue = list(item) + queue
             elif isinstance(item, dict):
+                if item.get("status") == "ERROR":
+                    raise ValueError("merger: shard " + names[si]
+                                     + " in errore a monte: "
+                                     + str(item.get("error")))
                 found.append(item)
             elif item is not None:
                 found.append(item)
-        if len(found) == 0:
-            raise ValueError("merger: shard " + names[si] + " vuoto o illeggibile")
         all_blocks = all_blocks + found
         si = si + 1
+    if len(all_blocks) == 0:
+        raise ValueError("merger: entrambi gli shard vuoti o illeggibili")
     result = json.dumps(all_blocks, ensure_ascii=False)
 except Exception as error:
     tb = traceback.format_exc(limit=3).replace("\n", " | ")[:900]

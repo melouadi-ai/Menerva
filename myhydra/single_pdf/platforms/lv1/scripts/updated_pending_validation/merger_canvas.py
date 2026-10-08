@@ -14,6 +14,8 @@ try:
    item = queue.pop(0)
    if isinstance(item, str):
     ss = item.strip()
+    if ss == "":
+     break
     dec = json.JSONDecoder()
     pos = 0
     n = len(ss)
@@ -62,13 +64,17 @@ try:
    elif isinstance(item, list):
     queue = list(item) + queue
    elif isinstance(item, dict):
+    if item.get("status") == "ERROR":
+     raise ValueError("merger: shard " + names[si]
+         + " in errore a monte: "
+         + str(item.get("error")))
     found.append(item)
    elif item is not None:
     found.append(item)
-  if len(found) == 0:
-   raise ValueError("merger: shard " + names[si] + " vuoto o illeggibile")
   all_blocks = all_blocks + found
   si = si + 1
+ if len(all_blocks) == 0:
+  raise ValueError("merger: entrambi gli shard vuoti o illeggibili")
  result = json.dumps(all_blocks, ensure_ascii=False)
 except Exception as error:
  tb = traceback.format_exc(limit=3).replace("\n", " | ")[:900]
