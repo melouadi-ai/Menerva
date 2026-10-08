@@ -566,7 +566,7 @@ while g < len(groups):
                 continue
             seen_single[dkey] = True
         else:
-            dkey = desc.lower() + "|" + str(regval)
+            dkey = desc.lower() + "|" + str(regval) + "|" + str(bitval)
             if dkey in seen_packed:
                 continue
             seen_packed[dkey] = True

@@ -136,6 +136,31 @@ def test_stati_keyword_solo_se_null():
     assert (b["TEXTON"], b["TEXTOFF"]) == ("ATTIVO", "OFF")
 
 
+def test_packed_omonimi_bit_diversi_entrambi_in_bitinfo():
+    out = run_script(SRC, chunk([
+        variable("OVF Misura IW36", 40007, kind="DIGITALE_IMPACCATO",
+                 extra={"bit": 2}),
+        variable("OVF Misura IW38", 40007, kind="DIGITALE_IMPACCATO",
+                 extra={"bit": 3}),
+        variable("OVF Misura IW36", 40007, kind="DIGITALE_IMPACCATO",
+                 extra={"bit": 10}),
+        variable("OVF Misura IW38", 40007, kind="DIGITALE_IMPACCATO",
+                 extra={"bit": 11}),
+    ]))
+    bits = sorted(b["BITNO"] for b in out[0]["bitinfo"])
+    assert bits == [2, 3, 10, 11]
+
+
+def test_packed_duplicato_esatto_resta_dedup():
+    out = run_script(SRC, chunk([
+        variable("OVF Misura IW36", 40007, kind="DIGITALE_IMPACCATO",
+                 extra={"bit": 2}),
+        variable("OVF Misura IW36", 40007, kind="DIGITALE_IMPACCATO",
+                 extra={"bit": 2}),
+    ]))
+    assert len(out[0]["bitinfo"]) == 1
+
+
 def test_linkage_bitinfo_misure_e_meta():
     out = run_script(SRC, chunk([
         variable("Analogica", 40001),
