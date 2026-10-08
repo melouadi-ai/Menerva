@@ -522,25 +522,6 @@ try:
     if (has_names and type(riga) is int
       and riga in names_by_riga):
      nb = names_by_riga[riga]
-     diffs = []
-     if nb.get("modbus_register") != var.get("modbus_register"):
-      diffs.append("modbus_register misure="
-         + str(var.get("modbus_register"))
-         + " nomi-bit="
-         + str(nb.get("modbus_register")))
-     if nb.get("bit") != var.get("bit"):
-      diffs.append("bit misure=" + str(var.get("bit"))
-         + " nomi-bit=" + str(nb.get("bit")))
-     if diffs:
-      warnings.append({"rule": "bit_register_mismatch",
-          "page_no": page_no, "riga": riga,
-          "detail": "riga " + str(riga) + ": "
-          + "; ".join(diffs)
-          + " (vince nomi-bit)"})
-      counters["bit_register_mismatch"] = counters.get(
-       "bit_register_mismatch", 0) + 1
-      var["modbus_register"] = nb.get("modbus_register")
-      var["bit"] = nb.get("bit")
      nb_desc = nb.get("description", None)
      if nb_desc is None:
       try:
@@ -559,6 +540,39 @@ try:
          continue
         if nb_desc is not None:
          break
+     desc_ok = (nb_desc is None or nb_desc == var.get("description"))
+     diffs = []
+     if nb.get("modbus_register") != var.get("modbus_register"):
+      diffs.append("modbus_register misure="
+         + str(var.get("modbus_register"))
+         + " nomi-bit="
+         + str(nb.get("modbus_register")))
+     if nb.get("bit") != var.get("bit"):
+      diffs.append("bit misure=" + str(var.get("bit"))
+         + " nomi-bit=" + str(nb.get("bit")))
+     if diffs:
+      suffix = " (vince nomi-bit)"
+      if not desc_ok:
+       suffix = " (tengo misure: descrizioni diverse)"
+      warnings.append({"rule": "bit_register_mismatch",
+          "page_no": page_no, "riga": riga,
+          "detail": "riga " + str(riga) + ": "
+          + "; ".join(diffs)
+          + suffix})
+      counters["bit_register_mismatch"] = counters.get(
+       "bit_register_mismatch", 0) + 1
+      if desc_ok:
+       var["modbus_register"] = nb.get("modbus_register")
+       var["bit"] = nb.get("bit")
+      else:
+       warnings.append({"rule": "riga_disallineata",
+           "page_no": page_no, "riga": riga,
+           "detail": "riga " + str(riga)
+           + ": misure=" + str(var.get("description"))
+           + " contro nomi-bit=" + str(nb_desc)
+           + ", tengo misure"})
+       counters["riga_disallineata"] = counters.get(
+        "riga_disallineata", 0) + 1
      if nb_desc != var.get("description"):
       warnings.append({"rule": "descrizione_mismatch",
           "page_no": page_no, "riga": riga,

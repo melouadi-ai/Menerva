@@ -79,6 +79,27 @@ def test_mismatch_riga_sempre_avvisato():
     assert "C" not in descs
 
 
+def test_shift_riga_tiene_misure_e_avvisa_forte():
+    page = {"page_no": 1, "stations": [{
+        "name": None, "protocol": "ModBus TCP", "ip": "10.0.0.1",
+        "port": 502, "modbus_id": None, "variables": [
+            _var("FAULT PC SME", 1, reg=40011, bit=0,
+                 kind="DIGITALE_IMPACCATO"),
+        ]}], "bitnames": {"rows": [
+            {"description": "WATCH_DOG Server 02",
+             "modbus_register": 40010, "bit": None, "riga": 1},
+        ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["description"] == "FAULT PC SME"
+    assert var["modbus_register"] == 40011
+    assert var["bit"] == 0
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "bit_register_mismatch" in rules
+    assert "descrizione_mismatch" in rules
+    assert "riga_disallineata" in rules
+
+
 def test_precedenza_nomi_bit_per_bit_e_registro():
     page = {"page_no": 1, "stations": [_station("10.0.0.1", [
         _var("Allarme", 1, reg=40014, bit=3,

@@ -202,20 +202,35 @@ def assemble_page(page, page_no):
             riga = raw.get("riga")
             if has_names and _is_int(riga) and riga in names_by_riga:
                 nb = names_by_riga[riga]
+                nb_desc = _description_of(nb)
+                desc_ok = (nb_desc is None
+                           or nb_desc == var.get("description"))
                 diffs = []
                 for field in ("modbus_register", "bit"):
                     if nb.get(field) != var.get(field):
                         diffs.append("%s misure=%s nomi-bit=%s" % (
                             field, var.get(field), nb.get(field)))
                 if diffs:
+                    if desc_ok:
+                        suffix = "(vince nomi-bit)"
+                    else:
+                        suffix = ("(tengo misure: descrizioni diverse, "
+                                  "possibile shift di riga)")
                     _warn(warnings, counters, "bit_register_mismatch",
-                          "riga %s: %s (vince nomi-bit)" % (
-                              riga, "; ".join(diffs)),
+                          "riga %s: %s %s" % (
+                              riga, "; ".join(diffs), suffix),
                           page_no=page_no, riga=riga,
                           counter="bit_register_mismatch")
-                    var["modbus_register"] = nb.get("modbus_register")
-                    var["bit"] = nb.get("bit")
-                nb_desc = _description_of(nb)
+                    if desc_ok:
+                        var["modbus_register"] = nb.get("modbus_register")
+                        var["bit"] = nb.get("bit")
+                    else:
+                        _warn(warnings, counters, "riga_disallineata",
+                              "riga %s: misure=%r contro nomi-bit=%r, "
+                              "tengo misure" % (
+                                  riga, var.get("description"), nb_desc),
+                              page_no=page_no, riga=riga,
+                              counter="riga_disallineata")
                 if nb_desc != var.get("description"):
                     _warn(warnings, counters, "descrizione_mismatch",
                           "riga %s: misure=%r nomi-bit=%r "

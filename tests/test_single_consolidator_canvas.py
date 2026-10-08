@@ -260,3 +260,37 @@ def test_canvas_model_righe_stati_sciolte_si_agganciano():
     assert by_desc["Allarme"]["state_on"] == "On"
     assert by_desc["Allarme"]["state_off"] == "Off"
     assert by_desc["CO"]["state_on"] is None
+
+
+def _shift_blocks():
+    station = {"name": None, "protocol": "ModBus TCP", "ip": "10.0.0.1",
+               "port": 502, "modbus_id": None, "variables": [
+                   {"description": "FAULT PC SME", "units": None,
+                    "modbus_register": 40011, "bit": 0,
+                    "data_type": None, "kind": "DIGITALE_IMPACCATO",
+                    "read_write": "R", "state_on": None, "state_off": None,
+                    "scale_elec_start": None, "scale_elec_end": None,
+                    "scale_eng_start": None, "scale_eng_end": None,
+                    "limit_hour": None, "limit_day": None, "zona": None,
+                    "tag": None, "pagina": None, "riga": 1},
+               ]}
+    return [{"stations": [station]},
+            {"rows": [{"description": "WATCH_DOG Server 02",
+                       "modbus_register": 40010, "bit": None, "riga": 1}]}]
+
+
+def test_canvas_shift_tiene_misure_e_avvisa_forte():
+    blocks = _shift_blocks()
+    single = run_script(DOCUMENTED, blocks)
+    canvas = run_script_canvas_model(CANVAS, blocks)
+    assert canvas.pop("tb", None) is None
+    assert single.pop("tb", None) is None
+    assert canvas == single
+    var = canvas["stations"][0]["variables"][0]
+    assert var["description"] == "FAULT PC SME"
+    assert var["modbus_register"] == 40011
+    assert var["bit"] == 0
+    rules = [w["rule"] for w in canvas["warnings"]]
+    assert "bit_register_mismatch" in rules
+    assert "descrizione_mismatch" in rules
+    assert "riga_disallineata" in rules
