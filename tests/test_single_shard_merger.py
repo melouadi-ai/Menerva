@@ -99,6 +99,13 @@ def test_slicer_input_stringa_json():
     assert run_slicer(SLICER_DOC, raw, 1, 10) == GROUPS_29[0:10]
 
 
+def test_slicer_oggetto_singolo_incapsulato():
+    one = {"_medexkeys": {"key": "K01"}}
+    assert run_slicer(SLICER_DOC, one, 1, 10) == [one]
+    assert run_slicer(SLICER_DOC, one, 11, 20) == []
+    assert run_slicer(SLICER_DOC, json.dumps(one), 1, 10) == [one]
+
+
 def test_merger_concatena_in_ordine():
     a = [{"stations": [{"name": "P1"}]}, {"rows": [{"riga": 1}]}]
     b = [{"stations": [{"name": "P2"}]}]

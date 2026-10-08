@@ -7,6 +7,10 @@ try:
  groups = raw
  if isinstance(groups, str):
   groups = json.loads(groups.strip())
+ if isinstance(groups, dict):
+  if "_medexkeys" not in groups:
+   raise ValueError("slicer: input non interpretabile come lista di gruppi")
+  groups = [groups]
  if not isinstance(groups, list):
   raise ValueError("slicer: input non interpretabile come lista di gruppi")
  if START < 1 or END < START:
