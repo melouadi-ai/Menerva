@@ -112,6 +112,13 @@ try:
             pages.append(current)
             continue
         rows = block.get("rows")
+        fragment = False
+        if rows is None:
+            if ("description" in block or "modbus_register" in block
+                    or "bit" in block or "state_on" in block
+                    or "state_off" in block):
+                rows = [block]
+                fragment = True
         if not isinstance(rows, list):
             bkeys = list(block.keys())
             bsi = 0
@@ -172,11 +179,11 @@ try:
             counters["righe_senza_misure"] = counters.get(
                 "righe_senza_misure", 0) + 1
         if is_names and not is_states:
-            current["bitnames"] = {"rows": rows}
+            bslot = "bitnames"
         elif is_states and not is_names:
-            current["bitstates"] = {"rows": rows}
+            bslot = "bitstates"
         elif is_names and is_states:
-            current["bitnames"] = {"rows": rows}
+            bslot = "bitnames"
             warnings.append({"rule": "ramo_misto", "page_no": None,
                              "riga": None,
                              "detail": "blocco rows con chiavi nomi e stati: assegnato a nomi"})
@@ -186,7 +193,15 @@ try:
                 + ": chiavi " + str(sorted(set(
                     k for r in rows if isinstance(r, dict) for k in r))))
         else:
-            current["bitnames"] = {"rows": rows}
+            bslot = "bitnames"
+        if fragment:
+            ex = current.get(bslot)
+            if isinstance(ex, dict) and isinstance(ex.get("rows"), list):
+                ex["rows"] = ex["rows"] + rows
+            else:
+                current[bslot] = {"rows": rows}
+        else:
+            current[bslot] = {"rows": rows}
     if not isinstance(pages, list):
         raise ValueError("Il consolidatore attende una lista di pagine.")
     # V2: scarti per match esatto (case-insensitive dopo strip).

@@ -211,3 +211,52 @@ def test_canvas_model_output_pari_su_fixture():
     pages = fixture_pages()
     assert (run_script_canvas_model(CANVAS, pages)
             == run_script(DOCUMENTED, pages))
+
+
+def _sma1_bare_states_blocks():
+    station = {"name": "E1", "protocol": "ModBus TCP", "ip": "192.168.6.20",
+               "port": None, "modbus_id": None, "variables": [
+                   {"description": "CO", "units": "mg/Nm3",
+                    "modbus_register": 40001, "bit": None,
+                    "data_type": "ANALOGICO", "kind": "ANALOGICA",
+                    "read_write": "R", "state_on": None, "state_off": None,
+                    "scale_elec_start": None, "scale_elec_end": None,
+                    "scale_eng_start": 0, "scale_eng_end": 200,
+                    "limit_hour": None, "limit_day": None, "zona": None,
+                    "tag": None, "pagina": None, "riga": 1},
+                   {"description": "Allarme", "units": None,
+                    "modbus_register": 33, "bit": None, "data_type": "WORD",
+                    "kind": "DIGITALE_SINGOLO", "read_write": "R",
+                    "state_on": None, "state_off": None,
+                    "scale_elec_start": None, "scale_elec_end": None,
+                    "scale_eng_start": None, "scale_eng_end": None,
+                    "limit_hour": None, "limit_day": None, "zona": None,
+                    "tag": None, "pagina": None, "riga": 2},
+               ]}
+    return [
+        {"stations": [station]},
+        {"state_on": None, "state_off": None, "riga": 1},
+        {"state_on": "On", "state_off": "Off", "riga": 2},
+        {"rows": [
+            {"description": "CO", "modbus_register": 40001, "bit": None,
+             "riga": 1},
+            {"description": "Allarme", "modbus_register": 33, "bit": 0,
+             "riga": 2},
+        ]},
+    ]
+
+
+def test_canvas_model_righe_stati_sciolte_si_agganciano():
+    blocks = _sma1_bare_states_blocks()
+    single = run_script(DOCUMENTED, blocks)
+    canvas = run_script_canvas_model(CANVAS, blocks)
+    assert canvas.pop("tb", None) is None
+    assert single.pop("tb", None) is None
+    assert canvas == single
+    assert "status" not in canvas
+    by_desc = {v["description"]: v
+               for s in canvas["stations"] for v in s["variables"]}
+    assert by_desc["Allarme"]["bit"] == 0
+    assert by_desc["Allarme"]["state_on"] == "On"
+    assert by_desc["Allarme"]["state_off"] == "Off"
+    assert by_desc["CO"]["state_on"] is None

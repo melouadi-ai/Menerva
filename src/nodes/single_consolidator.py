@@ -338,6 +338,35 @@ def _is_names_rows(rows):
     return False
 
 
+_BRANCH_ROW_KEYS = frozenset(
+    ("description", "modbus_register", "bit", "state_on", "state_off"))
+
+
+def _is_branch_row(block):
+    """True when a bare dict looks like one branch row (no envelope).
+
+    The engine sometimes forwards the states branch as a raw array, so
+    single rows reach the grouper without a ``stations``/``rows`` wrapper.
+    Anything else stays a loud structural error, never silent.
+    """
+    return bool(set(block) & _BRANCH_ROW_KEYS)
+
+
+def _attach_branch(current, slot, rows, fragment):
+    """Attach branch rows, accumulating bare-row fragments in arrival order.
+
+    Full ``rows`` envelopes overwrite (tested semantics); bare fragments
+    extend an existing envelope instead of clobbering it.
+    """
+    if fragment:
+        existing = current.get(slot)
+        if (isinstance(existing, dict)
+                and isinstance(existing.get("rows"), list)):
+            existing["rows"] = existing["rows"] + rows
+            return
+    current[slot] = {"rows": rows}
+
+
 def _group_branches(blocks, warnings, counters):
     """Group raw branch blocks into page envelopes in arrival order.
 
@@ -378,6 +407,9 @@ def _group_branches(blocks, warnings, counters):
                     current[key] = block[key]
             continue
         rows = block.get("rows")
+        fragment = rows is None and _is_branch_row(block)
+        if fragment:
+            rows = [block]
         if not isinstance(rows, list):
             raise ValueError(
                 "blocco senza stations ne rows: chiavi %s tipi {%s}" % (
@@ -401,11 +433,11 @@ def _group_branches(blocks, warnings, counters):
                   % len(dict_rows),
                   counter="righe_senza_misure")
         if has_names_keys and not has_state_keys:
-            current["bitnames"] = {"rows": rows}
+            _attach_branch(current, "bitnames", rows, fragment)
         elif has_state_keys and not has_names_keys:
-            current["bitstates"] = {"rows": rows}
+            _attach_branch(current, "bitstates", rows, fragment)
         elif has_names_keys and has_state_keys:
-            current["bitnames"] = {"rows": rows}
+            _attach_branch(current, "bitnames", rows, fragment)
             _warn(warnings, counters, "ramo_misto",
                   "blocco rows con chiavi nomi e stati: assegnato a nomi",
                   counter="ramo_misto")
@@ -414,7 +446,7 @@ def _group_branches(blocks, warnings, counters):
                 "blocco rows non riconoscibile: chiavi %s" % sorted(set(
                     k for r in dict_rows for k in r)))
         else:
-            current["bitnames"] = {"rows": rows}
+            _attach_branch(current, "bitnames", rows, fragment)
     cleaned = []
     for page in pages:
         if page.get("_raw_group"):

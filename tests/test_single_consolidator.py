@@ -266,3 +266,31 @@ def test_blocco_rows_vuoto_nessun_rumore():
     out = consolidate([{"rows": []}])
     assert out["stations"] == []
     assert out["warnings"] == []
+
+
+def test_righe_stati_grezze_senza_busta_si_agganciano():
+    blocks = [_triple_misure(),
+              {"state_on": None, "state_off": None, "riga": 1},
+              {"state_on": "On", "state_off": "Off", "riga": 2},
+              _triple_nomi()]
+    out = consolidate(blocks)
+    assert out["counters"]["pagine"] == 1
+    by_desc = {v["description"]: v
+               for s in out["stations"] for v in s["variables"]}
+    assert by_desc["Allarme sonda"]["bit"] == 0
+    assert by_desc["Allarme sonda"]["state_on"] == "On"
+    assert by_desc["Allarme sonda"]["state_off"] == "Off"
+    assert by_desc["CO"]["state_on"] is None
+
+
+def test_riga_stato_orfana_apre_pagina_avvisata_mai_silenziosa():
+    out = consolidate([{"state_on": "X", "state_off": "Y", "riga": 9}])
+    assert out["stations"] == []
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "righe_senza_misure" in rules
+
+
+def test_dizionario_non_riga_resta_errore_forte():
+    import pytest
+    with pytest.raises(ValueError):
+        consolidate([{"pagina": "x"}])
