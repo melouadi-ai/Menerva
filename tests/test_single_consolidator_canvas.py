@@ -164,3 +164,50 @@ def test_canvas_senza_def_lambda_class():
     assert "def " not in src
     assert "lambda" not in src
     assert "class " not in src
+
+
+def run_script_canvas_model(path, raw_value):
+    """Esegue la copia come fa MyHydra: globals e locals separati.
+
+    Con namespace separati le comprehension non vedono i locali dello
+    script (il corpo del genexpr non chiude sui locali di exec): questo
+    runner riproduce il modello e inchioda la regressione
+    "name 'block' is not defined" vista sul canvas (run SMA_1, ott 2026).
+    """
+    source = path.read_text(encoding="utf-8")
+    patched = re.sub(r"raw\s*=\s*r?'''\{edge\}\[\d+\]'''",
+                     "raw = __INJECTED_RAW__", source)
+    assert patched != source
+    g = {"__builtins__": __builtins__}
+    loc = {"__INJECTED_RAW__": raw_value}
+    exec(compile(patched, str(path), "exec"), g, loc)
+    return json.loads(loc["result"])
+
+
+def test_canvas_model_messaggio_chiavi_tipi_senza_nameerror():
+    raw_value = {"pagina": "x", "count": 3}
+    single = run_script(DOCUMENTED, raw_value)
+    canvas = run_script_canvas_model(CANVAS, raw_value)
+    assert canvas.pop("tb") and single.pop("tb")
+    assert canvas == single
+    assert canvas["status"] == "ERROR"
+    assert "senza stations ne rows" in canvas["error"]
+    assert "chiavi ['count', 'pagina']" in canvas["error"]
+    assert "tipi {int, str}" in canvas["error"]
+    assert "NameError" not in canvas["error"]
+
+
+def test_canvas_model_righe_non_riconoscibili():
+    pages = [{"stations": []}, {"rows": [{"zzz": 1}]}]
+    single = run_script(DOCUMENTED, pages)
+    canvas = run_script_canvas_model(CANVAS, pages)
+    assert canvas.pop("tb") and single.pop("tb")
+    assert canvas == single
+    assert canvas["status"] == "ERROR"
+    assert "non riconoscibile" in canvas["error"]
+
+
+def test_canvas_model_output_pari_su_fixture():
+    pages = fixture_pages()
+    assert (run_script_canvas_model(CANVAS, pages)
+            == run_script(DOCUMENTED, pages))

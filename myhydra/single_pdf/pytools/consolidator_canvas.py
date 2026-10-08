@@ -1,6 +1,7 @@
 # consolidator_canvas - copia canvas senza commenti (stesso AST del file documentato)
 # edge 5 = array chunk per pagina dal motore iterativo (ricontrollare N dopo rewiring).
 import json
+import traceback
 raw = r'''{edge}[5]'''
 try:
  blocks = []
@@ -103,10 +104,37 @@ try:
    continue
   rows = block.get("rows")
   if not isinstance(rows, list):
+   bkeys = list(block.keys())
+   bsi = 0
+   while bsi < len(bkeys):
+    bsj = bsi + 1
+    while bsj < len(bkeys):
+     if bkeys[bsj] < bkeys[bsi]:
+      btw = bkeys[bsi]
+      bkeys[bsi] = bkeys[bsj]
+      bkeys[bsj] = btw
+     bsj = bsj + 1
+    bsi = bsi + 1
+   btypes = []
+   bti = 0
+   while bti < len(bkeys):
+    btn = type(block[bkeys[bti]]).__name__
+    if btn not in btypes:
+     btypes.append(btn)
+    bti = bti + 1
+   bsi = 0
+   while bsi < len(btypes):
+    bsj = bsi + 1
+    while bsj < len(btypes):
+     if btypes[bsj] < btypes[bsi]:
+      btw = btypes[bsi]
+      btypes[bsi] = btypes[bsj]
+      btypes[bsj] = btw
+     bsj = bsj + 1
+    bsi = bsi + 1
    raise ValueError("blocco " + str(bi) + " senza stations ne rows: chiavi "
-    + str(sorted([k for k in block])) + " tipi {"
-    + ", ".join(sorted(set(
-     type(block[k]).__name__ for k in block)))
+    + str(bkeys) + " tipi {"
+    + ", ".join(btypes)
     + "}")
   dict_n = 0
   is_names = False
@@ -702,6 +730,8 @@ try:
  result = json.dumps({"stations": stations_out, "warnings": warnings,
       "counters": counters}, ensure_ascii=False)
 except Exception as error:
+ tb = traceback.format_exc(limit=3).replace("\n", " | ")[:900]
  result = json.dumps({"status": "ERROR", "error": str(error),
+      "tb": tb,
       "stations": [], "warnings": [],
       "counters": {}}, ensure_ascii=False)

@@ -25,7 +25,7 @@ sha256sum consolidator_canvas.py json_creator_v15_canvas.py
 
 Hash attesi:
 
-- `consolidator_canvas.py`: `86798be9924d5e28f6125f3981e129ef05de1d91a7841bf41b6e094ea20c5bec`
+- `consolidator_canvas.py`: `0794a102370da02b6a57dfc892ce42bfdbc7350a0caa993348d15d9697a6932d`
 - `json_creator_v15_canvas.py`: `c990a12bf500ccfe9f93ba4a0dd7b52daca285a63dabdaf07a39dc0db84696b2`
 
 Byte-identiche alle copie in `../../../pytools/` (pinnato da
