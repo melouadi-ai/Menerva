@@ -17,6 +17,8 @@ Il consolidatore unisce rami e pagine; il creator trasforma in ADAS.
 |---|---|---|---|
 | LV1-04 CONSOLIDATORE | [`scripts/updated_pending_validation/consolidator_canvas.py`](scripts/updated_pending_validation/consolidator_canvas.py) | `{edge}[5]` (CONFIG: ricontrollare N al rewiring) | Mai incollato: prima run da fare |
 | LV1-05 JSON CREATOR | [`scripts/updated_pending_validation/json_creator_v15_canvas.py`](scripts/updated_pending_validation/json_creator_v15_canvas.py) | `{edge}[4]` (ricontrollare N: il consolidatore sposta gli indici a valle) | Mai incollato in questo flusso: prima run da fare |
+| SLICE-A/B/C (shard paralleli) | [`scripts/updated_pending_validation/slicer_canvas.py`](scripts/updated_pending_validation/slicer_canvas.py) | `{edge}[6]` + costanti `START`/`END` (CONFIG: una copia per shard) | Nuovo: pilota PROTEC 2, poi SIEMENS |
+| MERGER (ricucitura shard) | [`scripts/updated_pending_validation/merger_canvas.py`](scripts/updated_pending_validation/merger_canvas.py) | due `{edge}` (`raw_a`, `raw_b`; per 3 shard: due merger in cascata) | Nuovo: tra motori e CONSOLIDATORE |
 
 Entrambe le copie sono sotto i 28 KB, senza `def`/`class`/`lambda`, con gli
 stessi AST delle versioni documentate (pinnato da
