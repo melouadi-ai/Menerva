@@ -168,7 +168,7 @@ def test_prompts_current_byte_identical_to_src():
     current = PLATFORMS / "lv2" / "prompts" / "current"
     history = PLATFORMS / "lv2" / "prompts" / "history"
     for name in ("vlm_measures_v14.md", "vlm_bitnames_v14.md",
-                 "vlm_bitstates_v14.md"):
+                 "vlm_bitstates_v15.md"):
         assert ((current / name).read_bytes()
                 == (STORE_PROMPTS / name).read_bytes()), name
     assert ((history / "vlm_extraction_v13.md").read_bytes()

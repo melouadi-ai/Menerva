@@ -31,3 +31,16 @@ def test_rami_separati_e_tracciabilita_v14():
     assert "state_off" in bitstates
     assert "V7" in bitstates
     assert "modbus_register" not in bitstates
+
+
+def test_stati_sparsi_v15_solo_righe_valorizzate():
+    base = pathlib.Path("src/prompts")
+    v15 = (base / "vlm_bitstates_v15.md").read_text()
+    assert "V27" in v15
+    assert "D7" in v15
+    assert "state_off" in v15
+    assert "modbus_register" not in v15
+    current = pathlib.Path(
+        "myhydra/single_pdf/platforms/lv2/prompts/current/"
+        "vlm_bitstates_v15.md").read_text()
+    assert current == v15
