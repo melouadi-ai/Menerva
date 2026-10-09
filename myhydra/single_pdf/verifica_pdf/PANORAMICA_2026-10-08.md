@@ -76,6 +76,10 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
   TEXTON P2 regrediti 12→21. Fix: instradamento per riga (chiavi stato
   vincono), split con avviso se veramente misto. Replay: 28 ok + 10 fallback
   onesti, zero misattribuzioni.
+- **F19 (cascata maggioranza, fixata).** Nomi+stati con lo stesso errore di
+  numerazione mettevano in minoranza le measures giuste e F1b applicava anche
+  il bit sbagliato (P1: OVF COT_01 distrutto). Fix: la maggioranza scavalca
+  solo a registri/bit uguali. Replay: bit 0 tornato, 45/45 chiavi.
 - **F11.** Errore nomi applicato per precedenza (40117 vs 40119). Coperto da F1b.
 - **F12.** `Riserva STATI LOGICI` → misura 40030. V2 match-esatto lascia passare
   i composti ("Riserva X"). Domanda di regola (cliente? o contains?).

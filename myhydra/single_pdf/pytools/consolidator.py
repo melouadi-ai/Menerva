@@ -672,7 +672,10 @@ try:
                                     break
                     if (xst_desc is not None and nb_desc is not None
                             and xst_desc == nb_desc
-                            and xst_desc != var.get("description")):
+                            and xst_desc != var.get("description")
+                            and nb.get("modbus_register")
+                            == var.get("modbus_register")
+                            and nb.get("bit") == var.get("bit")):
                         warnings.append({"rule": "refuso_maggioranza",
                                          "page_no": page_no, "riga": riga,
                                          "detail": "riga " + str(riga)

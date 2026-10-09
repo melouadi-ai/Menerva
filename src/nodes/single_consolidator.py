@@ -254,7 +254,10 @@ def assemble_page(page, page_no):
                     st_desc = _description_of(states_by_riga[riga])
                 if (st_desc is not None and nb_desc is not None
                         and st_desc == nb_desc
-                        and st_desc != var.get("description")):
+                        and st_desc != var.get("description")
+                        and nb.get("modbus_register")
+                        == var.get("modbus_register")
+                        and nb.get("bit") == var.get("bit")):
                     _warn(warnings, counters, "refuso_maggioranza",
                           "riga %s: misure=%r contro nomi-bit=stati=%r, "
                           "tengo maggioranza (2 rami)" % (

@@ -508,3 +508,22 @@ def test_blocco_veramente_misto_viene_splittao_e_avvisato():
     ]}])
     rules = [w["rule"] for w in out["warnings"]]
     assert "ramo_misto" in rules
+
+
+def test_maggioranza_con_registri_diversi_non_scavalca():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("OVF COT_01", 13, reg=40007, bit=0,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitnames": {"rows": [
+        {"description": "OVF COT_02", "modbus_register": 40007, "bit": 1,
+         "riga": 13},
+    ]}, "bitstates": {"rows": [
+        {"description": "OVF COT_02", "state_on": "Errore",
+         "state_off": None, "riga": 13}]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["description"] == "OVF COT_01"
+    assert (var["modbus_register"], var["bit"]) == (40007, 0)
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "refuso_maggioranza" not in rules
+    assert "riga_disallineata" in rules
