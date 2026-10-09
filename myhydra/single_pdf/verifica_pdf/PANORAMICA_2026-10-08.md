@@ -62,6 +62,12 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
   shard-B dà 10/10 (`pagine: 10`), quindi il motore emette scheletri per i giri
   vuoti. Resta il caso giro-caduto-senza-scheletro (mai osservato finora).
   Azione: verificare se il motore espone un contatore giri.
+- **F16 (cluster p9 SIEMENS, sciolto come varianza).** I 3 buchi + 3 scambi
+  MISURA/CALIBRAZIONE della run completa NON si riproducono isolando pagina 9
+  (SLICE-A 9-9, `TESTS/SIEMENS/P9/`): measures e nomi leggono 32/32 righe,
+  stessi registri/bit/riga della verità, numerazione fisica concorde.
+  Causa: varianza o interferenza di run completa, non mislettura sistematica.
+  Nessun fix codice.
 - **F11.** Errore nomi applicato per precedenza (40117 vs 40119). Coperto da F1b.
 - **F12.** `Riserva STATI LOGICI` → misura 40030. V2 match-esatto lascia passare
   i composti ("Riserva X"). Domanda di regola (cliente? o contains?).
