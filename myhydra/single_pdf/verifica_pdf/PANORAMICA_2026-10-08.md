@@ -23,7 +23,7 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
 | PROTEC 2 shard (pilota) | identico al seriale (varianza VLM a parte) | VERDE meccanismo | |
 | SIEMENS shard-A 3.6 | 9/10 pagine (manca p9 in quel tap), cover assorbita | PARZIALE (F6) | |
 | SIEMENS shard-B 3.6+v15 | 10/10 giri, 35 vars, 0 scarti | VERDE meccanismo (F11, F12, F13) | |
-| SIEMENS completa | — | MAI ATTERRATA (timeout seriale 3.8 >1h) | |
+| SIEMENS completa 3.8 pre-fix (shard, codice senza fix) | 91 misure + 144 bitinfo, 1 stazione | VERDE con riserve: copertura nomi 215/224 (96%), 0 inventate, 9 buchi veri, ~15 shift (F1), 5 spare da verificare | |
 
 ## Ritrovamenti
 
