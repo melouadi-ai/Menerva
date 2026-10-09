@@ -26,7 +26,20 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
 | PROTEC 2 3.8 post-fix (F15, `TESTS/PROTEC 2/`) | 4 + 16 misure, 20 + 4 bitinfo | VERDE con riserva: 39/39 chiavi (27 ok + 12 stato), 0 buchi, 0 fantasma, 40 scarti regola; 12 TEXTON da fallback (ramo stati emette poco su p2: recall VLM, non join); 13 `riga_disallineata` tenute-misure |
 | PROTEC 2 3.8 v2 (guardie finali, `TESTS/PROTEC 2/` agg.) | 4 + 16 misure, 20 + 4 bitinfo | VERDE chiavi: 39/39, 0 buchi, 0 fantasma, catena coerente; 25 `riga_disallineata` tenute; 17 TEXTON da fallback/varianza; nome stazione variabile (`Curtiriso`: domanda cliente) |
 | PROTEC 2 3.8 finale (codice finale, `TESTS/PROTEC 2/` agg.) | 4 + 16 misure, 20 + 4 bitinfo | VERDE confermato: 39/39 (28 ok + 10 stato + 1 refuso), 0 buchi, 0 fantasma, catena coerente; 0 `riga_disallineata` (rami concordi); 10 TEXTON solo fallback onesti; 6 `stati_disallineati` trattenuti |
-| PROTEC 2 VLM 0.01/0.4 (`TESTS/PROTEC 2 VLM MODIFICATO/`) | 4 + 16 misure, 20 + 4 bitinfo | VERDE: 39/39 (28 ok + 10 stato + 1 refuso), 0 buchi, 0 fantasma, catena coerente; 10 TEXTON solo fallback, zero misattribuzioni; refuso persiste (lettura top-token). Setting adottati ovunque |
+## Finali congelati (run NUOVO, `TESTS/<doc> NUOVO/`, catene coerenti)
+
+| PROTEC 2 VLM 0.01/0.4 | 4 + 16 misure, 20 + 4 bitinfo | VERDE: 39/39, setting adottati ovunque |
+
+| Documento | Finale | Verdetto |
+|---|---|---|
+| SMA_1 | E1 38 + 30 bitinfo, E1 1 7 | 44 ok + 1 refuso, 0 buchi, 0 fantasma |
+| PROTEC_1 | SME 3 + 30, SME 1 7 + 10 | 45 chiavi (32 ok + 13 stato), 0 buchi, 0 fantasma |
+| PROTEC_2 | SME 4 + 20, SME 1 16 + 4 | 39 chiavi (28 ok + 10 stato + 1 refuso), 0 buchi, 0 fantasma |
+| SIEMENS_2 | SME 98 + 147, 29/29 pagine | 228/230 chiavi (99,1%), 2 buchi Riservato (regola), 0 inventate accertate |
+
+Le righe sopra con percorsi `TESTS/<doc>/` si riferiscono alle run precedenti
+(spostate in `TESTS/<doc> LEGACY/`): i verdetti restano validi come storia,
+fanno fede i finali NUOVO.
 | PROTEC 2 thinker ON (`TESTS/PROTEC 2 VLM MODIFICATO + THINKER/`) | 4 + 16 misure, 20 + 4 bitinfo | ROSSO: 6 buchi (blocco MCA10/FID perso), 8 nomi diversi (6 `Disponibile` emesse contro V2), catena coerente ma VLM disobbediente. Thinker vietato in produzione |
 | PROTEC 2 VLM 0.001/0.4 (`TESTS/PROTEC 2 VLM MODIFICATO 0.001/`) | 4 + 16 misure, 20 + 4 bitinfo | VERDE identico a 0.01 (39/39, stessi 10 fallback + refuso). Ritorni nulli sotto 0,01: standard resta 0,01/0,4 |
 | PROTEC 2 Top P 0.2 (`TESTS/PROTEC 2 VLM MODIFICATO 0.02/`) | 4 + 16 misure, 20 + 4 bitinfo | VERDE chiavi: 39/39, 0 buchi, 0 fantasma; TEXTON 16 diversi (peggio di 0,4). Standard confermato 0,01/0,4 |
