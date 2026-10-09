@@ -27,7 +27,7 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
 | PROTEC 2 3.8 v2 (guardie finali, `TESTS/PROTEC 2/` agg.) | 4 + 16 misure, 20 + 4 bitinfo | VERDE chiavi: 39/39, 0 buchi, 0 fantasma, catena coerente; 25 `riga_disallineata` tenute; 17 TEXTON da fallback/varianza; nome stazione variabile (`Curtiriso`: domanda cliente) |
 | PROTEC 2 3.8 finale (codice finale, `TESTS/PROTEC 2/` agg.) | 4 + 16 misure, 20 + 4 bitinfo | VERDE confermato: 39/39 (28 ok + 10 stato + 1 refuso), 0 buchi, 0 fantasma, catena coerente; 0 `riga_disallineata` (rami concordi); 10 TEXTON solo fallback onesti; 6 `stati_disallineati` trattenuti |
 | PROTEC 2 VLM 0.01/0.4 (`TESTS/PROTEC 2 VLM MODIFICATO/`) | 4 + 16 misure, 20 + 4 bitinfo | VERDE: 39/39 (28 ok + 10 stato + 1 refuso), 0 buchi, 0 fantasma, catena coerente; 10 TEXTON solo fallback, zero misattribuzioni; refuso persiste (lettura top-token). Setting adottati ovunque |
-| PROTEC 2 thinker ON (`TESTS/PROTEC 2 VLM MODIFICATO + THINKER/`) | 4 + 16 misure, 20 + 4 bitinfo | VERDE identico: 39/39 (28 + 10 + 1), 0 buchi, 0 fantasma. Nessun guadagno vs no-thinker: resta OFF in produzione |
+| PROTEC 2 thinker ON (`TESTS/PROTEC 2 VLM MODIFICATO + THINKER/`) | 4 + 16 misure, 20 + 4 bitinfo | ROSSO: 6 buchi (blocco MCA10/FID perso), 8 nomi diversi (6 `Disponibile` emesse contro V2), catena coerente ma VLM disobbediente. Thinker vietato in produzione |
 | PROTEC 2 shard (pilota) | identico al seriale (varianza VLM a parte) | VERDE meccanismo | |
 | SIEMENS shard-A 3.6 | 9/10 pagine (manca p9 in quel tap), cover assorbita | PARZIALE (F6) | |
 | SIEMENS shard-B 3.6+v15 | 10/10 giri, 35 vars, 0 scarti | VERDE meccanismo (F11, F12, F13) | |
