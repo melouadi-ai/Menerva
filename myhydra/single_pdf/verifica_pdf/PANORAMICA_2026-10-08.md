@@ -66,6 +66,8 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
   (solo l'ordine fisso dei rami evita danni). Fix: ignorare le buste vuote.
   Piccolo, sicuro. IMPLEMENTATO (bc0ec7d). ATTENZIONE: il CONSOLIDATORE sul canvas è fermo a d5dfbfd: re-incollare prima delle prossime run.
 - **Q1 sciolto.** Warning-vs-finale incoerenti = tap di run diverse.
+- **F14 (nuovo, fixato).** Leak cross-stazione: il ramo measures emette le righe placeholder anche sotto la stazione reale (SMA_1: 7 copie); il consolidatore le teneva entrambe, il finale duplicava O2/Stato/TempFumi su E1. Fix: vince placeholder (`copia_reale_da_placeholder`), verificato 44 ok + 1 refuso, 0 buchi, 0 fantasma sul tap reale.
+- **F15 (nuovo, fixato).** Contratto `riga` contraddittorio fra prompt (measures: sole emesse; stati v15: sopravvissute incluse omesse) + stati vincitori senza guardia. Fix: `riga` fisica in tutti e 3 i prompt + `stati_orfani` + copy-as-is rafforzato (refusi). Test `tests/test_single_prompt_contracts.py`.
 
 ## Note di disegno confermate sul campo
 

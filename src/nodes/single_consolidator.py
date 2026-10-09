@@ -180,6 +180,12 @@ def assemble_page(page, page_no):
                   "bitstates rows %s vs measures rows %s" % (
                       sorted(states_righe), sorted(measures_righe)),
                   page_no=page_no, counter="riga_mismatch")
+        orphans = sorted(states_righe - measures_righe) if has_states else []
+        if orphans:
+            _warn(warnings, counters, "stati_orfani",
+                  "bitstates senza measures: righe %s (stati ignorati)" % (
+                      orphans,),
+                  page_no=page_no, counter="stati_orfani")
         if any(isinstance(raw, dict) and raw.get("riga") is None
                for raw in raws):
             _warn(warnings, counters, "riga_mancante",
@@ -269,6 +275,16 @@ def _station_key(meta, page_no, index):
     if ip is not None:
         return ("placeholder", page_no, index)
     return ("anon",)
+
+
+def _identity_key(var):
+    """Identity of a physical row: description + register + bit."""
+    desc = var.get("description")
+    if isinstance(desc, str):
+        desc_key = " ".join(desc.split()).lower()
+    else:
+        desc_key = ""
+    return (desc_key, var.get("modbus_register"), var.get("bit"))
 
 
 def _merge_meta(old, new):
@@ -545,6 +561,29 @@ def consolidate(pages):
                           page_no=page_no, riga=var.get("riga"),
                           counter="registri_applicati")
                 slot["variables"].append(var)
+    for key in order:
+        if not key or key[0] != "placeholder":
+            continue
+        owned = set()
+        for var in acc[key]["variables"]:
+            owned.add(_identity_key(var))
+        for other in order:
+            if other is key or not other or other[0] == "placeholder":
+                continue
+            kept = []
+            for var in acc[other]["variables"]:
+                if _identity_key(var) in owned:
+                    _warn(warnings, counters, "copia_reale_da_placeholder",
+                          "%s @ %s: riga placeholder duplicata su stazione "
+                          "%s, tenuta solo placeholder" % (
+                              var.get("description"),
+                              var.get("modbus_register"),
+                              acc[other]["meta"].get("ip")),
+                          page_no=None, riga=var.get("riga"),
+                          counter="copia_reale_da_placeholder")
+                else:
+                    kept.append(var)
+            acc[other]["variables"] = kept
     stations = []
     for key in order:
         slot = acc[key]

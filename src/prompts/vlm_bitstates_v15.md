@@ -33,8 +33,9 @@ at all: no padding rows, no filler rows, no full enumeration. A page
 with no declared states yields `"rows": []`.
 Emit NOTHING else: no registers, no descriptions, no units, no scales,
 no limits, no kind, no data_type. `riga` is the merge key: 1-based
-position counting ALL surviving rows top-to-bottom starting at 1
-(including the rows you do not emit), numbered exactly like the
+position of the row in the page top-to-bottom starting at 1, counting
+EVERY data row INCLUDING V2/V20/V21-skipped rows (skipped rows leave
+holes), numbered exactly like the
 measures branch so the page assembler can join the state texts onto
 the measures rows. Omitting a null row never renumbers the others.
 

@@ -401,6 +401,21 @@ try:
          + " vs measures rows "
          + str(sorted(measures_righe))})
      counters["riga_mismatch"] = counters["riga_mismatch"] + 1
+    orphans = []
+    okeys = list(states_by_riga.keys())
+    ox = 0
+    while ox < len(okeys):
+     if okeys[ox] not in measures_righe:
+      orphans.append(okeys[ox])
+     ox = ox + 1
+    if len(orphans) > 0:
+     warnings.append({"rule": "stati_orfani",
+         "page_no": page_no, "riga": None,
+         "detail": "bitstates senza measures: righe "
+         + str(sorted(orphans))
+         + " (stati ignorati)"})
+     counters["stati_orfani"] = counters.get(
+      "stati_orfani", 0) + 1
    no_riga = False
    ri = 0
    while ri < len(raws):
@@ -551,7 +566,7 @@ try:
      if diffs:
       suffix = " (vince nomi-bit)"
       if not desc_ok:
-       suffix = " (tengo misure: descrizioni diverse)"
+       suffix = " (tengo misure: descrizioni diverse, possibile shift di riga)"
       warnings.append({"rule": "bit_register_mismatch",
           "page_no": page_no, "riga": riga,
           "detail": "riga " + str(riga) + ": "
@@ -656,6 +671,56 @@ try:
      counters["registri_applicati"] = counters["registri_applicati"] + 1
     slot["variables"].append(var)
   oi = oi + 1
+ xi = 0
+ while xi < len(acc_order):
+  xkey = acc_order[xi]
+  xi = xi + 1
+  if not xkey or xkey[0] != "placeholder":
+   continue
+  xowned = []
+  vi = 0
+  while vi < len(acc[xkey]["variables"]):
+   var = acc[xkey]["variables"][vi]
+   vi = vi + 1
+   xdesc = var.get("description")
+   if isinstance(xdesc, str):
+    xdkey = " ".join(xdesc.split()).lower()
+   else:
+    xdkey = ""
+   xowned.append((xdkey, var.get("modbus_register"),
+    var.get("bit")))
+  xo = 0
+  while xo < len(acc_order):
+   xother = acc_order[xo]
+   xo = xo + 1
+   if xother is xkey or not xother or xother[0] == "placeholder":
+    continue
+   xkept = []
+   vi = 0
+   while vi < len(acc[xother]["variables"]):
+    var = acc[xother]["variables"][vi]
+    vi = vi + 1
+    xdesc = var.get("description")
+    if isinstance(xdesc, str):
+     xdkey = " ".join(xdesc.split()).lower()
+    else:
+     xdkey = ""
+    if (xdkey, var.get("modbus_register"),
+     var.get("bit")) in xowned:
+     warnings.append({"rule": "copia_reale_da_placeholder",
+      "page_no": None,
+      "riga": var.get("riga"),
+      "detail": str(var.get("description"))
+      + " @ "
+      + str(var.get("modbus_register"))
+      + ": riga placeholder duplicata su stazione "
+      + str(acc[xother]["meta"].get("ip"))
+      + ", tenuta solo placeholder"})
+     counters["copia_reale_da_placeholder"] = counters.get(
+      "copia_reale_da_placeholder", 0) + 1
+    else:
+     xkept.append(var)
+   acc[xother]["variables"] = xkept
  ai = 0
  while ai < len(acc_order):
   variables = acc[acc_order[ai]]["variables"]

@@ -10,7 +10,7 @@
 ## Cosa fa, in ordine
 
 1. **Join dei 3 rami per pagina** sulla chiave `riga` (misure + nomi-bit + stati). Righe orfane scartate con warning.
-2. **Precedenza su disaccordo** (fissata qui, mai silenzio): nomi-bit vince bit/registro, misure tutto il resto, stati vince state_on/off. `riga_mismatch` emesso sempre quando gli insiemi `riga` dei rami divergono.
+2. **Precedenza su disaccordo** (fissata qui, mai silenzio): nomi-bit vince bit/registro **solo a descrizioni concordi** (F1b), altrimenti tengono le misure + `riga_disallineata`; misure tutto il resto, stati vince state_on/off. `riga_mismatch` emesso sempre quando gli insiemi `riga` dei rami divergono; righe stati senza measures → `stati_orfani` (mai ignorate in silenzio). Righe placeholder duplicate sulla reale → scartate dalla reale, tenute solo placeholder (`copia_reale_da_placeholder`, F2).
 3. **Join scale per `tag`** (stesso tag, fallback `description == tag/tag+" Raw"`): solo riempimento dei null, mai sovrascrittura.
 4. **Carry-over registro** per stazione in ordine di pagina (voce `registro_applicato`; solo digitali con bit; analogiche senza REG restano null).
 5. **Fold packed** (singoli con registro condiviso → IMPACCATO) e scarti `classify_row` conteggiati per regola (vedi sotto).

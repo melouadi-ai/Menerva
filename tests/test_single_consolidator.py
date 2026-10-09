@@ -337,3 +337,38 @@ def test_busta_vuota_dopo_nomi_non_azzera_bitnames():
     assert by_desc["B"]["modbus_register"] == 40002
     rules = [w["rule"] for w in out["warnings"]]
     assert "riga_mismatch" not in rules
+
+
+def test_copia_reale_di_riga_placeholder_viene_scartata():
+    page = {"page_no": 1, "stations": [
+        _station("192.168.6.20", [
+            _var("CO", 1, reg=40001),
+            _var("Temperatura Fumi", 15, reg=40001),
+        ]),
+        _station("xxx.xxx.xxx.xxx", [
+            _var("Temperatura Fumi", 15, reg=40001),
+        ]),
+    ]}
+    out = consolidate([page])
+    by_ip = {}
+    for s in out["stations"]:
+        by_ip[s["ip"]] = sorted(
+            v["description"] for v in s["variables"])
+    assert by_ip["192.168.6.20"] == ["CO"]
+    assert by_ip["xxx.xxx.xxx.xxx"] == ["Temperatura Fumi"]
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "copia_reale_da_placeholder" in rules
+
+
+def test_stato_senza_misura_avvisa_stati_orfani():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("A", 1, reg=40001), _var("B", 2, reg=40002),
+    ])], "bitstates": {"rows": [
+        {"state_on": "X", "state_off": None, "riga": 9},
+    ]}}
+    out = consolidate([page])
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "stati_orfani" in rules
+    descs = [v["description"] for s in out["stations"]
+             for v in s["variables"]]
+    assert descs == ["A", "B"]

@@ -119,7 +119,10 @@ V10. limit_hour / limit_day: "LIMITE ORARIO"/"VALORE LIMITE MED.
 V11. Comma decimals → dot (706,54 → 706.54). No thousands separator.
 V12. Repeated occurrences of the same variable → separate rows.
 V13. Copy texts AS THEY ARE: no forced capitals, no typo correction,
-     no removal of parentheses with content or words.
+     no removal of parentheses with content or words. Even obvious
+     typos are copied verbatim (e.g. "Ossiegno" stays "Ossiegno",
+     "DIFERENZIALE" stays "DIFERENZIALE"): correction is forbidden,
+     fidelity is tested downstream.
 V14. The INDIRIZZO column (DBX/DBW/DBD, %I, %Q) is reference ONLY:
      never use it as register or as name.
 V15. Rows with data type "Modbus"/"CALCOLATA" and NO register:
@@ -174,9 +177,11 @@ V25. data_type: copy EXACTLY the DataType / Data type / Type / Tipo
   Empty → null.
 - pagina: copy ONLY if a page/folio number is printed on this page;
   otherwise null (the page assembler fills it from the engine counter).
-- riga: 1-based index of the row among EMITTED rows top-to-bottom,
-  starting at 1. Skipped rows (V2/V20/V21) leave no hole: numbering
-  covers emitted rows only, so the three branches join on `riga`.
+- riga: 1-based position of the row in the page top-to-bottom,
+  starting at 1, counting EVERY data row INCLUDING V2/V20/V21-skipped
+  rows. Skipped rows leave holes: omitting a row never renumbers the
+  others. Number exactly like the other branches so the page assembler
+  can join on `riga`.
 
 ## BIT SELF-CHECK (this branch)
 Before assigning any `bit` value, answer internally:

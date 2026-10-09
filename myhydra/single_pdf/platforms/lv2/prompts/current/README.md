@@ -13,6 +13,7 @@ sha256sum vlm_measures_v14.md vlm_bitnames_v14.md vlm_bitstates_v14.md
 
 Hash attesi (byte-identici a `src/prompts/`, che resta la fonte autorevole):
 
-- `vlm_measures_v14.md`: `783982679817d94e0e774496a536d3325d7009de1f59435eb97a1797b75dc16d`
-- `vlm_bitnames_v14.md`: `b134800c1d7d1ec7146ecb5236549ff87813a32daff9323d651088867ea7529a`
+- `vlm_measures_v14.md`: `345e82a5f5ad1de21660efa8218633f44d6630a7d7086666da6a5c2eae531f89`
+- `vlm_bitnames_v14.md`: `f7c74b99ce6dd834db0e81deceb4f66531231aa8b0fc7c12db57d6c79b4a04d4`
 - `vlm_bitstates_v14.md`: `fb96b76f0f4c86aa05e89d6e6ef3182a8069f8a28499fc2308c7b882b8ccf42b`
+- `vlm_bitstates_v15.md`: `58a0c30825afe7574dffd42d6cef983e749614a4ee68299df221b898310be64e`

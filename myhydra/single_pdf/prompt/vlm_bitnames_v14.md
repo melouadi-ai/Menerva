@@ -28,7 +28,9 @@ with this schema:
 Rows are document data rows that survive the V2/V20/V21 skips below.
 Emit NOTHING else: no units, no scales, no limits, no state texts,
 no kind, no data_type, no station fields. `riga` is the merge key:
-1-based index among EMITTED rows top-to-bottom starting at 1, counted
+1-based position of the row in the page top-to-bottom starting at 1,
+counting EVERY data row INCLUDING V2/V20/V21-skipped rows (skipped
+rows leave holes), counted
 exactly like the measures branch so the page assembler can join
 register/bit/descriptions onto the measures rows.
 
