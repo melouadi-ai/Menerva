@@ -22,6 +22,7 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
 | SMA_1 3.8 post-fix (seriale, F1b+D1+v15, `TESTS/SMA 1/`) | E1 45 misure + 30 bitinfo, E1 1 7 misure | VERDE con riserve: 44 ok + 1 refuso su chiavi, 0 buchi; REGRESSIONE F2: 3 misure placeholder duplicate su E1 (O2, Stato impianto, Temperatura Fumi); 37 `riga_disallineata` (F1b tiene misure, corretto); stati assenti (keyword) |
 | SMA_1 3.8 post-fix2 (F14, `TESTS/SMA 1/` agg.) | E1 38 misure + 30 bitinfo, E1 1 7 misure | VERDE: 44 ok + 1 refuso, 0 buchi, 0 fantasma; leak F14 assente sul campo (O2/Stato/TempFumi solo su E1 1) |
 | PROTEC 2 3.8 seriale | 39 vars → 20+4 bitinfo e 16+4, tutto coperto | VERDE | |
+| PROTEC 2 3.8 post-fix (F15, `TESTS/PROTEC 2/`) | 4 + 16 misure, 20 + 4 bitinfo | VERDE con riserva: 39/39 chiavi (27 ok + 12 stato), 0 buchi, 0 fantasma, 40 scarti regola; 12 TEXTON da fallback (ramo stati emette poco su p2: recall VLM, non join); 13 `riga_disallineata` tenute-misure |
 | PROTEC 2 shard (pilota) | identico al seriale (varianza VLM a parte) | VERDE meccanismo | |
 | SIEMENS shard-A 3.6 | 9/10 pagine (manca p9 in quel tap), cover assorbita | PARZIALE (F6) | |
 | SIEMENS shard-B 3.6+v15 | 10/10 giri, 35 vars, 0 scarti | VERDE meccanismo (F11, F12, F13) | |
