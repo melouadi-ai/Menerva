@@ -35,7 +35,7 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
 | SMA_1 | E1 38 + 30 bitinfo, E1 1 7 | 44 ok + 1 refuso, 0 buchi, 0 fantasma |
 | PROTEC_1 | SME 3 + 30, SME 1 7 + 10 | 45 chiavi (32 ok + 13 stato), 0 buchi, 0 fantasma |
 | PROTEC_2 | SME 4 + 20, SME 1 16 + 4 | 39 chiavi (28 ok + 10 stato + 1 refuso), 0 buchi, 0 fantasma |
-| SIEMENS_2 | SME 98 + 147, 29/29 pagine | 228/230 chiavi (99,1%), 2 buchi Riservato (regola), 0 inventate accertate |
+| SIEMENS_2 | SME 104 + 145, 29/29 pagine | 232/237 chiavi (~98%), 5 buchi (3 p9 varianza + 2 Riservato regola), 1 F12, 0 inventate accertate |
 
 Le righe sopra con percorsi `TESTS/<doc>/` si riferiscono alle run precedenti
 (spostate in `TESTS/<doc> LEGACY/`): i verdetti restano validi come storia,
