@@ -157,10 +157,8 @@ try:
     is_names = True
    if "state_on" in rk or "state_off" in rk:
     is_states = True
-  if dict_n == 0 and current is None:
-   continue
   if dict_n == 0:
-   rows = []
+   continue
   if current is None:
    current = {"stations": [], "bitnames": None, "bitstates": None}
    pages.append(current)

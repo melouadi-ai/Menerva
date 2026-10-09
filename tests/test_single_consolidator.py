@@ -315,3 +315,25 @@ def test_dizionario_non_riga_resta_errore_forte():
     import pytest
     with pytest.raises(ValueError):
         consolidate([{"pagina": "x"}])
+
+
+def test_busta_vuota_dopo_nomi_non_azzera_bitnames():
+    page = {"page_no": 1, "stations": [{
+        "name": None, "protocol": "ModBus TCP", "ip": "10.0.0.1",
+        "port": 502, "modbus_id": None, "variables": [
+            _var("A", 1, reg=40001), _var("B", 2, reg=40002),
+        ]}]}
+    names = {"rows": [
+        {"description": "A", "modbus_register": 40001, "bit": None,
+         "riga": 1},
+        {"description": "B", "modbus_register": 40002, "bit": None,
+         "riga": 2},
+    ]}
+    empty_states = {"rows": []}
+    out = consolidate([page, names, empty_states])
+    by_desc = {v["description"]: v
+               for s in out["stations"] for v in s["variables"]}
+    assert by_desc["A"]["modbus_register"] == 40001
+    assert by_desc["B"]["modbus_register"] == 40002
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "riga_mismatch" not in rules

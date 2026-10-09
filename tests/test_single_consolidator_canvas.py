@@ -294,3 +294,30 @@ def test_canvas_shift_tiene_misure_e_avvisa_forte():
     assert "bit_register_mismatch" in rules
     assert "descrizione_mismatch" in rules
     assert "riga_disallineata" in rules
+
+
+def test_canvas_busta_vuota_non_azzera_bitnames():
+    station = {"name": None, "protocol": "ModBus TCP", "ip": "10.0.0.1",
+               "port": 502, "modbus_id": None, "variables": [
+                   {"description": "A", "units": None,
+                    "modbus_register": 40001, "bit": None,
+                    "data_type": None, "kind": "ANALOGICA",
+                    "read_write": "R", "state_on": None, "state_off": None,
+                    "scale_elec_start": None, "scale_elec_end": None,
+                    "scale_eng_start": None, "scale_eng_end": None,
+                    "limit_hour": None, "limit_day": None, "zona": None,
+                    "tag": None, "pagina": None, "riga": 1},
+               ]}
+    blocks = [{"stations": [station]},
+              {"rows": [{"description": "A", "modbus_register": 40001,
+                         "bit": None, "riga": 1}]},
+              {"rows": []}]
+    single = run_script(DOCUMENTED, blocks)
+    canvas = run_script_canvas_model(CANVAS, blocks)
+    assert canvas.pop("tb", None) is None
+    assert single.pop("tb", None) is None
+    assert canvas == single
+    var = canvas["stations"][0]["variables"][0]
+    assert var["modbus_register"] == 40001
+    rules = [w["rule"] for w in canvas["warnings"]]
+    assert "riga_mismatch" not in rules

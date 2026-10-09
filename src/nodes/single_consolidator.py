@@ -438,9 +438,7 @@ def _group_branches(blocks, warnings, counters):
         has_state_keys = any(
             "state_on" in r or "state_off" in r for r in dict_rows)
         if not dict_rows:
-            if current is None:
-                continue
-            rows = []
+            continue
         if current is None:
             current = _open()
             _warn(warnings, counters, "righe_senza_misure",
