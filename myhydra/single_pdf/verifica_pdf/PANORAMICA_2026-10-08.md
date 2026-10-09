@@ -25,7 +25,8 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
 | SIEMENS shard-A 3.6 | 9/10 pagine (manca p9 in quel tap), cover assorbita | PARZIALE (F6) | |
 | SIEMENS shard-B 3.6+v15 | 10/10 giri, 35 vars, 0 scarti | VERDE meccanismo (F11, F12, F13) | |
 | SIEMENS completa 3.8 pre-fix (shard, codice senza fix) | 91 misure + 144 bitinfo, 1 stazione (`JSON SIEMENS NUOVO.txt`) | VERDE con riserve: copertura nomi 215/224 (96%), 0 inventate, 9 buchi veri, ~15 shift (F1), 5 spare da verificare |
-| SIEMENS completa 3.8 post-fix (shard, F1b+D1+v15, `TESTS/SIEMENS/`) | 105 misure + 147 bitinfo, 1 stazione | VERDE con riserve: 6 buchi veri, 0 inventate, 14 `riga_disallineata` + 19 `bit_register_mismatch` (shift ora segnalati), 5 spare F12, stati da verificare | |
+| SIEMENS completa 3.8 post-fix (shard, F1b+D1+v15, `TESTS/SIEMENS/`) | 105 misure + 147 bitinfo, 1 stazione | VERDE con riserve: 6 buchi veri, 0 inventate, 14 `riga_disallineata` + 19 `bit_register_mismatch` (shift ora segnalati), 5 spare F12, stati da verificare |
+| PROTEC 1 3.8 post-fix (F14/F15, `TESTS/PROTEC 1/`) | 3 + 7 misure, 30 + 10 bitinfo | VERDE: 45/45 chiavi, 0 buchi, 0 inventate, 44 spare ok; numerazione fisica concorde fra rami (1-48/47/46); TEXTON 16→7 diversi; 14 `riga_disallineata` tenute-misure | |
 
 ## Ritrovamenti
 
