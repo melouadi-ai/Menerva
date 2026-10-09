@@ -29,6 +29,7 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
 | PROTEC 2 VLM 0.01/0.4 (`TESTS/PROTEC 2 VLM MODIFICATO/`) | 4 + 16 misure, 20 + 4 bitinfo | VERDE: 39/39 (28 ok + 10 stato + 1 refuso), 0 buchi, 0 fantasma, catena coerente; 10 TEXTON solo fallback, zero misattribuzioni; refuso persiste (lettura top-token). Setting adottati ovunque |
 | PROTEC 2 thinker ON (`TESTS/PROTEC 2 VLM MODIFICATO + THINKER/`) | 4 + 16 misure, 20 + 4 bitinfo | ROSSO: 6 buchi (blocco MCA10/FID perso), 8 nomi diversi (6 `Disponibile` emesse contro V2), catena coerente ma VLM disobbediente. Thinker vietato in produzione |
 | PROTEC 2 VLM 0.001/0.4 (`TESTS/PROTEC 2 VLM MODIFICATO 0.001/`) | 4 + 16 misure, 20 + 4 bitinfo | VERDE identico a 0.01 (39/39, stessi 10 fallback + refuso). Ritorni nulli sotto 0,01: standard resta 0,01/0,4 |
+| PROTEC 2 VLM 0.02 (`TESTS/PROTEC 2 VLM MODIFICATO 0.02/`) | 4 + 16 misure, 20 + 4 bitinfo | VERDE chiavi: 39/39, 0 buchi, 0 fantasma; TEXTON 16 diversi (peggio di 0,4). Standard confermato 0,01/0,4 |
 | PROTEC 2 shard (pilota) | identico al seriale (varianza VLM a parte) | VERDE meccanismo | |
 | SIEMENS shard-A 3.6 | 9/10 pagine (manca p9 in quel tap), cover assorbita | PARZIALE (F6) | |
 | SIEMENS shard-B 3.6+v15 | 10/10 giri, 35 vars, 0 scarti | VERDE meccanismo (F11, F12, F13) | |
