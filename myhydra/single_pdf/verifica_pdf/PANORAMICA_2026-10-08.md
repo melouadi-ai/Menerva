@@ -30,13 +30,13 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
 - **D1 (bloccante, test parcheggiato).** Creator: dedup packed per `(desc, reg)`
   senza bit (`src/nodes/json_creator.py:566`) — PROTEC 1 perde i bit 10/11 di
   40007 pur presenti nel PDF. Fix: chiave + bit. Tocca src + tripla v15 +
-  coppia edge13 + hash. Test rosso già scritto.
+  coppia edge13 + hash. IMPLEMENTATO (fd623fe).
 - **F1 (bloccante).** Rami in disaccordo d'ordine/conta → join per `riga`
   applica registri/bit dei nomi sulle righe sbagliate a cascata. Casi puliti:
   SIEMENS p4 (measures salta 40007+40010, shifta tutto), Server 02 inghiottita
   (nome misure + reg nomi). Fix (F1b): applicare reg/bit dai nomi **solo se le
   descrizioni coincidono** (o desc nomi nulla); altrimenti tenere misure +
-  warning forte. Tocca src + 3 copie consolidatore + test.
+  warning forte. Tocca src + 3 copie consolidatore + test. IMPLEMENTATO (2f5db24).
 - **F2.** Placeholder con variabili promosso a stazione ADAS (`E1 1` + IP finto
   nel DRIVERCONFIG). Merge o scarto: da disegnare.
 - **F3.** 3.8 non emette le CALCOLATA (NOX/H2O/...). ADAS netto invariato,
@@ -62,7 +62,7 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
   i composti ("Riserva X"). Domanda di regola (cliente? o contains?).
 - **F13 (fragilità).** Busta rows vuota → assegnata a bitnames per l'`else`
   (solo l'ordine fisso dei rami evita danni). Fix: ignorare le buste vuote.
-  Piccolo, sicuro, prima della completa SIEMENS.
+  Piccolo, sicuro. IMPLEMENTATO (bc0ec7d). ATTENZIONE: il CONSOLIDATORE sul canvas è fermo a d5dfbfd: re-incollare prima delle prossime run.
 - **Q1 sciolto.** Warning-vs-finale incoerenti = tap di run diverse.
 
 ## Note di disegno confermate sul campo
