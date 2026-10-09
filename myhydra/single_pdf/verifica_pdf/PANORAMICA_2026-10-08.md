@@ -79,6 +79,7 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
 - **Q1 sciolto.** Warning-vs-finale incoerenti = tap di run diverse.
 - **F14 (nuovo, fixato).** Leak cross-stazione: il ramo measures emette le righe placeholder anche sotto la stazione reale (SMA_1: 7 copie); il consolidatore le teneva entrambe, il finale duplicava O2/Stato/TempFumi su E1. Fix: vince placeholder (`copia_reale_da_placeholder`), verificato 44 ok + 1 refuso, 0 buchi, 0 fantasma sul tap reale.
 - **F15 (nuovo, fixato).** Contratto `riga` contraddittorio fra prompt (measures: sole emesse; stati v15: sopravvissute incluse omesse) + stati vincitori senza guardia. Fix: `riga` fisica in tutti e 3 i prompt + `stati_orfani` + copy-as-is rafforzato (refusi). Test `tests/test_single_prompt_contracts.py`.
+- **F17 (nuovo, fixato).** TEXTON da fallback/varianza: gli stati viaggiavano con solo `riga` (numero fragile). Fix B1: `description` come chiave di controllo nel ramo stati (V28), stati applicati solo a descrizioni concordi (`stati_disallineati` altrimenti). Fix B2: voto di maggioranza — nomi-bit e stati concordi contro misure ripristinano la versione fedele (`refuso_maggioranza`), F1b si rivaluta da solo. Guard `CANVAS_MAX_BYTES` portato a 32 KB (misura empirica 6/10, non stima).
 
 ## Note di disegno confermate sul campo
 

@@ -249,6 +249,19 @@ def assemble_page(page, page_no):
             if has_names and _is_int(riga) and riga in names_by_riga:
                 nb = names_by_riga[riga]
                 nb_desc = _description_of(nb)
+                st_desc = None
+                if has_states and _is_int(riga) and riga in states_by_riga:
+                    st_desc = _description_of(states_by_riga[riga])
+                if (st_desc is not None and nb_desc is not None
+                        and st_desc == nb_desc
+                        and st_desc != var.get("description")):
+                    _warn(warnings, counters, "refuso_maggioranza",
+                          "riga %s: misure=%r contro nomi-bit=stati=%r, "
+                          "tengo maggioranza (2 rami)" % (
+                              riga, var.get("description"), nb_desc),
+                          page_no=page_no, riga=riga,
+                          counter="refuso_maggioranza")
+                    var["description"] = nb_desc
                 desc_ok = (nb_desc is None
                            or nb_desc == var.get("description"))
                 diffs = []
@@ -298,17 +311,27 @@ def assemble_page(page, page_no):
                               counter="refuso_sospetto")
             if has_states and _is_int(riga) and riga in states_by_riga:
                 st = states_by_riga[riga]
-                for field in ("state_on", "state_off"):
-                    if (var.get(field) is not None
-                            and st.get(field) != var.get(field)):
-                        _warn(warnings, counters, "stati_mismatch",
-                              "riga %s: %s misure=%r stati=%r "
-                              "(vince stati)" % (
-                                  riga, field, var.get(field),
-                                  st.get(field)),
-                              page_no=page_no, riga=riga,
-                              counter="stati_mismatch")
-                    var[field] = st.get(field)
+                st_desc = _description_of(st)
+                if (st_desc is not None
+                        and st_desc != var.get("description")):
+                    _warn(warnings, counters, "stati_disallineati",
+                          "riga %s: misure=%r contro stati=%r, "
+                          "stati ignorati (tengo misure)" % (
+                              riga, var.get("description"), st_desc),
+                          page_no=page_no, riga=riga,
+                          counter="stati_disallineati")
+                else:
+                    for field in ("state_on", "state_off"):
+                        if (var.get(field) is not None
+                                and st.get(field) != var.get(field)):
+                            _warn(warnings, counters, "stati_mismatch",
+                                  "riga %s: %s misure=%r stati=%r "
+                                  "(vince stati)" % (
+                                      riga, field, var.get(field),
+                                      st.get(field)),
+                                  page_no=page_no, riga=riga,
+                                  counter="stati_mismatch")
+                        var[field] = st.get(field)
             variables.append(var)
         items.append((meta, variables))
     return items, warnings, counters

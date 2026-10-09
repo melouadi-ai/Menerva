@@ -1,8 +1,9 @@
 """Igiene canvas Single PDF: copie incollabili sotto budget e standalone (Task 8).
 
 Le copie canvas in myhydra/single_pdf/platforms/ sono cio' che si incolla
-nei nodi MyHydra: devono restare sotto il budget di paste (28 KB, sotto la
-soglia critica dei ~32 KB osservata sul canvas), senza def/class/lambda,
+nei nodi MyHydra: devono restare sotto il budget di paste (32 KB, pari
+alla misura empirica: 34.365 byte = rosso, 32.766 = verde il 6/10/2026),
+senza def/class/lambda,
 con ERROR JSON mai blank dove il contratto lo prevede e con le guardie
 (copertura + linkage) attive nella copia incollata, non solo in src/.
 """
@@ -34,7 +35,7 @@ def test_canvas_copies_sotto_budget_e_standalone():
     for path in CANVAS_COPIES:
         sizes[path.name] = path.stat().st_size
     max_size = max(sizes.values())
-    assert max_size < 28 * 1024
+    assert max_size < 32 * 1024
 
 
 def test_canvas_copies_byte_identical_to_store():

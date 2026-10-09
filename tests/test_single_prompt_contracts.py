@@ -28,3 +28,9 @@ def test_fedelta_refusi_nel_ramo_misure():
     text = (PROMPTS / "vlm_measures_v14.md").read_text(encoding="utf-8")
     assert "Ossiegno" in text
     assert "correction is forbidden" in text
+
+
+def test_chiave_descrittiva_negli_stati():
+    text = _flat("vlm_bitstates_v15.md")
+    assert "DESCRIPTION CHECK-KEY" in text
+    assert '"description"' in text

@@ -610,6 +610,43 @@ try:
                                     continue
                                 if nb_desc is not None:
                                     break
+                    xst = None
+                    xst_desc = None
+                    if (has_states and type(riga) is int
+                            and riga in states_by_riga):
+                        xst = states_by_riga[riga]
+                        xst_desc = xst.get("description", None)
+                    if xst_desc is None and xst is not None:
+                        try:
+                            xskeys = xst.keys()
+                        except Exception:
+                            xskeys = []
+                        xsi = 0
+                        while xsi < len(list(xskeys)):
+                            xsk = list(xskeys)[xsi]
+                            xsi = xsi + 1
+                            if (isinstance(xsk, str)
+                                    and xsk.lower() == "description"):
+                                try:
+                                    xst_desc = xst.get(xsk)
+                                except Exception:
+                                    continue
+                                if xst_desc is not None:
+                                    break
+                    if (xst_desc is not None and nb_desc is not None
+                            and xst_desc == nb_desc
+                            and xst_desc != var.get("description")):
+                        warnings.append({"rule": "refuso_maggioranza",
+                                         "page_no": page_no, "riga": riga,
+                                         "detail": "riga " + str(riga)
+                                         + ": misure="
+                                         + repr(var.get("description"))
+                                         + " contro nomi-bit=stati="
+                                         + repr(nb_desc)
+                                         + ", tengo maggioranza (2 rami)"})
+                        counters["refuso_maggioranza"] = counters.get(
+                            "refuso_maggioranza", 0) + 1
+                        var["description"] = nb_desc
                     desc_ok = (nb_desc is None
                         or nb_desc == var.get("description"))
                     diffs = []
@@ -701,20 +738,51 @@ try:
                 if (has_states and type(riga) is int
                         and riga in states_by_riga):
                     st = states_by_riga[riga]
-                    for sf in ("state_on", "state_off"):
-                        if (var.get(sf) is not None
-                                and st.get(sf) != var.get(sf)):
-                            warnings.append({"rule": "stati_mismatch",
-                                             "page_no": page_no,
-                                             "riga": riga,
-                                             "detail": "riga " + str(riga)
-                                             + ": " + sf + " misure="
-                                             + str(var.get(sf)) + " stati="
-                                             + str(st.get(sf))
-                                             + " (vince stati)"})
-                            counters["stati_mismatch"] = counters.get(
-                                "stati_mismatch", 0) + 1
-                        var[sf] = st.get(sf)
+                    xst_desc = st.get("description", None)
+                    if xst_desc is None:
+                        try:
+                            xskeys = st.keys()
+                        except Exception:
+                            xskeys = []
+                        xsi = 0
+                        while xsi < len(list(xskeys)):
+                            xsk = list(xskeys)[xsi]
+                            xsi = xsi + 1
+                            if (isinstance(xsk, str)
+                                    and xsk.lower() == "description"):
+                                try:
+                                    xst_desc = st.get(xsk)
+                                except Exception:
+                                    continue
+                                if xst_desc is not None:
+                                    break
+                    if (xst_desc is not None
+                            and xst_desc != var.get("description")):
+                        warnings.append({"rule": "stati_disallineati",
+                                         "page_no": page_no, "riga": riga,
+                                         "detail": "riga " + str(riga)
+                                         + ": misure="
+                                         + repr(var.get("description"))
+                                         + " contro stati="
+                                         + repr(xst_desc)
+                                         + ", stati ignorati (tengo misure)"})
+                        counters["stati_disallineati"] = counters.get(
+                            "stati_disallineati", 0) + 1
+                    else:
+                        for sf in ("state_on", "state_off"):
+                            if (var.get(sf) is not None
+                                    and st.get(sf) != var.get(sf)):
+                                warnings.append({"rule": "stati_mismatch",
+                                                 "page_no": page_no,
+                                                 "riga": riga,
+                                                 "detail": "riga " + str(riga)
+                                                 + ": " + sf + " misure="
+                                                 + str(var.get(sf)) + " stati="
+                                                 + str(st.get(sf))
+                                                 + " (vince stati)"})
+                                counters["stati_mismatch"] = counters.get(
+                                    "stati_mismatch", 0) + 1
+                            var[sf] = st.get(sf)
                 kept.append(var)
             # Chiave stazione: reale per IP, mai fusi i placeholder.
             ip = None

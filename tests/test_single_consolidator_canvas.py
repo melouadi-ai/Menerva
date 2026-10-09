@@ -16,7 +16,9 @@ REPO = Path(__file__).parent.parent
 DOCUMENTED = REPO / "myhydra" / "single_pdf" / "pytools" / "consolidator.py"
 CANVAS = REPO / "myhydra" / "single_pdf" / "pytools" / "consolidator_canvas.py"
 
-CANVAS_MAX_BYTES = 28 * 1024
+# Limite empirico MyHydra (6/10/2026): 34.365 byte = rosso,
+# 32.766 = verde. Margine sotto il verde osservato.
+CANVAS_MAX_BYTES = 32 * 1024
 
 
 def fixture_pages():

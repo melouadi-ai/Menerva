@@ -435,3 +435,51 @@ def test_sottocampionamento_conta_anche_i_bit_dei_nomi():
     out = consolidate([page])
     rules = [w["rule"] for w in out["warnings"]]
     assert "sospetto_sottocampionamento" in rules
+
+
+def _page_state_join(measures_desc, names_desc, states_desc):
+    vars_ = [_var(measures_desc, 1, reg=40001, bit=0,
+                  kind="DIGITALE_IMPACCATO")]
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", vars_)],
+            "bitnames": {"rows": [
+                {"description": names_desc, "modbus_register": 40001,
+                 "bit": 0, "riga": 1}]},
+            "bitstates": {"rows": [
+                {"description": states_desc, "state_on": "ON-X",
+                 "state_off": None, "riga": 1}]}}
+    return consolidate([page])
+
+
+def test_stati_con_descrizione_diversa_non_applicati():
+    out = _page_state_join("Lampada Manutenzione", "Lampada Manutenzione",
+                           "Allarme Generatore")
+    var = out["stations"][0]["variables"][0]
+    assert var["state_on"] is None
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "stati_disallineati" in rules
+
+
+def test_stati_con_descrizione_concorde_applicati():
+    out = _page_state_join("Lampada Manutenzione", "Lampada Manutenzione",
+                           "Lampada Manutenzione")
+    var = out["stations"][0]["variables"][0]
+    assert var["state_on"] == "ON-X"
+
+
+def test_stati_senza_descrizione_restano_applicati():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Lampada", 1, reg=40001, bit=0,
+             kind="DIGITALE_IMPACCATO")])], "bitstates": {"rows": [
+        {"state_on": "ON-X", "state_off": None, "riga": 1}]}}
+    out = consolidate([page])
+    assert out["stations"][0]["variables"][0]["state_on"] == "ON-X"
+
+
+def test_maggioranza_due_rami_ripristina_fedele():
+    out = _page_state_join("Allarme 1 Ossigeno umido",
+                           "Allarme 1 Ossiegno umido",
+                           "Allarme 1 Ossiegno umido")
+    var = out["stations"][0]["variables"][0]
+    assert var["description"] == "Allarme 1 Ossiegno umido"
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "refuso_maggioranza" in rules
