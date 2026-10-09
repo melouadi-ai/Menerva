@@ -70,6 +70,11 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
   stessi registri/bit/riga della verità, numerazione fisica concorde.
   Causa: varianza o interferenza di run completa, non mislettura sistematica.
   Nessun fix codice.
+- **F18 (regressione mia, fixata).** Il V28 (description negli stati) ha reso
+  ogni blocco stati "misto" e il grouper li assegnava ai nomi: stati persi,
+  TEXTON P2 regrediti 12→21. Fix: instradamento per riga (chiavi stato
+  vincono), split con avviso se veramente misto. Replay: 28 ok + 10 fallback
+  onesti, zero misattribuzioni.
 - **F11.** Errore nomi applicato per precedenza (40117 vs 40119). Coperto da F1b.
 - **F12.** `Riserva STATI LOGICI` → misura 40030. V2 match-esatto lascia passare
   i composti ("Riserva X"). Domanda di regola (cliente? o contains?).

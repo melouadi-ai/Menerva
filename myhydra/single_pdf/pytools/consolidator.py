@@ -176,30 +176,67 @@ try:
                              "detail": str(dict_n) + " righe ramo senza pagina misure: in attesa di join"})
             counters["righe_senza_misure"] = counters.get(
                 "righe_senza_misure", 0) + 1
-        if is_names and not is_states:
+        if is_states:
+            state_rows = []
+            name_rows = []
+            ri = 0
+            while ri < len(rows):
+                rk = rows[ri]
+                ri = ri + 1
+                if not isinstance(rk, dict):
+                    continue
+                if "state_on" in rk or "state_off" in rk:
+                    state_rows.append(rk)
+                else:
+                    name_rows.append(rk)
+            if len(name_rows) > 0:
+                warnings.append({"rule": "ramo_misto", "page_no": None,
+                                 "riga": None,
+                                 "detail": "blocco rows con "
+                                 + str(len(state_rows)) + " righe stati e "
+                                 + str(len(name_rows)) + " righe nomi: "
+                                 "instradate per riga"})
+                counters["ramo_misto"] = counters.get("ramo_misto", 0) + 1
+                if fragment:
+                    ex = current.get("bitnames")
+                    if isinstance(ex, dict) and isinstance(ex.get("rows"), list):
+                        ex["rows"] = ex["rows"] + name_rows
+                    else:
+                        current["bitnames"] = {"rows": name_rows}
+                else:
+                    current["bitnames"] = {"rows": name_rows}
+            if fragment:
+                ex = current.get("bitstates")
+                if isinstance(ex, dict) and isinstance(ex.get("rows"), list):
+                    ex["rows"] = ex["rows"] + state_rows
+                else:
+                    current["bitstates"] = {"rows": state_rows}
+            else:
+                current["bitstates"] = {"rows": state_rows}
+        elif is_names:
             bslot = "bitnames"
-        elif is_states and not is_names:
-            bslot = "bitstates"
-        elif is_names and is_states:
-            bslot = "bitnames"
-            warnings.append({"rule": "ramo_misto", "page_no": None,
-                             "riga": None,
-                             "detail": "blocco rows con chiavi nomi e stati: assegnato a nomi"})
-            counters["ramo_misto"] = counters.get("ramo_misto", 0) + 1
+            if fragment:
+                ex = current.get(bslot)
+                if isinstance(ex, dict) and isinstance(ex.get("rows"), list):
+                    ex["rows"] = ex["rows"] + rows
+                else:
+                    current[bslot] = {"rows": rows}
+            else:
+                current[bslot] = {"rows": rows}
         elif dict_n > 0:
             raise ValueError("blocco rows non riconoscibile in posizione " + str(bi)
                 + ": chiavi " + str(sorted(set(
                     k for r in rows if isinstance(r, dict) for k in r))))
         else:
             bslot = "bitnames"
-        if fragment:
-            ex = current.get(bslot)
-            if isinstance(ex, dict) and isinstance(ex.get("rows"), list):
-                ex["rows"] = ex["rows"] + rows
+            if fragment:
+                ex = current.get(bslot)
+                if isinstance(ex, dict) and isinstance(ex.get("rows"), list):
+                    ex["rows"] = ex["rows"] + rows
+                else:
+                    current[bslot] = {"rows": rows}
             else:
                 current[bslot] = {"rows": rows}
-        else:
-            current[bslot] = {"rows": rows}
     if not isinstance(pages, list):
         raise ValueError("Il consolidatore attende una lista di pagine.")
     # V2: scarti per match esatto (case-insensitive dopo strip).

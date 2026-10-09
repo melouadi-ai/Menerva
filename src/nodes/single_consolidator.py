@@ -523,11 +523,6 @@ def _group_branches(blocks, warnings, counters):
                     ", ".join(sorted(set(
                         type(block[k]).__name__ for k in block)))))
         dict_rows = [r for r in rows if isinstance(r, dict)]
-        has_names_keys = any(
-            "description" in r or "modbus_register" in r or "bit" in r
-            for r in dict_rows)
-        has_state_keys = any(
-            "state_on" in r or "state_off" in r for r in dict_rows)
         if not dict_rows:
             continue
         if current is None:
@@ -536,21 +531,27 @@ def _group_branches(blocks, warnings, counters):
                   "%d righe ramo senza pagina misure: in attesa di join"
                   % len(dict_rows),
                   counter="righe_senza_misure")
-        if has_names_keys and not has_state_keys:
+        state_rows = [r for r in dict_rows
+                      if "state_on" in r or "state_off" in r]
+        if not state_rows:
+            has_names_keys = any(
+                "description" in r or "modbus_register" in r or "bit" in r
+                for r in dict_rows)
+            if not has_names_keys:
+                raise ValueError(
+                    "blocco rows non riconoscibile: chiavi %s" % sorted(
+                        set(k for r in dict_rows for k in r)))
             _attach_branch(current, "bitnames", rows, fragment)
-        elif has_state_keys and not has_names_keys:
-            _attach_branch(current, "bitstates", rows, fragment)
-        elif has_names_keys and has_state_keys:
-            _attach_branch(current, "bitnames", rows, fragment)
-            _warn(warnings, counters, "ramo_misto",
-                  "blocco rows con chiavi nomi e stati: assegnato a nomi",
-                  counter="ramo_misto")
-        elif dict_rows:
-            raise ValueError(
-                "blocco rows non riconoscibile: chiavi %s" % sorted(set(
-                    k for r in dict_rows for k in r)))
         else:
-            _attach_branch(current, "bitnames", rows, fragment)
+            name_rows = [r for r in dict_rows if r not in state_rows]
+            if name_rows:
+                _warn(warnings, counters, "ramo_misto",
+                      "blocco rows con %d righe stati e %d righe nomi: "
+                      "instradate per riga" % (len(state_rows),
+                                               len(name_rows)),
+                      counter="ramo_misto")
+                _attach_branch(current, "bitnames", name_rows, fragment)
+            _attach_branch(current, "bitstates", state_rows, fragment)
     cleaned = []
     for page in pages:
         if page.get("_raw_group"):

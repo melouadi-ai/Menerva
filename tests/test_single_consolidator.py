@@ -269,12 +269,13 @@ def test_input_spazzatura_resta_errore_mai_output_vuoto():
         consolidate("ciao mondo ]]]")
 
 
-def test_blocco_rows_misto_avvisato_e_assegnato_a_nomi():
+def test_blocco_rows_misto_con_chiavi_stato_va_a_stati():
+    # Contratto V28: le chiavi di stato vincono sulle chiavi nome.
     out = consolidate([{"stations": []}, {"rows": [
         {"description": "X", "state_on": "On", "riga": 1},
     ]}])
     rules = [w["rule"] for w in out["warnings"]]
-    assert "ramo_misto" in rules
+    assert "ramo_misto" not in rules
 
 
 def test_blocco_rows_irriconoscibile_resta_errore_forte():
@@ -483,3 +484,27 @@ def test_maggioranza_due_rami_ripristina_fedele():
     assert var["description"] == "Allarme 1 Ossiegno umido"
     rules = [w["rule"] for w in out["warnings"]]
     assert "refuso_maggioranza" in rules
+
+
+def test_blocco_stati_v28_va_a_stati_senza_avvisi():
+    measures = {"stations": [_station("10.0.0.1", [
+        _var("Lampada", 1, reg=40001, bit=0,
+             kind="DIGITALE_IMPACCATO")])]}
+    states = {"rows": [
+        {"description": "Lampada", "state_on": "ON-X",
+         "state_off": None, "riga": 1}]}
+    out = consolidate([measures, states])
+    assert out["stations"][0]["variables"][0]["state_on"] == "ON-X"
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "ramo_misto" not in rules
+    assert "stati_disallineati" not in rules
+
+
+def test_blocco_veramente_misto_viene_splittao_e_avvisato():
+    out = consolidate([{"stations": []}, {"rows": [
+        {"description": "A", "modbus_register": 40001, "bit": 0,
+         "riga": 1},
+        {"description": "B", "state_on": "On", "riga": 2},
+    ]}])
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "ramo_misto" in rules
