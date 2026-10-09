@@ -372,3 +372,66 @@ def test_stato_senza_misura_avvisa_stati_orfani():
     descs = [v["description"] for s in out["stations"]
              for v in s["variables"]]
     assert descs == ["A", "B"]
+
+
+def test_stati_radi_avvisano_sottocampionamento():
+    page = {"page_no": 2, "stations": [_station("10.0.0.1", [
+        _var("A", 1, reg=40001, bit=0, kind="DIGITALE_IMPACCATO"),
+        _var("B", 2, reg=40001, bit=1, kind="DIGITALE_IMPACCATO"),
+        _var("C", 3, reg=40001, bit=2, kind="DIGITALE_IMPACCATO"),
+        _var("D", 4, reg=40001, bit=3, kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": [
+        {"state_on": "X", "state_off": None, "riga": 1},
+    ]}}
+    out = consolidate([page])
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "sospetto_sottocampionamento" in rules
+
+
+def test_stati_assenti_non_avvisano_sottocampionamento():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("A", 1, reg=40001, bit=0, kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": []}}
+    out = consolidate([page])
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "sospetto_sottocampionamento" not in rules
+
+
+def test_coppia_typo_su_stessa_riga_avvisa_refuso():
+    page = {"page_no": 1, "stations": [{
+        "name": None, "protocol": "ModBus TCP", "ip": "10.0.0.1",
+        "port": 502, "modbus_id": None, "variables": [
+            _var("Allarme 1 Ossigeno umido", 13, reg=40001, bit=0,
+                 kind="DIGITALE_IMPACCATO"),
+        ]}], "bitnames": {"rows": [
+            {"description": "Allarme 1 Ossiegno umido",
+             "modbus_register": 40001, "bit": 0, "riga": 13},
+        ]}}
+    out = consolidate([page])
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "refuso_sospetto" in rules
+    var = out["stations"][0]["variables"][0]
+    assert var["modbus_register"] == 40001
+
+
+def test_sottocampionamento_conta_anche_i_bit_dei_nomi():
+    page = {"page_no": 2, "stations": [_station("10.0.0.1", [
+        _var("A", 1, reg=40001, bit=0, kind="DIGITALE_IMPACCATO"),
+        _var("B", 2, reg=None, bit=None, kind="ANALOGICA"),
+        _var("C", 3, reg=None, bit=None, kind="ANALOGICA"),
+        _var("D", 4, reg=None, bit=None, kind="ANALOGICA"),
+    ])], "bitnames": {"rows": [
+        {"description": "A", "modbus_register": 40001, "bit": 0,
+         "riga": 1},
+        {"description": "B", "modbus_register": 40001, "bit": 1,
+         "riga": 2},
+        {"description": "C", "modbus_register": 40001, "bit": 2,
+         "riga": 3},
+        {"description": "D", "modbus_register": 40001, "bit": 3,
+         "riga": 4},
+    ]}, "bitstates": {"rows": [
+        {"state_on": "X", "state_off": None, "riga": 1},
+    ]}}
+    out = consolidate([page])
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "sospetto_sottocampionamento" in rules

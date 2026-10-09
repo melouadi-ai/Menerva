@@ -416,6 +416,40 @@ try:
          + " (stati ignorati)"})
      counters["stati_orfani"] = counters.get(
       "stati_orfani", 0) + 1
+    digital_righe = set()
+    ri2 = 0
+    while ri2 < len(raws):
+     rraw = raws[ri2]
+     ri2 = ri2 + 1
+     if not isinstance(rraw, dict):
+      continue
+     rriga = rraw.get("riga")
+     if type(rriga) is not int:
+      continue
+     rkind = rraw.get("kind")
+     if isinstance(rkind, str) and rkind.startswith("DIGITALE"):
+      digital_righe.add(rriga)
+     elif type(rraw.get("bit")) is int:
+      digital_righe.add(rriga)
+    if has_names:
+     xnomi = list(names_by_riga.keys())
+     xni = 0
+     while xni < len(xnomi):
+      xnr = names_by_riga[xnomi[xni]]
+      xni = xni + 1
+      if type(xnr.get("bit")) is int:
+       digital_righe.add(xnomi[xni - 1])
+    if (len(digital_righe) > 0 and len(states_by_riga) > 0
+     and len(states_by_riga) * 2 < len(digital_righe)):
+     warnings.append({"rule": "sospetto_sottocampionamento",
+         "page_no": page_no, "riga": None,
+         "detail": "bitstates "
+         + str(len(states_by_riga))
+         + " su " + str(len(digital_righe))
+         + " righe digitali: il ramo stati "
+         "emette troppo poco, TEXTON da keyword"})
+     counters["sospetto_sottocampionamento"] = counters.get(
+      "sospetto_sottocampionamento", 0) + 1
    no_riga = False
    ri = 0
    while ri < len(raws):
@@ -581,8 +615,8 @@ try:
        warnings.append({"rule": "riga_disallineata",
            "page_no": page_no, "riga": riga,
            "detail": "riga " + str(riga)
-           + ": misure=" + str(var.get("description"))
-           + " contro nomi-bit=" + str(nb_desc)
+           + ": misure=" + repr(var.get("description"))
+           + " contro nomi-bit=" + repr(nb_desc)
            + ", tengo misure"})
        counters["riga_disallineata"] = counters.get(
         "riga_disallineata", 0) + 1
@@ -591,11 +625,54 @@ try:
           "page_no": page_no, "riga": riga,
           "detail": "riga " + str(riga)
           + ": misure="
-          + str(var.get("description"))
-          + " nomi-bit=" + str(nb_desc)
+          + repr(var.get("description"))
+          + " nomi-bit=" + repr(nb_desc)
           + " (vince misure)"})
       counters["descrizione_mismatch"] = counters.get(
        "descrizione_mismatch", 0) + 1
+      if (nb.get("modbus_register")
+       == var.get("modbus_register")
+       and nb.get("bit") == var.get("bit")
+       and isinstance(nb_desc, str)
+       and isinstance(var.get("description"),
+        str)):
+       xna = []
+       xup = nb_desc.upper()
+       xui = 0
+       while xui < len(xup):
+        if xup[xui].isalnum():
+         xna.append(xup[xui])
+        xui = xui + 1
+       xnb = []
+       xup = var.get("description").upper()
+       xui = 0
+       while xui < len(xup):
+        if xup[xui].isalnum():
+         xnb.append(xup[xui])
+        xui = xui + 1
+       xsa = "".join(xna)
+       xsb = "".join(xnb)
+       xtypo = False
+       if (xsa != xsb and len(xsa) >= 4
+        and len(xsb) >= 4
+        and abs(len(xsa) - len(xsb)) <= 2):
+        if xsa[:3] == xsb[:3] and xsa[-3:] == xsb[-3:]:
+         xtypo = True
+        elif xsa in xsb or xsb in xsa:
+         xtypo = True
+       if xtypo:
+        warnings.append({"rule": "refuso_sospetto",
+         "page_no": page_no,
+         "riga": riga,
+         "detail": "riga " + str(riga)
+         + ": misure="
+         + repr(var.get("description"))
+         + " contro nomi-bit="
+         + repr(nb_desc)
+         + ", stesso registro: una delle due versioni "
+         + "corregge un refuso (tenuta misure)"})
+        counters["refuso_sospetto"] = counters.get(
+         "refuso_sospetto", 0) + 1
     if (has_states and type(riga) is int
       and riga in states_by_riga):
      st = states_by_riga[riga]

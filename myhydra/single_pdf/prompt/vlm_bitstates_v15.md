@@ -78,6 +78,9 @@ V21. SKIP the row if the ZONA/Area column is or contains "INPUT_HW" or
 - Declared cell with text → copy it exactly into state_on / state_off.
 - Empty or missing cell → null. Never fill from keywords in the
   description, never from a neighbouring row, never a default.
+- Before answering, re-scan the page bottom-up: EVERY row with text in
+  the state cell MUST be emitted. Count emitted rows against the digital
+  rows of the page: if you emit far fewer, you missed some — go back.
 Re-read every emitted state text before answering: no corrected typo,
 no added or removed word.
 

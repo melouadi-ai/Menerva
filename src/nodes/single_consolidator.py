@@ -92,6 +92,24 @@ def _is_int(value):
     return type(value) is int
 
 
+def _alnum_upper(value):
+    return "".join(c for c in value.upper() if c.isalnum())
+
+
+def _typo_pair(a, b):
+    """True if two descriptions look like the same text with a typo."""
+    if not isinstance(a, str) or not isinstance(b, str):
+        return False
+    na, nb = _alnum_upper(a), _alnum_upper(b)
+    if na == nb or len(na) < 4 or len(nb) < 4:
+        return False
+    if abs(len(na) - len(nb)) > 2:
+        return False
+    if na[:3] == nb[:3] and na[-3:] == nb[-3:]:
+        return True
+    return na in nb or nb in na
+
+
 def _branch_rows(branch):
     """Accept {"rows": [...]} or a bare list; else []."""
     if isinstance(branch, dict):
@@ -186,6 +204,28 @@ def assemble_page(page, page_no):
                   "bitstates senza measures: righe %s (stati ignorati)" % (
                       orphans,),
                   page_no=page_no, counter="stati_orfani")
+        digital_righe = set()
+        for raw in raws:
+            if not isinstance(raw, dict):
+                continue
+            if not _is_int(raw.get("riga")):
+                continue
+            kind = raw.get("kind")
+            if (isinstance(kind, str) and kind.startswith("DIGITALE")) \
+                    or _is_int(raw.get("bit")):
+                digital_righe.add(raw.get("riga"))
+        if has_names:
+            for riga, row in names_by_riga.items():
+                if _is_int(row.get("bit")):
+                    digital_righe.add(riga)
+        if (has_states and len(digital_righe) > 0
+                and len(states_righe) > 0
+                and len(states_righe) * 2 < len(digital_righe)):
+            _warn(warnings, counters, "sospetto_sottocampionamento",
+                  "bitstates %d su %d righe digitali: il ramo stati "
+                  "emette troppo poco, TEXTON da keyword" % (
+                      len(states_righe), len(digital_righe)),
+                  page_no=page_no, counter="sospetto_sottocampionamento")
         if any(isinstance(raw, dict) and raw.get("riga") is None
                for raw in raws):
             _warn(warnings, counters, "riga_mancante",
@@ -244,6 +284,18 @@ def assemble_page(page, page_no):
                               riga, var.get("description"), nb_desc),
                           page_no=page_no, riga=riga,
                           counter="descrizione_mismatch")
+                    if (nb.get("modbus_register")
+                            == var.get("modbus_register")
+                            and nb.get("bit") == var.get("bit")
+                            and _typo_pair(nb_desc,
+                                           var.get("description"))):
+                        _warn(warnings, counters, "refuso_sospetto",
+                              "riga %s: misure=%r contro nomi-bit=%r, "
+                              "stesso registro: una delle due versioni "
+                              "corregge un refuso (tenuta misure)" % (
+                                  riga, var.get("description"), nb_desc),
+                              page_no=page_no, riga=riga,
+                              counter="refuso_sospetto")
             if has_states and _is_int(riga) and riga in states_by_riga:
                 st = states_by_riga[riga]
                 for field in ("state_on", "state_off"):
