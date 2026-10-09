@@ -23,6 +23,7 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
 | SMA_1 3.8 post-fix2 (F14, `TESTS/SMA 1/` agg.) | E1 38 misure + 30 bitinfo, E1 1 7 misure | VERDE: 44 ok + 1 refuso, 0 buchi, 0 fantasma; leak F14 assente sul campo (O2/Stato/TempFumi solo su E1 1) |
 | PROTEC 2 3.8 seriale | 39 vars → 20+4 bitinfo e 16+4, tutto coperto | VERDE | |
 | PROTEC 2 3.8 post-fix (F15, `TESTS/PROTEC 2/`) | 4 + 16 misure, 20 + 4 bitinfo | VERDE con riserva: 39/39 chiavi (27 ok + 12 stato), 0 buchi, 0 fantasma, 40 scarti regola; 12 TEXTON da fallback (ramo stati emette poco su p2: recall VLM, non join); 13 `riga_disallineata` tenute-misure |
+| PROTEC 2 3.8 v2 (guardie finali, `TESTS/PROTEC 2/` agg.) | 4 + 16 misure, 20 + 4 bitinfo | VERDE chiavi: 39/39, 0 buchi, 0 fantasma, catena coerente; 25 `riga_disallineata` tenute; 17 TEXTON da fallback/varianza; nome stazione variabile (`Curtiriso`: domanda cliente) |
 | PROTEC 2 shard (pilota) | identico al seriale (varianza VLM a parte) | VERDE meccanismo | |
 | SIEMENS shard-A 3.6 | 9/10 pagine (manca p9 in quel tap), cover assorbita | PARZIALE (F6) | |
 | SIEMENS shard-B 3.6+v15 | 10/10 giri, 35 vars, 0 scarti | VERDE meccanismo (F11, F12, F13) | |
