@@ -25,6 +25,20 @@ su ADAS.
   `confronta.py` sul JSON finale. Un verdetto = una sola run (tap di run
   diverse non si incrociano: il VLM varia).
 
+## 2bis. Perché non un VLM singolo (scelte contro il legacy)
+
+- Il VLM non fa più i conti: join, carry-over e dedup avvenivano "in testa"
+  al modello (bug storici: REG-contatore, wrap BIT 15→0, bitinfo fantasma sui
+  registri adiacenti). Ora è codice deterministico su chiavi.
+- Compiti stretti con self-check: 3 rami da un lavoro ciascuno. Un prompt solo
+  degrada a fine blocco (TEXTON omessi, pagine a zero, 129 righe perse in
+  silenzio su SIEMENS).
+- Nessuna scelta silenziosa: V2/V20/V21 come codice con motivo; ogni
+  disaccordo un warning. Il singolo VLM riempiva i buchi (default, conteggi).
+- Difesa in profondità: ogni bug trovato è diventato guardia + test, non una
+  preghiera nel prompt.
+- Costo: 3-4 chiamate per pagina invece di 1, run lunghe (SIEMENS oltre un'ora).
+
 ## 3. Risultati Single PDF (finale vs PDF)
 
 | Documento | Righe PDF | Copertura chiavi | Buchi | Inventate |
@@ -33,6 +47,10 @@ su ADAS.
 | PROTEC_1 (2 pag.) | 89 | 45/45 | 0 | 0 |
 | PROTEC_2 (2 pag.) | 79 | 39/39 | 0 | 0 |
 | SIEMENS_2 (29 pag., 1116 righe) | 1116 | ~98% (228/230) | 5 motivati (3 varianza p9 + 2 regola) | 0 accertate |
+| ORI_MARTIN_5 (3 pag.) | 119 | 58/58 | 0 | 0 |
+| SUPERWATT_8 (4 pag.) | 181 | 131/131 | 0 | 0 |
+| LUXOTTICA_7 (22 pag., 707 righe) | 707 | ~69% sostanziale | pagine HW 12+15 (regola) + singoli | 0 |
+| LEGNANO_6 (29 pag., 1106 righe) | 1106 | ~65% chiavi | pagine HW 12-17 (regola) + sparsi | 0 accertate |
 
 Spare e righe da scartare correttamente assenti (es. 222 V2 su SIEMENS, 44 su
 PROTEC_1). TEXTON: letti dove il PDF li dichiara (maggioranza su PROTEC, quota
@@ -60,6 +78,14 @@ SMA/SIEMENS non hanno colonna stati (convenzione, come il legacy).
 - **F18/F19**: due regressioni introdotte dai fix e prese dai test/field
   (grouper che perdeva gli stati; maggioranza che scavalcava con bit diversi).
 - **F16**: cluster pagina 9 SIEMENS sciolto come varianza (isolata: 32/32).
+- **F20 (F1c)**: a descrizioni concordi ma registri diversi i nomi non si
+  applicano più (riempiono solo registri nulli): niente righe fantasma
+  adiacenti. I 4 finali congelati risultano invariati.
+- **F21**: bit fuori 0-15 (N.Bit 1-based non rimappato) → rimappato se libero,
+  altrimenti segnalato: l'output resta importabile.
+- **F22**: pagine 12-17 perse su Luxottica/Legnano = zone HW con regola V21
+  in tutti i rami (obbedienza, non guasto; provato via SLICE-A). Warning
+  `pagina_vuota_sospetta` per pagine davvero mute.
 
 ## 6. Tuning VLM (evidenze, non sensazioni)
 
@@ -71,7 +97,9 @@ Top P 0,2: TEXTON peggiori. I setting aiutano TEXTON/stabilità, non copertura.
 
 - Mai importato un output in ADAS reale (checklist pronta).
 - Limiti/BISON non applicati (manca specifica cliente).
-- 5 decisioni cliente: BISON, regola V2-composti, zeri iniziali, nome
-  stazione, IP di default.
-- Refusi corretti dal VLM contro le istruzioni (4 casi, segnalati).
-- Suite: 142 test root + 52 double, verdi; tutto committato e pushato.
+- 6 decisioni cliente: HW dentro/fuori (la più grossa: ~200 righe),
+  BISON, regola V2-composti, zeri iniziali, nome stazione, IP di default.
+- Refusi corretti dal VLM contro le istruzioni (segnalati, mai auto-applicati).
+- Nuovi documenti in coda: Essity (terza coppia Double), CTM Rivoli, Ospedale
+  (caso-regola abbinamento), già inventariati con hash.
+- Suite: 148 test root + 52 double, verdi; tutto committato e pushato.
