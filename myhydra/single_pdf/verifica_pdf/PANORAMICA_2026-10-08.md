@@ -38,6 +38,7 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
 | SIEMENS_2 | SME 104 + 145, 29/29 pagine | 232/237 chiavi (~98%), 5 buchi (3 p9 varianza + 2 Riservato regola), 1 F12, 0 inventate accertate |
 | ORI_MARTIN_5 | SME 13 + 51 bitinfo, 3 pagine | 58/58 nominate, 0 buchi, 61 spare assenti, 0 inventate; 2 refusi corretti; 12 TEXTON fallback |
 | LUXOTTICA_7 | SME 80 + 142 bitinfo, 22 pagine | GIALLA: ~178/259 nominate sostanzialmente giuste (69%), 0 inventate; 79 "diversi" sono troncamenti dell'estrattore-verità; perdite vere: pagine 12+15 perse a monte (~46), shift 40028 (coperto da F1c), 3 watchdog, singoli; legenda+PLC-ref da regola |
+| LUXOTTICA_7 bis (codice finale) | SME 83 + 142 bitinfo | GIALLA confermata: 187 ok, 16 diversi, 56 buchi (46 HW p12/p15 + 4 singoli + 6 legenda-regola), 0 inventate; shift 40028 riparato da F1c; 8 `pagina_vuota_sospetta` live |
 | LEGNANO_6 | SME 1 stazione, 29 pagine | GIALLA/ROSSA: 324 ok + 82 diversi (GCO/GC0, shift, trattini), 178 buchi (146 mid-B pagine 12-17 + 32 sparsi/template), 14 spare (F12/bit-16), 0 inventate accertate; IP default (non letto), HMI/PC non emessi (bene) |
 | SUPERWATT_8 | SME 31 + 92 bitinfo + SME 1 17 misure, 4 pagine | 131/131 chiavi, 0 buchi, 50 spare ok, 0 inventate; 2 refusi + 1 troncamento (Q1.7); 12 TEXTON fallback; 2 stazioni su 1 PLC (F2, cliente); A1 scattata ma copertura completa (falso allarme euristico) |
 
