@@ -109,9 +109,12 @@ rimossi il 12/10: setting superati, verdetti committed.)
   righe fantasma adiacenti. Fix F1c: i nomi riempiono solo registri nulli o
   correggono bit a pari registro; mai registri diversi. I 4 finali congelati
   risultano invariati (nessuna re-run).
-- **F22 (buco pagine 12-17 shard-B, da discriminare).** Luxottica e Legnano
-  perdono le stesse 6 pagine centrali dello shard B (46+146 righe); SIEMENS_2
-  no. Ipotesi: lost-in-the-middle nel batch. Test: run isolata pagina 15.
+- **F22 (buco pagine 12-17 shard-B, sciolto come regola V21).** Luxottica e
+  Legnano perdono le stesse 6 pagine, ma sono tutte zone HW/Riserva e TUTTI
+  e 3 i rami hanno V21/V2: emettono vuoto per regola, non per guasto
+  (il ramo nomi non ha altra regola di scarto e tace solo qui). Run isolata
+  p11 piena vs p12/p15 vuote lo conferma. Resta la domanda cliente: includere
+  gli HW (47 righe nominate su Luxottica, inclusi 15 comandi OUTPUT)?
 - **F11.** Errore nomi applicato per precedenza (40117 vs 40119). Coperto da F1b.
 - **F12.** `Riserva STATI LOGICI` → misura 40030. V2 match-esatto lascia passare
   i composti ("Riserva X"). Domanda di regola (cliente? o contains?).
