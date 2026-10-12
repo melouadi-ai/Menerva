@@ -180,6 +180,12 @@ Per ogni file sono verificati apertura, pagine, quantità di testo estraibile e 
 - `data/test_inputs/Mappature/Doppio PDF/Ospedale San Marco Catania/JOB.0007.18.pdf` — 21 pagine; 28099 caratteri estraibili; JOB ref: JOB.0007.18/JOB.0007.18.; IOL ref: IOL.0007.18..01/IOL.0007.18.02/IOL.0007.18.02.; 2679392 byte; SHA-256 `0546ce14d69b`.
 - `data/test_inputs/Mappature/Singolo/Mappatura_5_Cliente_ORI_MARTIN_1.pdf` — 3 pagine; 5772 caratteri estraibili; 203643 byte; SHA-256 `de18fb9fb6db`.
 - `data/test_inputs/Mappature/Singolo/Mappatura_6_Cliente_SIEMENS_Legnano_1.pdf` — 29 pagine; 79817 caratteri estraibili; 180592 byte; SHA-256 `d57a8b58ad2a`.
+- `data/test_inputs/Mappature/Doppio PDF/Essity/IOL.0188.25.pdf` — 9 pagine; JOB ref: JOB.0188.25; IOL ref: IOL.0188.25; 801371 byte; SHA-256 `b332ee9a1ebf`.
+- `data/test_inputs/Mappature/Doppio PDF/Essity/JOB.0188.25.pdf` — 22 pagine; JOB ref: JOB.0188.25; IOL ref: IOL.0188.25; 1870173 byte; SHA-256 `7ab5686e5cd1`.
+- `data/test_inputs/Mappature/Singolo/Mappatura_7_Cliente_LUXOTTICA_Agordo_1.pdf` — 22 pagine; tabella SIEMENS; 195387 byte; SHA-256 `9ec4c6999022`.
+- `data/test_inputs/Mappature/Singolo/Mappatura_8_Cliente_SUPERWATT_Ahlstrom_1.pdf` — 4 pagine; tabella PROTEC-like; 266896 byte; SHA-256 `1b71b53390a8`.
+
+> Nota 12/10/2026: copie e frammenti già noti rimossi da `Mappature/` (Mappatura_1..4 loose, split SIEMENS/SMI, duplicati Biogen/ori martin); restano solo file completi.
 - `data/test_outputs/Mappatura_2_Cliente_PROTEC_1.pdf` — 2 pagine; 4576 caratteri estraibili; 267590 byte; SHA-256 `6fb0abec991e`.
 - `data/test_outputs/Mappatura_4_Cliente_SIEMENS_2.pdf` — 29 pagine; 70297 caratteri estraibili; 202472 byte; SHA-256 `354c2b28ac79`.
 - `docs/architettura/Manuale sviluppo linguaggio Manager rev03.pdf` — 37 pagine; 49328 caratteri estraibili; 1576810 byte; SHA-256 `7517ff6232df`.
