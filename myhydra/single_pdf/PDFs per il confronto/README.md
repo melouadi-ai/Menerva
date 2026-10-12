@@ -9,6 +9,8 @@ output↔PDF si fa su questi file, non sul ground truth legacy.**
 | `caso_2_protec_1` | `Mappatura_2_Cliente_PROTEC_1.pdf` | 2 | `6fb0abec991ee0fdd8ec363102f6c11f4ee3799658c64b9f581ebdff6b6ab570` |
 | `caso_3_protec_2` | `Mappatura_3_Cliente_PROTEC_2.pdf` | 2 | `b72049e7703cb65469d436e98f62c56a417635bbc90dde85e8704f2172b748a2` |
 | `caso_4_siemens_2` | `Mappatura_4_Cliente_SIEMENS_2.pdf` | 29 | `354c2b28ac7999fafc320a6d7cdb2cb06121743d809cb583e4696ea8b845e3cc` |
+| `caso_5_ori_martin_1` | `Mappatura_5_Cliente_ORI_MARTIN_1.pdf` | 3 | `de18fb9fb6db730132138be6649c0d5895f40cab0f73165449cc681c0c0376da` |
+| `caso_8_superwatt_1` | `Mappatura_8_Cliente_SUPERWATT_Ahlstrom_1.pdf` | 4 | `1b71b53390a8bb3696a04c8685c184240be899adb9adc6119cd3a4aba0604619` |
 
 Copia byte-identica di `docs/protocolli/mappature/`. Se gli hash divergono, la
 cartella locale ha la precedenza per la verifica: il resto del repo non deve
