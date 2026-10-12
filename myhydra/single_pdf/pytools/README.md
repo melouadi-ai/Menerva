@@ -24,7 +24,7 @@ Hash atteso: `3bfb8643f256f487b4409d4b304f6d8d5d1ff3a6c44bc3a68b01f4acc3569f92`
 La copia canvas senza commenti (`json_creator_v15_canvas.py`, indentazione
 compatta a 1 spazio/livello, stesso AST della documentata) vive in
 `../platforms/lv1/scripts/updated_pending_validation/`; hash atteso:
-`8e310e2bdd96fcab0b62ed2b00cb7a32dd251bcbb426e45f216624717d2a32a`.
+`8e310e2bdd96fcab0b62ed2b00cb7a32dd251bcbb426e45f216624717d2a32a5`.
 
 **Se gli hash divergono, la fonte autorevole è `src/nodes/`.**
 
