@@ -273,8 +273,14 @@ def assemble_page(page, page_no):
                         diffs.append("%s misure=%s nomi-bit=%s" % (
                             field, var.get(field), nb.get(field)))
                 if diffs:
-                    if desc_ok:
+                    same_reg = (nb.get("modbus_register")
+                                == var.get("modbus_register"))
+                    fill_null = var.get("modbus_register") is None
+                    if desc_ok and (same_reg or fill_null):
                         suffix = "(vince nomi-bit)"
+                    elif desc_ok:
+                        suffix = ("(tengo misure: registri diversi, "
+                                  "possibile riga fantasma)")
                     else:
                         suffix = ("(tengo misure: descrizioni diverse, "
                                   "possibile shift di riga)")
@@ -283,10 +289,10 @@ def assemble_page(page, page_no):
                               riga, "; ".join(diffs), suffix),
                           page_no=page_no, riga=riga,
                           counter="bit_register_mismatch")
-                    if desc_ok:
+                    if desc_ok and (same_reg or fill_null):
                         var["modbus_register"] = nb.get("modbus_register")
                         var["bit"] = nb.get("bit")
-                    else:
+                    elif not desc_ok:
                         _warn(warnings, counters, "riga_disallineata",
                               "riga %s: misure=%r contro nomi-bit=%r, "
                               "tengo misure" % (

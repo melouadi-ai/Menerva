@@ -699,9 +699,14 @@ try:
                         diffs.append("bit misure=" + str(var.get("bit"))
                                      + " nomi-bit=" + str(nb.get("bit")))
                     if diffs:
+                        same_reg = (nb.get("modbus_register")
+                            == var.get("modbus_register"))
+                        fill_null = var.get("modbus_register") is None
                         suffix = " (vince nomi-bit)"
                         if not desc_ok:
                             suffix = " (tengo misure: descrizioni diverse, possibile shift di riga)"
+                        elif not (same_reg or fill_null):
+                            suffix = " (tengo misure: registri diversi, possibile riga fantasma)"
                         warnings.append({"rule": "bit_register_mismatch",
                             "page_no": page_no, "riga": riga,
                             "detail": "riga " + str(riga) + ": "
@@ -709,10 +714,10 @@ try:
                             + suffix})
                         counters["bit_register_mismatch"] = counters.get(
                             "bit_register_mismatch", 0) + 1
-                        if desc_ok:
+                        if desc_ok and (same_reg or fill_null):
                             var["modbus_register"] = nb.get("modbus_register")
                             var["bit"] = nb.get("bit")
-                        else:
+                        elif not desc_ok:
                             warnings.append({"rule": "riga_disallineata",
                              "page_no": page_no, "riga": riga,
                              "detail": "riga " + str(riga)

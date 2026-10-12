@@ -102,6 +102,11 @@ rimossi il 12/10: setting superati, verdetti committed.)
   numerazione mettevano in minoranza le measures giuste e F1b applicava anche
   il bit sbagliato (P1: OVF COT_01 distrutto). Fix: la maggioranza scavalca
   solo a registri/bit uguali. Replay: bit 0 tornato, 45/45 chiavi.
+- **F20 (F1b applicava registri diversi, fixato).** A descrizioni concordi ma
+  registri diversi (Luxottica 40028/40029) applicava il registro dei nomi:
+  righe fantasma adiacenti. Fix F1c: i nomi riempiono solo registri nulli o
+  correggono bit a pari registro; mai registri diversi. I 4 finali congelati
+  risultano invariati (nessuna re-run).
 - **F11.** Errore nomi applicato per precedenza (40117 vs 40119). Coperto da F1b.
 - **F12.** `Riserva STATI LOGICI` → misura 40030. V2 match-esatto lascia passare
   i composti ("Riserva X"). Domanda di regola (cliente? o contains?).

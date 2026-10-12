@@ -100,7 +100,9 @@ def test_shift_riga_tiene_misure_e_avvisa_forte():
     assert "riga_disallineata" in rules
 
 
-def test_precedenza_nomi_bit_per_bit_e_registro():
+def test_precedenza_nomi_con_registro_diverso_tiene_misure():
+    # F11 + Luxottica 40028/40029: a descrizioni concordi ma registri
+    # diversi, applicare i nomi corrompe (righe fantasma adiacenti).
     page = {"page_no": 1, "stations": [_station("10.0.0.1", [
         _var("Allarme", 1, reg=40014, bit=3,
              kind="DIGITALE_IMPACCATO"),
@@ -110,10 +112,24 @@ def test_precedenza_nomi_bit_per_bit_e_registro():
     ]}}
     out = consolidate([page])
     var = out["stations"][0]["variables"][0]
-    assert var["modbus_register"] == 40015
-    assert var["bit"] == 5
+    assert var["modbus_register"] == 40014
+    assert var["bit"] == 3
     rules = [w["rule"] for w in out["warnings"]]
     assert "bit_register_mismatch" in rules
+
+
+def test_precedenza_nomi_riempie_registro_nullo():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Allarme", 1, reg=None, bit=None,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitnames": {"rows": [
+        {"description": "Allarme", "modbus_register": 40015, "bit": 5,
+         "riga": 1},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["modbus_register"] == 40015
+    assert var["bit"] == 5
 
 
 def test_scarti_v2_v20_v21_contati_con_motivo():
@@ -527,3 +543,18 @@ def test_maggioranza_con_registri_diversi_non_scavalca():
     rules = [w["rule"] for w in out["warnings"]]
     assert "refuso_maggioranza" not in rules
     assert "riga_disallineata" in rules
+
+
+def test_nomi_con_registro_diverso_non_applicati():
+    page = {"page_no": 11, "stations": [_station("10.0.0.1", [
+        _var("Riserva STATI LOGICI", 33, reg=40029, bit=None,
+             kind="DIGITALE_SINGOLO"),
+    ])], "bitnames": {"rows": [
+        {"description": "Riserva STATI LOGICI",
+         "modbus_register": 40028, "bit": 7, "riga": 33},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert (var["modbus_register"], var["bit"]) == (40029, None)
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "bit_register_mismatch" in rules
