@@ -403,6 +403,10 @@ def estrai_protec(doc, caso):
                     "tag": c[1],
                     "sezione": sezione,
                 })
+    soli = meta.get("ip_trovati", [])
+    if len(soli) == 1 and righe and all(not r["ip"] for r in righe):
+        for r in righe:
+            r["ip"] = soli[0]
     return righe, meta
 
 
