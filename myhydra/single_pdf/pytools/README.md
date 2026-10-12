@@ -10,7 +10,6 @@
 | [`json_creator_v4_2.py`](json_creator_v4_2.py) | `v4.2` | — | Storico, superato. |
 | [`consolidator.py`](consolidator.py) | `v14` | CONSOLIDATORE (LV1-04) | Documentato, da incollare dopo rewiring Task 8. |
 | [`consolidator_canvas.py`](consolidator_canvas.py) | `v14` | CONSOLIDATORE (LV1-04) | Copia canvas senza commenti, stesso AST. |
-| [`chunk_splitter_diag.py`](chunk_splitter_diag.py) | diagnostico | temporaneo a valle di MERGER / CONSOLIDATORE | Standalone (nessuna controparte in `src/`): divide un tap oltre il limite ~30k UI in pezzi ricucibili; test in `tests/test_chunk_splitter_diag.py`. |
 
 ## Sorgente e sincronizzazione
 
@@ -43,8 +42,8 @@ sha256sum myhydra/single_pdf/pytools/consolidator.py myhydra/single_pdf/pytools/
 ```
 
 Hash attesi:
-- `consolidator.py`: `6b09e5845ed4ec57ff7b4ba44513c564e1b2044a21706510c7bf5a3b13673fb8`
-- `consolidator_canvas.py`: `523cbe054af39305fe8f58b30fd1839a855c5cb213e1ca2efbb5d3a45218cdfa`
+- `consolidator.py`: `af9c34361ccd2e2fc12bb2c9c4d9dc76818f402ab43b9d0927ef5d368d3ab63f`
+- `consolidator_canvas.py`: `a6af9f2518685f91f8b3abd9eb67dd4d9497d1e97b21b992c955e073f87326f5`
 
 Questo file ha `{edge}[4]` ed è del solo Single PDF. Il Double PDF ha una copia
 separata con `{edge}[13}` in

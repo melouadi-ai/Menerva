@@ -669,6 +669,39 @@ def consolidate(pages):
                 else:
                     kept.append(var)
             acc[other]["variables"] = kept
+    for key in order:
+        variables = acc[key]["variables"]
+        ik = 0
+        while ik < len(variables):
+            var = variables[ik]
+            ik = ik + 1
+            bit = var.get("bit")
+            if not _is_int(bit) or 0 <= bit <= 15:
+                continue
+            siblings = set()
+            for other in variables:
+                if other is var:
+                    continue
+                if (other.get("modbus_register")
+                        == var.get("modbus_register")
+                        and _is_int(other.get("bit"))):
+                    siblings.add(other.get("bit"))
+            if bit == 16 and 15 not in siblings:
+                var["bit"] = 15
+                _warn(warnings, counters, "bit_fuori_range",
+                      "%r @ %s: bit 16 fuori 0-15, rimappato a 15 "
+                      "(N.Bit 1-based non convertito?)" % (
+                          var.get("description"),
+                          var.get("modbus_register")),
+                      page_no=var.get("pagina"), riga=var.get("riga"),
+                      counter="bit_fuori_range")
+            else:
+                _warn(warnings, counters, "bit_fuori_range",
+                      "%r @ %s bit %s fuori 0-15: tenuto, verificare "
+                      "su ADAS" % (var.get("description"),
+                                   var.get("modbus_register"), bit),
+                      page_no=var.get("pagina"), riga=var.get("riga"),
+                      counter="bit_fuori_range")
     stations = []
     for key in order:
         slot = acc[key]

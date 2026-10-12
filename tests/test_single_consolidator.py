@@ -558,3 +558,31 @@ def test_nomi_con_registro_diverso_non_applicati():
     assert (var["modbus_register"], var["bit"]) == (40029, None)
     rules = [w["rule"] for w in out["warnings"]]
     assert "bit_register_mismatch" in rules
+
+
+def _station_bit16(variables):
+    return {"page_no": 1, "stations": [_station("10.0.0.1", variables)]}
+
+
+def test_bit16_senza_fratello_viene_rimappato_con_avviso():
+    out = consolidate([_station_bit16([
+        _var("RUNNING", 1, reg=40023, bit=16,
+             kind="DIGITALE_IMPACCATO"),
+    ])])
+    var = out["stations"][0]["variables"][0]
+    assert var["bit"] == 15
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "bit_fuori_range" in rules
+
+
+def test_bit16_con_fratello_resta_e_avvisa():
+    out = consolidate([_station_bit16([
+        _var("A", 1, reg=40023, bit=15,
+             kind="DIGITALE_IMPACCATO"),
+        _var("B", 2, reg=40023, bit=16,
+             kind="DIGITALE_IMPACCATO"),
+    ])])
+    bits = sorted(v["bit"] for v in out["stations"][0]["variables"])
+    assert bits == [15, 16]
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "bit_fuori_range" in rules

@@ -938,6 +938,51 @@ try:
                 else:
                     xkept.append(var)
             acc[xother]["variables"] = xkept
+    qi = 0
+    while qi < len(acc_order):
+        qvars = acc[acc_order[qi]]["variables"]
+        qi = qi + 1
+        qk = 0
+        while qk < len(qvars):
+            qvar = qvars[qk]
+            qk = qk + 1
+            qbit = qvar.get("bit")
+            if type(qbit) is not int or 0 <= qbit <= 15:
+                continue
+            qs = []
+            qi2 = 0
+            while qi2 < len(qvars):
+                qother = qvars[qi2]
+                qi2 = qi2 + 1
+                if qother is qvar:
+                    continue
+                if (qother.get("modbus_register")
+                        == qvar.get("modbus_register")
+                        and type(qother.get("bit")) is int):
+                    qs.append(qother.get("bit"))
+            if qbit == 16 and 15 not in qs:
+                qvar["bit"] = 15
+                warnings.append({"rule": "bit_fuori_range",
+                                 "page_no": qvar.get("pagina"),
+                                 "riga": qvar.get("riga"),
+                                 "detail": repr(qvar.get("description"))
+                                 + " @ "
+                                 + str(qvar.get("modbus_register"))
+                                 + ": bit 16 fuori 0-15, rimappato a 15 "
+                                 + "(N.Bit 1-based non convertito?)"})
+                counters["bit_fuori_range"] = counters.get(
+                    "bit_fuori_range", 0) + 1
+            else:
+                warnings.append({"rule": "bit_fuori_range",
+                                 "page_no": qvar.get("pagina"),
+                                 "riga": qvar.get("riga"),
+                                 "detail": repr(qvar.get("description"))
+                                 + " @ "
+                                 + str(qvar.get("modbus_register"))
+                                 + " bit " + str(qbit)
+                                 + " fuori 0-15: tenuto, verificare su ADAS"})
+                counters["bit_fuori_range"] = counters.get(
+                    "bit_fuori_range", 0) + 1
     # Join scale per tag: riempie solo i null, mai sovrascrive.
     ai = 0
     while ai < len(acc_order):
