@@ -37,6 +37,7 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
 | PROTEC_2 | SME 4 + 20, SME 1 16 + 4 | 39 chiavi (28 ok + 10 stato + 1 refuso), 0 buchi, 0 fantasma |
 | SIEMENS_2 | SME 104 + 145, 29/29 pagine | 232/237 chiavi (~98%), 5 buchi (3 p9 varianza + 2 Riservato regola), 1 F12, 0 inventate accertate |
 | ORI_MARTIN_5 | SME 13 + 51 bitinfo, 3 pagine | 58/58 nominate, 0 buchi, 61 spare assenti, 0 inventate; 2 refusi corretti; 12 TEXTON fallback |
+| SUPERWATT_8 | SME 31 + 92 bitinfo + SME 1 17 misure, 4 pagine | 131/131 chiavi, 0 buchi, 50 spare ok, 0 inventate; 2 refusi + 1 troncamento (Q1.7); 12 TEXTON fallback; 2 stazioni su 1 PLC (F2, cliente); A1 scattata ma copertura completa (falso allarme euristico) |
 
 Le righe sopra con percorsi `TESTS/<doc>/` si riferiscono alle run precedenti:
 i verdetti restano validi come storia, fanno fede i finali NUOVO. (Tap LEGACY
