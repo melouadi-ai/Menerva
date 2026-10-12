@@ -180,9 +180,9 @@ def test_v15_hashes_nel_readme_pytools():
     readme = (STORE_PYTOOLS / "README.md").read_text(encoding="utf-8")
     assert "json_creator_v15.py" in readme
     assert "json_creator_v15_canvas.py" in readme
-    assert "400a6e0484e8227ca9a19ee9841ca7ba31cee2fba9f04e606e0d5befeb168afa" \
+    assert "3bfb8643f256f487b4409d4b304f6d8d5d1ff3a6c44bc3a68b01f4acc3569f92" \
         in readme
-    assert "afd8ad23d171d33c631307be6f95b1c1ebb588406f912cd9ffb17a565a39479a" \
+    assert "8e310e2bdd96fcab0b62ed2b00cb7a32dd251bcbb426e45f216624717d2a32a5" \
         in readme
 
 
