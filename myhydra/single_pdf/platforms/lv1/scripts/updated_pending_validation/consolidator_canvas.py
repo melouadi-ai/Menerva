@@ -381,6 +381,34 @@ try:
    riga = sr.get("riga")
    if type(riga) is int and riga not in states_by_riga:
     states_by_riga[riga] = sr
+  raw_total = 0
+  rti = 0
+  while rti < len(stations):
+   rslot = stations[rti]
+   rti = rti + 1
+   if not isinstance(rslot, dict):
+    continue
+   rvars = rslot.get("variables")
+   if isinstance(rvars, list):
+    raw_total = raw_total + len(rvars)
+  ndi = 0
+  rti = 0
+  while rti < len(names_in):
+   if isinstance(names_in[rti], dict):
+    ndi = ndi + 1
+   rti = rti + 1
+  sdi = 0
+  rti = 0
+  while rti < len(states_in):
+   if isinstance(states_in[rti], dict):
+    sdi = sdi + 1
+   rti = rti + 1
+  if raw_total == 0 and ndi == 0 and sdi == 0:
+   warnings.append({"rule": "pagina_vuota_sospetta",
+       "page_no": page_no, "riga": None,
+       "detail": "nessuna riga da nessun ramo: immagine non arrivata o pagina illeggibile?"})
+   counters["pagina_vuota_sospetta"] = counters.get(
+    "pagina_vuota_sospetta", 0) + 1
   sti = 0
   while sti < len(stations):
    station = stations[sti]
@@ -603,6 +631,27 @@ try:
     if var.get("pagina") is None and type(page_no) is int:
      var["pagina"] = page_no
     riga = raw.get("riga")
+    xst_desc = None
+    if (has_states and type(riga) is int
+      and riga in states_by_riga):
+     xst_desc = states_by_riga[riga].get("description", None)
+     if xst_desc is None:
+      try:
+       xskeys = states_by_riga[riga].keys()
+      except Exception:
+       xskeys = []
+      xsi = 0
+      while xsi < len(list(xskeys)):
+       xsk = list(xskeys)[xsi]
+       xsi = xsi + 1
+       if (isinstance(xsk, str)
+         and xsk.lower() == "description"):
+        try:
+         xst_desc = states_by_riga[riga].get(xsk)
+        except Exception:
+         continue
+        if xst_desc is not None:
+         break
     if (has_names and type(riga) is int
       and riga in names_by_riga):
      nb = names_by_riga[riga]
@@ -623,29 +672,6 @@ try:
         except Exception:
          continue
         if nb_desc is not None:
-         break
-     xst = None
-     xst_desc = None
-     if (has_states and type(riga) is int
-       and riga in states_by_riga):
-      xst = states_by_riga[riga]
-      xst_desc = xst.get("description", None)
-     if xst_desc is None and xst is not None:
-      try:
-       xskeys = xst.keys()
-      except Exception:
-       xskeys = []
-      xsi = 0
-      while xsi < len(list(xskeys)):
-       xsk = list(xskeys)[xsi]
-       xsi = xsi + 1
-       if (isinstance(xsk, str)
-         and xsk.lower() == "description"):
-        try:
-         xst_desc = xst.get(xsk)
-        except Exception:
-         continue
-        if xst_desc is not None:
          break
      if (xst_desc is not None and nb_desc is not None
        and xst_desc == nb_desc
@@ -758,24 +784,6 @@ try:
     if (has_states and type(riga) is int
       and riga in states_by_riga):
      st = states_by_riga[riga]
-     xst_desc = st.get("description", None)
-     if xst_desc is None:
-      try:
-       xskeys = st.keys()
-      except Exception:
-       xskeys = []
-      xsi = 0
-      while xsi < len(list(xskeys)):
-       xsk = list(xskeys)[xsi]
-       xsi = xsi + 1
-       if (isinstance(xsk, str)
-         and xsk.lower() == "description"):
-        try:
-         xst_desc = st.get(xsk)
-        except Exception:
-         continue
-        if xst_desc is not None:
-         break
      if (xst_desc is not None
        and xst_desc != var.get("description")):
       warnings.append({"rule": "stati_disallineati",

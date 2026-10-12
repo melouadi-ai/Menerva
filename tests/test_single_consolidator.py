@@ -586,3 +586,19 @@ def test_bit16_con_fratello_resta_e_avvisa():
     assert bits == [15, 16]
     rules = [w["rule"] for w in out["warnings"]]
     assert "bit_fuori_range" in rules
+
+
+def test_pagina_tutti_rami_vuoti_avvisa():
+    out = consolidate([{"page_no": 12, "stations": [{
+        "name": None, "protocol": None, "ip": None, "port": None,
+        "modbus_id": None, "variables": []}]},
+        {"rows": []}, {"rows": []}])
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "pagina_vuota_sospetta" in rules
+
+
+def test_pagina_con_righe_non_avvisa_vuoto():
+    out = consolidate([{"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Riserva", 1, reg=40001)])]}])
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "pagina_vuota_sospetta" not in rules

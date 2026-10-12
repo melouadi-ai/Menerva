@@ -173,6 +173,16 @@ def assemble_page(page, page_no):
     has_states = isinstance(page.get("bitstates"), (dict, list))
     names_by_riga = _riga_map(names_rows)
     states_by_riga = _riga_map(states_rows)
+    raw_total = 0
+    for station in stations:
+        if (isinstance(station, dict)
+                and isinstance(station.get("variables"), list)):
+            raw_total += len(station["variables"])
+    if raw_total == 0 and not names_rows and not states_rows:
+        _warn(warnings, counters, "pagina_vuota_sospetta",
+              "nessuna riga da nessun ramo: immagine non arrivata "
+              "o pagina illeggibile?",
+              page_no=page_no, counter="pagina_vuota_sospetta")
     for station in stations:
         if not isinstance(station, dict):
             continue
