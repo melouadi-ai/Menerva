@@ -113,10 +113,10 @@ rimossi il 12/10: setting superati, verdetti committed.)
   risultano invariati (nessuna re-run).
 - **F22 (buco pagine 12-17 shard-B, sciolto come regola V21).** Luxottica e
   Legnano perdono le stesse 6 pagine, ma sono tutte zone HW/Riserva e TUTTI
-  e 3 i rami hanno V21/V2: emettono vuoto per regola, non per guasto
-  (il ramo nomi non ha altra regola di scarto e tace solo qui). Run isolata
-  p11 piena vs p12/p15 vuote lo conferma. Resta la domanda cliente: includere
-  gli HW (47 righe nominate su Luxottica, inclusi 15 comandi OUTPUT)?
+  e 3 i rami hanno V21/V2. Via SLICE-A i nomi leggono p14/p15 per intero
+  mentre le measures restano vuote per V21: obbedienza, non guasto. Resta la
+  domanda cliente: includere gli HW (47 righe nominate su Luxottica, inclusi
+  15 comandi OUTPUT)?
 - **F11.** Errore nomi applicato per precedenza (40117 vs 40119). Coperto da F1b.
 - **F12.** `Riserva STATI LOGICI` → misura 40030. V2 match-esatto lascia passare
   i composti ("Riserva X"). Domanda di regola (cliente? o contains?).
