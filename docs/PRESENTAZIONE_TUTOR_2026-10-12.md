@@ -118,4 +118,19 @@ Stesso PDF, due sistemi, stessa verità (119 righe: 58 nominate, 61 spare).
 | 8 | Tracciabilità | warning + scarti motivati | nessuna | — | noi |
 | 9 | Packed/bit/contatori | identici 13/8/10/2/12/6 | identici | — | pari |
 
+## 9. Confronto pari-merito: SIEMENS 29 pagine (stesso script entrambi)
+
+| | Noi | Collega |
+|---|---|---|
+| Match pieni | 188 | 92 |
+| Solo punteggiatura | 12 | 88 |
+| Verità troncata (nomi nostri più pieni) | 8 | 52 |
+| Diversi veri | 24 | 1 (refuso) |
+| Buchi | 5 (3 varianza p9 + 2 regola) | 3 (1 p4 + 2 regola) |
+| Inventate | 0 | 0 (+2 spare F12) |
+| Nome stazione | SME default | Reekep OLIVETTI letto |
+
+Lui trascrive nomi più completi e perde meno righe; noi più fedeli alle
+stringhe e con audit trail. Sostanzialmente pari, punti diversi.
+
 Suite: 148 test root + 72 double, verdi; tutto committato e pushato.
