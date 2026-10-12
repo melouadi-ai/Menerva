@@ -11,6 +11,8 @@ output↔PDF si fa su questi file, non sul ground truth legacy.**
 | `caso_4_siemens_2` | `Mappatura_4_Cliente_SIEMENS_2.pdf` | 29 | `354c2b28ac7999fafc320a6d7cdb2cb06121743d809cb583e4696ea8b845e3cc` |
 | `caso_5_ori_martin_1` | `Mappatura_5_Cliente_ORI_MARTIN_1.pdf` | 3 | `de18fb9fb6db730132138be6649c0d5895f40cab0f73165449cc681c0c0376da` |
 | `caso_8_superwatt_1` | `Mappatura_8_Cliente_SUPERWATT_Ahlstrom_1.pdf` | 4 | `1b71b53390a8bb3696a04c8685c184240be899adb9adc6119cd3a4aba0604619` |
+| `caso_6_siemens_legnano_1` | `Mappatura_6_Cliente_SIEMENS_Legnano_1.pdf` | 29 | `d57a8b58ad2a95b746936319c74b2aa9efd777216b2c28decc87d7fa09b8bfb5` |
+| `caso_7_luxottica_1` | `Mappatura_7_Cliente_LUXOTTICA_Agordo_1.pdf` | 22 | `9ec4c6999022a5739d5ea5170228d21587d2c72cc5b3230e6aedcd46f5832765` |
 
 Copia byte-identica di `docs/protocolli/mappature/`. Se gli hash divergono, la
 cartella locale ha la precedenza per la verifica: il resto del repo non deve

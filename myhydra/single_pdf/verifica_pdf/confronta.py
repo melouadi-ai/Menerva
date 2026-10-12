@@ -71,6 +71,38 @@ CASI = [
         "gt": os.path.join(SINGLE, "..", "..", "..", "data", "test_outputs",
                            "Json_4_Cliente_SIEMENS_2.json"),
     },
+    {
+        "id": "caso_5_ori_martin_1",
+        "cliente": "ORI MARTIN",
+        "formato": "protec",
+        "pdf": "Mappatura_5_Cliente_ORI_MARTIN_1.pdf",
+        "output": None,
+        "gt": None,
+    },
+    {
+        "id": "caso_6_siemens_legnano_1",
+        "cliente": "SIEMENS",
+        "formato": "siemens",
+        "pdf": "Mappatura_6_Cliente_SIEMENS_Legnano_1.pdf",
+        "output": None,
+        "gt": None,
+    },
+    {
+        "id": "caso_7_luxottica_1",
+        "cliente": "LUXOTTICA",
+        "formato": "siemens",
+        "pdf": "Mappatura_7_Cliente_LUXOTTICA_Agordo_1.pdf",
+        "output": None,
+        "gt": None,
+    },
+    {
+        "id": "caso_8_superwatt_1",
+        "cliente": "SUPERWATT",
+        "formato": "protec",
+        "pdf": "Mappatura_8_Cliente_SUPERWATT_Ahlstrom_1.pdf",
+        "output": None,
+        "gt": None,
+    },
 ]
 
 RE_IND = re.compile(r"^(\d{4,5})(?:[._](\d{1,2}))?$")
@@ -1243,10 +1275,13 @@ def scrivi_report(caso, per_chiave, per_output, per_senza_reg, trasversali,
 
 def esegui(caso):
     percorso_pdf = os.path.join(PDF_DIR, caso["pdf"])
-    percorso_out = os.path.join(OUT_DIR, caso["output"])
     if not os.path.exists(percorso_pdf):
         print("  PDF mancante: %s" % percorso_pdf)
         return None
+    if not caso.get("output"):
+        print("  caso %s senza output (solo tabella verita')" % caso["id"])
+        return None
+    percorso_out = os.path.join(OUT_DIR, caso["output"])
     if not os.path.exists(percorso_out):
         print("  Output mancante: %s" % percorso_out)
         return None
