@@ -10,6 +10,9 @@ Terza coppia, mai vista prima del 12/10/2026: `IOL.0177.25` + `JOB.0177.25`
 - `JOB.0177.25.pdf`: 23 pagine (specifica `Sistema Analisi Emissioni`).
 - Run canvas fino al nodo 12: [`outputs/observed_adas_case8_run1.json`](outputs/observed_adas_case8_run1.json) —
   **27 misure, 37 bitinfo, 1 stazione, 1 warning**.
+- VLM `marycoder - Qwen 3.8 Flash Next 180B 4 bit` con **Temperatura 0,01 e
+  Top P 0,4** (casi 6/7 giravano a 0,1 / 0,6): run più deterministica, da
+  tenere presente nei confronti tra casi (nomi, unità, refusi).
 
 ## Verdetto contro la coppia (12/10)
 

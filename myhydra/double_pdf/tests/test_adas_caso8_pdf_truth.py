@@ -5,6 +5,11 @@ Terza coppia mai vista prima del 12/10/2026: `IOL.0177.25.pdf` (4 pagine) +
 coppia IOL+JOB letta riga per riga, non un ground truth legacy (che per questo
 caso non esiste proprio).
 
+NOTA VLM (12/10): run ottenuta con `marycoder - Qwen 3.8 Flash Next 180B
+4 bit`, Temperatura 0,01 e Top P 0,4 (i casi 6/7 giravano a 0,1 / 0,6).
+Le osservazioni su variabilità tra run (nomi, unità ASCII/apice, refusi)
+dei casi precedenti valgono sotto le vecchie impostazioni.
+
 Verita' PDF IOL.0177.25, colonne DESCRIZIONE | REG | BIT | TIPO:
 
     p2  Allarmi  REG 1  bit 8,9,10,11,12,0,1,2,3  (DBX 128-129; bianche 13,14,15,4,5,6,7)
