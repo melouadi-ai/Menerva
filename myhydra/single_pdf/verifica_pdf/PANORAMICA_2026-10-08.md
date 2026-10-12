@@ -37,9 +37,9 @@ tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
 | PROTEC_2 | SME 4 + 20, SME 1 16 + 4 | 39 chiavi (28 ok + 10 stato + 1 refuso), 0 buchi, 0 fantasma |
 | SIEMENS_2 | SME 104 + 145, 29/29 pagine | 232/237 chiavi (~98%), 5 buchi (3 p9 varianza + 2 Riservato regola), 1 F12, 0 inventate accertate |
 
-Le righe sopra con percorsi `TESTS/<doc>/` si riferiscono alle run precedenti
-(spostate in `TESTS/<doc> LEGACY/`): i verdetti restano validi come storia,
-fanno fede i finali NUOVO.
+Le righe sopra con percorsi `TESTS/<doc>/` si riferiscono alle run precedenti:
+i verdetti restano validi come storia, fanno fede i finali NUOVO. (Tap LEGACY
+rimossi il 12/10: setting superati, verdetti committed.)
 | PROTEC 2 thinker ON (`TESTS/PROTEC 2 VLM MODIFICATO + THINKER/`) | 4 + 16 misure, 20 + 4 bitinfo | ROSSO: 6 buchi (blocco MCA10/FID perso), 8 nomi diversi (6 `Disponibile` emesse contro V2), catena coerente ma VLM disobbediente. Thinker vietato in produzione |
 | PROTEC 2 VLM 0.001/0.4 (`TESTS/PROTEC 2 VLM MODIFICATO 0.001/`) | 4 + 16 misure, 20 + 4 bitinfo | VERDE identico a 0.01 (39/39, stessi 10 fallback + refuso). Ritorni nulli sotto 0,01: standard resta 0,01/0,4 |
 | PROTEC 2 Top P 0.2 (`TESTS/PROTEC 2 VLM MODIFICATO 0.02/`) | 4 + 16 misure, 20 + 4 bitinfo | VERDE chiavi: 39/39, 0 buchi, 0 fantasma; TEXTON 16 diversi (peggio di 0,4). Standard confermato 0,01/0,4 |
