@@ -102,4 +102,20 @@ Top P 0,2: TEXTON peggiori. I setting aiutano TEXTON/stabilità, non copertura.
 - Refusi corretti dal VLM contro le istruzioni (segnalati, mai auto-applicati).
 - Nuovi documenti in coda: Essity (terza coppia Double), CTM Rivoli, Ospedale
   (caso-regola abbinamento), già inventariati con hash.
-- Suite: 148 test root + 52 double, verdi; tutto committato e pushato.
+## 8. Confronto pari-merito: ORI MARTIN (sistema indipendente del collega)
+
+Stesso PDF, due sistemi, stessa verità (119 righe: 58 nominate, 61 spare).
+
+| # | Voce | Noi | Collega | Regole iniziali | Vince |
+|---|---|---|---|---|---|
+| 1 | Copertura chiavi | 58/58 | 58/58 | — | pari |
+| 2 | Buchi / inventate | 0 / 0 | 0 / 0 | — | pari |
+| 3 | Nomi | 2 refusi corretti | 2 refusi identici | trascrizione fedele | pari |
+| 4 | TEXTON | 12 fallback | 0 diversi | default keyword se assente | lui |
+| 5 | Range analogiche | sentinel ±3.4e38 | null | sentinel (r.81-92) | noi |
+| 6 | Nome stazione | SME default | Ori Martin letto | nome reale o SME | lui |
+| 7 | Live PLC Uint | 250 | 150 | INT/UINT→150 | lui (gap V25 nostro, fixato) |
+| 8 | Tracciabilità | warning + scarti motivati | nessuna | — | noi |
+| 9 | Packed/bit/contatori | identici 13/8/10/2/12/6 | identici | — | pari |
+
+Suite: 148 test root + 72 double, verdi; tutto committato e pushato.
