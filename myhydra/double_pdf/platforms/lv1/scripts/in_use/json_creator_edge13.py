@@ -472,6 +472,12 @@ while g < len(groups):
             mm = re.match(r'\s*([0-9]+)', rs)
             if mm is not None:
                 regval = int(mm.group(1))
+                # Double, decisione 12/10/2026 (sistema): gli IOL Double
+                # scrivono il REG corto (1, 17, 417); il registro Modbus
+                # reale e' 40000 + REG (1 -> 40001). Somma incondizionata:
+                # i 5 IOL noti usano tutti REG corti. Il Single non somma
+                # perche' i suoi PDF scrivono gia' 40001.
+                regval = regval + 40000
                 # v4.3: riconosce gli indirizzi con zeri iniziali.
                 # Il documento SMA scrive "00033" nelle sezioni digitali e
                 # "40001" in quelle analogiche: due convenzioni diverse nello

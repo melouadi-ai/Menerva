@@ -58,6 +58,13 @@ archiviata come `tests/case_10/` con `test_adas_caso10_pdf_truth.py`.
   scartate con warning: la guardia funziona, il buco è il fallback VLM.
 - Pinnati: `FAILURE → ATTIVO`, supero → `ALLARME` (terza variante).
 
+## Aggiornamento 12/10 — offset 40000 sui registri Double (dal sistema)
+
+I REG corti degli IOL (1, 17, 417) diventano 40001, 40017, 40417 in
+`DRIVERPRIVATE` (somma incondizionata nel nodo 12, solo Double: il Single ha
+già 40001 nei PDF). Test d'esecuzione sulla copia canvas +
+parità AST verdi. **Da re-incollare nel nodo 12** prima della prossima run.
+
 ## Aggiornamento 12/10 — quinto caso: San Marco (35/50 al 100%, 1 IP ambiguo)
 
 Run in `tests/case_9/` con `test_adas_caso9_pdf_truth.py`: **35 misure e 50

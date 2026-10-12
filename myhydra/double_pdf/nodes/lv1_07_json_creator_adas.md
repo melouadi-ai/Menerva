@@ -6,7 +6,8 @@
   Riga da impostare nello script: `raw = r'''{edge}[13]'''.strip()`.
   Dopo ogni ricablaggio aggiornare il numero con quello reale del filo 11→12.
 - **Script:** [`../platforms/lv1/scripts/in_use/json_creator_edge13.py`](../platforms/lv1/scripts/in_use/json_creator_edge13.py).
-  Copia dedicata al Double PDF, v4.4 con `{edge}[13]`. È il trasformatore
+  Copia dedicata al Double PDF, v4.5 + fix Double con `{edge}[13]` + **offset
+  40000 sui registri (12/10/2026)**. È il trasformatore
   condiviso col Single PDF, ma in una cartella separata: il Single sta in
   `myhydra/single_pdf/pytools/json_creator_v4_4.py` con `{edge}[4]`. Non
   mescolare i due file e non editare l'indice dentro uno dei due per passare da
@@ -27,7 +28,8 @@
   ne pesa 34.365). Parità garantita da
   `myhydra/double_pdf/tests/test_json_creator_edge13_canvas.py` (stesso AST,
   stesso output sul chunk caso 6). Hash atteso della copia canvas:
-  `fc82daa39184cc17f58133b4b866650b97e0a8eefe18782071ca4b846a4aee1d`.
+  `8f086a1ff0f11cfe7c3302fe54b2ad99a4145ef5fc530cd5a9ca89adbfdab01b`
+  (offset 40000, 12/10/2026; precedente `fc82daa3...` senza offset).
 
   **Decisione 6/10/2026 (TEXTON):** il `TEXTON` delle packed viene sempre dalla
   tabella keyword, mai da `state_on` nel chunk: l'IOL non ha colonna di stato,

@@ -389,6 +389,7 @@ while g < len(groups):
             mm = re.match(r'\s*([0-9]+)', rs)
             if mm is not None:
                 regval = int(mm.group(1))
+                regval = regval + 40000
                 raw_digits = mm.group(1)
                 if raw_digits.startswith("0") and len(raw_digits) >= 4:
                     zero_padded_regs[raw_digits] = True

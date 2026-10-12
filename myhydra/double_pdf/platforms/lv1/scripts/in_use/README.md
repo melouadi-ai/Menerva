@@ -31,6 +31,7 @@ intenzionali e documentate** dal sorgente (decisione 6/10/2026, solo Double):
 | Singoli | `state_on` se presente, altrimenti keyword | invariato |
 | `LOWRANGE`/`HIGHRANGE` analogiche | sempre sentinel | fondo scala dichiarato, sentinel se assente (v4.5, anche in `src/`) |
 | Limiti/divisori | ignorati | solo in review con i nomi (v4.5, anche in `src/`) |
+| Registro Modbus | dal PDF così com'è | **40000 + REG** (12/10/2026, sistema): gli IOL Double scrivono il REG corto (1→40001). Solo Double: il Single non somma perché i suoi PDF scrivono già 40001 |
 
 Tutto il resto è identico a `src/nodes/json_creator.py` v4.5. Verificare con:
 
@@ -40,8 +41,9 @@ diff ../../../../src/nodes/json_creator.py scripts/in_use/json_creator_edge13.py
 
 Il `diff` deve mostrare **solo** queste aree. Hash attesi:
 
-- documentato (`json_creator_edge13.py`, NON da incollare): `75181f27f974324a04321a79ed45e19855b80265ab2f5e2a2271d19142d1306d`
-- copia canvas (`json_creator_edge13_canvas.py`, da incollare): `fc82daa39184cc17f58133b4b866650b97e0a8eefe18782071ca4b846a4aee1d`
+- documentato (`json_creator_edge13.py`, NON da incollare): `f0c64b4413095fac23b76f849966ba2f3f6b7dfdd973029f20bd36ce683f2bec`
+- copia canvas (`json_creator_edge13_canvas.py`, da incollare): `8f086a1ff0f11cfe7c3302fe54b2ad99a4145ef5fc530cd5a9ca89adbfdab01b`
+  (28.427 byte, sotto la soglia 32 KB; offset 40000 del 12/10/2026)
 
 **Se il `diff` mostra altro, la copia è divergente: non usarla.** È esattamente
 come è successo il 5/10, quando la copia sul canvas aveva i campi limite a
