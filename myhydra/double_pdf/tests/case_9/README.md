@@ -1,18 +1,26 @@
 # Caso di prova 9 — Ospedale San Marco Catania
 
-Coppia `IOL.0007.18.02` (7 pp) + `JOB.0007.18` (21 pp). Fogli GV2 (pp2–4) +
-GV3 (pp5–7) in un'unica DB100. Verità pre-run in
-[`../../PDF per il confronto/Ospedale San Marco Catania/VERITA_PRE_RUN.md`](../../PDF per il confronto/Ospedale San Marco Catania/VERITA_PRE_RUN.md).
+Quinta coppia: `IOL.0007.18.02` (7 pp) + `JOB.0007.18` (21 pp). Verità in
+[`../test_adas_caso9_pdf_truth.py`](../test_adas_caso9_pdf_truth.py).
 
-## Attesi (dalla scheda pre-run del 12/10)
+## Run1 (12/10): `outputs/observed_adas_case9_run1.json`
 
-- **33 misure, 45 bitinfo, 0 stimate** (XTM 481–496 tutte bianche).
-- Packed 1/3/4/81 · REAL 17/19/21/33 + 97/99/101/113/125 · SET 409–412 + 457–460 ·
-  CMD 417/418/419/424/425/429/430/431/432 + 478/479/480.
-- Scale JOB Tab 13: CO 0–600 (200/250), NO 0–500 (100/125), O2S, TF.
-- **Aperti**: n. stazioni (JOB: 2 PLC) · mismatch numerazione `0007.18`/`0187.25`.
+**35 misure, 50 bitinfo, 1 stazione, 1 warning. 100% delle righe con titolo.**
 
-## Output
+- Packed 1/3/4/81 · REAL 17/19/21/33 + 97/99/101/113/125 · SET 401/402/409–412 +
+  457–460 · CMD 417/418/419/424/425/429/430/431/432 + 478/479/480. Zero stimate.
+- Unità+range su CO/NO/O2/TF in entrambi i blocchi (NO collegato!); QG sentinel
+  (scala non dichiarata, corretto). Warning: 4 limiti (CO×2, NO×2).
+- La scheda pre-run aveva due errori di lettura (SET 401/402 dimenticati, righe
+  Scansione 0–3 non viste): ragione l'output, corretti in `VERITA_PRE_RUN.md`.
 
-In attesa della run: fixture in `outputs/`, test di verità in
-`../test_adas_caso9_pdf_truth.py` (da scrivere all'arrivo).
+## Punti aperti (pinnati nei test, da sciogliere)
+
+1. **IP stazione ambiguo**: uscita `.11` (PLC caldaie) ma il JOB assegna questo
+   IOL (`.02`) ai motori (`.21/.22`). Foglie, intestazione e Station si
+   contraddicono: decide il cliente/pianta, non il PDF.
+2. **DRIVERDATA=1** su Ack/Scansioni/Superi GV2 (5 comandi): inferenza R/W del VLM,
+   incoerente tra run. Regola `comandi = W` da valutare (prompt o BISON).
+3. **TEXTON supero incoerenti nella stessa run**: ALLARME (GV2) vs eco del nome
+   (GV3). Convenzione da cliente, con COMANDO (Rivoli).
+4. Mismatch numerazione `.02`/`0187.25`, `.01` mancante.

@@ -58,6 +58,18 @@ archiviata come `tests/case_10/` con `test_adas_caso10_pdf_truth.py`.
   scartate con warning: la guardia funziona, il buco è il fallback VLM.
 - Pinnati: `FAILURE → ATTIVO`, supero → `ALLARME` (terza variante).
 
+## Aggiornamento 12/10 — quinto caso: San Marco (35/50 al 100%, 1 IP ambiguo)
+
+Run in `tests/case_9/` con `test_adas_caso9_pdf_truth.py`: **35 misure e 50
+bitinfo, 100% delle righe con titolo** (la scheda pre-run ne contava 33/45 per
+due errori di lettura: SET 401/402 e Scansione 0–3). NO collegato, QG sentinel
+corretto, 4 limiti, niente scarti né divisioni.
+
+- **IP ambiguo (da cliente)**: uscita `.11` (caldaie) ma il JOB assegna questo
+  IOL (`.02`) ai motori (`.21/.22`).
+- **DRIVERDATA=1** su 5 comandi (inferenza R/W incoerente), **TEXTON supero
+  divisi** ALLARME/eco-nome nella stessa run: regole da fissare.
+
 ## 3. Mancante, in ordine di priorità
 
 1. **5 stati d'impianto persi sul caso 7** (unico buco grave). La cella `REG 4` è unita e attraversa il confine di pagina (DBX 70.0 a p2 → DBX 71.7 a p3): a p3 la colonna è vuota, il VLM restituisce `null`, il pytool scarta. Sono le colonne `STATI IMPIANTO` della Tabella 12 del JOB (validazioni): senza questi la matrice di invalidazione delle misure perde l'input. Serve il carry-over oltre il confine di pagina nel consolidatore.
