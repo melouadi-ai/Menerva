@@ -58,7 +58,8 @@ rimossi il 12/10: setting superati, verdetti committed.)
 | PROTEC 1 3.8 post-fix (F14/F15, `TESTS/PROTEC 1/`) | 3 + 7 misure, 30 + 10 bitinfo | VERDE: 45/45 chiavi, 0 buchi, 0 inventate, 44 spare ok; numerazione fisica concorde fra rami (1-48/47/46); TEXTON 16→7 diversi; 14 `riga_disallineata` tenute-misure |
 | PROTEC 1 3.8 v3 (guardie finali, `TESTS/PROTEC 1/` agg.) | 3 + 7 misure, 30 + 10 bitinfo | VERDE registri/nomi: 45/45, 0 buchi, 0 fantasma, catena coerente; 19 `riga_disallineata` tenute, `stati_orfani` 2; TEXTON 12 diversi (varianza VLM, non join) |
 | PROTEC 1 3.8 finale (codice finale, `TESTS/PROTEC 1/` agg.) | 3 + 7 misure, 30 + 10 bitinfo | VERDE confermato: 45/45 (34 ok + 11 stato), 0 buchi, 0 fantasma, catena coerente; 0 cascate; 11 TEXTON solo fallback onesti + 1 refuso |
-| PROTEC 1 upscale x5 (`TESTS/PROTEC 1 NUOVO/TAP FINALE NUME 5.txt`) | 3 + 30, 7 + 10 | VERDE: 45/45 (38 ok + 7 stato), 0 buchi, 0 fantasma; TEXTON 12→7 (upscaling aiuta il recall, restano fallback) | |
+| PROTEC 1 upscale x5 (`TESTS/PROTEC 1 NUOVO/TAP FINALE NUME 5.txt`) | 3 + 30, 7 + 10 | VERDE: 45/45 (38 ok + 7 stato), 0 buchi, 0 fantasma; TEXTON 12→7 (upscaling aiuta il recall, restano fallback) |
+| PROTEC 1 upscale x8 (`TESTS/PROTEC 1 NUOVO/TAP FINALE NUME 8.txt`) | 3 + 30, 7 + 10 | VERDE identico a x5 (38 + 7, stesse righe). Ritorni nulli oltre 5: standard x5. Bonus: nome stazione letto (IKW) | |
 
 ## Ritrovamenti
 
