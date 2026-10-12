@@ -46,6 +46,18 @@ Coppia `IOL/JOB.0177.25` (Rivoli, mai vista prima): run archiviata come
   classe di fragilità del join). Pinnati: TEXTON `COMANDO` sui superamento,
   refuso `rferito` corretto, `ppm` da descrizione.
 
+## Aggiornamento 12/10 — quarto caso: Essity (run sotto cartella San Marco!)
+
+La run incollata in `TESTS/OSPEDALE SAN MARCO CATANIA/` era di Essity
+(registri 160/168/192, limiti 300/375): spostata in `TESTS/ESSITY/`,
+archiviata come `tests/case_10/` con `test_adas_caso10_pdf_truth.py`.
+
+- **DB100 perfetta**: 20/20 misure, 24/24 bit, stazione + IP giusti, gateway ignorato.
+- **Difetto nuovo**: 3 misure AI-DB50 con registri inventati dai DBD (la mappa
+  DB50 non ha colonna MODBUS: andavano scartate). Le altre 18 righe DB50
+  scartate con warning: la guardia funziona, il buco è il fallback VLM.
+- Pinnati: `FAILURE → ATTIVO`, supero → `ALLARME` (terza variante).
+
 ## 3. Mancante, in ordine di priorità
 
 1. **5 stati d'impianto persi sul caso 7** (unico buco grave). La cella `REG 4` è unita e attraversa il confine di pagina (DBX 70.0 a p2 → DBX 71.7 a p3): a p3 la colonna è vuota, il VLM restituisce `null`, il pytool scarta. Sono le colonne `STATI IMPIANTO` della Tabella 12 del JOB (validazioni): senza questi la matrice di invalidazione delle misure perde l'input. Serve il carry-over oltre il confine di pagina nel consolidatore.
