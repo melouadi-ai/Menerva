@@ -81,6 +81,8 @@ def test_parentesi_con_contenuto_conservate_e_formato_da_datatype():
     assert fmt_of("A", "INT16") == 150
     assert fmt_of("A", "INT") == 150
     assert fmt_of("A", "UINT16") == 150
+    assert fmt_of("A", "Uint") == 150
+    assert fmt_of("A", "UINT") == 150
     assert fmt_of("A", "REAL32") == 250
     assert fmt_of("A", None) == 250
 

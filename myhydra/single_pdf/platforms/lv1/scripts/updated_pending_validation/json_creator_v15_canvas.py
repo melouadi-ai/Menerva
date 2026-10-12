@@ -422,7 +422,7 @@ try:
    dt = v.get("data_type")
    if dt is not None:
     dtu = str(dt).strip().upper()
-    if dtu.find("INT16") >= 0 or dtu.find("UINT16") >= 0 or dtu == "INT":
+    if dtu.find("INT16") >= 0 or dtu.find("UINT16") >= 0 or dtu == "INT" or dtu == "UINT":
      fmt_analog = FMT_INT16
    if kind == "DIGITALE_SINGOLO" and regval == 0 and bit is None:
     kind = "ANALOGICA"

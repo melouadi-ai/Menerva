@@ -19,12 +19,12 @@ Lo script è mantenuto in `src/nodes/json_creator.py` (v15) e copiato qui. La co
 sha256sum ../../../src/nodes/json_creator.py json_creator_v15.py
 ```
 
-Hash atteso: `400a6e0484e8227ca9a19ee9841ca7ba31cee2fba9f04e606e0d5befeb168afa`
+Hash atteso: `3bfb8643f256f487b4409d4b304f6d8d5d1ff3a6c44bc3a68b01f4acc3569f92`
 
 La copia canvas senza commenti (`json_creator_v15_canvas.py`, indentazione
 compatta a 1 spazio/livello, stesso AST della documentata) vive in
 `../platforms/lv1/scripts/updated_pending_validation/`; hash atteso:
-`afd8ad23d171d33c631307be6f95b1c1ebb588406f912cd9ffb17a565a39479a`.
+`8e310e2bdd96fcab0b62ed2b00cb7a32dd251bcbb426e45f216624717d2a32a`.
 
 **Se gli hash divergono, la fonte autorevole è `src/nodes/`.**
 
