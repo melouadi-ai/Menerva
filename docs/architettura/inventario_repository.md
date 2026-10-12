@@ -178,8 +178,8 @@ Per ogni file sono verificati apertura, pagine, quantità di testo estraibile e 
 - `data/test_inputs/Mappature/Doppio PDF/CTM Rivoli/JOB.0177.25.pdf` — 23 pagine; 29673 caratteri estraibili; JOB ref: JOB.0148.24/JOB.0177.25/JOB.0177.25.; IOL ref: IOL.0177.25.; 2388451 byte; SHA-256 `331f8e982fbb`.
 - `data/test_inputs/Mappature/Doppio PDF/Ospedale San Marco Catania/IOL.0007.18.02.pdf` — 7 pagine; 12593 caratteri estraibili; JOB ref: JOB.0187.25; IOL ref: IOL.0187.25; 674082 byte; SHA-256 `1ad17e5b284f`.
 - `data/test_inputs/Mappature/Doppio PDF/Ospedale San Marco Catania/JOB.0007.18.pdf` — 21 pagine; 28099 caratteri estraibili; JOB ref: JOB.0007.18/JOB.0007.18.; IOL ref: IOL.0007.18..01/IOL.0007.18.02/IOL.0007.18.02.; 2679392 byte; SHA-256 `0546ce14d69b`.
-- `data/test_inputs/Mappature/Singolo/Cliente_PROTEC.pdf` — 3 pagine; 5772 caratteri estraibili; 203643 byte; SHA-256 `de18fb9fb6db`.
-- `data/test_inputs/Mappature/Singolo/Cliente_SIEMENS.pdf` — 29 pagine; 79817 caratteri estraibili; 180592 byte; SHA-256 `d57a8b58ad2a`.
+- `data/test_inputs/Mappature/Singolo/Mappatura_5_Cliente_ORI_MARTIN_1.pdf` — 3 pagine; 5772 caratteri estraibili; 203643 byte; SHA-256 `de18fb9fb6db`.
+- `data/test_inputs/Mappature/Singolo/Mappatura_6_Cliente_SIEMENS_Legnano_1.pdf` — 29 pagine; 79817 caratteri estraibili; 180592 byte; SHA-256 `d57a8b58ad2a`.
 - `data/test_outputs/Mappatura_2_Cliente_PROTEC_1.pdf` — 2 pagine; 4576 caratteri estraibili; 267590 byte; SHA-256 `6fb0abec991e`.
 - `data/test_outputs/Mappatura_4_Cliente_SIEMENS_2.pdf` — 29 pagine; 70297 caratteri estraibili; 202472 byte; SHA-256 `354c2b28ac79`.
 - `docs/architettura/Manuale sviluppo linguaggio Manager rev03.pdf` — 37 pagine; 49328 caratteri estraibili; 1576810 byte; SHA-256 `7517ff6232df`.
@@ -267,7 +267,7 @@ Totale: 88 file, 61 contenuti unici per hash, 586 pagine aperte, 1 non leggibili
 - `331f8e982fbb`: `data/test_inputs/Mappature/Doppio PDF/CTM Rivoli/JOB.0177.25.pdf`, `docs/protocolli/clienti_extra/CTM Rivoli/JOB.0177.25.pdf`
 - `1ad17e5b284f`: `data/test_inputs/Mappature/Doppio PDF/Ospedale San Marco Catania/IOL.0007.18.02.pdf`, `docs/protocolli/clienti_extra/Ospedale San Marco Catania/IOL.0007.18.02.pdf`
 - `0546ce14d69b`: `data/test_inputs/Mappature/Doppio PDF/Ospedale San Marco Catania/JOB.0007.18.pdf`, `docs/protocolli/clienti_extra/Ospedale San Marco Catania/JOB.0007.18.pdf`
-- `de18fb9fb6db`: `data/test_inputs/Mappature/Singolo/Cliente_PROTEC.pdf`, `docs/protocolli/clienti_extra/ori martin/Scambio Modbus_ DB10_V1.pdf`
+- `de18fb9fb6db`: `data/test_inputs/Mappature/Singolo/Mappatura_5_Cliente_ORI_MARTIN_1.pdf`, `docs/protocolli/clienti_extra/ori martin/Scambio Modbus_ DB10_V1.pdf`
 - `354c2b28ac79`: `data/test_outputs/Mappatura_4_Cliente_SIEMENS_2.pdf`, `docs/protocolli/mappature/Mappatura_4_Cliente_SIEMENS_2.pdf`, `docs/protocolli/richieste_clienti/Mappatura_4_Cliente_SIEMENS_2.pdf`
 - `8cbd851e3e82`: `docs/protocolli/clienti_extra/Biogen/IOL.0105.22.pdf`, `docs/protocolli/mappature/Mappatura_7_Cliente_SMI_2.pdf`
 - `90d4d0b58798`: `docs/protocolli/clienti_extra/Biogen/JOB.0105.22.pdf`, `docs/protocolli/mappature/Mappatura_7_Descrizione_Cliente_SMI_2.pdf`, `docs/protocolli/mappature/descrizioni_smi/Mappatura_7_Descrizione_Cliente_SMI_2.pdf`
