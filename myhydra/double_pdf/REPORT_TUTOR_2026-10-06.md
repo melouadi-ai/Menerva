@@ -34,6 +34,18 @@ Run5 (riferimento): **40 misure e 47 bitinfo**. I 5 stati recuperati, 17 unità 
 
 `gaia_doublefile_result_6.json` sbaglia: 2 registri (430/431 invece di 431/432), 18 bitinfo inventate (78 contro 60, di cui 12 su righe bianche), TEXTON spostati di una riga, QAL3 `INT` scritti come REAL, un bitinfo orfano. Le differenze output-vs-legacy non vanno colmate senza verifica sul PDF. Fissato in `test_legacy_ha_errori_noti_il_nostro_no`.
 
+## Aggiornamento 12/10 — terzo caso: Rivoli (verificato)
+
+Coppia `IOL/JOB.0177.25` (Rivoli, mai vista prima): run archiviata come
+`myhydra/double_pdf/tests/case_8/`, verità in `test_adas_caso8_pdf_truth.py`.
+
+- **27 misure e 37 bitinfo, 100% delle righe con titolo.** REG 2 (16 righe
+  bianche) non genera nemmeno la packed; REG 4 tutto a pagina 2, nessun bit
+  perso; stazione dichiarata + IP PLC `192.168.1.1:511`; 1 solo warning (CO).
+- **Unico difetto: NOx senza scala** (probabile TAG `NO` vs `NOx`, stessa
+  classe di fragilità del join). Pinnati: TEXTON `COMANDO` sui superamento,
+  refuso `rferito` corretto, `ppm` da descrizione.
+
 ## 3. Mancante, in ordine di priorità
 
 1. **5 stati d'impianto persi sul caso 7** (unico buco grave). La cella `REG 4` è unita e attraversa il confine di pagina (DBX 70.0 a p2 → DBX 71.7 a p3): a p3 la colonna è vuota, il VLM restituisce `null`, il pytool scarta. Sono le colonne `STATI IMPIANTO` della Tabella 12 del JOB (validazioni): senza questi la matrice di invalidazione delle misure perde l'input. Serve il carry-over oltre il confine di pagina nel consolidatore.
