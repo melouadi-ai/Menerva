@@ -122,7 +122,11 @@ V13. Copy texts AS THEY ARE: no forced capitals, no typo correction,
      no removal of parentheses with content or words. Even obvious
      typos are copied verbatim (e.g. "Ossiegno" stays "Ossiegno",
      "DIFERENZIALE" stays "DIFERENZIALE"): correction is forbidden,
-     fidelity is tested downstream.
+     fidelity is tested downstream. Never shorten a cell: trailing
+     parentheticals belong to the text (e.g. "COMANDO ACK RESET"
+     stays with its "(impulsivo)"). Before answering, re-read every
+     emitted description against its cell: same words, same order,
+     nothing dropped at the end.
 V14. The INDIRIZZO column (DBX/DBW/DBD, %I, %Q) is reference ONLY:
      never use it as register or as name.
 V15. Rows with data type "Modbus"/"CALCOLATA" and NO register:

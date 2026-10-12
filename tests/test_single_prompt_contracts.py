@@ -28,6 +28,7 @@ def test_fedelta_refusi_nel_ramo_misure():
     text = (PROMPTS / "vlm_measures_v14.md").read_text(encoding="utf-8")
     assert "Ossiegno" in text
     assert "correction is forbidden" in text
+    assert "nothing dropped at the end" in text
 
 
 def test_chiave_descrittiva_negli_stati():

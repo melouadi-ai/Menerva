@@ -25,7 +25,7 @@ Hash attesi:
 | File | sha256 |
 |---|---|
 | `vlm_extraction_v13.md` | `7fe80cd5ea7bcfcfeb751647dbfc7b1ad96f057efb653cf87f9c29259e851fb3` |
-| `vlm_measures_v14.md` | `345e82a5f5ad1de21660efa8218633f44d6630a7d7086666da6a5c2eae531f89` |
+| `vlm_measures_v14.md` | `6b4fae9bf49bb8632972c961372a13a12c3be2cd107787d0bd1ba3c58c67a03a` |
 | `vlm_bitnames_v14.md` | `f7c74b99ce6dd834db0e81deceb4f66531231aa8b0fc7c12db57d6c79b4a04d4` |
 | `vlm_bitstates_v14.md` | `fb96b76f0f4c86aa05e89d6e6ef3182a8069f8a28499fc2308c7b882b8ccf42b` |
 | `vlm_bitstates_v15.md` | `47914a264e1743cd8746a166a9b6fa210796e18c931a1ab6f47bb25b74228307` |
