@@ -602,3 +602,30 @@ def test_pagina_con_righe_non_avvisa_vuoto():
         _var("Riserva", 1, reg=40001)])]}])
     rules = [w["rule"] for w in out["warnings"]]
     assert "pagina_vuota_sospetta" not in rules
+
+
+def test_stato_misure_non_cancellato_da_stati_nulli():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Lampada", 1, reg=40001, bit=0,
+             kind="DIGITALE_IMPACCATO", state_on="Accesa"),
+    ])], "bitstates": {"rows": [
+        {"description": "Lampada", "state_on": None, "state_off": None,
+         "riga": 1},
+    ]}}
+    out = consolidate([page])
+    assert out["stations"][0]["variables"][0]["state_on"] == "Accesa"
+
+
+def test_stati_applicati_anche_con_typo_nella_descrizione():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Allarme 1 Ossigeno umido", 13, reg=40001, bit=0,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": [
+        {"description": "Allarme 1 Ossiegno umido", "state_on": "ON-X",
+         "state_off": None, "riga": 13},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["state_on"] == "ON-X"
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "stati_disallineati" not in rules

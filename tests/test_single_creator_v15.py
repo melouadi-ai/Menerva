@@ -232,3 +232,11 @@ def test_canvas_senza_def_lambda_class():
     assert not any(isinstance(n, ast.AsyncFunctionDef) for n in kinds)
     assert not any(isinstance(n, ast.ClassDef) for n in kinds)
     assert not any(isinstance(n, ast.Lambda) for n in kinds)
+
+
+def test_keyword_ovf_da_errore():
+    out = run_script(SRC, chunk([variable(
+        "OVF COT_01", 40007, kind="DIGITALE_IMPACCATO",
+        extra={"bit": 0})]))
+    b = out[0]["bitinfo"][0]
+    assert (b["TEXTON"], b["TEXTOFF"]) == ("ERRORE", "OFF")

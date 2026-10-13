@@ -361,7 +361,12 @@ try:
         ["MANUTENZIONE", "MANUTENZIONE", "OFF"],
         ["CALIBRAZIONE", "CALIBRAZIONE", "OFF"],
         ["ZERO", "ZERO", "OFF"],
-        ["SPAN", "SPAN", "OFF"]
+        ["SPAN", "SPAN", "OFF"],
+        ["OVF", "ERRORE", "OFF"],
+        ["OVERFLOW", "ERRORE", "OFF"],
+        ["ERRORE", "ERRORE", "OFF"],
+        ["ERROR", "ERRORE", "OFF"],
+        ["ROTTURA", "ERRORE", "OFF"]
     ]
 
     # ---------- generazione misure/bitinfo per stazione ----------
