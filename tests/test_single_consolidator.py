@@ -808,3 +808,54 @@ def test_chiave_checklist_ignorata_dal_join():
         {"riga": 5, "description": "Pompa M1"}]
     extended["bitstates"]["digitali_visti"] = 1
     assert consolidate([base]) == consolidate([extended])
+
+
+def test_stati_riallineati_su_descrizione_univoca():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Maintenance MCA10", 42, reg=40003, bit=9,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": [
+        {"description": "Maintenance MCA10", "state_on": "Manutenzione",
+         "state_off": None, "riga": 41},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["state_on"] == "Manutenzione"
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "stati_disallineati" not in rules
+    assert "stati_riallineati" in rules
+
+
+def test_riallineamento_ambiguo_resta_scartato():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Pompa M1", 5, reg=40001, bit=8,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": [
+        {"description": "Valvola Y9", "state_on": "X",
+         "state_off": None, "riga": 5},
+        {"description": "Pompa M1", "state_on": "Y",
+         "state_off": None, "riga": 6},
+        {"description": "Pompa M1", "state_on": "Z",
+         "state_off": None, "riga": 8},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["state_on"] is None
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "stati_disallineati" in rules
+    assert "stati_riallineati" not in rules
+
+
+def test_riallineato_anche_senza_riga_propre():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Pompa M1", 7, reg=40001, bit=8,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": [
+        {"description": "Pompa M1", "state_on": "IN MARCIA",
+         "state_off": None, "riga": 6},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["state_on"] == "IN MARCIA"
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "stati_riallineati" in rules

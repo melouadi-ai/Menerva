@@ -69,7 +69,8 @@ def _score(got, cid):
 def _replay(folder):
     leaves = sorted((TESTS / folder).iterdir(), key=lambda p: p.name)
     merge = [p for p in leaves
-             if "MERGE" in p.name.upper() or p.name.upper() == "TAP ABC.TXT"]
+             if "MERGE" in p.name.upper() or p.name.upper() in (
+                 "TAP ABC.TXT", "ABC.TXT")]
     assert merge, folder
     abc = _load_any(merge[0])
     con = consolidate(abc)
@@ -80,6 +81,7 @@ CASES = [
     ("caso_5_ori_martin_1", "ORI MARTIN 5 NUOVO", 33, 45),
     ("caso_2_protec_1", "PROTEC 1 NUOVO", 29, 36),
     ("caso_8_superwatt_1", "SUPERWATT 8 NUOVO", 47, 59),
+    ("caso_3_protec_2", "PROTEC 2 NUOVO", 22, 22),
 ]
 
 
@@ -90,8 +92,3 @@ def test_recall_texton_non_peggiora(cid, folder, floor, total):
     assert exact >= floor
 
 
-def test_protec_2_frozen_non_peggiora():
-    # Caratterizzazione del finale congelato (PROTEC_2 non ha TAP_MERGE:
-    # NON è un guard di regressione del codice, solo un pin del file).
-    finale = _load_any(TESTS / "PROTEC 2 NUOVO" / "FINALE.txt")
-    assert _score(_texton_by_regbit(finale), "caso_3_protec_2") == (6, 22)

@@ -627,31 +627,13 @@ try:
                     var["pagina"] = page_no
                 riga = raw.get("riga")
                 xsd = None
-                if (has_states and type(riga) is int
-                        and riga in states_by_riga):
-                    for cand in sdup.get(riga, []):
-                        cnd = cand.get("description", None)
-                        if cnd is not None and cnd == var.get("description"):
-                            states_by_riga[riga] = cand
-                            break
-                        if (isinstance(cnd, str)
-                                and isinstance(var.get("description"), str)):
-                            xa = cnd
-                            if len(xa) >= 2 and xa[0] == xa[-1] and xa[0] in "'\"":
-                                xa = xa[1:-1]
-                            xa = " ".join(xa.replace("()", "").replace("( )", "").split())
-                            xb = var.get("description")
-                            if len(xb) >= 2 and xb[0] == xb[-1] and xb[0] in "'\"":
-                                xb = xb[1:-1]
-                            xb = " ".join(xb.replace("()", "").replace("( )", "").split())
-                            if xa == xb:
-                                states_by_riga[riga] = cand
-                                break
-                    xsd = states_by_riga[riga].get(
-                        "description", None)
-                    if xsd is None:
+                if (has_states and type(riga) is int):
+                    st = states_by_riga.get(riga)
+                    if st is not None:
+                        xsd = st.get("description", None)
+                    if xsd is None and st is not None:
                         try:
-                            xskeys = states_by_riga[riga].keys()
+                            xskeys = st.keys()
                         except Exception:
                             xskeys = []
                         xsi = 0
@@ -661,7 +643,7 @@ try:
                             if (isinstance(xsk, str)
                                     and xsk.lower() == "description"):
                                 try:
-                                    xsd = states_by_riga[riga].get(xsk)
+                                    xsd = st.get(xsk)
                                 except Exception:
                                     continue
                                 if xsd is not None:
@@ -797,15 +779,11 @@ try:
                                 counters["refuso_sospetto"] = counters.get(
                                     "refuso_sospetto", 0) + 1
                 # Ramo stati vince su state_on/state_off.
-                if (has_states and type(riga) is int
-                        and riga in states_by_riga):
-                    st = states_by_riga[riga]
-                    xpair = False
-                    if xsd is None:
-                        xpair = True
-                    elif xsd == var.get("description"):
-                        xpair = True
-                    elif (isinstance(xsd, str)
+                if (has_states and type(riga) is int):
+                    xpair = (st is not None and (xsd is None
+                        or xsd == var.get("description")))
+                    if (st is not None and not xpair
+                            and isinstance(xsd, str)
                             and isinstance(var.get("description"), str)):
                         xa = xsd
                         if len(xa) >= 2 and xa[0] == xa[-1] and xa[0] in "'\"":
@@ -841,16 +819,37 @@ try:
                             elif ysa in ysb or ysb in ysa:
                                 xpair = True
                     if not xpair:
-                        warnings.append({"rule": "stati_disallineati",
-                                         "page_no": page_no, "riga": riga,
-                                         "detail": "riga " + str(riga)
-                                         + ": misure="
-                                         + repr(var.get("description"))
-                                         + " vs "
-                                         + repr(xsd)
-                                         + " (tengo misure)"})
-                        counters["stati_disallineati"] = counters.get(
-                            "stati_disallineati", 0) + 1
+                        xfound = None
+                        xfi = 0
+                        while xfi < len(states_in):
+                            xfr = states_in[xfi]
+                            xfi = xfi + 1
+                            xfd = xfr.get("description", None) if isinstance(xfr, dict) else None
+                            if xfd is None:
+                                continue
+                            if xfd == var.get("description"):
+                                if xfound is not None: xfound = None; break
+                                xfound = xfr
+                        if xfound is not None:
+                            st = xfound; xpair = True
+                            warnings.append({"rule": "stati_riallineati",
+                                             "page_no": page_no, "riga": riga,
+                                             "detail": "riga " + str(xfound.get("riga"))
+                                             + "->" + str(riga)})
+                            counters["stati_riallineati"] = counters.get(
+                                "stati_riallineati", 0) + 1
+                    if st is None or not xpair:
+                        if st is not None:
+                            warnings.append({"rule": "stati_disallineati",
+                                             "page_no": page_no, "riga": riga,
+                                             "detail": "riga " + str(riga)
+                                             + ": "
+                                             + repr(var.get("description"))
+                                             + " vs "
+                                             + repr(xsd)
+                                             + " (tengo misure)"})
+                            counters["stati_disallineati"] = counters.get(
+                                "stati_disallineati", 0) + 1
                     else:
                         for sf in ("state_on", "state_off"):
                             sinc = st.get(sf)

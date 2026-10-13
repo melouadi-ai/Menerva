@@ -349,27 +349,46 @@ def assemble_page(page, page_no):
                                   riga, var.get("description"), nb_desc),
                               page_no=page_no, riga=riga,
                               counter="refuso_sospetto")
-            if has_states and _is_int(riga) and riga in states_by_riga:
-                st = states_by_riga[riga]
-                for cand in states_dup.get(riga, [st]):
-                    cd = _description_of(cand)
-                    if (cd == var.get("description")
-                            or _norm_key(cd) == _norm_key(
-                                var.get("description"))):
-                        st = cand
-                        break
-                st_desc = _description_of(st)
-                st_pair = (st_desc is None
-                           or st_desc == var.get("description")
-                           or _norm_key(st_desc) == _norm_key(
-                               var.get("description"))
-                           or _typo_pair(st_desc, var.get("description")))
+            if has_states and _is_int(riga):
+                st = states_by_riga.get(riga)
+                st_desc = _description_of(st) if st is not None else None
+                st_pair = (st is not None and (
+                    st_desc is None
+                    or st_desc == var.get("description")
+                    or _norm_key(st_desc) == _norm_key(
+                        var.get("description"))
+                    or _typo_pair(st_desc, var.get("description"))))
                 if not st_pair:
-                    _warn(warnings, counters, "stati_disallineati",
-                          "riga %s: %r vs %r (tengo misure)" % (
-                              riga, var.get("description"), st_desc),
-                          page_no=page_no, riga=riga,
-                          counter="stati_disallineati")
+                    found = None
+                    for cand in states_rows:
+                        if not isinstance(cand, dict):
+                            continue
+                        cd = _description_of(cand)
+                        if cd is None:
+                            continue
+                        if (cd == var.get("description")
+                                or _norm_key(cd) == _norm_key(
+                                    var.get("description"))):
+                            if found is not None:
+                                found = None
+                                break
+                            found = cand
+                    if found is not None:
+                        st = found
+                        st_pair = True
+                        _warn(warnings, counters, "stati_riallineati",
+                              "riga %s->%s: %r" % (
+                                  found.get("riga"), riga,
+                                  var.get("description")),
+                              page_no=page_no, riga=riga,
+                              counter="stati_riallineati")
+                if st is None or not st_pair:
+                    if st is not None:
+                        _warn(warnings, counters, "stati_disallineati",
+                              "riga %s: %r vs %r (tengo misure)" % (
+                                  riga, var.get("description"), st_desc),
+                              page_no=page_no, riga=riga,
+                              counter="stati_disallineati")
                 else:
                     for field in ("state_on", "state_off"):
                         incoming = st.get(field)
