@@ -55,3 +55,15 @@ def test_misure_nomi_v15_riga_e_checkkey():
         flat = " ".join((PROMPTS / name).read_text(encoding="utf-8").split())
         assert "riga 0, not 1" in flat, name
         assert "never restarted" in flat, name
+
+
+def test_stati_v17_anchored_row_scan():
+    text = (PROMPTS / "vlm_bitstates_v17.md").read_text(encoding="utf-8")
+    flat = " ".join(text.split())
+    assert "ANCHORED ROW SCAN" in text
+    assert "never scan the page freeform" in flat
+    assert "between \"=\" and the ModBus address" in flat
+    for mirror in ("myhydra/single_pdf/prompt/vlm_bitstates_v17.md",
+                   "myhydra/single_pdf/platforms/lv2/prompts/current/vlm_bitstates_v17.md"):
+        assert (Path(__file__).parent.parent / mirror).read_bytes() == (
+            PROMPTS / "vlm_bitstates_v17.md").read_bytes()
