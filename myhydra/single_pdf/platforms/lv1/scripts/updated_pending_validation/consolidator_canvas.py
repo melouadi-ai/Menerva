@@ -441,10 +441,11 @@ try:
      counters["stati_orfani"] = counters.get(
       "stati_orfani", 0) + 1
      for orf in orphans:
-      orow = states_by_riga[orf]
-      oson = orow.get("state_on")
-      osoff = orow.get("state_off")
-      if oson is not None or osoff is not None:
+      for orow in sdup.get(orf, [states_by_riga[orf]]):
+       oson = orow.get("state_on")
+       osoff = orow.get("state_off")
+       if oson is None and osoff is None:
+        continue
        warnings.append({"rule": "stati_orfani_utili",
            "page_no": page_no, "riga": orf,
            "detail": "riga " + str(orf)

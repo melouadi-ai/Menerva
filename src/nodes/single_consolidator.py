@@ -230,10 +230,11 @@ def assemble_page(page, page_no):
                       orphans,),
                   page_no=page_no, counter="stati_orfani")
             for riga in orphans:
-                row = states_by_riga.get(riga, {})
-                son = row.get("state_on")
-                soff = row.get("state_off")
-                if son is not None or soff is not None:
+                for row in states_dup.get(riga, [states_by_riga[riga]]):
+                    son = row.get("state_on")
+                    soff = row.get("state_off")
+                    if son is None and soff is None:
+                        continue
                     _warn(warnings, counters, "stati_orfani_utili",
                           "riga %s: %r on=%r off=%r (no reg)" % (
                               riga, _description_of(row), son, soff),

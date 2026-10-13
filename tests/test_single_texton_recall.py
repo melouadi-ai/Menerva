@@ -91,5 +91,7 @@ def test_recall_texton_non_peggiora(cid, folder, floor, total):
 
 
 def test_protec_2_frozen_non_peggiora():
+    # Caratterizzazione del finale congelato (PROTEC_2 non ha TAP_MERGE:
+    # NON è un guard di regressione del codice, solo un pin del file).
     finale = _load_any(TESTS / "PROTEC 2 NUOVO" / "FINALE.txt")
     assert _score(_texton_by_regbit(finale), "caso_3_protec_2") == (6, 22)

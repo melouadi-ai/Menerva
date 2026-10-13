@@ -775,3 +775,21 @@ def test_orfano_nullo_resta_orfano_semplice():
     rules = [w["rule"] for w in out["warnings"]]
     assert "stati_orfani" in rules
     assert "stati_orfani_utili" not in rules
+
+
+def test_orfani_duplicati_entrambi_dichiarati():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Pompa M1", 1, reg=40001, bit=8,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": [
+        {"description": "Valvola Y9", "state_on": "APERTO",
+         "state_off": None, "riga": 9},
+        {"description": "Valvola Y9 bis", "state_on": "CHIUSO",
+         "state_off": None, "riga": 9},
+    ]}}
+    out = consolidate([page])
+    details = [w["detail"] for w in out["warnings"]
+               if w["rule"] == "stati_orfani_utili"]
+    assert len(details) == 2
+    assert any("APERTO" in d for d in details)
+    assert any("CHIUSO" in d for d in details)
