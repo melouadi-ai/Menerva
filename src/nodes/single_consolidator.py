@@ -331,8 +331,10 @@ def assemble_page(page, page_no):
             if has_states and _is_int(riga) and riga in states_by_riga:
                 st = states_by_riga[riga]
                 st_desc = _description_of(st)
-                if (st_desc is not None
-                        and st_desc != var.get("description")):
+                st_pair = (st_desc is None
+                           or st_desc == var.get("description")
+                           or _typo_pair(st_desc, var.get("description")))
+                if not st_pair:
                     _warn(warnings, counters, "stati_disallineati",
                           "riga %s: misure=%r contro stati=%r, "
                           "stati ignorati (tengo misure)" % (
@@ -341,16 +343,19 @@ def assemble_page(page, page_no):
                           counter="stati_disallineati")
                 else:
                     for field in ("state_on", "state_off"):
+                        incoming = st.get(field)
+                        if incoming is None:
+                            continue
                         if (var.get(field) is not None
-                                and st.get(field) != var.get(field)):
+                                and incoming != var.get(field)):
                             _warn(warnings, counters, "stati_mismatch",
                                   "riga %s: %s misure=%r stati=%r "
                                   "(vince stati)" % (
                                       riga, field, var.get(field),
-                                      st.get(field)),
+                                      incoming),
                                   page_no=page_no, riga=riga,
                                   counter="stati_mismatch")
-                        var[field] = st.get(field)
+                        var[field] = incoming
             variables.append(var)
         items.append((meta, variables))
     return items, warnings, counters
