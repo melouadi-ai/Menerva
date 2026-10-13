@@ -859,3 +859,14 @@ def test_riallineato_anche_senza_riga_propre():
     assert var["state_on"] == "IN MARCIA"
     rules = [w["rule"] for w in out["warnings"]]
     assert "stati_riallineati" in rules
+
+
+def test_chiave_checklist_misure_ignorata_dal_join():
+    vars_ = [_var("Pompa M1", 5, reg=40001, bit=8,
+                  kind="DIGITALE_IMPACCATO")]
+    base = {"page_no": 1, "stations": [_station("10.0.0.1", vars_)]}
+    import copy
+    extended = copy.deepcopy(base)
+    extended["checklist"] = [{"riga": 5, "description": "Pompa M1"}]
+    extended["righe_viste"] = 1
+    assert consolidate([base]) == consolidate([extended])

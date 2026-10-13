@@ -90,3 +90,15 @@ def test_stati_v19_checklist_prima_degli_stati():
                    "myhydra/single_pdf/platforms/lv2/prompts/current/vlm_bitstates_v19.md"):
         assert (Path(__file__).parent.parent / mirror).read_bytes() == (
             PROMPTS / "vlm_bitstates_v19.md").read_bytes()
+
+
+def test_misure_v16_checklist_prima_delle_variabili():
+    text = (PROMPTS / "vlm_measures_v16.md").read_text(encoding="utf-8")
+    flat = " ".join(text.split())
+    assert text.index("checklist") < text.index('"stations"')
+    assert "write the `checklist`" in flat
+    assert "righe_viste" in text
+    for mirror in ("myhydra/single_pdf/prompt/vlm_measures_v16.md",
+                   "myhydra/single_pdf/platforms/lv2/prompts/current/vlm_measures_v16.md"):
+        assert (Path(__file__).parent.parent / mirror).read_bytes() == (
+            PROMPTS / "vlm_measures_v16.md").read_bytes()
