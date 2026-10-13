@@ -167,6 +167,8 @@ try:
             if "state_on" in rk or "state_off" in rk:
                 is_states = True
         if dict_n == 0:
+            counters["blocco_rows_vuoto"] = counters.get(
+                "blocco_rows_vuoto", 0) + 1
             continue
         if current is None:
             current = {"stations": [], "bitnames": None, "bitstates": None}
@@ -227,6 +229,11 @@ try:
             raise ValueError("blocco rows non riconoscibile " + str(bi)
                 + ": chiavi " + str(sorted(set(
                     k for r in rows if isinstance(r, dict) for k in r))))
+    if counters.get("blocco_rows_vuoto"):
+        warnings.append({"rule": "blocco_rows_vuoto", "page_no": None,
+                         "riga": None,
+                         "detail": str(counters["blocco_rows_vuoto"])
+                         + " blocchi rows vuoti scartati (ramo silente)"})
     if not isinstance(pages, list):
         raise ValueError("attendo lista pagine.")
     # V2: scarti per match esatto (case-insensitive dopo strip).
@@ -511,7 +518,7 @@ try:
                         xni = xni + 1
                         if type(xnr.get("bit")) is int:
                             digital_righe.add(xnomi[xni - 1])
-                if (len(digital_righe) > 0 and len(states_by_riga) > 0
+                if (len(digital_righe) > 0
                         and len(states_by_riga) * 2 < len(digital_righe)):
                     warnings.append({"rule": "sospetto_sottocampionamento",
                                      "page_no": page_no, "riga": None,

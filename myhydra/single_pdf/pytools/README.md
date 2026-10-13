@@ -42,8 +42,8 @@ sha256sum myhydra/single_pdf/pytools/consolidator.py myhydra/single_pdf/pytools/
 ```
 
 Hash attesi:
-- `consolidator.py`: `1cebf278df257376e995ce6b6f8a14e9183e7a9a7e2fee866ec4c492420cbde9`
-- `consolidator_canvas.py`: `7807448bd655cf8f22413044f91aca281c3d27eee759e6afa38ec4f3abeebb40`
+- `consolidator.py`: `465b1169eb7223b3ccee75deed6f9e6e02dfc98bc4d1cb3c11053dbdca60c0b1`
+- `consolidator_canvas.py`: `c97a827e4cddd15b3adb07129b8f5220b1c1d236e82278d3172e2c842afd14f6`
 
 Questo file ha `{edge}[4]` ed è del solo Single PDF. Il Double PDF ha una copia
 separata con `{edge}[13}` in

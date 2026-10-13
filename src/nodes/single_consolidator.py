@@ -228,7 +228,6 @@ def assemble_page(page, page_no):
                 if _is_int(row.get("bit")):
                     digital_righe.add(riga)
         if (has_states and len(digital_righe) > 0
-                and len(states_righe) > 0
                 and len(states_righe) * 2 < len(digital_righe)):
             _warn(warnings, counters, "sospetto_sottocampionamento",
                   "stati %d/%d digitali: TEXTON da keyword" % (
@@ -551,6 +550,8 @@ def _group_branches(blocks, warnings, counters):
                         type(block[k]).__name__ for k in block)))))
         dict_rows = [r for r in rows if isinstance(r, dict)]
         if not dict_rows:
+            counters["blocco_rows_vuoto"] = counters.get(
+                "blocco_rows_vuoto", 0) + 1
             continue
         if current is None:
             current = _open()
@@ -579,6 +580,10 @@ def _group_branches(blocks, warnings, counters):
                       counter="ramo_misto")
                 _attach_branch(current, "bitnames", name_rows, fragment)
             _attach_branch(current, "bitstates", state_rows, fragment)
+    if counters.get("blocco_rows_vuoto"):
+        _warn(warnings, counters, "blocco_rows_vuoto",
+              "%d blocchi rows vuoti scartati (ramo silente)" % (
+                  counters["blocco_rows_vuoto"],))
     cleaned = []
     for page in pages:
         if page.get("_raw_group"):

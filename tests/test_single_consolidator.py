@@ -300,10 +300,11 @@ def test_blocco_rows_irriconoscibile_resta_errore_forte():
         consolidate([{"stations": []}, {"rows": [{"foo": 1}]}])
 
 
-def test_blocco_rows_vuoto_nessun_rumore():
+def test_blocco_rows_vuoto_dichiarato_mai_silenzioso():
     out = consolidate([{"rows": []}])
     assert out["stations"] == []
-    assert out["warnings"] == []
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "blocco_rows_vuoto" in rules
 
 
 def test_righe_stati_grezze_senza_busta_si_agganciano():
@@ -405,13 +406,15 @@ def test_stati_radi_avvisano_sottocampionamento():
     assert "sospetto_sottocampionamento" in rules
 
 
-def test_stati_assenti_non_avvisano_sottocampionamento():
+def test_stati_assenti_avvisano_sottocampionamento():
+    # Comportamento voluto: zero stati su pagina digitale = fallback
+    # keyword dichiarato, mai miss silenzioso (solo PDF in output).
     page = {"page_no": 1, "stations": [_station("10.0.0.1", [
         _var("A", 1, reg=40001, bit=0, kind="DIGITALE_IMPACCATO"),
     ])], "bitstates": {"rows": []}}
     out = consolidate([page])
     rules = [w["rule"] for w in out["warnings"]]
-    assert "sospetto_sottocampionamento" not in rules
+    assert "sospetto_sottocampionamento" in rules
 
 
 def test_coppia_typo_su_stessa_riga_avvisa_refuso():
@@ -655,3 +658,29 @@ def test_stato_parentetico_da_descrizione_non_applicato():
     out = consolidate([page])
     var = out["stations"][0]["variables"][0]
     assert var["state_on"] is None
+
+
+def test_stati_zero_su_pagina_digitale_avvisano():
+    # Pagina con digitali ma zero stati: miss silenzioso vietato, il
+    # fallback keyword va dichiarato (esattezza: solo PDF in output).
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Over Flow NO", 1, reg=40005, bit=0,
+             kind="DIGITALE_IMPACCATO"),
+        _var("Rottura Cavo NO", 2, reg=40005, bit=8,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": []}}
+    out = consolidate([page])
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "sospetto_sottocampionamento" in rules
+
+
+def test_blocco_rows_vuoto_non_sparisce_silenzioso():
+    # Un blocco {"rows": []} e' il ramo che tace (V27): va dichiarato,
+    # mai scartato in silenzio (solo PDF in output).
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Over Flow NO", 1, reg=40005, bit=0,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitnames": {"rows": []}}
+    out = consolidate([page, {"rows": []}])
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "blocco_rows_vuoto" in rules
