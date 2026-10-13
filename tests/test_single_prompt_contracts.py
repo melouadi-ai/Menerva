@@ -48,3 +48,10 @@ def test_stati_v16_catalogo_header_e_conteggi():
                    "myhydra/single_pdf/platforms/lv2/prompts/current/vlm_bitstates_v16.md"):
         assert (Path(__file__).parent.parent / mirror).read_bytes() == (
             PROMPTS / "vlm_bitstates_v16.md").read_bytes()
+
+
+def test_misure_nomi_v15_riga_e_checkkey():
+    for name in ("vlm_measures_v15.md", "vlm_bitnames_v15.md"):
+        flat = " ".join((PROMPTS / name).read_text(encoding="utf-8").split())
+        assert "riga 0, not 1" in flat, name
+        assert "never restarted" in flat, name
