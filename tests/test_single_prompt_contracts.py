@@ -35,3 +35,16 @@ def test_chiave_descrittiva_negli_stati():
     text = _flat("vlm_bitstates_v15.md")
     assert "DESCRIPTION CHECK-KEY" in text
     assert '"description"' in text
+
+
+def test_stati_v16_catalogo_header_e_conteggi():
+    text = (PROMPTS / "vlm_bitstates_v16.md").read_text(encoding="utf-8")
+    flat = " ".join(text.split())
+    assert "STATO 1" in text
+    assert "ON TEXT" in text
+    assert "digitali_visti" in text
+    assert "never a state, even when it looks like one" in flat
+    for mirror in ("myhydra/single_pdf/prompt/vlm_bitstates_v16.md",
+                   "myhydra/single_pdf/platforms/lv2/prompts/current/vlm_bitstates_v16.md"):
+        assert (Path(__file__).parent.parent / mirror).read_bytes() == (
+            PROMPTS / "vlm_bitstates_v16.md").read_bytes()
