@@ -793,3 +793,18 @@ def test_orfani_duplicati_entrambi_dichiarati():
     assert len(details) == 2
     assert any("APERTO" in d for d in details)
     assert any("CHIUSO" in d for d in details)
+
+
+def test_chiave_checklist_ignorata_dal_join():
+    vars_ = [_var("Pompa M1", 5, reg=40001, bit=8,
+                  kind="DIGITALE_IMPACCATO")]
+    base = {"page_no": 1, "stations": [_station("10.0.0.1", vars_)],
+            "bitstates": {"rows": [
+                {"description": "Pompa M1", "state_on": "IN MARCIA",
+                 "state_off": None, "riga": 5}]}}
+    import copy
+    extended = copy.deepcopy(base)
+    extended["bitstates"]["checklist"] = [
+        {"riga": 5, "description": "Pompa M1"}]
+    extended["bitstates"]["digitali_visti"] = 1
+    assert consolidate([base]) == consolidate([extended])

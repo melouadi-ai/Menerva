@@ -79,3 +79,14 @@ def test_stati_v18_scan_in_cima():
                    "myhydra/single_pdf/platforms/lv2/prompts/current/vlm_bitstates_v18.md"):
         assert (Path(__file__).parent.parent / mirror).read_bytes() == (
             PROMPTS / "vlm_bitstates_v18.md").read_bytes()
+
+
+def test_stati_v19_checklist_prima_degli_stati():
+    text = (PROMPTS / "vlm_bitstates_v19.md").read_text(encoding="utf-8")
+    flat = " ".join(text.split())
+    assert text.index("checklist") < text.index('"rows"')
+    assert "write it FIRST, before reading a single state cell" in flat
+    for mirror in ("myhydra/single_pdf/prompt/vlm_bitstates_v19.md",
+                   "myhydra/single_pdf/platforms/lv2/prompts/current/vlm_bitstates_v19.md"):
+        assert (Path(__file__).parent.parent / mirror).read_bytes() == (
+            PROMPTS / "vlm_bitstates_v19.md").read_bytes()
