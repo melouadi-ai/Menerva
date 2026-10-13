@@ -175,7 +175,7 @@ try:
             pages.append(current)
             warnings.append({"rule": "righe_senza_misure", "page_no": None,
                              "riga": None,
-                             "detail": str(dict_n) + " righe ramo senza pagina misure: in attesa di join"})
+                             "detail": str(dict_n) + " righe orfane"})
             counters["righe_senza_misure"] = counters.get(
                 "righe_senza_misure", 0) + 1
         if is_states:
@@ -233,7 +233,7 @@ try:
         warnings.append({"rule": "blocco_rows_vuoto", "page_no": None,
                          "riga": None,
                          "detail": str(counters["blocco_rows_vuoto"])
-                         + " blocchi rows vuoti scartati (ramo silente)"})
+                         + " rows vuoti (silente)"})
     if not isinstance(pages, list):
         raise ValueError("attendo lista pagine.")
     # V2: scarti per match esatto (case-insensitive dopo strip).
@@ -279,16 +279,7 @@ try:
         else:
             unnumbered.append([pos, pg])
         ni = ni + 1
-    si = 0
-    while si < len(numbered):
-        sj = si + 1
-        while sj < len(numbered):
-            if numbered[sj][0] < numbered[si][0]:
-                tmp = numbered[si]
-                numbered[si] = numbered[sj]
-                numbered[sj] = tmp
-            sj = sj + 1
-        si = si + 1
+    numbered = sorted(numbered)
     ordered = []
     oi = 0
     while oi < len(numbered):
@@ -298,9 +289,8 @@ try:
     while ui < len(unnumbered):
         warnings.append({"rule": "pagina_senza_numero", "page_no": None,
                          "riga": None,
-                         "detail": "pagina in posizione "
-                         + str(unnumbered[ui][0])
-                         + " senza page_no: ordine di arrivo"})
+                         "detail": "pagina " + str(unnumbered[ui][0])
+                         + " senza page_no"})
         ordered.append([None, unnumbered[ui][1]])
         ui = ui + 1
     # Buchi di sequenza sui page_no numerati.
@@ -312,15 +302,8 @@ try:
             seen_pn.append(pn)
         bi = bi + 1
     if seen_pn:
-        mn = seen_pn[0]
-        mx = seen_pn[0]
-        mi = 1
-        while mi < len(seen_pn):
-            if seen_pn[mi] < mn:
-                mn = seen_pn[mi]
-            if seen_pn[mi] > mx:
-                mx = seen_pn[mi]
-            mi = mi + 1
+        mn = min(seen_pn)
+        mx = max(seen_pn)
         missing = []
         cand = mn
         while cand <= mx:
@@ -374,7 +357,7 @@ try:
             states_in = bitstates
         if not isinstance(states_in, list):
             states_in = []
-        names_by_riga = {}
+        nbmr = {}
         ni = 0
         while ni < len(names_in):
             nr = names_in[ni]
@@ -382,9 +365,10 @@ try:
             if not isinstance(nr, dict):
                 continue
             riga = nr.get("riga")
-            if type(riga) is int and riga not in names_by_riga:
-                names_by_riga[riga] = nr
+            if type(riga) is int and riga not in nbmr:
+                nbmr[riga] = nr
         states_by_riga = {}
+        sdup = {}
         ti = 0
         while ti < len(states_in):
             sr = states_in[ti]
@@ -392,8 +376,13 @@ try:
             if not isinstance(sr, dict):
                 continue
             riga = sr.get("riga")
-            if type(riga) is int and riga not in states_by_riga:
-                states_by_riga[riga] = sr
+            if type(riga) is int:
+                if riga not in states_by_riga:
+                    states_by_riga[riga] = sr
+                if riga in sdup:
+                    sdup[riga].append(sr)
+                else:
+                    sdup[riga] = [sr]
         raw_total = 0
         rti = 0
         while rti < len(stations):
@@ -432,7 +421,7 @@ try:
             raws = station.get("variables")
             if not isinstance(raws, list):
                 raws = []
-            measures_righe = []
+            mrge = []
             ri = 0
             while ri < len(raws):
                 raw = raws[ri]
@@ -440,62 +429,50 @@ try:
                 if not isinstance(raw, dict):
                     continue
                 riga = raw.get("riga")
-                if type(riga) is int and riga not in measures_righe:
-                    measures_righe.append(riga)
+                if type(riga) is int and riga not in mrge:
+                    mrge.append(riga)
             if has_names:
-                same = True
-                if len(names_by_riga) != len(measures_righe):
-                    same = False
-                else:
-                    ki = 0
-                    keys = list(names_by_riga.keys())
-                    while ki < len(keys):
-                        if keys[ki] not in measures_righe:
-                            same = False
-                        ki = ki + 1
-                if not same:
+                if set(nbmr) != set(mrge):
                     warnings.append({"rule": "riga_mismatch",
                                      "page_no": page_no, "riga": None,
-                                     "detail": "bitnames rows "
-                                     + str(sorted(names_by_riga.keys()))
-                                     + " vs measures rows "
-                                     + str(sorted(measures_righe))})
+                                     "detail": "nomi "
+                                     + str(sorted(nbmr.keys()))
+                                     + " vs mis "
+                                     + str(sorted(mrge))})
                     counters["riga_mismatch"] = counters["riga_mismatch"] + 1
             if has_states:
-                same = True
-                if len(states_by_riga) != len(measures_righe):
-                    same = False
-                else:
-                    ki = 0
-                    keys = list(states_by_riga.keys())
-                    while ki < len(keys):
-                        if keys[ki] not in measures_righe:
-                            same = False
-                        ki = ki + 1
-                if not same:
+                if set(states_by_riga) != set(mrge):
                     warnings.append({"rule": "riga_mismatch",
                                      "page_no": page_no, "riga": None,
-                                     "detail": "bitstates rows "
+                                     "detail": "stati "
                                      + str(sorted(states_by_riga.keys()))
-                                     + " vs measures rows "
-                                     + str(sorted(measures_righe))})
+                                     + " vs mis "
+                                     + str(sorted(mrge))})
                     counters["riga_mismatch"] = counters["riga_mismatch"] + 1
-                orphans = []
-                okeys = list(states_by_riga.keys())
-                ox = 0
-                while ox < len(okeys):
-                    if okeys[ox] not in measures_righe:
-                        orphans.append(okeys[ox])
-                    ox = ox + 1
+                orphans = sorted(set(states_by_riga) - set(mrge))
                 if len(orphans) > 0:
                     warnings.append({"rule": "stati_orfani",
                                      "page_no": page_no, "riga": None,
-                                     "detail": "bitstates senza measures: righe "
+                                     "detail": "stati orfani "
                                      + str(sorted(orphans))
-                                     + " (stati ignorati)"})
+                                     + " (ignorati)"})
                     counters["stati_orfani"] = counters.get(
                         "stati_orfani", 0) + 1
-                digital_righe = set()
+                    for orf in orphans:
+                        orow = states_by_riga[orf]
+                        oson = orow.get("state_on")
+                        osoff = orow.get("state_off")
+                        if oson is not None or osoff is not None:
+                            warnings.append({"rule": "stati_orfani_utili",
+                                             "page_no": page_no, "riga": orf,
+                                             "detail": "riga " + str(orf)
+                                             + ": " + repr(orow.get("description"))
+                                             + " on=" + str(oson)
+                                             + " off=" + str(osoff)
+                                             + " (no reg)"})
+                            counters["stati_orfani_utili"] = counters.get(
+                                "stati_orfani_utili", 0) + 1
+                digr = set()
                 ri2 = 0
                 while ri2 < len(raws):
                     rraw = raws[ri2]
@@ -507,24 +484,24 @@ try:
                         continue
                     rkind = rraw.get("kind")
                     if isinstance(rkind, str) and rkind.startswith("DIGITALE"):
-                        digital_righe.add(rriga)
+                        digr.add(rriga)
                     elif type(rraw.get("bit")) is int:
-                        digital_righe.add(rriga)
+                        digr.add(rriga)
                 if has_names:
-                    xnomi = list(names_by_riga.keys())
+                    xnomi = list(nbmr.keys())
                     xni = 0
                     while xni < len(xnomi):
-                        xnr = names_by_riga[xnomi[xni]]
+                        xnr = nbmr[xnomi[xni]]
                         xni = xni + 1
                         if type(xnr.get("bit")) is int:
-                            digital_righe.add(xnomi[xni - 1])
-                if (len(digital_righe) > 0
-                        and len(states_by_riga) * 2 < len(digital_righe)):
+                            digr.add(xnomi[xni - 1])
+                if (len(digr) > 0
+                        and len(states_by_riga) * 2 < len(digr)):
                     warnings.append({"rule": "sospetto_sottocampionamento",
                                      "page_no": page_no, "riga": None,
                                      "detail": "stati "
                                      + str(len(states_by_riga))
-                                     + "/" + str(len(digital_righe))
+                                     + "/" + str(len(digr))
                                      + " digitali: TEXTON da keyword"})
                     counters["sospetto_sottocampionamento"] = counters.get(
                         "sospetto_sottocampionamento", 0) + 1
@@ -648,12 +625,30 @@ try:
                 if var.get("pagina") is None and type(page_no) is int:
                     var["pagina"] = page_no
                 riga = raw.get("riga")
-                xst_desc = None
+                xsd = None
                 if (has_states and type(riga) is int
                         and riga in states_by_riga):
-                    xst_desc = states_by_riga[riga].get(
+                    for cand in sdup.get(riga, []):
+                        cnd = cand.get("description", None)
+                        if cnd is not None and cnd == var.get("description"):
+                            states_by_riga[riga] = cand
+                            break
+                        if (isinstance(cnd, str)
+                                and isinstance(var.get("description"), str)):
+                            xa = cnd
+                            if len(xa) >= 2 and xa[0] == xa[-1] and xa[0] in "'\"":
+                                xa = xa[1:-1]
+                            xa = " ".join(xa.replace("()", "").replace("( )", "").split())
+                            xb = var.get("description")
+                            if len(xb) >= 2 and xb[0] == xb[-1] and xb[0] in "'\"":
+                                xb = xb[1:-1]
+                            xb = " ".join(xb.replace("()", "").replace("( )", "").split())
+                            if xa == xb:
+                                states_by_riga[riga] = cand
+                                break
+                    xsd = states_by_riga[riga].get(
                         "description", None)
-                    if xst_desc is None:
+                    if xsd is None:
                         try:
                             xskeys = states_by_riga[riga].keys()
                         except Exception:
@@ -665,15 +660,15 @@ try:
                             if (isinstance(xsk, str)
                                     and xsk.lower() == "description"):
                                 try:
-                                    xst_desc = states_by_riga[riga].get(xsk)
+                                    xsd = states_by_riga[riga].get(xsk)
                                 except Exception:
                                     continue
-                                if xst_desc is not None:
+                                if xsd is not None:
                                     break
                                 # Ramo nomi-bit: vince solo a descrizioni concordi (F1b).
                 if (has_names and type(riga) is int
-                        and riga in names_by_riga):
-                    nb = names_by_riga[riga]
+                        and riga in nbmr):
+                    nb = nbmr[riga]
                     nb_desc = nb.get("description", None)
                     if nb_desc is None:
                         try:
@@ -692,9 +687,9 @@ try:
                                     continue
                                 if nb_desc is not None:
                                     break
-                    if (xst_desc is not None and nb_desc is not None
-                            and xst_desc == nb_desc
-                            and xst_desc != var.get("description")
+                    if (xsd is not None and nb_desc is not None
+                            and xsd == nb_desc
+                            and xsd != var.get("description")
                             and nb.get("modbus_register")
                             == var.get("modbus_register")
                             and nb.get("bit") == var.get("bit")):
@@ -764,22 +759,22 @@ try:
                                 and isinstance(nb_desc, str)
                                 and isinstance(var.get("description"),
                                                str)):
-                            xna = []
+                            xa = []
                             xup = nb_desc.upper()
                             xui = 0
                             while xui < len(xup):
                                 if xup[xui].isalnum():
-                                    xna.append(xup[xui])
+                                    xa.append(xup[xui])
                                 xui = xui + 1
-                            xnb = []
+                            xb = []
                             xup = var.get("description").upper()
                             xui = 0
                             while xui < len(xup):
                                 if xup[xui].isalnum():
-                                    xnb.append(xup[xui])
+                                    xb.append(xup[xui])
                                 xui = xui + 1
-                            xsa = "".join(xna)
-                            xsb = "".join(xnb)
+                            xsa = "".join(xa)
+                            xsb = "".join(xb)
                             xtypo = False
                             if (xsa != xsb and len(xsa) >= 4
                                     and len(xsb) >= 4
@@ -797,23 +792,32 @@ try:
                                                  + repr(var.get("description"))
                                                  + " contro nomi-bit="
                                                  + repr(nb_desc)
-                                                 + ", stesso registro: una delle due versioni "
-                                                 + "corregge un refuso (tenuta misure)"})
+                                                 + ", refuso? (tengo misure)"})
                                 counters["refuso_sospetto"] = counters.get(
                                     "refuso_sospetto", 0) + 1
                 # Ramo stati vince su state_on/state_off.
                 if (has_states and type(riga) is int
                         and riga in states_by_riga):
                     st = states_by_riga[riga]
-                    xst_pair = False
-                    if xst_desc is None:
-                        xst_pair = True
-                    elif xst_desc == var.get("description"):
-                        xst_pair = True
-                    elif (isinstance(xst_desc, str)
+                    xpair = False
+                    if xsd is None:
+                        xpair = True
+                    elif xsd == var.get("description"):
+                        xpair = True
+                    elif (isinstance(xsd, str)
                             and isinstance(var.get("description"), str)):
+                        xa = xsd
+                        if len(xa) >= 2 and xa[0] == xa[-1] and xa[0] in "'\"":
+                            xa = xa[1:-1]
+                        xa = " ".join(xa.replace("()", "").replace("( )", "").split())
+                        xb = var.get("description")
+                        if len(xb) >= 2 and xb[0] == xb[-1] and xb[0] in "'\"":
+                            xb = xb[1:-1]
+                        xb = " ".join(xb.replace("()", "").replace("( )", "").split())
+                        if xa == xb:
+                            xpair = True
                         yna = []
-                        yup = xst_desc.upper()
+                        yup = xsd.upper()
                         yui = 0
                         while yui < len(yup):
                             if yup[yui].isalnum():
@@ -832,18 +836,18 @@ try:
                                 and len(ysb) >= 4
                                 and abs(len(ysa) - len(ysb)) <= 2):
                             if ysa[:3] == ysb[:3] and ysa[-3:] == ysb[-3:]:
-                                xst_pair = True
+                                xpair = True
                             elif ysa in ysb or ysb in ysa:
-                                xst_pair = True
-                    if not xst_pair:
+                                xpair = True
+                    if not xpair:
                         warnings.append({"rule": "stati_disallineati",
                                          "page_no": page_no, "riga": riga,
                                          "detail": "riga " + str(riga)
                                          + ": misure="
                                          + repr(var.get("description"))
-                                         + " contro stati="
-                                         + repr(xst_desc)
-                                         + ", stati ignorati (tengo misure)"})
+                                         + " vs "
+                                         + repr(xsd)
+                                         + " (tengo misure)"})
                         counters["stati_disallineati"] = counters.get(
                             "stati_disallineati", 0) + 1
                     else:
@@ -864,10 +868,9 @@ try:
                                                  "page_no": page_no,
                                                  "riga": riga,
                                                  "detail": "riga " + str(riga)
-                                                 + ": " + sf + " misure="
+                                                 + " " + sf + ": "
                                                  + str(var.get(sf))
-                                                 + " stati=" + str(sinc)
-                                                 + " (vince stati)"})
+                                                 + "->" + str(sinc)})
                                 counters["stati_mismatch"] = counters.get(
                                     "stati_mismatch", 0) + 1
                             var[sf] = sinc
@@ -925,8 +928,7 @@ try:
                                      "riga": var.get("riga"),
                                      "detail": str(var.get("description"))
                                      + ": REG " + str(slot["last_reg"])
-                                     + " applicato (carry-over, "
-                                     "verificare sul PDF)"})
+                                     + " applicato (carry-over?)"})
                     counters["registri_applicati"] = counters["registri_applicati"] + 1
                 slot["variables"].append(var)
         oi = oi + 1
@@ -973,9 +975,8 @@ try:
                                      "detail": str(var.get("description"))
                                      + " @ "
                                      + str(var.get("modbus_register"))
-                                     + ": copia placeholder su "
-                                     + str(acc[xother]["meta"].get("ip"))
-                                     + ", tenuto placeholder"})
+                                     + "->" + str(acc[xother]["meta"].get("ip"))
+                                     + " (tenuto)"})
                     counters["copia_reale_da_placeholder"] = counters.get(
                         "copia_reale_da_placeholder", 0) + 1
                 else:

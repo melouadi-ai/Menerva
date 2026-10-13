@@ -248,3 +248,11 @@ def test_stato_junk_parentetico_va_in_fallback_keyword():
         extra={"bit": 8, "state_on": "1= RUNNING"})]))
     b = out[0]["bitinfo"][0]
     assert (b["TEXTON"], b["TEXTOFF"]) == ("ALLARME", "OFF")
+
+
+def test_stato_solo_uguale_isolato_va_in_fallback():
+    out = run_script(SRC, chunk([variable(
+        "Contatore impulsi", 40010, kind="DIGITALE_IMPACCATO",
+        extra={"bit": 3, "state_on": "1 ="})]))
+    b = out[0]["bitinfo"][0]
+    assert (b["TEXTON"], b["TEXTOFF"]) == ("ATTIVO", "OFF")

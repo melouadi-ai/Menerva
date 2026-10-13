@@ -215,18 +215,18 @@ def assemble_page(page, page_no):
         states_righe = set(states_by_riga)
         if has_names and names_righe != measures_righe:
             _warn(warnings, counters, "riga_mismatch",
-                  "bitnames rows %s vs measures rows %s" % (
+                  "nomi %s vs mis %s" % (
                       sorted(names_righe), sorted(measures_righe)),
                   page_no=page_no, counter="riga_mismatch")
         if has_states and states_righe != measures_righe:
             _warn(warnings, counters, "riga_mismatch",
-                  "bitstates rows %s vs measures rows %s" % (
+                  "stati %s vs mis %s" % (
                       sorted(states_righe), sorted(measures_righe)),
                   page_no=page_no, counter="riga_mismatch")
         orphans = sorted(states_righe - measures_righe) if has_states else []
         if orphans:
             _warn(warnings, counters, "stati_orfani",
-                  "bitstates senza measures: righe %s (stati ignorati)" % (
+                  "stati orfani %s (ignorati)" % (
                       orphans,),
                   page_no=page_no, counter="stati_orfani")
             for riga in orphans:
@@ -235,8 +235,7 @@ def assemble_page(page, page_no):
                 soff = row.get("state_off")
                 if son is not None or soff is not None:
                     _warn(warnings, counters, "stati_orfani_utili",
-                          "riga %s: %r on=%r off=%r (senza registro: "
-                          "fuori ADAS)" % (
+                          "riga %s: %r on=%r off=%r (no reg)" % (
                               riga, _description_of(row), son, soff),
                           page_no=page_no, riga=riga,
                           counter="stati_orfani_utili")
@@ -345,8 +344,7 @@ def assemble_page(page, page_no):
                                            var.get("description"))):
                         _warn(warnings, counters, "refuso_sospetto",
                               "riga %s: misure=%r contro nomi-bit=%r, "
-                              "stesso registro: una delle due versioni "
-                              "corregge un refuso (tenuta misure)" % (
+                              ", refuso? (tengo misure)" % (
                                   riga, var.get("description"), nb_desc),
                               page_no=page_no, riga=riga,
                               counter="refuso_sospetto")
@@ -356,8 +354,7 @@ def assemble_page(page, page_no):
                     cd = _description_of(cand)
                     if (cd == var.get("description")
                             or _norm_key(cd) == _norm_key(
-                                var.get("description"))
-                            or _typo_pair(cd, var.get("description"))):
+                                var.get("description"))):
                         st = cand
                         break
                 st_desc = _description_of(st)
@@ -368,8 +365,7 @@ def assemble_page(page, page_no):
                            or _typo_pair(st_desc, var.get("description")))
                 if not st_pair:
                     _warn(warnings, counters, "stati_disallineati",
-                          "riga %s: misure=%r contro stati=%r, "
-                          "stati ignorati (tengo misure)" % (
+                          "riga %s: %r vs %r (tengo misure)" % (
                               riga, var.get("description"), st_desc),
                           page_no=page_no, riga=riga,
                           counter="stati_disallineati")
@@ -388,8 +384,7 @@ def assemble_page(page, page_no):
                         if (var.get(field) is not None
                                 and incoming != var.get(field)):
                             _warn(warnings, counters, "stati_mismatch",
-                                  "riga %s: %s misure=%r stati=%r "
-                                  "(vince stati)" % (
+                                  "riga %s %s: %r->%r" % (
                                       riga, field, var.get(field),
                                       incoming),
                                   page_no=page_no, riga=riga,
@@ -593,7 +588,7 @@ def _group_branches(blocks, warnings, counters):
         if current is None:
             current = _open()
             _warn(warnings, counters, "righe_senza_misure",
-                  "%d righe ramo senza pagina misure: in attesa di join"
+                  "%d righe orfane"
                   % len(dict_rows),
                   counter="righe_senza_misure")
         state_rows = [r for r in dict_rows
@@ -619,7 +614,7 @@ def _group_branches(blocks, warnings, counters):
             _attach_branch(current, "bitstates", state_rows, fragment)
     if counters.get("blocco_rows_vuoto"):
         _warn(warnings, counters, "blocco_rows_vuoto",
-              "%d blocchi rows vuoti scartati (ramo silente)" % (
+              "%d rows vuoti (silente)" % (
                   counters["blocco_rows_vuoto"],))
     cleaned = []
     for page in pages:
@@ -664,7 +659,7 @@ def consolidate(pages):
     ordered = [(pn, pg) for pn, _, pg in numbered]
     for pos, pg in unnumbered:
         _warn(warnings, counters, "pagina_senza_numero",
-              "pagina in posizione %d senza page_no: ordine di arrivo" % pos)
+              "pagina %d senza page_no" % pos)
         ordered.append((None, pg))
     if numbered:
         seen = sorted({pn for pn, _, _ in numbered})
@@ -701,7 +696,7 @@ def consolidate(pages):
                     var["modbus_register"] = slot["last_reg"]
                     _warn(warnings, counters, "registro_applicato",
                           "%s: REG %s applicato "
-                          "(carry-over, verificare sul PDF)" % (
+                          "(carry-over?)" % (
                               var.get("description"), slot["last_reg"]),
                           page_no=page_no, riga=var.get("riga"),
                           counter="registri_applicati")
@@ -719,7 +714,7 @@ def consolidate(pages):
             for var in acc[other]["variables"]:
                 if _identity_key(var) in owned:
                     _warn(warnings, counters, "copia_reale_da_placeholder",
-                          "%s @ %s: copia placeholder su %s, tenuto placeholder" % (
+                          "%s @ %s->%s (tenuto)" % (
                               var.get("description"),
                               var.get("modbus_register"),
                               acc[other]["meta"].get("ip")),
