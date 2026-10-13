@@ -52,11 +52,6 @@ write it FIRST, before reading a single state cell. `"rows"` then covers
 the checklist in order, one entry per checklist row that has a state.
 `"digitali_visti"` is the checklist length. A page with no digital rows
 yields `"digitali_visti": 0` with `"checklist": []` and `"rows": []`.
-`"digitali_visti"` is the count of digital rows you SAW on this page
-(rows with bit suffix, bit column, or BOOL/BIT type), even when you emit
-no states. It is coverage evidence, never output. A page with no declared
-states yields `"digitali_visti": <seen>` with `"rows": []` — never omit
-the object: silence must be declared, not inferred downstream.
 V28. DESCRIPTION CHECK-KEY (mandatory): copy the Description-cell text
 of THIS row into "description", exactly as printed (typos included).
 It is join evidence for the page assembler, never output: if it does
