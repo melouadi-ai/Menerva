@@ -229,6 +229,17 @@ def assemble_page(page, page_no):
                   "bitstates senza measures: righe %s (stati ignorati)" % (
                       orphans,),
                   page_no=page_no, counter="stati_orfani")
+            for riga in orphans:
+                row = states_by_riga.get(riga, {})
+                son = row.get("state_on")
+                soff = row.get("state_off")
+                if son is not None or soff is not None:
+                    _warn(warnings, counters, "stati_orfani_utili",
+                          "riga %s: %r on=%r off=%r (senza registro: "
+                          "fuori ADAS)" % (
+                              riga, _description_of(row), son, soff),
+                          page_no=page_no, riga=riga,
+                          counter="stati_orfani_utili")
         digital_righe = set()
         for raw in raws:
             if not isinstance(raw, dict):

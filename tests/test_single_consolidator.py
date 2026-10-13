@@ -745,3 +745,33 @@ def test_duplicato_riga_senza_match_tiene_first_wins():
     out = consolidate([page])
     rules = [w["rule"] for w in out["warnings"]]
     assert "stati_disallineati" in rules
+
+
+def test_orfano_con_stati_dichiarato_utile():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Pompa M1", 1, reg=40001, bit=8,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": [
+        {"description": "Valvola Y9", "state_on": "APERTO",
+         "state_off": "CHIUSO", "riga": 9},
+    ]}}
+    out = consolidate([page])
+    by_rule = {}
+    for w in out["warnings"]:
+        by_rule.setdefault(w["rule"], []).append(w["detail"])
+    assert "stati_orfani_utili" in by_rule
+    assert any("APERTO" in d for d in by_rule["stati_orfani_utili"])
+
+
+def test_orfano_nullo_resta_orfano_semplice():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Pompa M1", 1, reg=40001, bit=8,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": [
+        {"description": "Valvola Y9", "state_on": None,
+         "state_off": None, "riga": 9},
+    ]}}
+    out = consolidate([page])
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "stati_orfani" in rules
+    assert "stati_orfani_utili" not in rules
