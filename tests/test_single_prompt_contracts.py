@@ -67,3 +67,15 @@ def test_stati_v17_anchored_row_scan():
                    "myhydra/single_pdf/platforms/lv2/prompts/current/vlm_bitstates_v17.md"):
         assert (Path(__file__).parent.parent / mirror).read_bytes() == (
             PROMPTS / "vlm_bitstates_v17.md").read_bytes()
+
+
+def test_stati_v18_scan_in_cima():
+    text = (PROMPTS / "vlm_bitstates_v18.md").read_text(encoding="utf-8")
+    flat = " ".join(text.split())
+    assert text.index("## SCAN") < text.index("## OBJECTIVE")
+    assert "For EACH address" in flat
+    assert "ANCHORED ROW SCAN" not in text
+    for mirror in ("myhydra/single_pdf/prompt/vlm_bitstates_v18.md",
+                   "myhydra/single_pdf/platforms/lv2/prompts/current/vlm_bitstates_v18.md"):
+        assert (Path(__file__).parent.parent / mirror).read_bytes() == (
+            PROMPTS / "vlm_bitstates_v18.md").read_bytes()
