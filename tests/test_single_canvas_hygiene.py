@@ -1,8 +1,9 @@
 """Igiene canvas Single PDF: copie incollabili sotto budget e standalone (Task 8).
 
 Le copie canvas in myhydra/single_pdf/platforms/ sono cio' che si incolla
-nei nodi MyHydra: devono restare sotto il budget di paste (32 KB, pari
-alla misura empirica: 34.365 byte = rosso, 32.766 = verde il 6/10/2026),
+nei nodi MyHydra: devono restare sotto il budget di paste (33 KB, pari
+alla misura empirica: 34.365 byte = rosso, 32.766 = verde il 6/10/2026,
+32.852 = verde il 13/10/2026),
 senza def/class/lambda,
 con ERROR JSON mai blank dove il contratto lo prevede e con le guardie
 (copertura + linkage) attive nella copia incollata, non solo in src/.
@@ -35,7 +36,7 @@ def test_canvas_copies_sotto_budget_e_standalone():
     for path in CANVAS_COPIES:
         sizes[path.name] = path.stat().st_size
     max_size = max(sizes.values())
-    assert max_size < 32 * 1024
+    assert max_size < 33 * 1024
 
 
 def test_canvas_copies_byte_identical_to_store():
@@ -180,9 +181,9 @@ def test_v15_hashes_nel_readme_pytools():
     readme = (STORE_PYTOOLS / "README.md").read_text(encoding="utf-8")
     assert "json_creator_v15.py" in readme
     assert "json_creator_v15_canvas.py" in readme
-    assert "3dc66ab1d1f0a648a73db454aa76b4150c3bebdddb81d322f0d35741bae476d9" \
+    assert "64b78c56ef2b83a603fb725f249e25c8ce7b3cfd1c7017b4666bd5d10d21ad6b" \
         in readme
-    assert "7980d322696c915a6408a39dd1991c08f5f6b4fe51925407e8417f1f46b79c3c" \
+    assert "f269a48c499fc2d67233f772a5e8306d9d5cf32b7638577610fc2235715a99f4" \
         in readme
 
 

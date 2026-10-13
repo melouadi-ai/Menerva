@@ -240,3 +240,11 @@ def test_keyword_ovf_da_errore():
         extra={"bit": 0})]))
     b = out[0]["bitinfo"][0]
     assert (b["TEXTON"], b["TEXTOFF"]) == ("ERRORE", "OFF")
+
+
+def test_stato_junk_parentetico_va_in_fallback_keyword():
+    out = run_script(SRC, chunk([variable(
+        "Allarme Pompa M1 (1= RUNNING)", 40001, kind="DIGITALE_IMPACCATO",
+        extra={"bit": 8, "state_on": "1= RUNNING"})]))
+    b = out[0]["bitinfo"][0]
+    assert (b["TEXTON"], b["TEXTOFF"]) == ("ALLARME", "OFF")

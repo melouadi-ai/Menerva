@@ -629,3 +629,29 @@ def test_stati_applicati_anche_con_typo_nella_descrizione():
     assert var["state_on"] == "ON-X"
     rules = [w["rule"] for w in out["warnings"]]
     assert "stati_disallineati" not in rules
+
+
+def test_stato_junk_non_applicato():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Allarme Sonda riscaldata", 20, reg=40001, bit=0,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": [
+        {"description": "Allarme Sonda riscaldata", "state_on": "1",
+         "state_off": None, "riga": 20},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["state_on"] is None
+
+
+def test_stato_parentetico_da_descrizione_non_applicato():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("STATO COM. POMPA M1  (1= RUNNING)", 1, reg=40001, bit=8,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": [
+        {"description": "STATO COM. POMPA M1  (1= RUNNING)",
+         "state_on": "1= RUNNING", "state_off": None, "riga": 1},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["state_on"] is None

@@ -844,6 +844,13 @@ try:
                             sinc = st.get(sf)
                             if sinc is None:
                                 continue
+                            if isinstance(sinc, str):
+                                xjin = sinc.strip().replace(" ", "")
+                                if xjin in ("0", "1") \
+                                        or xjin[:2] in ("0=", "1="):
+                                    continue
+                            elif sinc in (0, 1):
+                                continue
                             if (var.get(sf) is not None
                                     and sinc != var.get(sf)):
                                 warnings.append({"rule": "stati_mismatch",

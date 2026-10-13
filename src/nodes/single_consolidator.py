@@ -342,6 +342,13 @@ def assemble_page(page, page_no):
                         incoming = st.get(field)
                         if incoming is None:
                             continue
+                        if isinstance(incoming, str):
+                            _jin = incoming.strip().replace(" ", "")
+                            if _jin in ("0", "1") \
+                                    or _jin[:2] in ("0=", "1="):
+                                continue
+                        elif incoming in (0, 1):
+                            continue
                         if (var.get(field) is not None
                                 and incoming != var.get(field)):
                             _warn(warnings, counters, "stati_mismatch",

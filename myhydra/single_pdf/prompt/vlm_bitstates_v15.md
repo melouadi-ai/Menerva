@@ -62,6 +62,10 @@ V2. SKIP the row ONLY if its description cell is:
 V7. state_on: copy EXACTLY the "1 =" / STATO ON / Logic State(1) cell.
     Empty cell → null. Do not infer, do not use keywords, no defaults.
     NEVER write "1" or "0" as a state: those are unit values, not states.
+    NEVER copy parenthetical codes from the Description cell
+    (e.g. "(1= RUNNING)", "(0=CLOSE 1=OPEN)"): description text is
+    never a state, even when it looks like one. Any state holding
+    only "0"/"1" or starting with "0="/ "1=" is junk: emit null.
 V8. state_off: copy EXACTLY the "0 =" / STATO OFF cell if present;
     otherwise null. Never infer defaults.
 V13. Copy texts AS THEY ARE: no forced capitals, no typo correction,

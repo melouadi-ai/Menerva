@@ -408,9 +408,11 @@ try:
     soff = str(soff).strip()
     if soff == "":
      soff = None
-   if son == "1" or son == "0":
+   if son is not None and (son in ("1", "0")
+     or son.replace(" ", "")[:2] in ("0=", "1=")):
     son = None
-   if soff == "1" or soff == "0":
+   if soff is not None and (soff in ("1", "0")
+     or soff.replace(" ", "")[:2] in ("0=", "1=")):
     soff = None
    rw = v.get("read_write")
    if rw is not None:
