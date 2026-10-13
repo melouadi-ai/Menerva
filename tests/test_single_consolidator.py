@@ -715,3 +715,33 @@ def test_stati_veramente_diversi_restano_scartati():
     assert var["state_on"] is None
     rules = [w["rule"] for w in out["warnings"]]
     assert "stati_disallineati" in rules
+
+
+def test_duplicato_riga_vince_chi_matcha():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Pompa M1", 5, reg=40001, bit=8,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": [
+        {"description": "Valvola Y9", "state_on": "SBAGLIATO",
+         "state_off": None, "riga": 5},
+        {"description": "Pompa M1", "state_on": "IN MARCIA",
+         "state_off": None, "riga": 5},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["state_on"] == "IN MARCIA"
+
+
+def test_duplicato_riga_senza_match_tiene_first_wins():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Pompa M1", 5, reg=40001, bit=8,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": [
+        {"description": "Valvola Y9", "state_on": "SBAGLIATO",
+         "state_off": None, "riga": 5},
+        {"description": "Bruciatore Z", "state_on": "ALTRO",
+         "state_off": None, "riga": 5},
+    ]}}
+    out = consolidate([page])
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "stati_disallineati" in rules

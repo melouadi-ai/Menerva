@@ -184,6 +184,11 @@ def assemble_page(page, page_no):
     has_states = isinstance(page.get("bitstates"), (dict, list))
     names_by_riga = _riga_map(names_rows)
     states_by_riga = _riga_map(states_rows)
+    states_dup = {}
+    for row in states_rows:
+        riga = row.get("riga")
+        if _is_int(riga):
+            states_dup.setdefault(riga, []).append(row)
     raw_total = 0
     for station in stations:
         if (isinstance(station, dict)
@@ -336,6 +341,14 @@ def assemble_page(page, page_no):
                               counter="refuso_sospetto")
             if has_states and _is_int(riga) and riga in states_by_riga:
                 st = states_by_riga[riga]
+                for cand in states_dup.get(riga, [st]):
+                    cd = _description_of(cand)
+                    if (cd == var.get("description")
+                            or _norm_key(cd) == _norm_key(
+                                var.get("description"))
+                            or _typo_pair(cd, var.get("description"))):
+                        st = cand
+                        break
                 st_desc = _description_of(st)
                 st_pair = (st_desc is None
                            or st_desc == var.get("description")
