@@ -180,8 +180,7 @@ def assemble_page(page, page_no):
             raw_total += len(station["variables"])
     if raw_total == 0 and not names_rows and not states_rows:
         _warn(warnings, counters, "pagina_vuota_sospetta",
-              "nessuna riga da nessun ramo: immagine non arrivata "
-              "o pagina illeggibile?",
+              "pagina vuota: immagine assente?",
               page_no=page_no, counter="pagina_vuota_sospetta")
     for station in stations:
         if not isinstance(station, dict):
@@ -232,14 +231,13 @@ def assemble_page(page, page_no):
                 and len(states_righe) > 0
                 and len(states_righe) * 2 < len(digital_righe)):
             _warn(warnings, counters, "sospetto_sottocampionamento",
-                  "bitstates %d su %d righe digitali: il ramo stati "
-                  "emette troppo poco, TEXTON da keyword" % (
+                  "stati %d/%d digitali: TEXTON da keyword" % (
                       len(states_righe), len(digital_righe)),
                   page_no=page_no, counter="sospetto_sottocampionamento")
         if any(isinstance(raw, dict) and raw.get("riga") is None
                for raw in raws):
             _warn(warnings, counters, "riga_mancante",
-                  "righe measures senza riga: join rami impossibile",
+                  "misure senza riga",
                   page_no=page_no)
         variables = []
         for raw in raws:
@@ -289,11 +287,9 @@ def assemble_page(page, page_no):
                     if desc_ok and (same_reg or fill_null):
                         suffix = "(vince nomi-bit)"
                     elif desc_ok:
-                        suffix = ("(tengo misure: registri diversi, "
-                                  "possibile riga fantasma)")
+                        suffix = ("(tengo misure: reg diversi)")
                     else:
-                        suffix = ("(tengo misure: descrizioni diverse, "
-                                  "possibile shift di riga)")
+                        suffix = ("(tengo misure: shift riga?)")
                     _warn(warnings, counters, "bit_register_mismatch",
                           "riga %s: %s %s" % (
                               riga, "; ".join(diffs), suffix),
@@ -595,7 +591,7 @@ def consolidate(pages):
     if isinstance(pages, (str, list)):
         pass
     else:
-        raise ValueError("consolidate attende una lista di pagine")
+        raise ValueError("attendo lista pagine")
     warnings = []
     counters = {"pagine": 0, "variabili": 0, "scarti_V2": 0,
                 "scarti_V20": 0, "scarti_V21": 0, "scale_collegate": 0,
@@ -603,7 +599,7 @@ def consolidate(pages):
                 "riga_mismatch": 0, "buchi_sequenza": 0, "duplicati": 0}
     blocks = _split_blocks(pages)
     if not blocks and isinstance(pages, str) and pages.strip():
-        raise ValueError("consolidate: input non interpretabile come JSON")
+        raise ValueError("input non JSON")
     pages = _group_branches(blocks, warnings, counters)
     normed = []
     for pos, page in enumerate(pages):
@@ -674,8 +670,7 @@ def consolidate(pages):
             for var in acc[other]["variables"]:
                 if _identity_key(var) in owned:
                     _warn(warnings, counters, "copia_reale_da_placeholder",
-                          "%s @ %s: riga placeholder duplicata su stazione "
-                          "%s, tenuta solo placeholder" % (
+                          "%s @ %s: copia placeholder su %s, tenuto placeholder" % (
                               var.get("description"),
                               var.get("modbus_register"),
                               acc[other]["meta"].get("ip")),
@@ -704,8 +699,7 @@ def consolidate(pages):
             if bit == 16 and 15 not in siblings:
                 var["bit"] = 15
                 _warn(warnings, counters, "bit_fuori_range",
-                      "%r @ %s: bit 16 fuori 0-15, rimappato a 15 "
-                      "(N.Bit 1-based non convertito?)" % (
+                      "%r @ %s: bit 16->15 (N.Bit?)" % (
                           var.get("description"),
                           var.get("modbus_register")),
                       page_no=var.get("pagina"), riga=var.get("riga"),

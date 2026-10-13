@@ -1,4 +1,3 @@
-# consolidator_canvas - copia canvas senza commenti (stesso AST del file documentato)
 # edge 5 = array chunk per pagina dal motore iterativo (ricontrollare N dopo rewiring).
 import json
 import traceback
@@ -62,7 +61,7 @@ try:
   elif item is not None:
    blocks.append(item)
  if len(blocks) == 0 and isinstance(raw, str) and raw.strip() != "":
-  raise ValueError("consolidate: input non interpretabile come JSON")
+  raise ValueError("input non JSON")
  warnings = []
  counters = {}
  counters["pagine"] = 0
@@ -183,10 +182,10 @@ try:
    if len(name_rows) > 0:
     warnings.append({"rule": "ramo_misto", "page_no": None,
         "riga": None,
-        "detail": "blocco rows con "
-        + str(len(state_rows)) + " righe stati e "
-        + str(len(name_rows)) + " righe nomi: "
-        "instradate per riga"})
+        "detail": "misto "
+        + str(len(state_rows)) + " stati + "
+        + str(len(name_rows)) + " nomi: "
+        "split per riga"})
     counters["ramo_misto"] = counters.get("ramo_misto", 0) + 1
     if fragment:
      ex = current.get("bitnames")
@@ -214,22 +213,12 @@ try:
      current[bslot] = {"rows": rows}
    else:
     current[bslot] = {"rows": rows}
-  elif dict_n > 0:
-   raise ValueError("blocco rows non riconoscibile in posizione " + str(bi)
+  else:
+   raise ValueError("blocco rows non riconoscibile " + str(bi)
     + ": chiavi " + str(sorted(set(
      k for r in rows if isinstance(r, dict) for k in r))))
-  else:
-   bslot = "bitnames"
-   if fragment:
-    ex = current.get(bslot)
-    if isinstance(ex, dict) and isinstance(ex.get("rows"), list):
-     ex["rows"] = ex["rows"] + rows
-    else:
-     current[bslot] = {"rows": rows}
-   else:
-    current[bslot] = {"rows": rows}
  if not isinstance(pages, list):
-  raise ValueError("Il consolidatore attende una lista di pagine.")
+  raise ValueError("attendo lista pagine.")
  v2_spare = ("disponibile", "disponibile/", "disponible", "riserva",
     "spare", "reserve", "non utilizzato", "non utilizzata",
     "non usato", "libero", "---")
@@ -406,7 +395,7 @@ try:
   if raw_total == 0 and ndi == 0 and sdi == 0:
    warnings.append({"rule": "pagina_vuota_sospetta",
        "page_no": page_no, "riga": None,
-       "detail": "nessuna riga da nessun ramo: immagine non arrivata o pagina illeggibile?"})
+       "detail": "pagina vuota: immagine assente?"})
    counters["pagina_vuota_sospetta"] = counters.get(
     "pagina_vuota_sospetta", 0) + 1
   sti = 0
@@ -508,11 +497,10 @@ try:
      and len(states_by_riga) * 2 < len(digital_righe)):
      warnings.append({"rule": "sospetto_sottocampionamento",
          "page_no": page_no, "riga": None,
-         "detail": "bitstates "
+         "detail": "stati "
          + str(len(states_by_riga))
-         + " su " + str(len(digital_righe))
-         + " righe digitali: il ramo stati "
-         "emette troppo poco, TEXTON da keyword"})
+         + "/" + str(len(digital_righe))
+         + " digitali: TEXTON da keyword"})
      counters["sospetto_sottocampionamento"] = counters.get(
       "sospetto_sottocampionamento", 0) + 1
    no_riga = False
@@ -525,8 +513,7 @@ try:
    if no_riga:
     warnings.append({"rule": "riga_mancante",
         "page_no": page_no, "riga": None,
-        "detail": "righe measures senza riga: "
-        "join rami impossibile"})
+        "detail": "misure senza riga"})
    kept = []
    ri = 0
    while ri < len(raws):
@@ -706,9 +693,9 @@ try:
       fill_null = var.get("modbus_register") is None
       suffix = " (vince nomi-bit)"
       if not desc_ok:
-       suffix = " (tengo misure: descrizioni diverse, possibile shift di riga)"
+       suffix = " (tengo misure: shift riga?)"
       elif not (same_reg or fill_null):
-       suffix = " (tengo misure: registri diversi, possibile riga fantasma)"
+       suffix = " (tengo misure: reg diversi)"
       warnings.append({"rule": "bit_register_mismatch",
           "page_no": page_no, "riga": riga,
           "detail": "riga " + str(riga) + ": "
@@ -784,8 +771,37 @@ try:
     if (has_states and type(riga) is int
       and riga in states_by_riga):
      st = states_by_riga[riga]
-     if (xst_desc is not None
-       and xst_desc != var.get("description")):
+     xst_pair = False
+     if xst_desc is None:
+      xst_pair = True
+     elif xst_desc == var.get("description"):
+      xst_pair = True
+     elif (isinstance(xst_desc, str)
+       and isinstance(var.get("description"), str)):
+      yna = []
+      yup = xst_desc.upper()
+      yui = 0
+      while yui < len(yup):
+       if yup[yui].isalnum():
+        yna.append(yup[yui])
+       yui = yui + 1
+      ynb = []
+      yup = var.get("description").upper()
+      yui = 0
+      while yui < len(yup):
+       if yup[yui].isalnum():
+        ynb.append(yup[yui])
+       yui = yui + 1
+      ysa = "".join(yna)
+      ysb = "".join(ynb)
+      if (ysa != ysb and len(ysa) >= 4
+        and len(ysb) >= 4
+        and abs(len(ysa) - len(ysb)) <= 2):
+       if ysa[:3] == ysb[:3] and ysa[-3:] == ysb[-3:]:
+        xst_pair = True
+       elif ysa in ysb or ysb in ysa:
+        xst_pair = True
+     if not xst_pair:
       warnings.append({"rule": "stati_disallineati",
           "page_no": page_no, "riga": riga,
           "detail": "riga " + str(riga)
@@ -798,19 +814,22 @@ try:
        "stati_disallineati", 0) + 1
      else:
       for sf in ("state_on", "state_off"):
+       sinc = st.get(sf)
+       if sinc is None:
+        continue
        if (var.get(sf) is not None
-         and st.get(sf) != var.get(sf)):
+         and sinc != var.get(sf)):
         warnings.append({"rule": "stati_mismatch",
             "page_no": page_no,
             "riga": riga,
             "detail": "riga " + str(riga)
             + ": " + sf + " misure="
-            + str(var.get(sf)) + " stati="
-            + str(st.get(sf))
+            + str(var.get(sf))
+            + " stati=" + str(sinc)
             + " (vince stati)"})
         counters["stati_mismatch"] = counters.get(
          "stati_mismatch", 0) + 1
-       var[sf] = st.get(sf)
+       var[sf] = sinc
     kept.append(var)
    ip = None
    try:
@@ -911,9 +930,9 @@ try:
       "detail": str(var.get("description"))
       + " @ "
       + str(var.get("modbus_register"))
-      + ": riga placeholder duplicata su stazione "
+      + ": copia placeholder su "
       + str(acc[xother]["meta"].get("ip"))
-      + ", tenuta solo placeholder"})
+      + ", tenuto placeholder"})
      counters["copia_reale_da_placeholder"] = counters.get(
       "copia_reale_da_placeholder", 0) + 1
     else:
@@ -949,8 +968,8 @@ try:
         "detail": repr(qvar.get("description"))
         + " @ "
         + str(qvar.get("modbus_register"))
-        + ": bit 16 fuori 0-15, rimappato a 15 "
-        + "(N.Bit 1-based non convertito?)"})
+        + ": bit 16->15 (N.Bit?)"
+        })
     counters["bit_fuori_range"] = counters.get(
      "bit_fuori_range", 0) + 1
    else:
