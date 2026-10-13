@@ -684,3 +684,34 @@ def test_blocco_rows_vuoto_non_sparisce_silenzioso():
     out = consolidate([page, {"rows": []}])
     rules = [w["rule"] for w in out["warnings"]]
     assert "blocco_rows_vuoto" in rules
+
+
+def test_stati_applicati_con_normalizzazione_v19():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Valvola  Y1", 3, reg=40001, bit=8,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": [
+        {"description": '"Valvola Y1 ()"', "state_on": "APERTO",
+         "state_off": "CHIUSO", "riga": 3},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["state_on"] == "APERTO"
+    assert var["state_off"] == "CHIUSO"
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "stati_disallineati" not in rules
+
+
+def test_stati_veramente_diversi_restano_scartati():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Pompa M1", 3, reg=40001, bit=8,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitstates": {"rows": [
+        {"description": "Valvola Y9", "state_on": "APERTO",
+         "state_off": None, "riga": 3},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["state_on"] is None
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "stati_disallineati" in rules

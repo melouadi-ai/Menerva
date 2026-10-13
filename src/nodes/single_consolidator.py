@@ -96,6 +96,17 @@ def _alnum_upper(value):
     return "".join(c for c in value.upper() if c.isalnum())
 
 
+def _norm_key(value):
+    """V19-normalized join key (compare-only, values never rewritten)."""
+    if not isinstance(value, str):
+        return ""
+    out = value.replace("()", "").replace("( )", "")
+    out = " ".join(out.split())
+    if len(out) >= 2 and out[0] == out[-1] and out[0] in ("'", '"'):
+        out = out[1:-1]
+    return " ".join(out.split())
+
+
 def _typo_pair(a, b):
     """True if two descriptions look like the same text with a typo."""
     if not isinstance(a, str) or not isinstance(b, str):
@@ -328,6 +339,8 @@ def assemble_page(page, page_no):
                 st_desc = _description_of(st)
                 st_pair = (st_desc is None
                            or st_desc == var.get("description")
+                           or _norm_key(st_desc) == _norm_key(
+                               var.get("description"))
                            or _typo_pair(st_desc, var.get("description")))
                 if not st_pair:
                     _warn(warnings, counters, "stati_disallineati",
