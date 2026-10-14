@@ -116,3 +116,12 @@ def test_bit_source_vieta_coil():
         for mirror in (m1, m2):
             assert (Path(__file__).parent.parent / mirror).read_bytes() == (
                 PROMPTS / name).read_bytes()
+
+
+def test_misure_v18_vieta_variabili_senza_descrizione():
+    flat = " ".join((PROMPTS / "vlm_measures_v18.md").read_text(encoding="utf-8").split())
+    assert "Never emit a variable for a bare register" in flat
+    for mirror in ("myhydra/single_pdf/prompt/vlm_measures_v18.md",
+                   "myhydra/single_pdf/platforms/lv2/prompts/current/vlm_measures_v18.md"):
+        assert (Path(__file__).parent.parent / mirror).read_bytes() == (
+            PROMPTS / "vlm_measures_v18.md").read_bytes()
