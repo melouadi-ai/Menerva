@@ -1,8 +1,9 @@
-# Gate di accettazione output finale — Single PDF (v2 estensivo)
+# Gate di accettazione output finale — Single PDF (v3 completo)
 
 Ogni `FINALE` passa di qui prima di avanzare. Niente passa con silenzi:
 ogni riga del PDF è dentro l'ADAS oppure ha una motivazione scritta.
 Strumento: `myhydra/single_pdf/verifica_pdf/verdetto_finale.py FINALE caso`.
+Changelog in fondo: ogni regola ha una data e un motivo.
 
 ---
 
@@ -120,3 +121,72 @@ Gate: PASS/FAIL   Verificatore: data
 | SIEMENS_2 | 232/431 + 195 motivati | n/a | 40011.6/7, 40017.15, MMC?, Riserva; HW al cliente |
 | LEGNANO_6 | da verificare | n/a | — |
 | LUXOTTICA_7 | da verificare | n/a | — |
+
+---
+
+## 10. Matrice per-campo (quanto la verità permette)
+
+La verità è ricca su SMA/PROTEC/ORI/SUPERWATT, scarna su
+SIEMENS/LEGNANO/LUXOTTICA (solo registro/bit/descrizione/pagina).
+Si verifica solo dove la verità copre:
+
+| Campo ADAS | Verità ricca | Come si verifica | Tolleranza |
+|---|---|---|---|
+| NAME/BITNAME | tutte | match §11 | — |
+| DRIVERPRIVATE (reg) | tutte | registro esatto (V4/V22) | nessuna |
+| BITNO | dove `bit` c'è | esatto dopo V23/V30 | nessuna |
+| TEXTON/OFF | dove `stato` c'è | esatto (case-insens.) | nessuna |
+| UNITS | SMA/ORI/SUP (13/110/142) | cella non-numerica as-is | `Unità`-header→null |
+| scale eng | SMA/ORI/SUPERWATT | coppie ingegneristiche | null se assenti |
+| DATA_TYPE | SMA/PROTEC/ORI/SUP | copia esatta colonna | mai dedotto |
+| READ_WRITE | PROTEC/ORI/SUPERWATT/SMA | R/W da colonna | null se assente |
+| TAG/ZONA | dove ci sono | verbatim, mai usati come nomi | null se assenti |
+| limiti/BISON | aperti (cliente) | trascritti dove dichiarati | sentinelle documentate |
+
+Mai verificare un campo contro verità vuota: assenza tabella ≠ errore nostro.
+
+## 11. Normalizzazione nomi (spec esatta)
+
+Nell'ordine: maiuscole; `‐`/`–`→`-`; `_`→spazio; `\xa0`→spazio;
+collapse spazi; strip. Poi match se uguali, prefisso/suffisso (troncamento
+49 ADAS), o contenimento con verità-alnum ≥ 12 char. Refusi PDF intoccabili.
+Underscore reali del PDF restano underscore nel confronto contro verità
+che li normalizza (PROTEC_1 `FID6_01`: vinciamo noi).
+
+## 12. Stazioni e IP
+
+Un IP vero per stazione; placeholder (`xxx`, `:`) mai fusi coi veri;
+carry-over solo dentro stessa tabella; `127.0.0.1` ammesso solo come
+default dichiarato (questione cliente aperta); nome stazione solo da
+etichette S1, mai da Cliente/Impianto/città. Split `E1`/`E1 1`-style
+accettato dove il PDF separa tabelle con/senza IP.
+
+## 13. Catalogo warning (devono esserci quando ricorre il caso)
+
+`stati_riallineati` (shift compensati, con `40->41`), `stati_disallineati`
+(scarti, con descrizioni), `stati_orfani_utili` (orfani con valori),
+`stati_orfani` (orfani nulli), `blocco_rows_vuoto` (conteggio),
+`sospetto_sottocampionamento` (pagine a zero stati),
+`pagina_vuota_sospetta` (solo pagine davvero vuote/note),
+`riga_mismatch`, `riga_disallineata`, `descrizione_mismatch`,
+`bit_register_mismatch`, `refuso_sospetto/maggioranza`, `registro_applicato`,
+`copia_reale_da_placeholder`, `bit_fuori_range`, `scarto_V2/V20/V21`
+(con motivazione letterale), `pagina_senza_numero`, `sequenza_buchi`.
+ vietato: TEXTON da fallback senza warning che lo dichiara.
+
+## 14. Contaminazione e verità sospette (procedure)
+
+- **Sospetto cache** (finale con descrizioni/IP fuori documento, o due run
+  diversi byte-identici): run nullo, ripartire dal nodo 1, riverificare.
+- **Verità sospetta** (underscore normalizzati, troncamenti 30 char,
+  `OK` vs `EXT+TIME INTERLOCK`, registri legacy shiftati): NON allineare
+  l'output alla tabella — vince il PDF, la tabella si annota in
+  `PANORAMICA` (precedente: GT legacy con 18 bitinfo fantasma caso 6).
+- **Confronto col GT legacy**: differenze mai colmate senza verifica sul PDF.
+
+## 15. Changelog gate
+
+- 2026-10-13 v1: G0–G9, scheda verdetto, baseline.
+- 2026-10-14 v2: protocollo anti-cache P0, voci spare, deviazioni cliente.
+- 2026-10-14 v3: matrice per-campo §10, normalizzazione §11, stazioni §12,
+  catalogo warning §13, procedure §14.
