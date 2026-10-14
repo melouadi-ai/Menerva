@@ -29,12 +29,19 @@ def norm(s):
 
 
 def match(nt, tt):
+    """(coperta, refuso_corretto): come il typo-pair del consolidatore."""
     if nt == tt or tt.startswith(nt) or nt.startswith(tt):
-        return True
+        return True, False
     import re
     na = re.sub(r"[^A-Z0-9]", "", nt)
     nb = re.sub(r"[^A-Z0-9]", "", tt)
-    return len(nb) >= 12 and (nb in na or na in nb)
+    if len(nb) >= 12 and (nb in na or na in nb):
+        return True, False
+    if na and nb and len(na) >= 4 and abs(len(na) - len(nb)) <= 2 and (
+            (na[:3] == nb[:3] and na[-3:] == nb[-3:])
+            or na in nb or nb in na):
+        return True, True
+    return False, False
 
 
 V2 = ("disponibile", "disponibile/", "disponible", "riserva", "spare",
@@ -56,15 +63,35 @@ def main(fin_path, cid):
     t = json.load(open(f"myhydra/single_pdf/verifica_pdf/per_caso/{cid}/tabella_pdf.json"))
     rows = t["righe"] if isinstance(t, dict) else t
     tot = cop = stato_tot = stato_ok = 0
-    hw, persi = [], []
+    hw, persi, refusi = [], [], []
     for r in rows:
         d = norm(r.get("descrizione"))
         if not d or d in [s.upper() for s in V2]:
             continue
         tot += 1
         reg, bit = r.get("registro"), r.get("bit")
-        ok = any(((n == d or match(n, d)) and g == reg) for n, g in meas) if bit is None else \
-            any(a == reg and b == bit and match(c, d) for a, b, c, _, _ in bits)
+        if bit is None and reg is None:
+            hits = [match(n, d) for n, g in meas]
+        elif bit is None:
+            hits = [match(n, d) if g == reg else (False, False)
+                    for n, g in meas]
+        else:
+            hits = [match(c, d) if (a == reg and b == bit) else (False, False)
+                    for a, b, c, _, _ in bits]
+        ok = any(h for h, _ in hits)
+        cor = any(t2 for _, t2 in hits)
+        if cor:
+            refusi.append(r)
+        vero = (r.get("stato") or r.get("pdf_stato") or "").strip().upper()
+        if vero:
+            stato_tot += 1
+            got = next((t_ for a, b, c, t_, tf in bits
+                        if a == reg and b == bit), "")
+            if got == vero:
+                stato_ok += 1
+            elif ok:
+                persi.append(r)
+                continue
         if ok:
             cop += 1
             continue
@@ -72,19 +99,14 @@ def main(fin_path, cid):
             hw.append(r)
             continue
         persi.append(r)
-        vero = (r.get("stato") or "").strip().upper()
-        if vero:
-            stato_tot += 1
-            got = next((t_ for a, b, c, t_, tf in bits
-                        if a == reg and b == bit), "")
-            if got == vero:
-                stato_ok += 1
     tb = {(r.get("registro"), r.get("bit")) for r in rows}
-    stran = [(a, b, c) for a, b, c, _, _ in bits if (a, b) not in tb]
+    stran = [(a, b, c) for a, b, c, _, _ in bits
+             if (a, b) not in tb and (a, None) not in tb]
     bad = [(a, b) for a, b, c, t_, tf in bits
            if b is None or not (0 <= b <= 15) or not t_ or not tf]
     print(f"righe: {cop}/{tot}  stati: {stato_ok}/{stato_tot}  HW/spare motivati: {len(hw)}")
     print(f"BUCHI veri: {len(persi)}  invenzioni: {len(stran)}  ADAS-invalidi: {len(bad)}")
+    print(f"refusi_corretti_dal_VLM: {len(refusi)} (presenti, spelling diverso dal PDF)")
     print(f"contabile (coperte+motivate): {cop + len(hw)}/{tot}")
     for r in persi:
         print("  BUCO:", r.get("pagina"), r.get("registro"), r.get("bit"),
