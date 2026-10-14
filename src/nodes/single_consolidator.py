@@ -299,8 +299,8 @@ def assemble_page(page, page_no):
                           page_no=page_no, riga=riga,
                           counter="refuso_maggioranza")
                     var["description"] = nb_desc
-                desc_ok = (nb_desc is None
-                           or nb_desc == var.get("description"))
+                desc_ok = (nb_desc is not None
+                           and nb_desc == var.get("description"))
                 diffs = []
                 for field in ("modbus_register", "bit"):
                     if nb.get(field) != var.get(field):

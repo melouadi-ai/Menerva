@@ -870,3 +870,18 @@ def test_chiave_checklist_misure_ignorata_dal_join():
     extended["checklist"] = [{"riga": 5, "description": "Pompa M1"}]
     extended["righe_viste"] = 1
     assert consolidate([base]) == consolidate([extended])
+
+
+def test_nomi_desc_null_non_trasferiscono_bit():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("COG2: AUTOCAL", 30, reg=40022, bit=4,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitnames": {"rows": [
+        {"description": None, "modbus_register": 40022, "bit": 5,
+         "riga": 30},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["bit"] == 4
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "bit_register_mismatch" in rules

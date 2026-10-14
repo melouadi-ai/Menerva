@@ -687,8 +687,8 @@ try:
                         counters["refuso_maggioranza"] = counters.get(
                             "refuso_maggioranza", 0) + 1
                         var["description"] = nb_desc
-                    desc_ok = (nb_desc is None
-                        or nb_desc == var.get("description"))
+                    desc_ok = (nb_desc is not None
+                        and nb_desc == var.get("description"))
                     diffs = []
                     if nb.get("modbus_register") != var.get("modbus_register"):
                         diffs.append("modbus_register misure="
