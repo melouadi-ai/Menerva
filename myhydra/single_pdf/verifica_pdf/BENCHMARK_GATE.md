@@ -113,12 +113,12 @@ Gate: PASS/FAIL   Verificatore: data
 
 | Doc | Righe | Stati | Residuo noto |
 |---|---|---|---|
-| SMA_1 | 48/50 | n/a (0 stati) | H2O, Polveri TQ; refuso fedele |
-| PROTEC_1 | 45/45 | 36/36 | — |
-| PROTEC_2 | 39/39 | 22/22 | — |
-| ORI_5 | 58/58 | 45/45 | — |
-| SUPERWATT_8 | 114/131 + pagina 4 + decontaminare SME 1 | 59/59 | re-run pulito |
-| SIEMENS_2 | 232/431 + 195 motivati | n/a | 40011.6/7, 40017.15, MMC?, Riserva; HW al cliente |
+| SMA_1 | 49/50 | n/a (0 stati) | buco H2O; 1 refuso corretto; 0 inv |
+| PROTEC_1 | 45/45 | 36/36 | perfetto, 0 inv |
+| PROTEC_2 | 39/39 | 22/22 | 1 refuso corretto; 0 inv |
+| ORI_5 | 58/58 | 45/45 | 2 refusi corretti; 0 inv |
+| SUPERWATT_8 | 114/131 (17 pag.4 + Diverter) | 59/59 | re-run pulito + decontaminare SME 1 |
+| SIEMENS_2 | 233/431 + 195 motivati (3 buchi + 1 refuso) | n/a | HW al cliente; 0 inv |
 | LEGNANO_6 | da verificare | n/a | — |
 | LUXOTTICA_7 | da verificare | n/a | — |
 
