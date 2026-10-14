@@ -56,7 +56,7 @@ def main(fin_path, cid):
     t = json.load(open(f"myhydra/single_pdf/verifica_pdf/per_caso/{cid}/tabella_pdf.json"))
     rows = t["righe"] if isinstance(t, dict) else t
     tot = cop = stato_tot = stato_ok = 0
-    hw = persi = []
+    hw, persi = [], []
     for r in rows:
         d = norm(r.get("descrizione"))
         if not d or d in [s.upper() for s in V2]:
