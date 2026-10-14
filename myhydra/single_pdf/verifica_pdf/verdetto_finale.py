@@ -100,8 +100,17 @@ def main(fin_path, cid):
             continue
         persi.append(r)
     tb = {(r.get("registro"), r.get("bit")) for r in rows}
+    tb_regs = {r.get("registro") for r in rows}
     stran = [(a, b, c) for a, b, c, _, _ in bits
              if (a, b) not in tb and (a, None) not in tb]
+    null_names = {norm(r.get("descrizione")) for r in rows
+                  if r.get("registro") is None}
+    for n, g in meas:
+        if g is None:
+            if n not in null_names:
+                stran.append((g, None, n))
+        elif g not in tb_regs:
+            stran.append((g, None, n))
     bad = [(a, b) for a, b, c, t_, tf in bits
            if b is None or not (0 <= b <= 15) or not t_ or not tf]
     print(f"righe: {cop}/{tot}  stati: {stato_ok}/{stato_tot}  HW/spare motivati: {len(hw)}")
