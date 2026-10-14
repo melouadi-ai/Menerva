@@ -1,6 +1,7 @@
 # edge 5 = array chunk per pagina dal motore iterativo (ricontrollare N dopo rewiring).
 import json
 import traceback
+xdigits = str.maketrans("", "", "0123456789")
 raw = r'''{edge}[5]'''
 try:
  blocks = []
@@ -348,7 +349,8 @@ try:
    if not isinstance(nr, dict):
     continue
    riga = nr.get("riga")
-   if type(riga) is int and riga not in nbmr:
+   if type(riga) is int and riga not in nbmr \
+     and nr.get("description"):
     nbmr[riga] = nr
   states_by_riga = {}
   sdup = {}
@@ -417,19 +419,13 @@ try:
     if set(nbmr) != set(mrge):
      warnings.append({"rule": "riga_mismatch",
          "page_no": page_no, "riga": None,
-         "detail": "nomi "
-         + str(sorted(nbmr.keys()))
-         + " vs mis "
-         + str(sorted(mrge))})
+         "detail": "nomi vs mis"})
      counters["riga_mismatch"] = counters["riga_mismatch"] + 1
    if has_states:
     if set(states_by_riga) != set(mrge):
      warnings.append({"rule": "riga_mismatch",
          "page_no": page_no, "riga": None,
-         "detail": "stati "
-         + str(sorted(states_by_riga.keys()))
-         + " vs mis "
-         + str(sorted(mrge))})
+         "detail": "stati vs mis"})
      counters["riga_mismatch"] = counters["riga_mismatch"] + 1
     orphans = sorted(set(states_by_riga) - set(mrge))
     if len(orphans) > 0:
@@ -608,44 +604,10 @@ try:
      st = states_by_riga.get(riga)
      if st is not None:
       xsd = st.get("description", None)
-     if xsd is None and st is not None:
-      try:
-       xskeys = st.keys()
-      except Exception:
-       xskeys = []
-      xsi = 0
-      while xsi < len(list(xskeys)):
-       xsk = list(xskeys)[xsi]
-       xsi = xsi + 1
-       if (isinstance(xsk, str)
-         and xsk.lower() == "description"):
-        try:
-         xsd = st.get(xsk)
-        except Exception:
-         continue
-        if xsd is not None:
-         break
     if (has_names and type(riga) is int
       and riga in nbmr):
      nb = nbmr[riga]
      nb_desc = nb.get("description", None)
-     if nb_desc is None:
-      try:
-       nkeys = nb.keys()
-      except Exception:
-       nkeys = []
-      ki = 0
-      while ki < len(list(nkeys)):
-       kk = list(nkeys)[ki]
-       ki = ki + 1
-       if (isinstance(kk, str)
-         and kk.lower() == "description"):
-        try:
-         nb_desc = nb.get(kk)
-        except Exception:
-         continue
-        if nb_desc is not None:
-         break
      if (xsd is not None and nb_desc is not None
        and xsd == nb_desc
        and xsd != var.get("description")
@@ -665,6 +627,17 @@ try:
       var["description"] = nb_desc
      desc_ok = (nb_desc is not None
       and nb_desc == var.get("description"))
+     if (not desc_ok and isinstance(nb_desc, str)
+       and isinstance(var.get("description"), str)):
+      xqa = " ".join(nb_desc.upper().split())
+      xqb = " ".join(var.get("description").upper().split())
+      if xqa == xqb:
+       desc_ok = True
+      elif (len(xqa) >= 4 and len(xqb) >= 4
+        and abs(len(xqa) - len(xqb)) <= 2
+        and xqa.translate(xdigits) != xqb.translate(xdigits)
+        and (xqa in xqb or xqb in xqa)):
+       desc_ok = True
      diffs = []
      if nb.get("modbus_register") != var.get("modbus_register"):
       diffs.append("modbus_register misure="
@@ -735,7 +708,8 @@ try:
        xsa = "".join(xa)
        xsb = "".join(xb)
        xtypo = False
-       if (xsa != xsb and len(xsa) >= 4
+       if (xsa != xsb and xsa.translate(xdigits) != xsb.translate(xdigits)
+        and len(xsa) >= 4
         and len(xsb) >= 4
         and abs(len(xsa) - len(xsb)) <= 2):
         if xsa[:3] == xsb[:3] and xsa[-3:] == xsb[-3:]:
@@ -786,7 +760,8 @@ try:
        yui = yui + 1
       ysa = "".join(yna)
       ysb = "".join(ynb)
-      if (ysa != ysb and len(ysa) >= 4
+      if (ysa != ysb and ysa.translate(xdigits) != ysb.translate(xdigits)
+        and len(ysa) >= 4
         and len(ysb) >= 4
         and abs(len(ysa) - len(ysb)) <= 2):
        if ysa[:3] == ysb[:3] and ysa[-3:] == ysb[-3:]:

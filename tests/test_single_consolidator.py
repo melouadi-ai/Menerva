@@ -884,4 +884,47 @@ def test_nomi_desc_null_non_trasferiscono_bit():
     var = out["stations"][0]["variables"][0]
     assert var["bit"] == 4
     rules = [w["rule"] for w in out["warnings"]]
+    assert "riga_mismatch" in rules
+    assert not any(w["rule"] == "bit_register_mismatch" and w.get("riga") == 30
+                   for w in out["warnings"])
+
+
+def test_riga_nomi_senza_descrizione_invisibile():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("COG2: AUTOCAL", 30, reg=40022, bit=4,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitnames": {"rows": [
+        {"description": None, "modbus_register": 40022, "bit": 5,
+         "riga": 30},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["bit"] == 4
+
+
+def test_bit_nomi_vince_su_accordo_normalizzato():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Valvola Y1", 8, reg=40001, bit=0,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitnames": {"rows": [
+        {"description": '"Valvola Y1 ()"', "modbus_register": 40001,
+         "bit": 8, "riga": 8},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["bit"] == 8
+
+
+def test_digit_diversi_non_sono_typo():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Condizionatore 1 OFF", 12, reg=40001, bit=10,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitnames": {"rows": [
+        {"description": "Condizionatore 2 OFF", "modbus_register": 40001,
+         "bit": 11, "riga": 12},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["bit"] == 10
+    rules = [w["rule"] for w in out["warnings"]]
     assert "bit_register_mismatch" in rules

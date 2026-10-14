@@ -116,6 +116,9 @@ def _typo_pair(a, b):
         return False
     if abs(len(na) - len(nb)) > 2:
         return False
+    digits = str.maketrans("", "", "0123456789")
+    if na.translate(digits) == nb.translate(digits):
+        return False
     if na[:3] == nb[:3] and na[-3:] == nb[-3:]:
         return True
     return na in nb or nb in na
@@ -130,12 +133,14 @@ def _branch_rows(branch):
     return []
 
 
-def _riga_map(rows):
+def _riga_map(rows, drop_null_desc=False):
     """Map riga -> row for rows with an int riga (first wins)."""
     out = {}
     for row in rows:
         riga = row.get("riga")
         if _is_int(riga) and riga not in out:
+            if drop_null_desc and not row.get("description"):
+                continue
             out[riga] = row
     return out
 
@@ -182,7 +187,7 @@ def assemble_page(page, page_no):
     states_rows = _branch_rows(page.get("bitstates"))
     has_names = isinstance(page.get("bitnames"), (dict, list))
     has_states = isinstance(page.get("bitstates"), (dict, list))
-    names_by_riga = _riga_map(names_rows)
+    names_by_riga = _riga_map(names_rows, drop_null_desc=True)
     states_by_riga = _riga_map(states_rows)
     states_dup = {}
     for row in states_rows:
@@ -300,7 +305,11 @@ def assemble_page(page, page_no):
                           counter="refuso_maggioranza")
                     var["description"] = nb_desc
                 desc_ok = (nb_desc is not None
-                           and nb_desc == var.get("description"))
+                           and (nb_desc == var.get("description")
+                                or _norm_key(nb_desc) == _norm_key(
+                                    var.get("description"))
+                                or _typo_pair(nb_desc,
+                                              var.get("description"))))
                 diffs = []
                 for field in ("modbus_register", "bit"):
                     if nb.get(field) != var.get(field):
