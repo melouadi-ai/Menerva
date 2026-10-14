@@ -67,10 +67,11 @@ def main(fin_path, cid):
             any(a == reg and b == bit and match(c, d) for a, b, c, _, _ in bits)
         if ok:
             cop += 1
-        elif d.startswith("RISERVA") or d.startswith("-") or d.startswith("`") or r.get("pagina") in (12, 13, 14, 15, 16, 17):
+            continue
+        if d.startswith("RISERVA") or d.startswith("-") or d.startswith("`") or r.get("pagina") in (12, 13, 14, 15, 16, 17):
             hw.append(r)
-        else:
-            persi.append(r)
+            continue
+        persi.append(r)
         vero = (r.get("stato") or "").strip().upper()
         if vero:
             stato_tot += 1
@@ -84,6 +85,7 @@ def main(fin_path, cid):
            if b is None or not (0 <= b <= 15) or not t_ or not tf]
     print(f"righe: {cop}/{tot}  stati: {stato_ok}/{stato_tot}  HW/spare motivati: {len(hw)}")
     print(f"BUCHI veri: {len(persi)}  invenzioni: {len(stran)}  ADAS-invalidi: {len(bad)}")
+    print(f"contabile (coperte+motivate): {cop + len(hw)}/{tot}")
     for r in persi:
         print("  BUCO:", r.get("pagina"), r.get("registro"), r.get("bit"),
               repr((r.get("descrizione") or "")[:44]))
