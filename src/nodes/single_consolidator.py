@@ -121,7 +121,17 @@ def _typo_pair(a, b):
         return False
     if na[:3] == nb[:3] and na[-3:] == nb[-3:]:
         return True
-    return na in nb or nb in na
+    if na in nb or nb in na:
+        return True
+    if len(na) == len(nb):
+        dist = 0
+        for x, y in zip(na, nb):
+            if x != y:
+                dist += 1
+                if dist > 2:
+                    return False
+        return True
+    return False
 
 
 def _branch_rows(branch):

@@ -662,6 +662,15 @@ try:
                                 and xqa.translate(xdigits) != xqb.translate(xdigits)
                                 and (xqa in xqb or xqb in xqa)):
                             desc_ok = True
+                        elif len(xqa) == len(xqb) and len(xqa) >= 4:
+                            xhd = 0
+                            xhi = 0
+                            while xhi < len(xqa) and xhd <= 2:
+                                if xqa[xhi] != xqb[xhi]:
+                                    xhd = xhd + 1
+                                xhi = xhi + 1
+                            if xhd <= 2 and xhd > 0:
+                                desc_ok = True
                     diffs = []
                     if nb.get("modbus_register") != var.get("modbus_register"):
                         diffs.append("modbus_register misure="
@@ -793,6 +802,15 @@ try:
                                 xpair = True
                             elif ysa in ysb or ysb in ysa:
                                 xpair = True
+                            elif len(ysa) == len(ysb):
+                                xhd = 0
+                                xhi = 0
+                                while xhi < len(ysa) and xhd <= 2:
+                                    if ysa[xhi] != ysb[xhi]:
+                                        xhd = xhd + 1
+                                    xhi = xhi + 1
+                                if xhd <= 2 and xhd > 0:
+                                    xpair = True
                     if not xpair:
                         xfound = None
                         xfi = 0

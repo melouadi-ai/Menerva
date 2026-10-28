@@ -64,6 +64,14 @@ def main(fin_path, cid):
     rows = t["righe"] if isinstance(t, dict) else t
     tot = cop = stato_tot = stato_ok = 0
     hw, persi, refusi = [], [], []
+    dichiarati = set()
+    for st in fin:
+        for w in (st.get("_warnings") or []):
+            if isinstance(w, str) and w.startswith("VARIABILI SENZA INDIRIZZO:") and "Nomi:" in w:
+                for nm in w.split("Nomi:", 1)[1].split(","):
+                    nm = norm(nm)
+                    if nm:
+                        dichiarati.add(nm)
     for r in rows:
         d = norm(r.get("descrizione"))
         if not d or d in [s.upper() for s in V2]:
@@ -98,6 +106,9 @@ def main(fin_path, cid):
         if d.startswith("RISERVA") or d.startswith("-") or d.startswith("`") or r.get("pagina") in (12, 13, 14, 15, 16, 17):
             hw.append(r)
             continue
+        if d in dichiarati:
+            hw.append(r)
+            continue
         persi.append(r)
     tb = {(r.get("registro"), r.get("bit")) for r in rows}
     tb_regs = {r.get("registro") for r in rows}
@@ -105,11 +116,17 @@ def main(fin_path, cid):
              if (a, b) not in tb and (a, None) not in tb]
     null_names = {norm(r.get("descrizione")) for r in rows
                   if r.get("registro") is None}
+    truth_names = [(norm(r.get("descrizione")), r.get("registro")) for r in rows
+                   if norm(r.get("descrizione"))]
     for n, g in meas:
         if g is None:
             if n not in null_names:
                 stran.append((g, None, n))
         elif g not in tb_regs:
+            stran.append((g, None, n))
+        elif not any((tn == n or m_[0]) and tg == g
+                     for tn, tg in truth_names
+                     for m_ in [match(n, tn)]):
             stran.append((g, None, n))
     bad = [(a, b) for a, b, c, t_, tf in bits
            if b is None or not (0 <= b <= 15) or not t_ or not tf]

@@ -928,3 +928,16 @@ def test_digit_diversi_non_sono_typo():
     assert var["bit"] == 10
     rules = [w["rule"] for w in out["warnings"]]
     assert "bit_register_mismatch" in rules
+
+
+def test_typo_singola_lettera_non_blocca_bit():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Output DCS Forzatl", 6, reg=40011, bit=7,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitnames": {"rows": [
+        {"description": "Output DCS Forzati", "modbus_register": 40011,
+         "bit": 6, "riga": 6},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["bit"] == 6
