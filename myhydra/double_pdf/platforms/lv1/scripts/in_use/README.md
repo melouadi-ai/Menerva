@@ -41,9 +41,15 @@ diff ../../../../src/nodes/json_creator.py scripts/in_use/json_creator_edge13.py
 
 Il `diff` deve mostrare **solo** queste aree. Hash attesi:
 
-- documentato (`json_creator_edge13.py`, NON da incollare): `f0c64b4413095fac23b76f849966ba2f3f6b7dfdd973029f20bd36ce683f2bec`
-- copia canvas (`json_creator_edge13_canvas.py`, da incollare): `8f086a1ff0f11cfe7c3302fe54b2ad99a4145ef5fc530cd5a9ca89adbfdab01b`
-  (28.427 byte, sotto la soglia 32 KB; offset 40000 del 12/10/2026)
+- documentato (`json_creator_edge13.py`, NON da incollare): `ab611a81878ad36e7ab9188812bc1fa9fdb4e4f4c9e8039af78051e0cacfb0bb`
+- copia canvas (`json_creator_edge13_canvas.py`, da incollare): `d79ac9c340c0295da039ca45905d1bc86d7f0ad2cc9a15997346485384cc923f`
+  (28.437 byte, sotto la soglia 32 KB; offset 40000 del 12/10/2026)
+
+**Linter del canvas (28/10/2026):** il paste ha segnalato `E401` sulla riga
+dell'import multiplo `import os as _os, sys as _sys` (dentro il `try` pydantic).
+Diviso in due righe in entrambe le copie, parità AST invariata. Il controllo
+`ruff --select E4,E7,E9,F` sulla copia canvas ora passa pulito; E501 non è
+applicato dal canvas (le righe lunghe passano).
 
 **Se il `diff` mostra altro, la copia è divergente: non usarla.** È esattamente
 come è successo il 5/10, quando la copia sul canvas aveva i campi limite a

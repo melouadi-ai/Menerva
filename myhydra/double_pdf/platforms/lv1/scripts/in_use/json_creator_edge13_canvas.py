@@ -92,7 +92,8 @@ if len(chunks) == 0:
 
 _pydantic_available = False
 try:
-    import os as _os, sys as _sys
+    import os as _os
+    import sys as _sys
     _roots = []
     try:
         _d = _os.path.dirname(_os.path.abspath(__file__))

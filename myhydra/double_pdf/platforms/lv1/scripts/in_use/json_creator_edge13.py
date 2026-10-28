@@ -146,7 +146,9 @@ if len(chunks) == 0:
 # In quel caso la validazione viene saltata (fallback difensivo identico a prima).
 _pydantic_available = False
 try:
-    import os as _os, sys as _sys
+    # righe separate: il linter del canvas segnala E401 sull'import multiplo
+    import os as _os
+    import sys as _sys
     # Risale la gerarchia di cartelle partendo da __file__ (reale o fittizio)
     # e dalla cwd, fino a trovare una root che contenga src/models/ (ambiente
     # dev/test). Su MyHydra il pytool gira come script standalone senza il
