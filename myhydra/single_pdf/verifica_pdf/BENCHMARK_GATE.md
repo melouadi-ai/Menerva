@@ -18,7 +18,8 @@ Changelog in fondo: ogni regola ha una data e un motivo.
   `TAP_CONSOLIDATORE` (o `CONSOLIDATOR.txt`) + `FINALE`. Mai mescolare run.
 - **P2. Prompt attesi nel run**: stati ≥ v19 (`checklist` presente nel tap),
   misure ≥ v16 (`checklist`/`righe_viste`), nomi ≥ v16 (V30), consolidatore
-  con `stati_riallineati` + `xfound` + `desc_ok = (nb_desc is not None`.
+  con `stati_riallineati` + `xfound` + `desc_ok = (nb_desc is not None`
+  + `xdigits` (veto cifre) + filtro nomi senza descrizione.
   Senza queste stringhe il run è vecchio: rifarlo.
 - **P3. Taps salvati** in `myhydra/single_pdf/TESTS/<DOC> NUOVO/` (nuovo run =
   nuova cartella o conferma esplicita di sovrascrittura).
@@ -190,3 +191,5 @@ accettato dove il PDF separa tabelle con/senza IP.
 - 2026-10-14 v2: protocollo anti-cache P0, voci spare, deviazioni cliente.
 - 2026-10-14 v3: matrice per-campo §10, normalizzazione §11, stazioni §12,
   catalogo warning §13, procedure §14.
+- 2026-10-28 v4: P2 riconosce il consolidatore col veto cifre (`xdigits`)
+  e l'invisibilità dei nomi senza descrizione.
