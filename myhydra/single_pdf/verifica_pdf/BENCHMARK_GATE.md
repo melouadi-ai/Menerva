@@ -172,7 +172,11 @@ accettato dove il PDF separa tabelle con/senza IP.
 `riga_mismatch`, `riga_disallineata`, `descrizione_mismatch`,
 `bit_register_mismatch`, `refuso_sospetto/maggioranza`, `registro_applicato`,
 `copia_reale_da_placeholder`, `bit_fuori_range`, `scarto_V2/V20/V21`
-(con motivazione letterale), `pagina_senza_numero`, `sequenza_buchi`.
+(con motivazione letterale), `pagina_senza_numero`, `sequenza_buchi`,
+`bit_offset_pagina` (pagina con N.Bit contato 1-based: una volta per
+registro con `reg N: nomi-bit 1-based, bit riportati a 0`, e per il bit in
+cima con `reg N: bit 16->15`; se compare e i bit emessi sono quelli del
+PDF, la regola ha fatto il suo lavoro).
  vietato: TEXTON da fallback senza warning che lo dichiara.
 
 ## 14. Contaminazione e verità sospette (procedure)
@@ -193,3 +197,7 @@ accettato dove il PDF separa tabelle con/senza IP.
   catalogo warning §13, procedure §14.
 - 2026-10-28 v4: P2 riconosce il consolidatore col veto cifre (`xdigits`)
   e l'invisibilità dei nomi senza descrizione.
+- 2026-10-29 v5: §13 aggiunge `bit_offset_pagina` (pagina 1-based nel ramo
+  nomi-bit, bit 16→15); la regola deve stare anche nella copia canvas, non
+  solo in `src/` (divergenza scoperta il 29/10, ora pinnata da
+  `render_canvas.py` e dal confronto dei cataloghi di regole).

@@ -107,6 +107,12 @@ def _norm_key(value):
     return " ".join(out.split())
 
 
+# Soglia minima di righe per riconoscere una pagina contata 1-based nel
+# ramo nomi-bit. Sotto questa soglia lo shift e' troppo poco sostenuto per
+# distinguerlo da bit realmente diversi: si lascia tutto com'e' (guardia A).
+SHIFT1_MIN = 3
+
+
 def _typo_pair(a, b):
     """True if two descriptions look like the same text with a typo."""
     if not isinstance(a, str) or not isinstance(b, str):
@@ -198,6 +204,18 @@ def assemble_page(page, page_no):
     has_names = isinstance(page.get("bitnames"), (dict, list))
     has_states = isinstance(page.get("bitstates"), (dict, list))
     names_by_riga = _riga_map(names_rows, drop_null_desc=True)
+    names_by_desc = {}
+    names_desc_dup = set()
+    for row in names_rows:
+        if not isinstance(row, dict):
+            continue
+        desc = _description_of(row)
+        if desc is None:
+            continue
+        if desc in names_by_desc:
+            names_desc_dup.add(desc)
+        else:
+            names_by_desc[desc] = row
     states_by_riga = _riga_map(states_rows)
     states_dup = {}
     for row in states_rows:
@@ -230,19 +248,16 @@ def assemble_page(page, page_no):
         states_righe = set(states_by_riga)
         if has_names and names_righe != measures_righe:
             _warn(warnings, counters, "riga_mismatch",
-                  "nomi %s vs mis %s" % (
-                      sorted(names_righe), sorted(measures_righe)),
+                  "nomi vs mis",
                   page_no=page_no, counter="riga_mismatch")
         if has_states and states_righe != measures_righe:
             _warn(warnings, counters, "riga_mismatch",
-                  "stati %s vs mis %s" % (
-                      sorted(states_righe), sorted(measures_righe)),
+                  "stati vs mis",
                   page_no=page_no, counter="riga_mismatch")
         orphans = sorted(states_righe - measures_righe) if has_states else []
         if orphans:
             _warn(warnings, counters, "stati_orfani",
-                  "stati orfani %s (ignorati)" % (
-                      orphans,),
+                  "%d orfani" % len(orphans),
                   page_no=page_no, counter="stati_orfani")
             for riga in orphans:
                 for row in states_dup.get(riga, [states_by_riga[riga]]):
@@ -251,20 +266,36 @@ def assemble_page(page, page_no):
                     if son is None and soff is None:
                         continue
                     _warn(warnings, counters, "stati_orfani_utili",
-                          "riga %s: %r on=%r off=%r (no reg)" % (
+                          "riga %s: %r on=%s off=%s (no reg)" % (
                               riga, _description_of(row), son, soff),
                           page_no=page_no, riga=riga,
                           counter="stati_orfani_utili")
         digital_righe = set()
+        bad_regs = set()
+        reg_bits = {}
         for raw in raws:
             if not isinstance(raw, dict):
                 continue
             if not _is_int(raw.get("riga")):
                 continue
             kind = raw.get("kind")
-            if (isinstance(kind, str) and kind.startswith("DIGITALE")) \
-                    or _is_int(raw.get("bit")):
-                digital_righe.add(raw.get("riga"))
+            is_digital = ((isinstance(kind, str)
+                           and kind.startswith("DIGITALE"))
+                          or _is_int(raw.get("bit")))
+            if not is_digital:
+                continue
+            digital_righe.add(raw.get("riga"))
+            if not _description_of(raw):
+                continue
+            reg = raw.get("modbus_register")
+            bit = raw.get("bit")
+            if not _is_int(bit) or not 0 <= bit <= 15:
+                bad_regs.add(reg)
+            else:
+                reg_bits.setdefault(reg, []).append(bit)
+        for reg, bits in reg_bits.items():
+            if len(bits) != len(set(bits)):
+                bad_regs.add(reg)
         if has_names:
             for riga, row in names_by_riga.items():
                 if _is_int(row.get("bit")):
@@ -280,6 +311,45 @@ def assemble_page(page, page_no):
             _warn(warnings, counters, "riga_mancante",
                   "misure senza riga",
                   page_no=page_no)
+        # Pagina con N.Bit contato 1-based (SIEMENS_2 p4): il ramo nomi
+        # scrive 1..16 dove le misure scrivono 0..15. Riga per riga sembrano
+        # d'accordo, quindi la guardia per-riga non lo vede. Si riconosce solo
+        # se TUTTE le righe confrontabili stanno a +1 e almeno un bit supera
+        # 15: allora si tengono i bit delle misure e il nome della propria
+        # riga. Altrimenti non si tocca nulla.
+        shift1_regs = set()
+        if has_names:
+            cand = []
+            shift_ok = True
+            for raw in raws:
+                if not isinstance(raw, dict):
+                    shift_ok = False
+                    break
+                riga = raw.get("riga")
+                nb = names_by_riga.get(riga) if _is_int(riga) else None
+                nbit = nb.get("bit") if nb is not None else None
+                mbit = raw.get("bit")
+                if not _is_int(nbit) or not _is_int(mbit):
+                    shift_ok = False
+                    break
+                if nb.get("modbus_register") != raw.get("modbus_register"):
+                    shift_ok = False
+                    break
+                if nbit != mbit + 1:
+                    shift_ok = False
+                    break
+                cand.append((raw.get("modbus_register"), nbit))
+            if shift_ok and len(cand) >= SHIFT1_MIN:
+                if any(nbit > 15 for _, nbit in cand):
+                    for reg, _ in cand:
+                        if reg is not None:
+                            shift1_regs.add(reg)
+        if len(shift1_regs) > 0:
+            for reg in sorted(shift1_regs):
+                _warn(warnings, counters, "bit_offset_pagina",
+                      "reg %s: nomi-bit 1-based, bit riportati a 0" % reg,
+                      page_no=page_no, counter="bit_offset_pagina")
+
         variables = []
         for raw in raws:
             if not isinstance(raw, dict):
@@ -308,9 +378,7 @@ def assemble_page(page, page_no):
                         == var.get("modbus_register")
                         and nb.get("bit") == var.get("bit")):
                     _warn(warnings, counters, "refuso_maggioranza",
-                          "riga %s: misure=%r contro nomi-bit=stati=%r, "
-                          "tengo maggioranza (2 rami)" % (
-                              riga, var.get("description"), nb_desc),
+                          "riga %s maggio" % riga,
                           page_no=page_no, riga=riga,
                           counter="refuso_maggioranza")
                     var["description"] = nb_desc
@@ -320,41 +388,46 @@ def assemble_page(page, page_no):
                                     var.get("description"))
                                 or _typo_pair(nb_desc,
                                               var.get("description"))))
-                diffs = []
-                for field in ("modbus_register", "bit"):
-                    if nb.get(field) != var.get(field):
-                        diffs.append("%s misure=%s nomi-bit=%s" % (
-                            field, var.get(field), nb.get(field)))
-                if diffs:
-                    same_reg = (nb.get("modbus_register")
-                                == var.get("modbus_register"))
-                    fill_null = var.get("modbus_register") is None
-                    if desc_ok and (same_reg or fill_null):
-                        suffix = "(vince nomi-bit)"
-                    elif desc_ok:
-                        suffix = ("(tengo misure: reg diversi)")
-                    else:
-                        suffix = ("(tengo misure: shift riga?)")
-                    _warn(warnings, counters, "bit_register_mismatch",
-                          "riga %s: %s %s" % (
-                              riga, "; ".join(diffs), suffix),
-                          page_no=page_no, riga=riga,
-                          counter="bit_register_mismatch")
-                    if desc_ok and (same_reg or fill_null):
-                        var["modbus_register"] = nb.get("modbus_register")
-                        var["bit"] = nb.get("bit")
-                    elif not desc_ok:
-                        _warn(warnings, counters, "riga_disallineata",
-                              "riga %s: misure=%r contro nomi-bit=%r, "
-                              "tengo misure" % (
-                                  riga, var.get("description"), nb_desc),
+                if var.get("modbus_register") in shift1_regs:
+                    var["_bit_offset_pagina"] = True
+                    # Pagina 1-based: il bit del nome e' il nostro +1, quindi
+                    # non puo' decidere ne' il bit ne' la descrizione. Resta
+                    # il nome della riga (ForzatI, non Forzati).
+                    nb = None
+                if nb is not None:
+                    diffs = []
+                    for field, label in (("modbus_register", "reg"),
+                                         ("bit", "bit")):
+                        if nb.get(field) != var.get(field):
+                            diffs.append("%s %s->%s" % (
+                                label, var.get(field), nb.get(field)))
+                    if diffs:
+                        same_reg = (nb.get("modbus_register")
+                                    == var.get("modbus_register"))
+                        fill_null = var.get("modbus_register") is None
+                        if desc_ok and (same_reg or fill_null):
+                            suffix = " nomi-bit"
+                        elif desc_ok:
+                            suffix = " reg"
+                        else:
+                            suffix = " shift"
+                        _warn(warnings, counters, "bit_register_mismatch",
+                              "riga %s: %s%s" % (
+                                  riga, "; ".join(diffs), suffix),
                               page_no=page_no, riga=riga,
-                              counter="riga_disallineata")
-                if nb_desc != var.get("description"):
+                              counter="bit_register_mismatch")
+                        if desc_ok and (same_reg or fill_null):
+                            var["modbus_register"] = nb.get(
+                                "modbus_register")
+                            var["bit"] = nb.get("bit")
+                        elif not desc_ok:
+                            _warn(warnings, counters, "riga_disallineata",
+                                  "riga %s shift" % riga,
+                                  page_no=page_no, riga=riga,
+                                  counter="riga_disallineata")
+                if nb is not None and nb_desc != var.get("description"):
                     _warn(warnings, counters, "descrizione_mismatch",
-                          "riga %s: misure=%r nomi-bit=%r "
-                          "(vince misure)" % (
-                              riga, var.get("description"), nb_desc),
+                          "riga %s desc" % riga,
                           page_no=page_no, riga=riga,
                           counter="descrizione_mismatch")
                     if (nb.get("modbus_register")
@@ -363,11 +436,28 @@ def assemble_page(page, page_no):
                             and _typo_pair(nb_desc,
                                            var.get("description"))):
                         _warn(warnings, counters, "refuso_sospetto",
-                              "riga %s: misure=%r contro nomi-bit=%r, "
-                              ", refuso? (tengo misure)" % (
-                                  riga, var.get("description"), nb_desc),
+                              "riga %s refuso" % riga,
                               page_no=page_no, riga=riga,
                               counter="refuso_sospetto")
+            if has_names and str(var.get("kind") or "").upper().startswith(
+                    "DIGITALE") \
+                    and var.get("modbus_register") not in shift1_regs:
+                cand = names_by_desc.get(var.get("description"))
+                if (cand is not None
+                        and var.get("modbus_register") is not None
+                        and var.get("modbus_register") in bad_regs
+                        and var.get("description") not in names_desc_dup
+                        and cand.get("modbus_register")
+                        == var.get("modbus_register")
+                        and _is_int(cand.get("bit"))
+                        and 0 <= cand.get("bit") <= 15
+                        and cand.get("bit") != var.get("bit")):
+                    _warn(warnings, counters, "bit_register_mismatch",
+                          "riga %s->%s bit->%s" % (
+                              cand.get("riga"), riga, cand.get("bit")),
+                          page_no=page_no, riga=riga,
+                          counter="bit_register_mismatch")
+                    var["bit"] = cand.get("bit")
             if has_states and _is_int(riga):
                 st = states_by_riga.get(riga)
                 st_desc = _description_of(st) if st is not None else None
@@ -396,9 +486,8 @@ def assemble_page(page, page_no):
                         st = found
                         st_pair = True
                         _warn(warnings, counters, "stati_riallineati",
-                              "riga %s->%s: %r" % (
-                                  found.get("riga"), riga,
-                                  var.get("description")),
+                              "riga %s->%s" % (
+                                  found.get("riga"), riga),
                               page_no=page_no, riga=riga,
                               counter="stati_riallineati")
                 if st is None or not st_pair:
@@ -423,7 +512,7 @@ def assemble_page(page, page_no):
                         if (var.get(field) is not None
                                 and incoming != var.get(field)):
                             _warn(warnings, counters, "stati_mismatch",
-                                  "riga %s %s: %r->%r" % (
+                                  "riga %s %s: %s->%s" % (
                                       riga, field, var.get(field),
                                       incoming),
                                   page_no=page_no, riga=riga,
@@ -645,15 +734,14 @@ def _group_branches(blocks, warnings, counters):
             name_rows = [r for r in dict_rows if r not in state_rows]
             if name_rows:
                 _warn(warnings, counters, "ramo_misto",
-                      "blocco rows con %d righe stati e %d righe nomi: "
-                      "instradate per riga" % (len(state_rows),
-                                               len(name_rows)),
+                      "split %d+%d" % (len(state_rows),
+                                       len(name_rows)),
                       counter="ramo_misto")
                 _attach_branch(current, "bitnames", name_rows, fragment)
             _attach_branch(current, "bitstates", state_rows, fragment)
     if counters.get("blocco_rows_vuoto"):
         _warn(warnings, counters, "blocco_rows_vuoto",
-              "%d rows vuoti (silente)" % (
+              "%d rows vuoti" % (
                   counters["blocco_rows_vuoto"],))
     cleaned = []
     for page in pages:
@@ -698,7 +786,7 @@ def consolidate(pages):
     ordered = [(pn, pg) for pn, _, pg in numbered]
     for pos, pg in unnumbered:
         _warn(warnings, counters, "pagina_senza_numero",
-              "pagina %d senza page_no" % pos)
+              "pagina %d" % pos)
         ordered.append((None, pg))
     if numbered:
         seen = sorted({pn for pn, _, _ in numbered})
@@ -734,9 +822,7 @@ def consolidate(pages):
                         and slot["last_reg"] is not None):
                     var["modbus_register"] = slot["last_reg"]
                     _warn(warnings, counters, "registro_applicato",
-                          "%s: REG %s applicato "
-                          "(carry-over?)" % (
-                              var.get("description"), slot["last_reg"]),
+                          "REG %s carry" % slot["last_reg"],
                           page_no=page_no, riga=var.get("riga"),
                           counter="registri_applicati")
                 slot["variables"].append(var)
@@ -753,10 +839,7 @@ def consolidate(pages):
             for var in acc[other]["variables"]:
                 if _identity_key(var) in owned:
                     _warn(warnings, counters, "copia_reale_da_placeholder",
-                          "%s @ %s->%s (tenuto)" % (
-                              var.get("description"),
-                              var.get("modbus_register"),
-                              acc[other]["meta"].get("ip")),
+                          "->%s" % acc[other]["meta"].get("ip"),
                           page_no=None, riga=var.get("riga"),
                           counter="copia_reale_da_placeholder")
                 else:
@@ -771,6 +854,17 @@ def consolidate(pages):
             bit = var.get("bit")
             if not _is_int(bit) or 0 <= bit <= 15:
                 continue
+            if var.get("_bit_offset_pagina"):
+                # Bit letto 1-based in una pagina riconosciuta tale: il 16
+                # era il bit 15 del PDF, non un fuori-scala da correggere.
+                var["bit"] = bit - 1
+                var.pop("_bit_offset_pagina", None)
+                _warn(warnings, counters, "bit_offset_pagina",
+                      "reg %s: bit %s->%s" % (
+                          var.get("modbus_register"), bit, bit - 1),
+                      page_no=var.get("pagina"), riga=var.get("riga"),
+                      counter="bit_offset_pagina")
+                continue
             siblings = set()
             for other in variables:
                 if other is var:
@@ -782,18 +876,18 @@ def consolidate(pages):
             if bit == 16 and 15 not in siblings:
                 var["bit"] = 15
                 _warn(warnings, counters, "bit_fuori_range",
-                      "%r @ %s: bit 16->15 (N.Bit?)" % (
-                          var.get("description"),
-                          var.get("modbus_register")),
+                      "bit 16->15",
                       page_no=var.get("pagina"), riga=var.get("riga"),
                       counter="bit_fuori_range")
             else:
                 _warn(warnings, counters, "bit_fuori_range",
-                      "%r @ %s bit %s fuori 0-15: tenuto, verificare "
-                      "su ADAS" % (var.get("description"),
-                                   var.get("modbus_register"), bit),
+                      "bit %s" % bit,
                       page_no=var.get("pagina"), riga=var.get("riga"),
                       counter="bit_fuori_range")
+        # Il flag e' interno al consolidatore: non deve uscire nel JSON
+        # intermedio (lo vedrebbe il creator e chi ispeziona il tap).
+        for var in variables:
+            var.pop("_bit_offset_pagina", None)
     stations = []
     for key in order:
         slot = acc[key]
@@ -834,7 +928,7 @@ def consolidate(pages):
                     flipped += 1
             counters["packed_fold"] += flipped
             _warn(warnings, counters, "fold_packed",
-                  "REG %s: %d singoli -> IMPACCATO" % (reg, flipped))
+                  "REG %s" % reg)
         seen_keys = set()
         dup_pairs = []
         for var in variables:

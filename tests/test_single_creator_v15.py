@@ -2,8 +2,8 @@
 
 Reference: src/nodes/json_creator.py. Documented snapshot:
 myhydra/single_pdf/pytools/json_creator_v15.py. Canvas copy:
-myhydra/single_pdf/pytools/json_creator_v15_canvas.py (< 28 KB,
-comment lines stripped, same AST and same output).
+myhydra/single_pdf/pytools/json_creator_v15_canvas.py (23.595 byte, sotto la
+guardia di paste di 33.792, comment lines stripped, same AST and same output).
 """
 import ast
 import io

@@ -78,7 +78,24 @@ Questo documento definisce lo schema JSON che il VLM deve produrre per ogni pagi
 - Rispondere SOLO con JSON valido
 
 ## Versione Prompt di Riferimento
-`src/prompts/vlm_measures_v14.md`, `src/prompts/vlm_bitnames_v14.md`, `src/prompts/vlm_bitstates_v14.md` (split v14 in 3 rami; `vlm_extraction_v11.md` resta solo storico)
+
+Stato al 28/10/2026 — tre rami, un prompt corrente per ramo:
+
+| Ramo | Prompt corrente |
+|---|---|
+| misure + dati tecnici | `src/prompts/vlm_measures_v18.md` |
+| nomi bit | `src/prompts/vlm_bitnames_v16.md` |
+| stati TEXTON/TEXTOFF | `src/prompts/vlm_bitstates_v19.md` |
+
+Le versioni `v11`, `v12`, `v13` (ramo unico) e le intermedie `v14`–`v17`
+restano in `src/prompts/` come storico e non vanno incollate nei nodi.
+Inventario, cronologia delle regole e hash completi:
+`myhydra/single_pdf/prompt/README.md`.
+
+**Nota sul canvas:** il flusso Single attivo esegue ancora il ramo unico
+`vlm_extraction_v13.md`; i tre rami correnti sono pronti ma mai eseguiti sulla
+piattaforma. La migrazione è il rewiring descritto in
+`myhydra/single_pdf/platforms/README.md`.
 
 ## v14 — decisioni config
 - Campi extra sconosciuti: **ignorati** (default Pydantic, nessun `extra="forbid"`).

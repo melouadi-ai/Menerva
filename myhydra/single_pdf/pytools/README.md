@@ -19,12 +19,12 @@ Lo script è mantenuto in `src/nodes/json_creator.py` (v15) e copiato qui. La co
 sha256sum ../../../src/nodes/json_creator.py json_creator_v15.py
 ```
 
-Hash atteso: `64b78c56ef2b83a603fb725f249e25c8ce7b3cfd1c7017b4666bd5d10d21ad6b`
+Hash atteso: `37eb55f1e85b3f6ad6735553ab32cca04f1d1e07a46672c408a5cc7f76127777`
 
 La copia canvas senza commenti (`json_creator_v15_canvas.py`, indentazione
 compatta a 1 spazio/livello, stesso AST della documentata) vive in
 `../platforms/lv1/scripts/updated_pending_validation/`; hash atteso:
-`f269a48c499fc2d67233f772a5e8306d9d5cf32b7638577610fc2235715a99f4`.
+`5f4595a26f408e02ff9377d7376d91a8ac3393cb0b888969db0c3ecb67f59f3a`.
 
 **Se gli hash divergono, la fonte autorevole è `src/nodes/`.**
 
@@ -33,17 +33,28 @@ compatta a 1 spazio/livello, stesso AST della documentata) vive in
 Riferimento testabile: `src/nodes/single_consolidator.py`. Copia
 documentata `consolidator.py` (stile inline, `{edge}[5]` da ricontrollare
 dopo il rewiring Task 8) + copia canvas `consolidator_canvas.py` senza
-commenti. Parità AST+output pinnata in
-`tests/test_single_consolidator_canvas.py`; la copia canvas resta sotto
-i 28 KB. Se gli hash divergono, vince `src/`.
+commenti. La copia canvas **non si scrive a mano**: si genera dalla
+documentata con `render_canvas.py` (stesso AST, 1 spazio per livello, righe
+spezzate dentro parentesi unite), che è anche il controllo di parità in
+`tests/test_single_consolidator_canvas.py`. La copia canvas resta sotto la
+soglia di paste: 33.245 byte (guardia test 33.792, 34.365 = rosso certo).
+Se gli hash divergono, vince `src/`.
 
 ```sh
 sha256sum myhydra/single_pdf/pytools/consolidator.py myhydra/single_pdf/pytools/consolidator_canvas.py
 ```
 
 Hash attesi:
-- `consolidator.py`: `41d5ba5ac40c30a565ada23c225cd342750d11ca9217b17967582ac32ee45ef7`
-- `consolidator_canvas.py`: `29148f2c13c7ad2182408b7f8222dea954a6b95abaa6bd3677cb70bacc501b87`
+- `consolidator.py`: `206d7adaa0066ae574aeceef116208070dbf9c6ac19ee67358875de5b194a7bb`
+- `consolidator_canvas.py`: `fe66fbeec41bd5cffa6e1fb0b3f385edc05fe770ca448bcb67fcd300afc572c8`
+
+Rigenerazione (da fare dopo ogni modifica alla documentata):
+
+```sh
+python myhydra/single_pdf/pytools/render_canvas.py --write
+cp myhydra/single_pdf/pytools/consolidator_canvas.py \
+   myhydra/single_pdf/platforms/lv1/scripts/updated_pending_validation/
+```
 
 Questo file ha `{edge}[4]` ed è del solo Single PDF. Il Double PDF ha una copia
 separata con `{edge}[13}` in

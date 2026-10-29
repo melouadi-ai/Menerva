@@ -3,13 +3,14 @@
 Le copie canvas in myhydra/single_pdf/platforms/ sono cio' che si incolla
 nei nodi MyHydra: devono restare sotto il budget di paste (33 KB, pari
 alla misura empirica: 34.365 byte = rosso, 32.766 = verde il 6/10/2026,
-32.852 = verde il 13/10/2026),
+32.852 = verde il 13/10/2026, 33.520 = verde il 28/10/2026; oggi 33.245),
 senza def/class/lambda,
 con ERROR JSON mai blank dove il contratto lo prevede e con le guardie
 (copertura + linkage) attive nella copia incollata, non solo in src/.
 """
 
 import ast
+import hashlib
 import io
 import json
 import re
@@ -181,10 +182,17 @@ def test_v15_hashes_nel_readme_pytools():
     readme = (STORE_PYTOOLS / "README.md").read_text(encoding="utf-8")
     assert "json_creator_v15.py" in readme
     assert "json_creator_v15_canvas.py" in readme
-    assert "64b78c56ef2b83a603fb725f249e25c8ce7b3cfd1c7017b4666bd5d10d21ad6b" \
-        in readme
-    assert "f269a48c499fc2d67233f772a5e8306d9d5cf32b7638577610fc2235715a99f4" \
-        in readme
+    for name in ("json_creator_v15.py", "consolidator.py",
+                 "consolidator_canvas.py", "json_creator_v15_canvas.py"):
+        digest = hashlib.sha256((STORE_PYTOOLS / name).read_bytes()).hexdigest()
+        assert digest in readme, name
+    platform_readme = (PLATFORMS / "lv1" / "scripts"
+                       / "updated_pending_validation" / "README.md")
+    text = platform_readme.read_text(encoding="utf-8")
+    for name in ("consolidator_canvas.py", "json_creator_v15_canvas.py"):
+        digest = hashlib.sha256(
+            (STORE_PYTOOLS / name).read_bytes()).hexdigest()
+        assert digest in text, name
 
 
 def test_platforms_layout():

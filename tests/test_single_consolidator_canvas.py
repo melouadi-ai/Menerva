@@ -17,7 +17,8 @@ DOCUMENTED = REPO / "myhydra" / "single_pdf" / "pytools" / "consolidator.py"
 CANVAS = REPO / "myhydra" / "single_pdf" / "pytools" / "consolidator_canvas.py"
 
 # Limite empirico MyHydra: 34.365 byte = rosso (6/10/2026),
-# 32.766 = verde (6/10), 32.852 = verde (13/10). Margine sotto il rosso.
+# 32.766 = verde (6/10), 32.852 = verde (13/10), 33.520 = verde (28/10).
+# Guardia interna 33.792: la copia attuale sta a 33.245.
 CANVAS_MAX_BYTES = 33 * 1024
 
 
@@ -323,3 +324,76 @@ def test_canvas_busta_vuota_non_azzera_bitnames():
     assert var["modbus_register"] == 40001
     rules = [w["rule"] for w in canvas["warnings"]]
     assert "riga_mismatch" not in rules
+
+
+TAPS = sorted((REPO / "myhydra" / "single_pdf" / "TESTS").glob(
+           "*/TAP_MERGE.txt")) + sorted((REPO / "myhydra" / "single_pdf"
+                                         / "TESTS").glob("*/TAP ABC.txt"))
+
+
+def _tap_pages(path):
+    """Estrae l'array JSON dal tap (il file puo' avere un'intestazione)."""
+    text = path.read_text(encoding="utf-8", errors="replace")
+    idx = text.find("[")
+    while idx != -1:
+        try:
+            return json.JSONDecoder().raw_decode(text[idx:])[0]
+        except json.JSONDecodeError:
+            idx = text.find("[", idx + 1)
+    raise AssertionError("nessun JSON nel tap " + path.name)
+
+
+def test_parita_su_tap_reali():
+    """Su input reali src e copia documentata devono dare lo stesso output.
+
+    Il fixture sintetico non copre shift di riga con descrizioni che
+    differiscono per cifre: il tap PROTEC_1 lo fa, e li' il ramo hamming
+    senza veto cifre assegnava il bit della riga precedente.
+    """
+    assert TAPS, "tap reali assenti"
+    for tap in TAPS:
+        pages = _tap_pages(tap)
+        ref = consolidate(json.loads(json.dumps(pages)))
+        doc = run_script(DOCUMENTED, json.loads(json.dumps(pages)))
+        assert ref == doc, tap.parent.name
+        can = run_script_canvas_model(CANVAS, json.loads(json.dumps(pages)))
+        can.pop("tb", None)
+        assert ref == can, tap.parent.name
+
+
+def test_canvas_rigenerabile_dalla_documentata():
+    """La copia canvas non si scrive a mano: `render_canvas.py` la produce.
+
+    28 ott 2026: `bit_offset_pagina` e' entrato in `src` e nella documentata
+    ma non nella canvas, che era mantenuta a mano. I test di parita'
+    guardavano solo pytools vs pytools e non lo videro.
+    """
+    sys.path.insert(0, str(REPO / "myhydra" / "single_pdf" / "pytools"))
+    from render_canvas import render
+    assert render(DOCUMENTED.read_text(encoding="utf-8")) \
+        == CANVAS.read_text(encoding="utf-8")
+
+
+def _rule_literals(text):
+    out = set()
+    for m in re.finditer(r'"rule":\s*"([a-z_0-9]+)"', text):
+        out.add(m.group(1))
+    for m in re.finditer(r'_warn\([^,]+,\s*[^,]+,\s*"([a-z_0-9]+)"', text):
+        out.add(m.group(1))
+    for m in re.finditer(r'"([a-z_0-9]+)"\s*\+\s*decision', text):
+        out.add(m.group(1) + "*")
+    for m in re.finditer(r'"rule":\s*"([a-z_]+)"\s*\+', text):
+        out.add(m.group(1) + "*")
+    return out
+
+
+def test_regole_di_src_tutte_nella_canvas():
+    """Ogni regola emessa da `src/` deve esistere anche nella copia canvas.
+
+    E' il controllo che mancava il 28 ott 2026: `bit_offset_pagina` era in
+    `src` e in nessuna copia, e nessun test lo vedeva.
+    """
+    src = (REPO / "src" / "nodes" / "single_consolidator.py").read_text(
+        encoding="utf-8")
+    canvas = CANVAS.read_text(encoding="utf-8")
+    assert _rule_literals(src) - _rule_literals(canvas) == set()

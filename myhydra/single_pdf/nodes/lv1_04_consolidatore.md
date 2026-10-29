@@ -3,7 +3,7 @@
 - **Tipo/nome:** Pytool — unisce i 3 rami VLM per pagina e fonde le pagine.
 - **Input:** array dei chunk per pagina accumulati dal nodo LV1-03, letto da `raw = r'''{edge}[5]'''`.
 - **CONFIG:** il `5` è locale al canvas — **ricontrollare N a ogni rewiring** e ispezionare le impostazioni dell'edge (rimuovere match-condition spurie: un placeholder residuo blocca il wire in silenzio).
-- **Script:** [`../platforms/lv1/scripts/updated_pending_validation/consolidator_canvas.py`](../platforms/lv1/scripts/updated_pending_validation/consolidator_canvas.py) (copia canvas, 24.851 byte; documentata in [`../pytools/consolidator.py`](../pytools/consolidator.py), riferimento testabile `src/nodes/single_consolidator.py`).
+- **Script:** [`../platforms/lv1/scripts/updated_pending_validation/consolidator_canvas.py`](../platforms/lv1/scripts/updated_pending_validation/consolidator_canvas.py) (copia canvas, 33.245 byte, generata da `../pytools/render_canvas.py`; documentata in [`../pytools/consolidator.py`](../pytools/consolidator.py), riferimento testabile `src/nodes/single_consolidator.py`).
 - **Output:** `{"stations": [...], "warnings": [...], "counters": {...}}` via `result`. Mai blank: in caso di errore `result` è un ERROR JSON `{"status": "ERROR", ...}`.
 - **Posizione nella catena:** dopo il motore iterativo, prima del JSON CREATOR. È il nodo che rende il creator un trasformatore puro: il merge non è più dentro `json_creator.py`.
 
@@ -15,6 +15,7 @@
 4. **Carry-over registro** per stazione in ordine di pagina (voce `registro_applicato`; solo digitali con bit; analogiche senza REG restano null).
 5. **Fold packed** (singoli con registro condiviso → IMPACCATO) e scarti `classify_row` conteggiati per regola (vedi sotto).
 6. **Buchi `page_no`** in `sequenza_buchi`; `pagina` riempita dal contatore motore se null; stazioni anonime fuse sotto chiave `("anon",)`, reali per IP esatto.
+7. **Pagina 1-based nel ramo nomi-bit** (`bit_offset_pagina`): se tutte le righe confrontabili hanno nome = misura +1 e almeno un bit supera 15, la pagina è contata 1..16 mentre le misure scrivono 0..15. Valgono i bit delle misure, i nomi non decidono bit né descrizione, il 16 viene riportato a 15. Sui registri di quella pagina il gate di ancoraggio tace (altrimenti rimetterebbe lo shift appena tolto). Il flag interno non esce nel JSON.
 
 ## Filtri V2/V20/V21 (vivono qui, non in un nodo separato)
 

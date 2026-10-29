@@ -20,9 +20,12 @@ Il consolidatore unisce rami e pagine; il creator trasforma in ADAS.
 | SLICE-A/B/C (shard paralleli) | [`scripts/updated_pending_validation/slicer_canvas.py`](scripts/updated_pending_validation/slicer_canvas.py) | `{edge}[6]` + costanti `START`/`END` (CONFIG: una copia per shard) | Nuovo: pilota PROTEC 2, poi SIEMENS |
 | MERGER (ricucitura shard) | [`scripts/updated_pending_validation/merger_canvas.py`](scripts/updated_pending_validation/merger_canvas.py) | due `{edge}` (`raw_a`, `raw_b`; per 3 shard: due merger in cascata) | Nuovo: tra motori e CONSOLIDATORE |
 
-Entrambe le copie sono sotto i 28 KB, senza `def`/`class`/`lambda`, con gli
-stessi AST delle versioni documentate (pinnato da
+Entrambe le copie stanno sotto la soglia di paste (33.245 e 23.595 byte;
+guardia test 33.792, 34.365 = rosso certo), senza `def`/`class`/`lambda`, con
+gli stessi AST delle versioni documentate (pinnato da
 `tests/test_single_canvas_hygiene.py` e dai test di parità dei Task 4/5).
+La copia canvas non si edita a mano: la genera
+`pytools/render_canvas.py` dalla documentata.
 
 Dopo la prima run validata sul canvas, le copie migrano in
 [`scripts/in_use/`](scripts/in_use/README.md).

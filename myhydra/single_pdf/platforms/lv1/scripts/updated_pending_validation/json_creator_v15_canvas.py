@@ -2,9 +2,7 @@ import json
 import re
 import struct
 import ast
-
 raw = r'''{edge}[4]'''
-
 try:
  _injected_obj = None
  if isinstance(raw, str):
@@ -15,7 +13,6 @@ try:
    s = json.dumps(raw, ensure_ascii=False)
   except Exception:
    s = str(raw)
-
  chunks = []
  ss = s.strip()
  ss = re.sub(r'^```[a-zA-Z]*\s*', '', ss)
@@ -88,10 +85,10 @@ try:
     pos = cand
  if len(chunks) == 0:
   chunks = [{}]
-
  _pydantic_available = False
  try:
-  import os as _os, sys as _sys
+  import os as _os
+  import sys as _sys
   _roots = []
   try:
    _d = _os.path.dirname(_os.path.abspath(__file__))
@@ -112,7 +109,6 @@ try:
   _pydantic_available = True
  except Exception:
   _pydantic_available = False
-
  validation_errors = []
  validation_warnings = []
  if _pydantic_available:
@@ -173,9 +169,7 @@ try:
      elif isinstance(el.get("variables"), list):
       sts.append(el)
   pages.append(sts)
-
  DEFAULT_NAME = "SME"
- DEFAULT_IP = "127.0.0.1"
  GENERIC_EXACT = ["disponibile", "disponibile/", "disponible", "riserva", "spare", "reserve", "non utilizzato", "non utilizzata", "non usato", "libero", "---", "/", ""]
  last_name = None
  last_ip = None
@@ -223,7 +217,6 @@ try:
    if len(vs) == 0:
     continue
    st_in.append({"name": nm, "ip": ip, "port": port, "modbus_id": mid, "variables": vs, "page_no": page_no})
-
  groups = []
  group_index = {}
  placeholder_counter = 0
@@ -238,7 +231,7 @@ try:
    nm = str(nm).strip()
   ip = st["ip"]
   if ip is None or str(ip).strip() == "":
-   ip = DEFAULT_IP
+   ip = ""
    warn_no_ip = True
   else:
    ip = str(ip).strip()
@@ -260,7 +253,6 @@ try:
   if groups[found][3] is None and st["modbus_id"] is not None:
    groups[found][3] = st["modbus_id"]
   groups[found][4] = groups[found][4] + st["variables"]
-
  FMT_SHORT = 150
  FMT_FLOAT = 250
  FMT_INT16 = FMT_SHORT
@@ -270,25 +262,7 @@ try:
  NEGBIG = -3.40282e+38
  VM_DEFAULT = "if elapsed() then    storep(11);else store(8);fi;"
  MCFG = "<configuration SynopticAnalogicFormat=\"%7.2f\"/>"
- KW = [
-  ["VALVOLA", "APERTO", "CHIUSO"],
-  ["BY-PASS", "BYPASS", "CHIUSO"],
-  ["BYPASS", "BYPASS", "CHIUSO"],
-  ["ALLARME", "ALLARME", "OFF"],
-  ["FAULT", "GUASTO", "OFF"],
-  ["GUASTO", "GUASTO", "OFF"],
-  ["ANOMALIA", "ANOMALIA", "OFF"],
-  ["MANUTENZIONE", "MANUTENZIONE", "OFF"],
-  ["CALIBRAZIONE", "CALIBRAZIONE", "OFF"],
-  ["ZERO", "ZERO", "OFF"],
-  ["SPAN", "SPAN", "OFF"],
-  ["OVF", "ERRORE", "OFF"],
-  ["OVERFLOW", "ERRORE", "OFF"],
-  ["ERRORE", "ERRORE", "OFF"],
-  ["ERROR", "ERRORE", "OFF"],
-  ["ROTTURA", "ERRORE", "OFF"]
- ]
-
+ KW = [ ["VALVOLA", "APERTO", "CHIUSO"], ["BY-PASS", "BYPASS", "CHIUSO"], ["BYPASS", "BYPASS", "CHIUSO"], ["ALLARME", "ALLARME", "OFF"], ["FAULT", "GUASTO", "OFF"], ["GUASTO", "GUASTO", "OFF"], ["ANOMALIA", "ANOMALIA", "OFF"], ["MANUTENZIONE", "MANUTENZIONE", "OFF"], ["CALIBRAZIONE", "CALIBRAZIONE", "OFF"], ["ZERO", "ZERO", "OFF"], ["SPAN", "SPAN", "OFF"], ["OVF", "ERRORE", "OFF"], ["OVERFLOW", "ERRORE", "OFF"], ["ERRORE", "ERRORE", "OFF"], ["ERROR", "ERRORE", "OFF"], ["ROTTURA", "ERRORE", "OFF"] ]
  out = []
  sid = 0
  g = 0
@@ -408,11 +382,9 @@ try:
     soff = str(soff).strip()
     if soff == "":
      soff = None
-   if son is not None and (son in ("1", "0")
-     or son.replace(" ", "")[:2] in ("0=", "1=")):
+   if son is not None and (son in ("1", "0") or son.replace(" ", "")[:2] in ("0=", "1=")):
     son = None
-   if soff is not None and (soff in ("1", "0")
-     or soff.replace(" ", "")[:2] in ("0=", "1=")):
+   if soff is not None and (soff in ("1", "0") or soff.replace(" ", "")[:2] in ("0=", "1=")):
     soff = None
    rw = v.get("read_write")
    if rw is not None:
@@ -606,7 +578,6 @@ try:
   senza_registro_tutto = senza_registro_tutto + senza_registro
   senza_registro_nomi_tutto = senza_registro_nomi_tutto + senza_registro_nomi
   g = g + 1
-
  seen = {}
  i = 0
  while i < len(out):
@@ -617,7 +588,6 @@ try:
   else:
    seen[base] = 0
   i = i + 1
-
  meta = {"chunks_parsed": len(chunks), "pages_processed": len(pages), "stations_in_input": len(st_in), "stations_output": len(out), "variables_total": 0, "raw_type": str(type(raw)), "raw_len": len(s), "chunk_types": [], "station_details": [], "raw_sample": repr(s[:500])}
  i = 0
  while i < len(chunks):
@@ -649,7 +619,7 @@ try:
    i = i + 1
   warnings = []
   if warn_no_ip:
-   warnings.append("nessun IP dichiarato nel documento: usato default " + DEFAULT_IP)
+   warnings.append("nessun IP dichiarato nel documento: ipaddress vuoto, inserire l'IP reale prima dell'import ADAS")
   warnings.extend(validation_warnings)
   if len(validation_errors) > 0:
    warnings.append("VALIDAZIONE SCHEMA (Pydantic): " + str(len(validation_errors)) + " stazione/i con errori -> " + " | ".join(validation_errors[:5]))
@@ -678,7 +648,6 @@ try:
     out[i]["_warnings"] = warnings
     i = i + 1
   output = json.dumps(out, indent=1, ensure_ascii=False)
-
  print(output)
 except Exception as error:
  output = json.dumps({"status": "ERROR", "error": str(error)}, ensure_ascii=False)

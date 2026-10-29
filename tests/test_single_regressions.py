@@ -168,11 +168,12 @@ def test_parola_intestazione_unita_non_finisce_in_units():
     assert by_name["Polveri TQ"]["UNITS2"] is None
 
 
-def test_nessun_ip_fabbricato_senza_warning():
+def test_nessun_ip_fabbricato():
     out = pipeline([{"page_no": 1, "stations": [_station(None, [
         _var("Polveri", 1, reg=40001, zona="MISURE"),
     ])]}])
-    assert 'ipaddress="127.0.0.1"' in out[0]["DRIVERCONFIG"]
+    assert 'ipaddress="127.0.0.1"' not in out[0]["DRIVERCONFIG"]
+    assert 'ipaddress=""' in out[0]["DRIVERCONFIG"]
     warnings = out[0].get("_warnings", [])
     assert any("nessun IP dichiarato nel documento" in w
                for w in warnings)

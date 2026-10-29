@@ -941,3 +941,119 @@ def test_typo_singola_lettera_non_blocca_bit():
     out = consolidate([page])
     var = out["stations"][0]["variables"][0]
     assert var["bit"] == 6
+
+
+def test_bit_ancorato_cross_riga_su_descrizione_univoca():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("GC0x: STATO COMANDO POMPA P1", 26, reg=40024, bit=16,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitnames": {"rows": [
+        {"description": "GC0x: STATO COMANDO POMPA P1",
+         "modbus_register": 40024, "bit": 0, "riga": 25},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["bit"] == 0
+    rules = [w["rule"] for w in out["warnings"]]
+    assert "bit_register_mismatch" in rules
+
+
+def test_ancoraggio_non_scatta_su_descrizione_duplicata():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Valvola Y1", 26, reg=40001, bit=9,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitnames": {"rows": [
+        {"description": "Valvola Y1", "modbus_register": 40001,
+         "bit": 0, "riga": 20},
+        {"description": "Valvola Y1", "modbus_register": 40001,
+         "bit": 1, "riga": 21},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["bit"] == 9
+
+
+def test_ancoraggio_non_scatta_su_registro_diverso():
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("Valvola Y1", 26, reg=40001, bit=9,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitnames": {"rows": [
+        {"description": "Valvola Y1", "modbus_register": 40002,
+         "bit": 0, "riga": 25},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["bit"] == 9
+
+
+def test_ancoraggio_non_importa_bit_fuori_range():
+    """Se la riga nomi shiftata dice bit 16, il bit 15 delle misure resta.
+
+    Caso reale LEGNANO/GC0x OR ALLARMI: misure bit 15 (corretto da PDF),
+    nomi riga successiva bit 16. Ancorare il 16 produce un bit ADAS-invalido
+    e perde il 15 gia' valido.
+    """
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("GV0x: OR ALLARMI", 15, reg=40021, bit=15,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitnames": {"rows": [
+        {"description": "GV0x: OR ALLARMI", "modbus_register": 40021,
+         "bit": 16, "riga": 9},
+    ]}}
+    out = consolidate([page])
+    var = out["stations"][0]["variables"][0]
+    assert var["bit"] == 15
+
+
+def test_ancoraggio_non_scatta_su_registro_gia_valido():
+    """Registro con bit validi e unici: le misure vincono sui nomi shiftati.
+
+    Caso reale LEGNANO 40021: misure 13/14/15 (verita' PDF), nomi
+    traslati di una riga 14/15/16. Ancorare i nomi sposterebbe tutto.
+    """
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("COGx: OR ALLARMI", 6, reg=40021, bit=13,
+             kind="DIGITALE_IMPACCATO"),
+        _var("GC0x: OR ALLARMI", 7, reg=40021, bit=14,
+             kind="DIGITALE_IMPACCATO"),
+        _var("GV0x: OR ALLARMI", 8, reg=40021, bit=15,
+             kind="DIGITALE_IMPACCATO"),
+    ])], "bitnames": {"rows": [
+        {"description": "COGx: OR ALLARMI", "modbus_register": 40021,
+         "bit": 14, "riga": 7},
+        {"description": "GC0x: OR ALLARMI", "modbus_register": 40021,
+         "bit": 15, "riga": 8},
+        {"description": "GV0x: OR ALLARMI", "modbus_register": 40021,
+         "bit": 16, "riga": 9},
+    ]}}
+    out = consolidate([page])
+    bits = {v["description"]: v["bit"]
+            for v in out["stations"][0]["variables"]}
+    assert bits == {"COGx: OR ALLARMI": 13, "GC0x: OR ALLARMI": 14,
+                    "GV0x: OR ALLARMI": 15}
+
+
+def test_ancoraggio_ripara_registro_con_bit_duplicato():
+    """Se le misure hanno un bit duplicato, i nomi riallineano il registro.
+
+    Caso reale LUXOTTICA 40023: misure 7/8 con 8 gia' occupato dal THC,
+    nomi 6/7 (verita' PDF).
+    """
+    page = {"page_no": 1, "stations": [_station("10.0.0.1", [
+        _var("THC CALIBRAZIONE", 1, reg=40023, bit=8,
+             kind="DIGITALE_IMPACCATO"),
+        _var('MANUTENZIONE RICH. "O2 WET"', 16, reg=40023, bit=7,
+             kind="DIGITALE_IMPACCATO"),
+        _var("MANUTENZIONE RICH. ANALIZZATORE POLVERI", 17, reg=40023,
+             bit=8, kind="DIGITALE_IMPACCATO"),
+    ])], "bitnames": {"rows": [
+        {"description": 'MANUTENZIONE RICH. "O2 WET"',
+         "modbus_register": 40023, "bit": 6, "riga": 15},
+        {"description": "MANUTENZIONE RICH. ANALIZZATORE POLVERI",
+         "modbus_register": 40023, "bit": 7, "riga": 16},
+    ]}}
+    out = consolidate([page])
+    bits = {v["description"]: v["bit"]
+            for v in out["stations"][0]["variables"]}
+    assert bits['MANUTENZIONE RICH. "O2 WET"'] == 6
+    assert bits["MANUTENZIONE RICH. ANALIZZATORE POLVERI"] == 7

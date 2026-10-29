@@ -157,7 +157,8 @@ try:
     # In quel caso la validazione viene saltata (fallback difensivo identico a prima).
     _pydantic_available = False
     try:
-        import os as _os, sys as _sys
+        import os as _os
+        import sys as _sys
         # Risale la gerarchia di cartelle partendo da __file__ (reale o fittizio)
         # e dalla cwd, fino a trovare una root che contenga src/models/ (ambiente
         # dev/test). Su MyHydra il pytool gira come script standalone senza il
@@ -253,7 +254,9 @@ try:
 
     # ---------- forward-fill cross-page + st_in ----------
     DEFAULT_NAME = "SME"
-    DEFAULT_IP = "127.0.0.1"
+    # B2: mai un IP fabbricato. Se il documento non dichiara l'IP, la
+    # stazione esce con ipaddress vuoto e un warning: l'operatore deve
+    # inserire l'IP reale prima dell'import in ADAS.
     GENERIC_EXACT = ["disponibile", "disponibile/", "disponible", "riserva", "spare", "reserve", "non utilizzato", "non utilizzata", "non usato", "libero", "---", "/", ""]
     last_name = None
     last_ip = None
@@ -317,7 +320,7 @@ try:
             nm = str(nm).strip()
         ip = st["ip"]
         if ip is None or str(ip).strip() == "":
-            ip = DEFAULT_IP
+            ip = ""
             warn_no_ip = True
         else:
             ip = str(ip).strip()
@@ -776,7 +779,7 @@ try:
             i = i + 1
         warnings = []
         if warn_no_ip:
-            warnings.append("nessun IP dichiarato nel documento: usato default " + DEFAULT_IP)
+            warnings.append("nessun IP dichiarato nel documento: ipaddress vuoto, inserire l'IP reale prima dell'import ADAS")
         warnings.extend(validation_warnings)
         if len(validation_errors) > 0:
             warnings.append("VALIDAZIONE SCHEMA (Pydantic): " + str(len(validation_errors)) + " stazione/i con errori -> " + " | ".join(validation_errors[:5]))

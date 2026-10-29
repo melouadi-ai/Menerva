@@ -46,9 +46,11 @@ ritestare l'emissione su piattaforma.
    silenzio — il nodo a valle muore di fame senza errori.
 3. **Mai cambiare l'indice dentro il file**: se un edge è quello sbagliato,
    si ricabla il canvas, non si edita la copia (le copie sono pinnate dai test).
-4. **Budget paste**: copie canvas sotto i 28 KB (soglia di sicurezza; oltre
-   ~32 KB il paste fallisce a parità di logica). Dopo l'incollaggio il nodo
-   deve restare verde.
+4. **Budget paste**: copie canvas sotto la guardia di 33.792 byte (33.245
+   consolidatore, 23.595 creator; misura empirica: 34.365 byte = rosso,
+   33.520 = verde). Oltre il limite il paste fallisce a parità di logica; la
+   copia canvas si rigenera con `pytools/render_canvas.py`, non si edita a
+   mano. Dopo l'incollaggio il nodo deve restare verde.
 5. **Output blank senza errori**: diagnosi in ordine — indice edge sbagliato?
    match-condition spuria? eccezione nel creator (senza ERROR JSON)? Non si
    può fare tap sui nodi né usare il debugger (timeout): la diagnosi viaggia

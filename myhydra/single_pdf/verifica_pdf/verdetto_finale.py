@@ -5,9 +5,16 @@ finale + viceversa (invenzioni/estranei, validità ADAS). Regole motivate
 (V2/V20/V21/HW) conteggiate a parte, mai silenziose.
 """
 import json
+import re
 import struct
 import sys
 from collections import Counter
+
+# Misure packed generate dal creator per ogni registro condiviso da piu'
+# digitali: non stanno nella tabella verita' (che si estrae dai PDF) perche'
+# nel documento non esistono come riga. Contarle come "straniere" gonfia
+# ogni verdetto di 3-15 falsi positivi (PROTEC_1, PROTEC_2, SIEMENS_2).
+PACKED_RE = re.compile(r"^INGRESSI DIGITALI \d+$")
 
 
 def load_any(p):
@@ -118,7 +125,10 @@ def main(fin_path, cid):
                   if r.get("registro") is None}
     truth_names = [(norm(r.get("descrizione")), r.get("registro")) for r in rows
                    if norm(r.get("descrizione"))]
+    derivate = [x for x in meas if PACKED_RE.match(x[0])]
     for n, g in meas:
+        if PACKED_RE.match(n):
+            continue
         if g is None:
             if n not in null_names:
                 stran.append((g, None, n))
@@ -134,6 +144,7 @@ def main(fin_path, cid):
     print(f"BUCHI veri: {len(persi)}  invenzioni: {len(stran)}  ADAS-invalidi: {len(bad)}")
     print(f"refusi_corretti_dal_VLM: {len(refusi)} (presenti, spelling diverso dal PDF)")
     print(f"contabile (coperte+motivate): {cop + len(hw)}/{tot}")
+    print(f"misure derivate packed (Ingressi digitali N, fuori verita'): {len(derivate)}")
     for r in persi:
         print("  BUCO:", r.get("pagina"), r.get("registro"), r.get("bit"),
               repr((r.get("descrizione") or "")[:44]))

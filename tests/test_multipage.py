@@ -289,13 +289,15 @@ check("T11 - Write -> DRIVERDATA=5", m["DRIVERDATA"] == 5,
 
 
 # ==================================================================
-# TEST 12: documento senza IP -> warning + default 127.0.0.1
+# TEST 12: documento senza IP -> warning + IP vuoto (mai 127.0.0.1)
 # ==================================================================
 p1 = make_vlm_chunk("E1", None, 502, 1, [ana("A", 40001, units="mA")])
 p2 = make_vlm_chunk(None, None, None, None, [ana("B", 40002, units="mA")])
 raw_concat = json.dumps(p1) + json.dumps(p2)
 out = run_script(raw_concat)
-check("T12 - 1 stazione, IP default", len(out) == 1 and "127.0.0.1" in out[0]["DRIVERCONFIG"])
+check("T12 - 1 stazione, IP vuoto",
+      len(out) == 1 and 'ipaddress=""' in out[0]["DRIVERCONFIG"]
+      and "127.0.0.1" not in out[0]["DRIVERCONFIG"])
 check("T12 - _warnings presente", "_warnings" in out[0] and len(out[0]["_warnings"]) > 0)
 
 

@@ -7,9 +7,14 @@ Python 3.10. This repo converts PLC/SCADA mapping PDFs into ADAS JSON (Single PD
 System `python3` lacks dependencies (`pymupdf` missing). Never use it.
 
 ```sh
-.venv/bin/python -m pytest -q                            # root suite, 13 tests
-.venv/bin/python -m pytest myhydra/double_pdf/tests -q  # 33 tests, NOT collected by default
+./run_tests.sh                                          # root suite, 193 tests
+./run_tests.sh double                                   # 82 tests, NOT collected by default
+./run_tests.sh all                                      # both
+.venv/bin/python -m pytest -q                            # same, by hand
+.venv/bin/python -m pytest myhydra/double_pdf/tests -q
 ```
+
+`run_tests.sh` resolves the interpreter itself: it uses `.venv/bin/python` and, when the venv is missing or has no `pytest`, rebuilds it with `uv` from `pyproject.toml` (extra `dev`). Any harness that just runs `pytest` on the system interpreter fails with `No module named pytest` — that is a wrong interpreter, not a red test. The suite counts in this file were stale (13/33) until 28 Oct 2026.
 
 `pyproject.toml` sets `testpaths = ["tests"]`, so the Double PDF suite only runs with the explicit path. Ruff (`line-length = 100`, `py310`) is in the venv but nothing enforces it — no CI, no pre-commit.
 

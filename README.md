@@ -41,3 +41,21 @@ La prima architettura a due livelli proposta è descritta in [Double PDF — wor
 ## Ambiente locale
 
 Il repository definisce dipendenze e configurazione in `pyproject.toml`. Per l’ambiente locale usare le istruzioni compatibili con il Python installato e con il lockfile presente. La configurazione cloud del Single PDF non si avvia automaticamente con questi comandi.
+
+### Test
+
+Il Python di sistema (`/usr/bin/python3`, 3.12) **non** ha le dipendenze del progetto: `pytest` e `pymupdf` esistono solo nel `.venv` (Python 3.10). Lanciare `pytest` con l'interprete di sistema fallisce con `No module named pytest`, che non è un test rosso ma un interprete sbagliato.
+
+```sh
+./run_tests.sh           # suite root (tests/, 193 test)
+./run_tests.sh double    # suite Double PDF (myhydra/double_pdf/tests, 82 test)
+./run_tests.sh all       # entrambe
+./run_tests.sh tests/test_multipage.py -k warning   # argomenti extra a pytest
+```
+
+`run_tests.sh` usa `.venv/bin/python` e, se il `.venv` manca o non ha `pytest`, lo ricrea con `uv` da `pyproject.toml` (extra `dev`). In alternativa, a mano:
+
+```sh
+.venv/bin/python -m pytest -q
+.venv/bin/python -m pytest myhydra/double_pdf/tests -q
+```
