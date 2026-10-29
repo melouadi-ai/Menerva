@@ -30,7 +30,7 @@ intenzionali e documentate** dal sorgente (decisione 6/10/2026, solo Double):
 | `TEXTOFF` packed | `state_off` se presente, altrimenti keyword | invariato (resta dal chunk: `OFF`) |
 | Singoli | `state_on` se presente, altrimenti keyword | invariato |
 | `LOWRANGE`/`HIGHRANGE` analogiche | sempre sentinel | fondo scala dichiarato, sentinel se assente (v4.5, anche in `src/`) |
-| Limiti/divisori | ignorati | solo in review con i nomi (v4.5, anche in `src/`) |
+| Limiti orari/giornalieri | solo in review (v4.5) | applicati in SQ1HOURMEAN e SQDAILYMEAN (28/10/2026), solo se numerici: altrimenti sentinel + warning dedicato |
 | Registro Modbus | dal PDF così com'è | **40000 + REG** (12/10/2026, sistema): gli IOL Double scrivono il REG corto (1→40001). Solo Double: il Single non somma perché i suoi PDF scrivono già 40001 |
 
 Tutto il resto è identico a `src/nodes/json_creator.py` v4.5. Verificare con:
@@ -41,9 +41,10 @@ diff ../../../../src/nodes/json_creator.py scripts/in_use/json_creator_edge13.py
 
 Il `diff` deve mostrare **solo** queste aree. Hash attesi:
 
-- documentato (`json_creator_edge13.py`, NON da incollare): `ab611a81878ad36e7ab9188812bc1fa9fdb4e4f4c9e8039af78051e0cacfb0bb`
-- copia canvas (`json_creator_edge13_canvas.py`, da incollare): `d79ac9c340c0295da039ca45905d1bc86d7f0ad2cc9a15997346485384cc923f`
-  (28.437 byte, sotto la soglia 32 KB; offset 40000 del 12/10/2026)
+- documentato (`json_creator_edge13.py`, NON da incollare): `0d03b90fcc46b5170e874f09bfec072c97b0e23620de75c9f8429d0d4d373392`
+- copia canvas (`json_creator_edge13_canvas.py`, da incollare): `3c6c3b439bd640392d363061b4b7d786f692db1e2175161eb71e79a31f5a8651`
+  (29.552 byte, sotto la soglia 32 KB; offset 40000 + limiti SQ del 28/10/2026,
+  guardia limiti non numerici del 29/10/2026)
 
 **Linter del canvas (28/10/2026):** il paste ha segnalato `E401` sulla riga
 dell'import multiplo `import os as _os, sys as _sys` (dentro il `try` pydantic).

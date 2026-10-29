@@ -28,8 +28,9 @@
   ne pesa 34.365). Parità garantita da
   `myhydra/double_pdf/tests/test_json_creator_edge13_canvas.py` (stesso AST,
   stesso output sul chunk caso 6). Hash atteso della copia canvas:
-  `d79ac9c340c0295da039ca45905d1bc86d7f0ad2cc9a15997346485384cc923f`
-  (offset 40000 + split import E401, 28/10/2026; precedente `8f086a1f...`).
+  `3c6c3b439bd640392d363061b4b7d786f692db1e2175161eb71e79a31f5a8651`
+  (offset 40000 + split import E401 + limiti SQ + guardia non numerici, 29/10/2026;
+  precedente `6236d88a...`).
 
   **Decisione 6/10/2026 (TEXTON):** il `TEXTON` delle packed viene sempre dalla
   tabella keyword, mai da `state_on` nel chunk: l'IOL non ha colonna di stato,

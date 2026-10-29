@@ -94,3 +94,52 @@ def test_senza_registro_resta_scartato_prima_della_somma():
     assert [reg_of(m) for m in out[0]["measures"]] == [40017]
     warn = " ".join(out[0].get("_warnings", []))
     assert "VARIABILI SENZA INDIRIZZO" in warn
+
+
+def test_limiti_orario_e_giornaliero_applicati_a_sq_means():
+    """limit_hour va in SQ1HOURMEAN e limit_day va in SQDAILYMEAN come float."""
+    out = run_script(chunk([
+        variable("CO", 17, {"limit_hour": 50, "limit_day": 40}),
+        variable("NO", 18, {"limit_hour": "37,5", "limit_day": "30.0"}),
+        variable("TF", 25, {"limit_hour": None, "limit_day": None}),
+    ]))
+    by_name = {m["NAME"]: m for m in out[0]["measures"]}
+    assert by_name["CO"]["SQ1HOURMEAN"] == 50.0
+    assert by_name["CO"]["SQDAILYMEAN"] == 40.0
+    assert by_name["NO"]["SQ1HOURMEAN"] == 37.5
+    assert by_name["NO"]["SQDAILYMEAN"] == 30.0
+    assert by_name["TF"]["SQ1HOURMEAN"] == 3.40282e+38
+    assert by_name["TF"]["SQDAILYMEAN"] == 3.40282e+38
+    warn = " ".join(out[0].get("_warnings", []))
+    assert "LIMITI DICHIARATI APPLICATI IN ADAS" in warn
+
+
+def test_limite_non_numerico_non_dichiara_applicato():
+    """Difetto latente trovato il 29/10: con un limite non numerico
+    ("<= 60", "60 mg/Nm3") la conversione fallisce e SQ resta sentinel, ma
+    il warning diceva comunque "APPLICATI". Ora la misura finisce in
+    LIMITI NON NUMERICI NON APPLICATI."""
+    out = run_script(chunk([
+        variable("CO", 17, {"limit_hour": "<= 60", "limit_day": "60 mg/Nm3"}),
+    ]))
+    m = out[0]["measures"][0]
+    assert m["SQ1HOURMEAN"] == 3.40282e+38
+    assert m["SQDAILYMEAN"] == 3.40282e+38
+    warn = " ".join(out[0].get("_warnings", []))
+    assert "LIMITI DICHIARATI APPLICATI" not in warn
+    assert "LIMITI NON NUMERICI NON APPLICATI" in warn
+    assert "CO (giornaliero=60 mg/Nm3, orario=<= 60)" in warn
+
+
+def test_limite_parziale_applica_solo_il_numerico():
+    """Un limite numerico e uno no: il numerico va in SQ, l'altro resta
+    sentinel, e il warning "applicati" (almeno uno) compare."""
+    out = run_script(chunk([
+        variable("NO", 18, {"limit_hour": 125, "limit_day": "n.d."}),
+    ]))
+    m = out[0]["measures"][0]
+    assert m["SQ1HOURMEAN"] == 125.0
+    assert m["SQDAILYMEAN"] == 3.40282e+38
+    warn = " ".join(out[0].get("_warnings", []))
+    assert "LIMITI DICHIARATI APPLICATI IN ADAS" in warn
+

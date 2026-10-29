@@ -386,7 +386,8 @@ zero_padded_tutto = {}
 senza_registro_tutto = 0
 senza_registro_nomi_tutto = []
 link_issues_tutto = []
-limiti_ign_tutto = []
+limiti_app_tutto = []
+limiti_non_num_tutto = []
 divisioni_tutto = []
 while g < len(groups):
     nm = groups[g][0]
@@ -651,8 +652,31 @@ while g < len(groups):
                 highrange = BIG
             ld = v.get("limit_day")
             lh = v.get("limit_hour")
-            if ld is not None or lh is not None:
-                limiti_ign_tutto.append(desc + " (giornaliero=" + str(ld) + ", orario=" + str(lh) + ")")
+            sq_hour = BIG
+            sq_day = BIG
+            # 29/10/2026: il warning deve dire "applicati" solo se la conversione
+            # e' riuscita. Con un limite non numerico ("<= 60", "60 mg/Nm3")
+            # SQ resta sentinel e la misura finisce in limiti_non_num_tutto.
+            ok_hour = False
+            ok_day = False
+            try:
+                if lh is not None and str(lh).strip() != "":
+                    sq_hour = float(str(lh).replace(",", "."))
+                    ok_hour = True
+            except Exception:
+                sq_hour = BIG
+                ok_hour = False
+            try:
+                if ld is not None and str(ld).strip() != "":
+                    sq_day = float(str(ld).replace(",", "."))
+                    ok_day = True
+            except Exception:
+                sq_day = BIG
+                ok_day = False
+            if ok_hour or ok_day:
+                limiti_app_tutto.append(desc + " (giornaliero=" + str(ld) + ", orario=" + str(lh) + ")")
+            elif ld is not None or lh is not None:
+                limiti_non_num_tutto.append(desc + " (giornaliero=" + str(ld) + ", orario=" + str(lh) + ")")
             divflag = v.get("Division")
             if divflag is True or (isinstance(divflag, str) and divflag.strip().lower() == "true"):
                 divisioni_tutto.append(desc + " (divisione x" + str(v.get("Division_value")) + ")")
@@ -663,7 +687,7 @@ while g < len(groups):
             priv = priv + struct.pack('<I', 0).hex().upper()
             priv = priv + struct.pack('<I', mid).hex().upper()
             priv = priv + struct.pack('<I', fmt_analog).hex().upper()
-            measures.append({"STATIONID": sid, "NAME": desc, "DISABLED": 0, "DIGITAL": None, "DOWNLOAD": 0, "SNAPSHOT": 1, "IGNOREERRORS": 0, "LOWCRITICAL": NEGBIG, "HIGHCRITICAL": BIG, "LOWRANGE": lowrange, "HIGHRANGE": highrange, "LOWOFFSET": NEGBIG, "HIGHOFFSET": BIG, "SQRAW": BIG, "SQ1HOURMEAN": BIG, "SQ3HOURMEAN": BIG, "SQ8HOURMEAN": BIG, "SQDAILYMEAN": BIG, "UNITS": units, "STANDARDRANGEID": None, "DRIVERDATA": 0, "TYPE": 0, "DRIVERPRIVATE": priv, "ONLY_POSITIVES": 0, "VM_SOURCE_CODE": VM_DEFAULT, "PERIOD": 5, "SNAPSIZE": 1000, "DRIVERCONFIG": MCFG, "ID": mid_seq, "UNITS2": units})
+            measures.append({"STATIONID": sid, "NAME": desc, "DISABLED": 0, "DIGITAL": None, "DOWNLOAD": 0, "SNAPSHOT": 1, "IGNOREERRORS": 0, "LOWCRITICAL": NEGBIG, "HIGHCRITICAL": BIG, "LOWRANGE": lowrange, "HIGHRANGE": highrange, "LOWOFFSET": NEGBIG, "HIGHOFFSET": BIG, "SQRAW": BIG, "SQ1HOURMEAN": sq_hour, "SQ3HOURMEAN": BIG, "SQ8HOURMEAN": BIG, "SQDAILYMEAN": sq_day, "UNITS": units, "STANDARDRANGEID": None, "DRIVERDATA": 0, "TYPE": 0, "DRIVERPRIVATE": priv, "ONLY_POSITIVES": 0, "VM_SOURCE_CODE": VM_DEFAULT, "PERIOD": 5, "SNAPSIZE": 1000, "DRIVERCONFIG": MCFG, "ID": mid_seq, "UNITS2": units})
     # ---------- P5 pulizia parentesi (Nodo 8) duplicate-aware ----------
     all_names = []
     i = 0
@@ -834,8 +858,10 @@ else:
         warnings.append("INDIRIZZI CON ZERI INIZIALI: " + str(len(kk)) + " indirizzi scritti con zeri iniziali nel documento (" + ", ".join(kk[:8]) + ("..." if len(kk) > 8 else "") + "). Dopo la normalizzazione valgono come intero breve, che e' un registro diverso da quello scritto. Verificare se il documento li intende come indirizzi HMI o Modbus: la conversione non viene applicata perche' e' una decisione di dominio.")
     if senza_registro_tutto > 0:
         warnings.append("VARIABILI SENZA INDIRIZZO: " + str(senza_registro_tutto) + " variabili scartate perche' non hanno un indirizzo Modbus, quindi non sono leggibili dal PLC (grandezze derivate, indicazione CALCOLATA). Nomi: " + ", ".join(senza_registro_nomi_tutto[:6]) + ("..." if len(senza_registro_nomi_tutto) > 6 else ""))
-    if len(limiti_ign_tutto) > 0:
-        warnings.append("LIMITI DICHIARATI NON APPLICATI IN ADAS: " + str(len(limiti_ign_tutto)) + " misure con limite giornaliero/orario nel chunk ma senza campo ADAS dedicato (mapping in fase BISON col cliente). Nomi: " + ", ".join(limiti_ign_tutto[:6]) + ("..." if len(limiti_ign_tutto) > 6 else ""))
+    if len(limiti_app_tutto) > 0:
+        warnings.append("LIMITI DICHIARATI APPLICATI IN ADAS: " + str(len(limiti_app_tutto)) + " misure con limite giornaliero/orario applicato a SQDAILYMEAN/SQ1HOURMEAN. Nomi: " + ", ".join(limiti_app_tutto[:6]) + ("..." if len(limiti_app_tutto) > 6 else ""))
+    if len(limiti_non_num_tutto) > 0:
+        warnings.append("LIMITI NON NUMERICI NON APPLICATI: " + str(len(limiti_non_num_tutto)) + " misure con limite giornaliero/orario non numerico nel chunk (SQ1HOURMEAN/SQDAILYMEAN lasciati a sentinel). Nomi: " + ", ".join(limiti_non_num_tutto[:6]) + ("..." if len(limiti_non_num_tutto) > 6 else ""))
     if len(divisioni_tutto) > 0:
         warnings.append("DIVISIONE NON APPLICATA IN ADAS: " + str(len(divisioni_tutto)) + " misure con fattore di divisione PLC nel chunk (da trattare nel BISON). Nomi: " + ", ".join(divisioni_tutto[:6]) + ("..." if len(divisioni_tutto) > 6 else ""))
     if len(link_issues_tutto) > 0:
