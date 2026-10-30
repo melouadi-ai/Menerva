@@ -2,7 +2,7 @@ import json
 import re
 import struct
 import ast
-raw = r'''{edge}[4]'''
+raw = r'''{edge}[2]'''
 try:
  _injected_obj = None
  if isinstance(raw, str):
@@ -193,7 +193,7 @@ try:
    if nm is None or str(nm).strip() == "":
     nm = last_name
    else:
-    nm = str(nm).strip()
+    nm = str(nm).strip().replace('"', '').replace("'", "")
     last_name = nm
    ip = st.get("ip")
    if ip is None or str(ip).strip() == "":
@@ -262,7 +262,7 @@ try:
  NEGBIG = -3.40282e+38
  VM_DEFAULT = "if elapsed() then    storep(11);else store(8);fi;"
  MCFG = "<configuration SynopticAnalogicFormat=\"%7.2f\"/>"
- KW = [ ["VALVOLA", "APERTO", "CHIUSO"], ["BY-PASS", "BYPASS", "CHIUSO"], ["BYPASS", "BYPASS", "CHIUSO"], ["ALLARME", "ALLARME", "OFF"], ["FAULT", "GUASTO", "OFF"], ["GUASTO", "GUASTO", "OFF"], ["ANOMALIA", "ANOMALIA", "OFF"], ["MANUTENZIONE", "MANUTENZIONE", "OFF"], ["CALIBRAZIONE", "CALIBRAZIONE", "OFF"], ["ZERO", "ZERO", "OFF"], ["SPAN", "SPAN", "OFF"], ["OVF", "ERRORE", "OFF"], ["OVERFLOW", "ERRORE", "OFF"], ["ERRORE", "ERRORE", "OFF"], ["ERROR", "ERRORE", "OFF"], ["ROTTURA", "ERRORE", "OFF"] ]
+ KW = [ ["VALVOLA", "APERTO", "CHIUSO"], ["ELETTROVALVOLA", "APERTO", "CHIUSO"], ["BY-PASS", "BYPASS", "CHIUSO"], ["BYPASS", "BYPASS", "CHIUSO"], ["ALLARME", "ALLARME", "OFF"], ["FAULT", "GUASTO", "OFF"], ["GUASTO", "GUASTO", "OFF"], ["ANOMALIA", "ANOMALIA", "OFF"], ["MANUTENZIONE", "MANUTENZIONE", "OFF"], ["CALIBRAZIONE", "CALIBRAZIONE", "OFF"], ["ZERO", "ZERO", "OFF"], ["SPAN", "SPAN", "OFF"], ["OVF", "ERRORE", "OFF"], ["OVERFLOW", "ERRORE", "OFF"], ["ERRORE", "ERRORE", "OFF"], ["ERROR", "ERRORE", "OFF"], ["ROTTURA", "ERRORE", "OFF"] ]
  out = []
  sid = 0
  g = 0
@@ -271,6 +271,7 @@ try:
  senza_registro_nomi_tutto = []
  link_issues_tutto = []
  limiti_ign_tutto = []
+ limiti_appl_tutto = []
  divisioni_tutto = []
  while g < len(groups):
   nm = groups[g][0]
@@ -368,6 +369,7 @@ try:
    units = v.get("units")
    if units is not None:
     units = str(units).strip()
+    units = units.replace("³", "3").replace("²", "2")
     if units == "":
      units = None
    if units is not None and units.lower() in ("unita", "unità"):
@@ -403,6 +405,8 @@ try:
     dtu = str(dt).strip().upper()
     if dtu.find("INT16") >= 0 or dtu.find("UINT16") >= 0 or dtu == "INT" or dtu == "UINT":
      fmt_analog = FMT_INT16
+   if desc.upper().find("RISERVA STATI LOGICI") >= 0:
+    kind = "ANALOGICA"
    if kind == "DIGITALE_SINGOLO" and regval == 0 and bit is None:
     kind = "ANALOGICA"
    if kind == "DIGITALE_SINGOLO" and bit is None:
@@ -452,6 +456,8 @@ try:
    if toff is None:
     toff = ktoff
    toff = toff.upper()
+   if ton == "APERTO" and toff in ("OFF", None):
+    toff = "CHIUSO"
    if kind == "DIGITALE_IMPACCATO":
     if regval not in packed_index:
      packed_count = packed_count + 1
@@ -469,7 +475,7 @@ try:
     bkey = str(mid_target) + ":" + str(bitval)
     if bkey not in seen_bits:
      seen_bits[bkey] = True
-     bitinfo.append({"MEASUREID": mid_target, "BITNO": bitval, "BITNAME": desc.upper(), "TEXTON": ton, "TEXTOFF": toff})
+     bitinfo.append({"MEASUREID": mid_target, "BITNO": bitval, "BITNAME": desc.upper().replace('"', "").replace("'", ""), "TEXTON": ton, "TEXTOFF": toff})
    elif kind == "DIGITALE_SINGOLO":
     mid_seq = mid_seq + 1
     dd = 1
@@ -486,7 +492,7 @@ try:
     bkey = str(mid_seq) + ":0"
     if bkey not in seen_bits:
      seen_bits[bkey] = True
-     bitinfo.append({"MEASUREID": mid_seq, "BITNO": 0, "BITNAME": desc.upper(), "TEXTON": ton, "TEXTOFF": toff})
+     bitinfo.append({"MEASUREID": mid_seq, "BITNO": 0, "BITNAME": desc.upper().replace('"', '').replace("'", ""), "TEXTON": ton, "TEXTOFF": toff})
    else:
     mid_seq = mid_seq + 1
     lowrange = NEGBIG
@@ -502,11 +508,26 @@ try:
      highrange = BIG
     ld = v.get("limit_day")
     lh = v.get("limit_hour")
-    if ld is not None or lh is not None:
-     limiti_ign_tutto.append(desc + " (giornaliero=" + str(ld) + ", orario=" + str(lh) + ")")
+    sq1h = BIG
+    sqday = BIG
+    if lh is not None:
+     try:
+      sq1h = float(str(lh).replace(",", "."))
+     except Exception:
+      limiti_ign_tutto.append(desc + " (orario non numerico: " + str(lh) + ")")
+    if ld is not None:
+     try:
+      sqday = float(str(ld).replace(",", "."))
+     except Exception:
+      limiti_ign_tutto.append(desc + " (giornaliero non numerico: " + str(ld) + ")")
+    if sq1h != BIG or sqday != BIG:
+     limiti_appl_tutto.append(desc + " (giornaliero=" + str(ld) + ", orario=" + str(lh) + ")")
     divflag = v.get("Division")
     if divflag is True or (isinstance(divflag, str) and divflag.strip().lower() == "true"):
      divisioni_tutto.append(desc + " (divisione x" + str(v.get("Division_value")) + ")")
+    is_write = (rw == "W") or ("WRITE" in desc.upper())
+    dl_val = 1 if is_write else 0
+    dd_val = 4 if is_write else 0
     priv = "0x"
     priv = priv + struct.pack('<I', regval).hex().upper()
     priv = priv + "00000000"
@@ -514,7 +535,7 @@ try:
     priv = priv + struct.pack('<I', 0).hex().upper()
     priv = priv + struct.pack('<I', mid).hex().upper()
     priv = priv + struct.pack('<I', fmt_analog).hex().upper()
-    measures.append({"STATIONID": sid, "NAME": desc, "DISABLED": 0, "DIGITAL": None, "DOWNLOAD": 0, "SNAPSHOT": 1, "IGNOREERRORS": 0, "LOWCRITICAL": NEGBIG, "HIGHCRITICAL": BIG, "LOWRANGE": lowrange, "HIGHRANGE": highrange, "LOWOFFSET": NEGBIG, "HIGHOFFSET": BIG, "SQRAW": BIG, "SQ1HOURMEAN": BIG, "SQ3HOURMEAN": BIG, "SQ8HOURMEAN": BIG, "SQDAILYMEAN": BIG, "UNITS": units, "STANDARDRANGEID": None, "DRIVERDATA": 0, "TYPE": 0, "DRIVERPRIVATE": priv, "ONLY_POSITIVES": 0, "VM_SOURCE_CODE": VM_DEFAULT, "PERIOD": 5, "SNAPSIZE": 1000, "DRIVERCONFIG": MCFG, "ID": mid_seq, "UNITS2": units})
+    measures.append({"STATIONID": sid, "NAME": desc, "DISABLED": 0, "DIGITAL": None, "DOWNLOAD": dl_val, "SNAPSHOT": 1, "IGNOREERRORS": 0, "LOWCRITICAL": NEGBIG, "HIGHCRITICAL": BIG, "LOWRANGE": lowrange, "HIGHRANGE": highrange, "LOWOFFSET": NEGBIG, "HIGHOFFSET": BIG, "SQRAW": BIG, "SQ1HOURMEAN": sq1h, "SQ3HOURMEAN": BIG, "SQ8HOURMEAN": BIG, "SQDAILYMEAN": sqday, "UNITS": units, "STANDARDRANGEID": None, "DRIVERDATA": dd_val, "TYPE": 0, "DRIVERPRIVATE": priv, "ONLY_POSITIVES": 0, "VM_SOURCE_CODE": VM_DEFAULT, "PERIOD": 5, "SNAPSIZE": 1000, "DRIVERCONFIG": MCFG, "ID": mid_seq, "UNITS2": units})
   i = 0
   while i < len(measures):
    t = str(measures[i]["NAME"])
@@ -525,6 +546,7 @@ try:
    t = t.strip()
    while len(t) >= 2 and ((t[:1] == '"' and t[-1:] == '"') or (t[:1] == "'" and t[-1:] == "'")):
     t = t[1:-1].strip()
+   t = t.replace('"', '').replace("'", "")
    t = re.sub(r' {2,}', ' ', t).strip()
    if len(t) > 49:
     t = t[:49]
@@ -544,6 +566,7 @@ try:
     t = t.strip()
     while len(t) >= 2 and ((t[:1] == '"' and t[-1:] == '"') or (t[:1] == "'" and t[-1:] == "'")):
      t = t[1:-1].strip()
+    t = t.replace('"', '').replace("'", "")
     t = re.sub(r' {2,}', ' ', t).strip()
     b[flds[f]] = t
     f = f + 1
@@ -636,8 +659,10 @@ try:
    warnings.append("INDIRIZZI CON ZERI INIZIALI: " + str(len(kk)) + " indirizzi scritti con zeri iniziali nel documento (" + ", ".join(kk[:8]) + ("..." if len(kk) > 8 else "") + "). Dopo la normalizzazione valgono come intero breve, che e' un registro diverso da quello scritto. Verificare se il documento li intende come indirizzi HMI o Modbus: la conversione non viene applicata perche' e' una decisione di dominio.")
   if senza_registro_tutto > 0:
    warnings.append("VARIABILI SENZA INDIRIZZO: " + str(senza_registro_tutto) + " variabili scartate perche' non hanno un indirizzo Modbus, quindi non sono leggibili dal PLC (grandezze derivate, indicazione CALCOLATA). Nomi: " + ", ".join(senza_registro_nomi_tutto[:6]) + ("..." if len(senza_registro_nomi_tutto) > 6 else ""))
+  if len(limiti_appl_tutto) > 0:
+   warnings.append("LIMITI DICHIARATI APPLICATI IN ADAS: " + str(len(limiti_appl_tutto)) + " misure con limite giornaliero/orario applicato a SQDAILYMEAN/SQ1HOURMEAN. Nomi: " + ", ".join(limiti_appl_tutto[:6]) + ("..." if len(limiti_appl_tutto) > 6 else ""))
   if len(limiti_ign_tutto) > 0:
-   warnings.append("LIMITI DICHIARATI NON APPLICATI IN ADAS: " + str(len(limiti_ign_tutto)) + " misure con limite giornaliero/orario nel chunk ma senza campo ADAS dedicato (mapping in fase BISON col cliente). Nomi: " + ", ".join(limiti_ign_tutto[:6]) + ("..." if len(limiti_ign_tutto) > 6 else ""))
+   warnings.append("LIMITI DICHIARATI NON APPLICATI IN ADAS: " + str(len(limiti_ign_tutto)) + " misure con limite non numerico (mapping in fase BISON col cliente). Nomi: " + ", ".join(limiti_ign_tutto[:6]) + ("..." if len(limiti_ign_tutto) > 6 else ""))
   if len(divisioni_tutto) > 0:
    warnings.append("DIVISIONE NON APPLICATA IN ADAS: " + str(len(divisioni_tutto)) + " misure con fattore di divisione PLC nel chunk (da trattare nel BISON). Nomi: " + ", ".join(divisioni_tutto[:6]) + ("..." if len(divisioni_tutto) > 6 else ""))
   if len(link_issues_tutto) > 0:

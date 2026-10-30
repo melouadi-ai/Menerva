@@ -50,7 +50,7 @@ from nodes.single_filters import classify_row_with_reason
 
 V14_FIELDS = (
     "description", "units", "modbus_register", "bit", "data_type", "kind",
-    "read_write", "state_on", "state_off", "scale_elec_start",
+    "read_write", "note", "state_on", "state_off", "scale_elec_start",
     "scale_elec_end", "scale_eng_start", "scale_eng_end", "limit_hour",
     "limit_day", "zona", "tag", "pagina", "riga",
 )
@@ -196,9 +196,10 @@ def assemble_page(page, page_no):
     warnings = []
     counters = {}
     items = []
+    shift1_regs = set()
     stations = page.get("stations")
     if not isinstance(stations, list):
-        return items, warnings, counters
+        return items, warnings, counters, set()
     names_rows = _branch_rows(page.get("bitnames"))
     states_rows = _branch_rows(page.get("bitstates"))
     has_names = isinstance(page.get("bitnames"), (dict, list))
@@ -520,7 +521,7 @@ def assemble_page(page, page_no):
                         var[field] = incoming
             variables.append(var)
         items.append((meta, variables))
-    return items, warnings, counters
+    return items, warnings, counters, shift1_regs
 
 
 def _is_real_ip(value):
@@ -799,7 +800,7 @@ def consolidate(pages):
     order = []
     for page_no, page in ordered:
         counters["pagine"] += 1
-        items, w, c = assemble_page(page, page_no)
+        items, w, c, shift1 = assemble_page(page, page_no)
         warnings.extend(w)
         for key in c:
             counters[key] = counters.get(key, 0) + c.get(key, 0)
@@ -809,9 +810,11 @@ def consolidate(pages):
                 acc[key] = {"meta": {k: meta.get(k) for k in
                                      ("name", "protocol", "ip", "port",
                                       "modbus_id")},
-                            "variables": [], "last_reg": None}
+                            "variables": [], "last_reg": None,
+                            "_shift1_regs": set()}
                 order.append(key)
             slot = acc[key]
+            slot["_shift1_regs"].update(shift1)
             _merge_meta(slot["meta"], meta)
             for var in variables:
                 reg = var.get("modbus_register")

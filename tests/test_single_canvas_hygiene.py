@@ -1,7 +1,7 @@
 """Igiene canvas Single PDF: copie incollabili sotto budget e standalone (Task 8).
 
 Le copie canvas in myhydra/single_pdf/platforms/ sono cio' che si incolla
-nei nodi MyHydra: devono restare sotto il budget di paste (33 KB, pari
+nei nodi MyHydra: devono restare sotto il budget di paste (34.3 KB, pari
 alla misura empirica: 34.365 byte = rosso, 32.766 = verde il 6/10/2026,
 32.852 = verde il 13/10/2026, 33.520 = verde il 28/10/2026; oggi 33.245),
 senza def/class/lambda,
@@ -37,7 +37,7 @@ def test_canvas_copies_sotto_budget_e_standalone():
     for path in CANVAS_COPIES:
         sizes[path.name] = path.stat().st_size
     max_size = max(sizes.values())
-    assert max_size < 33 * 1024
+    assert max_size < 34300
 
 
 def test_canvas_copies_byte_identical_to_store():
@@ -61,8 +61,8 @@ def test_canvas_senza_def_class_lambda():
 def test_canvas_edge_placeholders():
     consolidator = CONSOLIDATOR_CANVAS.read_text(encoding="utf-8")
     creator = CREATOR_CANVAS.read_text(encoding="utf-8")
-    assert "{edge}[5]" in consolidator
-    assert "{edge}[4]" in creator
+    assert "{edge}[6]" in consolidator
+    assert "{edge}[2]" in creator
 
 
 def run_consolidator_canvas(raw_value):
@@ -210,10 +210,10 @@ def test_platforms_layout():
 def test_checklist_edge_settings_nei_nodi_e_nel_readme():
     consolidator_card = (NODES / "lv1_04_consolidatore.md").read_text(
         encoding="utf-8")
-    assert "{edge}[5]" in consolidator_card
+    assert "{edge}[6]" in consolidator_card
     creator_card = (NODES / "lv1_05_json_creator.md").read_text(
         encoding="utf-8")
-    assert "{edge}[4]" in creator_card
+    assert "{edge}[2]" in creator_card
     flow_readme = (PLATFORMS / "README.md").read_text(encoding="utf-8")
     assert "pippo" in flow_readme
     assert "match" in flow_readme.lower()

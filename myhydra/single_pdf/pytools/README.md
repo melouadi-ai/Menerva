@@ -19,12 +19,12 @@ Lo script è mantenuto in `src/nodes/json_creator.py` (v15) e copiato qui. La co
 sha256sum ../../../src/nodes/json_creator.py json_creator_v15.py
 ```
 
-Hash atteso: `37eb55f1e85b3f6ad6735553ab32cca04f1d1e07a46672c408a5cc7f76127777`
+Hash atteso: `423e258860ff552532fe229e30174a3c66c18a4c45ecda84e6032f2e5271e799`
 
 La copia canvas senza commenti (`json_creator_v15_canvas.py`, indentazione
 compatta a 1 spazio/livello, stesso AST della documentata) vive in
 `../platforms/lv1/scripts/updated_pending_validation/`; hash atteso:
-`5f4595a26f408e02ff9377d7376d91a8ac3393cb0b888969db0c3ecb67f59f3a`.
+`0768c752b5c18ac6852bed693619b21ff6ae91d052e3e67b815b3944e1bbe200`.
 
 **Se gli hash divergono, la fonte autorevole è `src/nodes/`.**
 
@@ -45,8 +45,8 @@ sha256sum myhydra/single_pdf/pytools/consolidator.py myhydra/single_pdf/pytools/
 ```
 
 Hash attesi:
-- `consolidator.py`: `206d7adaa0066ae574aeceef116208070dbf9c6ac19ee67358875de5b194a7bb`
-- `consolidator_canvas.py`: `fe66fbeec41bd5cffa6e1fb0b3f385edc05fe770ca448bcb67fcd300afc572c8`
+- `consolidator.py`: `fcc53ed748962eada3bd1bf962366113782eadeae8e85c1c9254907a569b3c97`
+- `consolidator_canvas.py`: `7e21259abe68fe5e00743ebdda9e44747d8c8f696e1394e33e4be1cb4e79de1d`
 
 Rigenerazione (da fare dopo ogni modifica alla documentata):
 

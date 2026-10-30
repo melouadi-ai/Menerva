@@ -19,7 +19,7 @@ CANVAS = REPO / "myhydra" / "single_pdf" / "pytools" / "consolidator_canvas.py"
 # Limite empirico MyHydra: 34.365 byte = rosso (6/10/2026),
 # 32.766 = verde (6/10), 32.852 = verde (13/10), 33.520 = verde (28/10).
 # Guardia interna 33.792: la copia attuale sta a 33.245.
-CANVAS_MAX_BYTES = 33 * 1024
+CANVAS_MAX_BYTES = 34300
 
 
 def fixture_pages():

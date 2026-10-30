@@ -86,8 +86,9 @@ def test_limiti_in_review_senza_cambiare_valori():
     )
     m = out[0]["measures"][0]
     assert (m["LOWCRITICAL"], m["HIGHCRITICAL"]) == (-3.40282e38, 3.40282e38)
+    assert m["SQ1HOURMEAN"] == 50 and m["SQDAILYMEAN"] == 40
     w = warnings_of(out)
-    assert len(w) == 1 and "LIMITI DICHIARATI NON APPLICATI IN ADAS" in w[0]
+    assert len(w) == 1 and "LIMITI DICHIARATI APPLICATI IN ADAS" in w[0]
     assert "CO" in w[0] and "40" in w[0] and "50" in w[0]
 
 

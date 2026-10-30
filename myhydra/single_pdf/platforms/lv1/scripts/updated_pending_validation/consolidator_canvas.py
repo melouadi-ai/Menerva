@@ -1,7 +1,7 @@
 import json
 import traceback
 xdigits = str.maketrans("", "", "0123456789")
-raw = r'''{edge}[5]'''
+raw = r'''{edge}[6]'''
 try:
  blocks = []
  queue = [raw]
@@ -22,10 +22,7 @@ try:
      n2 = ss.find("[", pos)
      cand = -1
      if n1 >= 0 and n2 >= 0:
-      if n1 < n2:
-       cand = n1
-      else:
-       cand = n2
+      cand = min(n1, n2)
      elif n1 >= 0:
       cand = n1
      elif n2 >= 0:
@@ -43,10 +40,7 @@ try:
      n2 = ss.find("[", pos + 1)
      cand = -1
      if n1 >= 0 and n2 >= 0:
-      if n1 < n2:
-       cand = n1
-      else:
-       cand = n2
+      cand = min(n1, n2)
      elif n1 >= 0:
       cand = n1
      elif n2 >= 0:
@@ -260,7 +254,7 @@ try:
    counters["buchi_sequenza"] = counters["buchi_sequenza"] + 1
  acc = {}
  acc_order = []
- v14_fields = ("description", "units", "modbus_register", "bit", "data_type", "kind", "read_write", "state_on", "state_off", "scale_elec_start", "scale_elec_end", "scale_eng_start", "scale_eng_end", "limit_hour", "limit_day", "zona", "tag", "pagina", "riga")
+ v14_fields = ("description", "units", "modbus_register", "bit", "data_type", "kind", "read_write", "note", "state_on", "state_off", "scale_elec_start", "scale_elec_end", "scale_eng_start", "scale_eng_end", "limit_hour", "limit_day", "zona", "tag", "pagina", "riga")
  fill_fields = ("units", "scale_elec_start", "scale_elec_end", "scale_eng_start", "scale_eng_end", "limit_hour", "limit_day")
  meta_keys = ("name", "protocol", "ip", "port", "modbus_id")
  oi = 0
@@ -295,8 +289,7 @@ try:
    if not isinstance(nr, dict):
     continue
    riga = nr.get("riga")
-   if type(riga) is int and riga not in nbmr \
-   and nr.get("description"):
+   if type(riga) is int and riga not in nbmr and nr.get("description"):
     nbmr[riga] = nr
   names_by_desc = {}
   names_desc_dup = {}
@@ -690,8 +683,7 @@ try:
         continue
        if isinstance(sinc, str):
         xjin = sinc.strip().replace(" ", "")
-        if xjin in ("0", "1") \
-        or xjin[:2] in ("0=", "1="):
+        if xjin in ("0", "1") or xjin[:2] in ("0=", "1="):
          continue
        elif sinc in (0, 1):
         continue

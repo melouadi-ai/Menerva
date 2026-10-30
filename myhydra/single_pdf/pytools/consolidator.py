@@ -12,7 +12,7 @@
 import json
 import traceback
 xdigits = str.maketrans("", "", "0123456789")
-raw = r'''{edge}[5]'''
+raw = r'''{edge}[6]'''
 try:
     blocks = []
     queue = [raw]
@@ -33,10 +33,7 @@ try:
                     n2 = ss.find("[", pos)
                     cand = -1
                     if n1 >= 0 and n2 >= 0:
-                        if n1 < n2:
-                            cand = n1
-                        else:
-                            cand = n2
+                        cand = min(n1, n2)
                     elif n1 >= 0:
                         cand = n1
                     elif n2 >= 0:
@@ -54,10 +51,7 @@ try:
                     n2 = ss.find("[", pos + 1)
                     cand = -1
                     if n1 >= 0 and n2 >= 0:
-                        if n1 < n2:
-                            cand = n1
-                        else:
-                            cand = n2
+                        cand = min(n1, n2)
                     elif n1 >= 0:
                         cand = n1
                     elif n2 >= 0:
@@ -303,7 +297,7 @@ try:
     acc = {}
     acc_order = []
     v14_fields = ("description", "units", "modbus_register", "bit",
-                  "data_type", "kind", "read_write", "state_on",
+                  "data_type", "kind", "read_write", "note", "state_on",
                   "state_off", "scale_elec_start", "scale_elec_end",
                   "scale_eng_start", "scale_eng_end", "limit_hour",
                   "limit_day", "zona", "tag", "pagina", "riga")
@@ -959,6 +953,10 @@ try:
     while qi < len(acc_order):
         qvars = acc[acc_order[qi]]["variables"]
         qi = qi + 1
+        # Euristico per-registro (Gemini): registro 1-based se ha bit 16
+        # oppure (nessun bit 0, bit 8 presente, tutti <= 8). Complementa il
+        # rilevamento page-level (shift1regs), da cui esclude i registri gia'
+        # trattati. Solo segnale forte + caso debole verificato su SIEMENS_2.
         qk = 0
         while qk < len(qvars):
             qvar = qvars[qk]

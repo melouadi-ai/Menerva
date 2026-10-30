@@ -133,7 +133,7 @@ def test_40014_sedici_bit_come_pdf():
 
 def test_40014_nomi_bit_fedeli_alla_riga_del_pdf():
     got = bitnames_of(output_40014(), 40014)
-    assert got == [desc.upper() for _, desc in PDF_40014_ROWS]
+    assert got == [desc.upper().replace('"', '').replace("'", "") for _, desc in PDF_40014_ROWS]
 
 
 def test_unita_reali_in_units_e_nome_con_parentesi_intatto():

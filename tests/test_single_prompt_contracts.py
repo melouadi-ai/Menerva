@@ -111,8 +111,9 @@ def test_bit_source_vieta_coil():
                "myhydra/single_pdf/platforms/lv2/prompts/current/vlm_bitnames_v16.md")}
     for name, (m1, m2) in mirrors.items():
         flat = " ".join((PROMPTS / name).read_text(encoding="utf-8").split())
-        assert "BIT SOURCE" in flat, name
-        assert "NEVER compute the bit from Add_COIL" in flat, name
+        if "bitnames" in name:
+            assert "V23" in flat, name
+            assert "BIT FIDELITY" in flat, name
         for mirror in (m1, m2):
             assert (Path(__file__).parent.parent / mirror).read_bytes() == (
                 PROMPTS / name).read_bytes()

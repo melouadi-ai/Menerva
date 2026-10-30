@@ -1,9 +1,9 @@
 # Nodo LV1-04 — CONSOLIDATORE (nuovo, redesign v14)
 
 - **Tipo/nome:** Pytool — unisce i 3 rami VLM per pagina e fonde le pagine.
-- **Input:** array dei chunk per pagina accumulati dal nodo LV1-03, letto da `raw = r'''{edge}[5]'''`.
-- **CONFIG:** il `5` è locale al canvas — **ricontrollare N a ogni rewiring** e ispezionare le impostazioni dell'edge (rimuovere match-condition spurie: un placeholder residuo blocca il wire in silenzio).
-- **Script:** [`../platforms/lv1/scripts/updated_pending_validation/consolidator_canvas.py`](../platforms/lv1/scripts/updated_pending_validation/consolidator_canvas.py) (copia canvas, 33.245 byte, generata da `../pytools/render_canvas.py`; documentata in [`../pytools/consolidator.py`](../pytools/consolidator.py), riferimento testabile `src/nodes/single_consolidator.py`).
+- **Input:** array dei chunk per pagina accumulati dal nodo LV1-03, letto da `raw = r'''{edge}[6]'''`.
+- **CONFIG:** il `6` è locale al canvas — **ricontrollare N a ogni rewiring** e ispezionare le impostazioni dell'edge (rimuovere match-condition spurie: un placeholder residuo blocca il wire in silenzio).
+- **Script:** [`../platforms/lv1/scripts/updated_pending_validation/consolidator_canvas.py`](../platforms/lv1/scripts/updated_pending_validation/consolidator_canvas.py) (copia canvas, 34.058 byte, generata da `../pytools/render_canvas.py`; documentata in [`../pytools/consolidator.py`](../pytools/consolidator.py), riferimento testabile `src/nodes/single_consolidator.py`).
 - **Output:** `{"stations": [...], "warnings": [...], "counters": {...}}` via `result`. Mai blank: in caso di errore `result` è un ERROR JSON `{"status": "ERROR", ...}`.
 - **Posizione nella catena:** dopo il motore iterativo, prima del JSON CREATOR. È il nodo che rende il creator un trasformatore puro: il merge non è più dentro `json_creator.py`.
 
