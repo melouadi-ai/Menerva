@@ -4,15 +4,24 @@ La sottopiattaforma esegue tre estrazioni parallele della stessa pagina iterativ
 
 | Ramo | Prompt | Context | Powered identity |
 |---|---|---|---|
-| Misure e BISON | `{edge.media}[1]` | vuoto | [`prompts/current/measurement_measures_bison_v6.md`](prompts/current/measurement_measures_bison_v6.md) (v6: campo `TAG` trascritto per il join scale; v5 in `prompts/history/`) |
+| Misure e BISON | `{edge.media}[1]` | vuoto | [`prompts/current/measurement_measures_bison_v7.md`](prompts/current/measurement_measures_bison_v7.md) (v7: tabella senza colonna REG → nessuna misura, REG mai da `DBX`/`DBW`/`DBD`; v6 in `prompts/history/`) |
 | Bitinfo e nomi | `{edge.media}[2]` | vuoto | [`prompts/current/measurement_bitinfo_names_v3.md`](prompts/current/measurement_bitinfo_names_v3.md) |
 | Stati TEXTON/TEXTOFF | `{edge.media}[3]` | vuoto | [`prompts/current/measurement_bitinfo_states_v3.md`](prompts/current/measurement_bitinfo_states_v3.md) |
 
 ## Stato
 
-I tre VLM, i Pytool etichettatori e i Naive di debug sono presenti nel canvas. Nel ramo `MEASURES_BISON`, il tagger ha associato correttamente tutte e 7 le risposte alle pagine; nessuna risposta contiene righe estratte. I rami BITINFO/STATES non sono inclusi nell'output ricevuto.
+La sottopiattaforma è in uso nei casi 6, 7, 8, 9 e 10. La run5 del caso 6 (29/10/2026, prompt
+misure v6) ha chiuso il verdetto: 22 misure, 60 bitinfo, registri `40000 + REG`, limiti in `SQ*`.
+Il caso 7 ha chiuso carry-over e unità (40 misure, 47 bitinfo).
 
-Prossimo test: eseguire una sola run con la [sonda di leggibilità tabella](prompts/diagnostics/measure_table_readability_probe_v1.md), mantenendo `{edge.media}[1]` nel campo Prompt e mettendo temporaneamente il testo della sonda in Powered identity. Non usare il risultato diagnostico per l'output applicativo; dopo la prova ripristinare il prompt di produzione.
+Il prompt misure è alla **v7**: una tabella priva di colonna REG (mappa DB50 lato PLC, viste su
+Essity) non produce misure; `MODBUSREGISTRO` non si ricava mai da `DBX`/`DBW`/`DBD`. La verifica
+attesa è la sparizione delle 3 misure inventate (registri 160/168/192) nella prossima run Essity,
+con le 20 misure DB100 intatte. Il prompt va nel **Powered identity**; **Prompt** resta
+`{edge.media}[1]` e **Context** vuoto.
+
+La sonda diagnostica di leggibilità in [`prompts/diagnostics/`](prompts/diagnostics/) resta
+materiale di debug: non va usata per l'output applicativo.
 
 ## Script Pytool
 

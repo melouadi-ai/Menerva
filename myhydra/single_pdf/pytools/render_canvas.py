@@ -71,6 +71,10 @@ def _join_brackets(text):
     i = 0
     while i < len(rows):
         line = rows[i]
+        # Backslash continuation: unisce la riga successiva.
+        while line.rstrip().endswith("\\") and i + 1 < len(rows):
+            line = line.rstrip()[:-1].rstrip() + " " + rows[i + 1].lstrip()
+            i += 1
         while depth.get(i + 1, 0) > 0 and i + 1 < len(rows):
             i += 1
             line = line + " " + rows[i].lstrip()

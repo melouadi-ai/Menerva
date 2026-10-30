@@ -866,7 +866,8 @@ try:
             else:
                 skey = ("anon",)
             if skey not in acc:
-                acc[skey] = {"meta": {}, "variables": [], "last_reg": None}
+                acc[skey] = {"meta": {}, "variables": [], "last_reg": None,
+                             "_shift1_regs": set()}
                 mi = 0
                 while mi < len(meta_keys):
                     try:
@@ -903,6 +904,27 @@ try:
                                      "detail": "REG " + str(slot["last_reg"]) + " carry"})
                     counters["registri_applicati"] = counters["registri_applicati"] + 1
                 slot["variables"].append(var)
+        # Euristico per-registro (solo segnale forte): bit 16 nelle misure ->
+        # registro 1-based, shifta i bit >= 1. Guardia: shift1regs (page-level).
+        reg_bits = {}
+        for var in slot["variables"]:
+            r = var.get("modbus_register")
+            b = var.get("bit")
+            if type(r) is int and type(b) is int and r not in shift1regs:
+                if r not in reg_bits:
+                    reg_bits[r] = []
+                reg_bits[r].append(b)
+        one_based = set()
+        for r, bs in reg_bits.items():
+            if 16 in bs and 15 not in bs:
+                one_based.add(r)
+        for var in slot["variables"]:
+            b = var.get("bit")
+            if (var.get("modbus_register") in one_based and type(b) is int
+                    and b >= 1):
+                var["bit"] = b - 1
+                counters["bit_offset_pagina"] = counters.get(
+                    "bit_offset_pagina", 0) + 1
         oi = oi + 1
     # Righe placeholder duplicate sulla reale: vince placeholder (F2).
     xi = 0
@@ -953,10 +975,6 @@ try:
     while qi < len(acc_order):
         qvars = acc[acc_order[qi]]["variables"]
         qi = qi + 1
-        # Euristico per-registro (Gemini): registro 1-based se ha bit 16
-        # oppure (nessun bit 0, bit 8 presente, tutti <= 8). Complementa il
-        # rilevamento page-level (shift1regs), da cui esclude i registri gia'
-        # trattati. Solo segnale forte + caso debole verificato su SIEMENS_2.
         qk = 0
         while qk < len(qvars):
             qvar = qvars[qk]

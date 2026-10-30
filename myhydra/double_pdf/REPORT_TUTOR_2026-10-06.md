@@ -20,7 +20,7 @@ I PDF di riferimento stanno nelle cartelle dei casi (`myhydra/double_pdf/tests/c
 
 ### Caso 6 — 100% del PDF
 
-Run4 (riferimento): **22 misure e 60 bitinfo, tutti conformi** al foglio IOL (registri 1,3,4,5,6,9,10,11,17,33,49,65,417–419,425–427,431,432,433,441; `INT`→formato 150, `REAL`→250; `mg/Nm3` su SO2/SO2 Raw; PM-302A/B ai bit 1/2; stazione `Sistema Analisi SO2`, `10.100.50.95:511`; nessun warning).
+Run5 (riferimento, 29/10): **22 misure e 60 bitinfo, tutti conformi** al foglio IOL (registri **40001–40441**, cioè `40000 + REG`: 1,3,4,5,6,9,10,11,17,33,49,65,417–419,425–427,431,432,433,441; `INT`→formato 150, `REAL`→250; `mg/Nm3` su SO2; `SQ1HOURMEAN`/`SQDAILYMEAN` = 60 sulle due SO2; PM-302A/B ai bit 1/2; stazione `Sistema Analisi SO2`, `10.100.50.95:511`; un solo warning, quello dei limiti applicati).
 
 ### Caso 7 — quasi tutto
 
@@ -79,8 +79,11 @@ corretto, 4 limiti, niente scarti né divisioni.
 
 ## 3. Mancante, in ordine di priorità
 
-1. **5 stati d'impianto persi sul caso 7** (unico buco grave). La cella `REG 4` è unita e attraversa il confine di pagina (DBX 70.0 a p2 → DBX 71.7 a p3): a p3 la colonna è vuota, il VLM restituisce `null`, il pytool scarta. Sono le colonne `STATI IMPIANTO` della Tabella 12 del JOB (validazioni): senza questi la matrice di invalidazione delle misure perde l'input. Serve il carry-over oltre il confine di pagina nel consolidatore.
-2. **Unità 4/18 e limiti 0/5 sul caso 7.** Il JOB li dichiara tutti (Tabella 9), ma il join scala↔misura è per uguaglianza esatta di stringa mentre il JOB usa i tag (`TF`, `O2S`) e l'IOL descrive a parole: le 4 applicate sono i 4 tag che coincidono. Serve portare il `tag` IOL nel chunk e agganciare su quello.
+1. **~~5 stati d'impianto persi sul caso 7~~ (chiuso).** Il carry-over oltre il confine di pagina
+   (`registro_applicato` nel consolidatore) ha recuperato i 5 stati: run4 caso 7 = 47/47 bit.
+2. **~~Unità e limiti~~ (chiuso per i limiti).** Unità 16/18 per TAG; i 5 limiti del JOB arrivano in
+   `SQ1HOURMEAN`/`SQDAILYMEAN` (solo se numerici, altrimenti sentinel + warning dedicato). Restano
+   fuori solo `O2 Secco`/`O2 Umido` senza unità.
 3. **Fattori `Dividere x10`** delle 9 misure asteriscate (JOB 4.5.2, colonna RANGE IOL): non raccolti.
 4. **Misura 166 col nome sbagliato** (caso 7 run3): TAG `COT_XTM` con descrizione vuota emessa come seconda `Misura stimata CO`.
 5. **Prova di importazione in ADAS reale**: mai fatta. Validazione solo contro PDF e schema.
@@ -102,7 +105,7 @@ Ogni campo dell'output ADAS ha una fonte precisa nella coppia. Metodo generale: 
 | Formato (ultimo blocco: 150/250) | IOL, colonna TIPO | `INT`→150, `REAL`/`WORD`→250. Verificare contro TIPO, non contro il nome |
 | `UNITS` | JOB Tabella 9 (caso 7); scala dichiarata (caso 6) | Caso 6: il PDF non ha colonna unità, `mg/Nm3` solo dove la scala SO2 è dichiarata. Caso 7: 18 unità dichiarate, 4 applicate |
 | `TEXTON`/`TEXTOFF` | Nessuna colonna: derivati da keyword | Convenzione documentata, non lettura. Nel PDF non esiste testo di stato |
-| Limiti | JOB Tabella 9 (giornaliero/orario) | Dichiarati (es. CO 40/50), mai applicati: in ADAS resta il sentinel `∓3.40282e38` |
+| Limiti | JOB Tabella 9 (giornaliero/orario) | Dichiarati (es. CO 40/50): vanno in `SQ1HOURMEAN`/`SQDAILYMEAN` se numerici; altrimenti sentinel + warning `LIMITI NON NUMERICI NON APPLICATI` |
 | `MEASUREID` | Relazionale, non documentale | ID sequenziale della misura (il legacy usava il registro: non confrontarli) |
 | `_warnings` | Diagnostica di pipeline | `VARIABILI SENZA INDIRIZZO` elenca le righe scartate (nel caso 7 sono i 5 stati persi) |
 
@@ -120,3 +123,29 @@ Ogni campo dell'output ADAS ha una fonte precisa nella coppia. Metodo generale: 
 - Contare le righe bianche come misure (DBW 902–910, 420–424, 428–430).
 - Cercare le unità nell'IOL del caso 6 (non esistono: sono inferenze del legacy).
 - Confrontare `MEASUREID` col registro (è un ID sequenziale, per disegno).
+
+## Aggiornamento 29/10 — offset, limiti e guardia verificati sul caso 6
+
+Run5 del caso 6 con la copia canvas `3c6c3b43…` (29.552 byte): **22 misure e 60 bitinfo conformi al
+PDF**, registri `40001–40441` (`40000 + REG`, nessuna misura sul REG nudo), `SQ1HOURMEAN` e
+`SQDAILYMEAN` = **60** sulle due SO2, sentinel sulle altre analogiche, nessuno scarto né divisione,
+PM-302A/B ai bit 1/2.
+
+- **Limiti applicati**: `limit_hour` → `SQ1HOURMEAN`, `limit_day` → `SQDAILYMEAN`. Se il limite non
+  è numerico (`"<= 60"`, `"60 mg/Nm3"`) la conversione fallisce, SQ resta sentinel e la misura
+  finisce nel warning `LIMITI NON NUMERICI NON APPLICATI`: prima il warning diceva "applicati" a
+  vuoto. Due test nuovi coprono il caso non numerico e quello misto.
+- **Nomi dalla DESCRIZIONE**: `SO2` e `Temperatura fumi` (il suffisso `Raw` del legacy è il tag
+  STRUCT). `TEXTOFF` = `CHIUSO` sulle 6 elettrovalvole, allineato a `TEXTON` = `APERTO`.
+- **Fixture migrata**: `tests/double_pdf_outputs/observed_adas_case6_qwen38_run5.json`; il test di
+  verità toglie l'offset (`reg_pdf = reg_raw - 40000`) e pinna i limiti in `SQ*`.
+
+## Aggiornamento 29/10 — prompt misure v7 (tabelle senza colonna REG)
+
+Su Essity il VLM aveva inventato 3 misure con registri 160/168/192 presi dai `DBD` della mappa
+DB50, che **non ha colonna REG**: quei numeri sono offset Siemens, non registri Modbus. Il prompt
+`measurement_measures_bison_v7.md` aggiunge la regola esplicita: una tabella senza colonna REG non
+produce misure (`MODBUSREGISTRO` = `null`), e il registro non si ricava mai da `DBX`/`DBW`/`DBD`.
+Da incollare nel Powered identity di `ESTRAI MISURE E BISON` (Prompt `{edge.media}[1]`, Context
+vuoto); v6 archiviato in `prompts/history/`. Verifica attesa: sulla run Essity le 3 misure DB50
+scompaiono, le 20 di DB100 restano.

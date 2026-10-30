@@ -23,8 +23,15 @@ Verita' PDF, colonne DESCRIZIONE | REG | BIT | TIPO (STRUCT BIT):
 Le righe bianche (nessun TITOLO) non generano bit: da qui 60 bitinfo
 (52 impaccati + 8 comandi), non 78.
 
+Dal 29/10/2026 il `JSON CREATOR` Double scrive nel `DRIVERPRIVATE` il
+registro Modbus reale, cioe' `40000 + REG` del PDF (REG 1 -> 40001). La
+verita' resta quella del PDF: `reg_raw` legge il valore scritto, `reg_pdf`
+lo riporta al REG del documento togliendo l'offset.
+
 Il PDF non contiene una colonna unità di misura: `mg/Nm3` e `°C` nel
-ground truth legacy sono inferenze, non dati del documento.
+ground truth legacy sono inferenze, non dati del documento. Le due `SQ`
+delle misure SO2 sono invece limiti dichiarati nel PDF (60) e finiscono
+in `SQ1HOURMEAN`/`SQDAILYMEAN`.
 """
 import json
 import os
@@ -34,7 +41,7 @@ OBSERVED_PATH = os.path.abspath(
     os.path.join(
         os.path.dirname(__file__),
         "double_pdf_outputs",
-        "observed_adas_case6_qwen38_run4.json",
+        "observed_adas_case6_qwen38_run5.json",
     )
 )
 LEGACY_PATH = os.path.abspath(
@@ -43,7 +50,10 @@ LEGACY_PATH = os.path.abspath(
     )
 )
 
-# (NAME, registro Modbus, formato DRIVERPRIVATE, TYPE, DRIVERDATA)
+# Offset ADAS Double: il registro scritto e' 40000 + REG del PDF (28/10/2026)
+ADAS_REG_OFFSET = 40000
+
+# (NAME, REG del PDF, formato DRIVERPRIVATE, TYPE, DRIVERDATA)
 PDF_MEASURES = [
     ("Ingressi digitali 1", 1, 150, 1, 2),
     ("Ingressi digitali 2", 3, 150, 1, 2),
@@ -53,8 +63,8 @@ PDF_MEASURES = [
     ("QAL3: Tempo trascorso apertura elettrovalvola N2", 9, 150, 0, 0),
     ("QAL3: Tempo trascorso apertura elettrovalvola ARIA", 10, 150, 0, 0),
     ("QAL3: Tempo trascorso apertura elettrovalvola SO2", 11, 150, 0, 0),
-    ("SO2 Raw", 17, 250, 0, 0),
-    ("Temperatura fumi Raw", 33, 250, 0, 0),
+    ("SO2", 17, 250, 0, 0),
+    ("Temperatura fumi", 33, 250, 0, 0),
     ("SO2", 49, 250, 0, 0),
     ("Temperatura fumi", 65, 250, 0, 0),
     ("PC life signal", 417, 150, 6, 5),
@@ -92,8 +102,14 @@ def load(name):
         return json.load(f)
 
 
-def reg_of(m):
+def reg_raw(m):
+    """Registro Modbus scritto nel DRIVERPRIVATE (offset ADAS incluso)."""
     return struct.unpack("<I", bytes.fromhex(m["DRIVERPRIVATE"][2:10]))[0]
+
+
+def reg_pdf(m):
+    """REG del PDF ricavato dall'output, togliendo l'offset ADAS 40000."""
+    return reg_raw(m) - ADAS_REG_OFFSET
 
 
 def fmt_of(m):
@@ -114,10 +130,45 @@ def test_stazione_e_driverconfig():
 def test_misure_uguali_al_pdf():
     st = observed()
     got = [
-        (m["NAME"], reg_of(m), fmt_of(m), m["TYPE"], m["DRIVERDATA"])
+        (m["NAME"], reg_pdf(m), fmt_of(m), m["TYPE"], m["DRIVERDATA"])
         for m in st["measures"]
     ]
     assert got == PDF_MEASURES
+
+
+def test_registro_adas_e_40000_piu_reg_pdf():
+    """Offset introdotto il 28/10/2026: nel DRIVERPRIVATE va 40000 + REG.
+    Il caso 6 parte da 40001 e va fino a 40441; nessuna misura resta sul
+    REG nudo del PDF."""
+    st = observed()
+    for m in st["measures"]:
+        assert reg_raw(m) == reg_pdf(m) + ADAS_REG_OFFSET, m["NAME"]
+    raw = [reg_raw(m) for m in st["measures"]]
+    assert min(raw) == 40001
+    assert max(raw) == 40441
+    assert all(r > ADAS_REG_OFFSET for r in raw)
+
+
+def test_limiti_orari_e_giornalieri_in_sq_means():
+    """Le due SO2 dichiarano 60 (giornaliero e orario) nel PDF: finiscono
+    in SQ1HOURMEAN/SQDAILYMEAN. Le misure senza limite restano sentinel,
+    cosi' non si inventa una soglia"""
+    st = observed()
+    for m in st["measures"]:
+        if m["NAME"] == "SO2":
+            assert m["SQ1HOURMEAN"] == 60.0, m
+            assert m["SQDAILYMEAN"] == 60.0, m
+        elif m["TYPE"] == 0:
+            # analogica senza limite dichiarato: sentinel, non una soglia inventata
+            assert m["SQ1HOURMEAN"] == 3.40282e38, m["NAME"]
+            assert m["SQDAILYMEAN"] == 3.40282e38, m["NAME"]
+        else:
+            # digitali e comandi non hanno SQ nel formato ADAS
+            assert m["SQ1HOURMEAN"] is None, m["NAME"]
+            assert m["SQDAILYMEAN"] is None, m["NAME"]
+    warn = " ".join(st.get("_warnings", []))
+    assert "LIMITI DICHIARATI APPLICATI IN ADAS" in warn
+    assert "LIMITI NON NUMERICI NON APPLICATI" not in warn
 
 
 def test_bitinfo_uguale_al_pdf():
@@ -165,15 +216,23 @@ def test_texton_da_keyword_mai_allarme_su_vita_e_valvole():
     assert by_name["ELETTROVALVOLA CAL DA SONDA"]["TEXTON"] == "APERTO"
 
 
-def test_textoff_anomalia_nota_su_senza_errori():
-    """Una sola anomalia minore dal chunk: 'QAL3: CICLO CONCLUSO SENZA
-    ERRORI' ha TEXTOFF 'ERRORE' invece di 'OFF' (state_off del VLM, non
-    toccato dal fix che riguarda solo TEXTON). Le altre 59 righe hanno OFF.
-    Se cambia, rivalutare: o il chunk si e' corretto da solo o si e' rotto
-    altrove."""
-    offs = [(b["BITNAME"], b["TEXTOFF"]) for b in observed()["bitinfo"]]
-    anomali = [n for n, t in offs if t != "OFF"]
-    assert anomali == ["QAL3: CICLO CONCLUSO SENZA ERRORI"], anomali
+def test_textoff_chiuso_sulle_elettrovalvole():
+    """Run del 29/10: il VLM ha allineato TEXTOFF a TEXTON (APERTO) sulle
+    elettrovalvole, quindi 'CHIUSO' invece di 'OFF'. Nella run4 una di
+    queste righe aveva 'ERRORE' (anomalia sparita). Tutte le altre righe
+    restano 'OFF': se compare un terzo valore, il chunk e' cambiato."""
+    offs = {b["BITNAME"]: b["TEXTOFF"] for b in observed()["bitinfo"]}
+    chiuso = {n for n, t in offs.items() if t == "CHIUSO"}
+    assert chiuso == {
+        "QAL3: ELETTROVALVOLA ARIA",
+        "QAL3: ELETTROVALVOLA SPAN SO2",
+        "STATO ELETTROVALVOLA CAL ZERO",
+        "STATO ELETTROVALVOLA N2",
+        "STATO ELETTROVALVOLA CAL SPAN",
+        "ELETTROVALVOLA CAL DA SONDA",
+    }, chiuso
+    altri = {t for n, t in offs.items() if n not in chiuso}
+    assert altri == {"OFF"}, altri
 
 
 def test_nessuna_riga_fantasma_da_riga_bianca():
@@ -186,7 +245,7 @@ def test_legacy_ha_errori_noti_il_nostro_no():
     """Il legacy non e' un riferimento: sbaglia bit e registri. Fissiamo qui
     dove sbaglia, cosi' il confronto non viene 'corretto' verso il basso."""
     legacy = load(LEGACY_PATH)[0]
-    mid2reg = {m["ID"]: reg_of(m) for m in legacy["measures"]}
+    mid2reg = {m["ID"]: reg_raw(m) for m in legacy["measures"]}
     orphans = sorted({b["MEASUREID"] for b in legacy["bitinfo"] if b["MEASUREID"] not in mid2reg})
     assert orphans, "il legacy dovrebbe avere almeno un bitinfo orfano"
     legacy_bits = {
@@ -196,7 +255,7 @@ def test_legacy_ha_errori_noti_il_nostro_no():
     }
     st = observed()
     mine = {}
-    mid2reg_mine = {m["ID"]: reg_of(m) for m in st["measures"]}
+    mid2reg_mine = {m["ID"]: reg_pdf(m) for m in st["measures"]}
     for b in st["bitinfo"]:
         mine[(mid2reg_mine[b["MEASUREID"]], b["BITNO"])] = b["BITNAME"]
 
@@ -207,10 +266,10 @@ def test_legacy_ha_errori_noti_il_nostro_no():
     assert legacy_bits.get((6, 4)) == "VENTILATORE VN-400 IN MARCIA"
     assert mine[(6, 0)] == "VENTILATORE VN-400 IN MARCIA"
     # comandi: "Allarme supero ultima media" e' DBW 924 -> REG 431
-    legacy_reg = {m["NAME"]: reg_of(m) for m in legacy["measures"]}
+    legacy_reg = {m["NAME"]: reg_raw(m) for m in legacy["measures"]}
     assert legacy_reg["Allarme supero ultima media"] == 430
     assert legacy_reg["Allarme supero media previsionale"] == 431
-    our_reg = {m["NAME"]: reg_of(m) for m in st["measures"]}
+    our_reg = {m["NAME"]: reg_pdf(m) for m in st["measures"]}
     assert our_reg["Allarme supero ultima media"] == 431
     assert our_reg["Allarme supero media previsionale"] == 432
     # formato: i QAL3 sono INT nel PDF, il legacy li scrive come REAL

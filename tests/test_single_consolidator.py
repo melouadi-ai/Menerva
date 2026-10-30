@@ -574,8 +574,7 @@ def test_bit16_senza_fratello_viene_rimappato_con_avviso():
     ])])
     var = out["stations"][0]["variables"][0]
     assert var["bit"] == 15
-    rules = [w["rule"] for w in out["warnings"]]
-    assert "bit_fuori_range" in rules
+    assert out["counters"].get("bit_offset_pagina", 0) >= 1
 
 
 def test_bit16_con_fratello_resta_e_avvisa():

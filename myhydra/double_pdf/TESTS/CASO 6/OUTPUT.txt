@@ -1,4 +1,3 @@
-```json
 [
  {
   "NAME": "Sistema Analisi SO2",
@@ -299,10 +298,10 @@
     "LOWOFFSET": -3.40282e+38,
     "HIGHOFFSET": 3.40282e+38,
     "SQRAW": 3.40282e+38,
-    "SQ1HOURMEAN": 3.40282e+38,
+    "SQ1HOURMEAN": 60.0,
     "SQ3HOURMEAN": 3.40282e+38,
     "SQ8HOURMEAN": 3.40282e+38,
-    "SQDAILYMEAN": 3.40282e+38,
+    "SQDAILYMEAN": 60.0,
     "UNITS": "mg/Nm3",
     "STANDARDRANGEID": null,
     "DRIVERDATA": 0,
@@ -363,10 +362,10 @@
     "LOWOFFSET": -3.40282e+38,
     "HIGHOFFSET": 3.40282e+38,
     "SQRAW": 3.40282e+38,
-    "SQ1HOURMEAN": 3.40282e+38,
+    "SQ1HOURMEAN": 60.0,
     "SQ3HOURMEAN": 3.40282e+38,
     "SQ8HOURMEAN": 3.40282e+38,
-    "SQDAILYMEAN": 3.40282e+38,
+    "SQDAILYMEAN": 60.0,
     "UNITS": "mg/Nm3",
     "STANDARDRANGEID": null,
     "DRIVERDATA": 0,
@@ -823,14 +822,14 @@
     "BITNO": 1,
     "BITNAME": "QAL3: ELETTROVALVOLA ARIA",
     "TEXTON": "APERTO",
-    "TEXTOFF": "OFF"
+    "TEXTOFF": "CHIUSO"
    },
    {
     "MEASUREID": 2,
     "BITNO": 2,
     "BITNAME": "QAL3: ELETTROVALVOLA SPAN SO2",
     "TEXTON": "APERTO",
-    "TEXTOFF": "OFF"
+    "TEXTOFF": "CHIUSO"
    },
    {
     "MEASUREID": 2,
@@ -865,28 +864,28 @@
     "BITNO": 8,
     "BITNAME": "STATO ELETTROVALVOLA CAL ZERO",
     "TEXTON": "APERTO",
-    "TEXTOFF": "OFF"
+    "TEXTOFF": "CHIUSO"
    },
    {
     "MEASUREID": 3,
     "BITNO": 9,
     "BITNAME": "STATO ELETTROVALVOLA N2",
     "TEXTON": "APERTO",
-    "TEXTOFF": "OFF"
+    "TEXTOFF": "CHIUSO"
    },
    {
     "MEASUREID": 3,
     "BITNO": 10,
     "BITNAME": "STATO ELETTROVALVOLA CAL SPAN",
     "TEXTON": "APERTO",
-    "TEXTOFF": "OFF"
+    "TEXTOFF": "CHIUSO"
    },
    {
     "MEASUREID": 3,
     "BITNO": 11,
     "BITNAME": "ELETTROVALVOLA CAL DA SONDA",
     "TEXTON": "APERTO",
-    "TEXTOFF": "OFF"
+    "TEXTOFF": "CHIUSO"
    },
    {
     "MEASUREID": 3,
@@ -1002,14 +1001,14 @@
    },
    {
     "MEASUREID": 4,
-    "BITNO": 0,
+    "BITNO": 1,
     "BITNAME": "PM-302A IN MARCIA",
     "TEXTON": "MARCIA",
     "TEXTOFF": "OFF"
    },
    {
     "MEASUREID": 4,
-    "BITNO": 1,
+    "BITNO": 2,
     "BITNAME": "PM-302B IN MARCIA",
     "TEXTON": "MARCIA",
     "TEXTOFF": "OFF"
@@ -1162,7 +1161,7 @@
    "stations_output": 1,
    "variables_total": 69,
    "raw_type": "<class 'str'>",
-   "raw_len": 35713,
+   "raw_len": 35709,
    "chunk_types": [
     "<class 'dict'>"
    ],
@@ -1183,8 +1182,7 @@
    "indirizzi_con_zeri_iniziali": 0
   },
   "_warnings": [
-   "LIMITI DICHIARATI NON APPLICATI IN ADAS: 2 misure con limite giornaliero/orario nel chunk ma senza campo ADAS dedicato (mapping in fase BISON col cliente). Nomi: SO2 (giornaliero=60, orario=60), SO2 (giornaliero=60, orario=60)"
+   "LIMITI DICHIARATI APPLICATI IN ADAS: 2 misure con limite giornaliero/orario applicato a SQDAILYMEAN/SQ1HOURMEAN. Nomi: SO2 (giornaliero=60, orario=60), SO2 (giornaliero=60, orario=60)"
   ]
  }
 ]
-```

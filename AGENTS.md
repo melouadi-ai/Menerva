@@ -58,35 +58,43 @@ Conseguenza: **le differenze di un confronto col GT non vanno colmate senza veri
 
 Attenzione anche alle unità: nel PDF IOL del caso 6 **non esiste la colonna unità**. `mg/Nm3` e `°C` nel GT sono inferenze del legacy; noi emettiamo `mg/Nm3` solo dove la scala SO2 è dichiarata e `null` altrove. Non trattare `°C` come un dato mancante da recuperare: è una decisione di dominio (vedi `reports/CONFRONTO_QUALITA_LEGACY_VS_ATTUALE.md`).
 
-## Stato attuale (5 ott 2026)
+## Stato attuale (29 ott 2026)
 
 - Single PDF: prompt v13 + `src/nodes/json_creator.py` v4.4 (A1 soglia 100, A2 copia `myhydra/` allineata). Registro in `myhydra/single_pdf/PENDENZE.md`.
-- Double PDF: catena LV1→LV2→consolidatore→ADAS verificata end-to-end sui casi 6 e 7 con Qwen 3.8. Caso 6 ha il **verdetto completo** (run4: 22 misure + 60 bitinfo, 100% del PDF; PM-302A/B ai bit 1/2; TEXTON da keyword). Fixture `tests/double_pdf_outputs/observed_adas_case6_qwen38_run4.json`, tabella verità `tests/test_adas_caso6_pdf_truth.py`.
+- Double PDF: catena LV1→LV2→consolidatore→ADAS verificata end-to-end sui casi 6 e 7 con Qwen 3.8.
+  Caso 6, run5 del 29/10: **22 misure + 60 bitinfo, 100% del PDF**, registri **40001–40441**
+  (`40000 + REG`), `SQ1HOURMEAN`/`SQDAILYMEAN` = 60 sulle due SO2, PM-302A/B ai bit 1/2.
+  Fixture `tests/double_pdf_outputs/observed_adas_case6_qwen38_run5.json`, tabella verità
+  `tests/test_adas_caso6_pdf_truth.py` (confronta `reg_raw - 40000`).
 - Caso 7: **verdetto completo** (run4: 40 misure + 47 bitinfo, `172.16.1.31:511`, nessun warning).
   47/47 bit del PDF (5 stati recuperati), 16/18 unità per TAG, REG 166 corretto, sentinel e
   `UNITS2` confermati. Fixture `myhydra/double_pdf/tests/case_7/outputs/observed_adas_case7_qwen38_run4.json`,
   verità PDF e test in `myhydra/double_pdf/tests/test_adas_caso7_pdf_truth.py`.
 
-## Tre difetti aperti sul Double PDF — aggiornati alla run4 del caso 7 (6/10)
+## Difetti Double PDF — aggiornati al 29/10
 
 Chiusi e verificati:
 1. ~~Script del nodo 12 divergente~~ — copia canvas AST-identica + test di parità; sentinel confermato in run3/run4.
 2. ~~Carry-over oltre pagina~~ — `registro_applicato` nel consolidatore; i 5 stati ci sono (47/47 bit).
 3. ~~Join per uguaglianza esatta~~ — TAG IOL nel chunk (prompt v6); 16/18 unità; REG 166 col nome giusto.
+4. ~~Limiti mai applicati in ADAS~~ — `limit_hour`→`SQ1HOURMEAN`, `limit_day`→`SQDAILYMEAN`; se il
+   limite non è numerico SQ resta sentinel e parte `LIMITI NON NUMERICI NON APPLICATI` (29/10).
+5. ~~Offset registri~~ — `40000 + REG` su tutte le misure Double, verificato sul caso 6 (40001–40441).
+6. ~~Registri inventati sulle mappe senza colonna REG~~ — prompt misure v7 (da incollare; verifica
+   attesa sulla run Essity).
 
 Restano, in ordine di gravità:
-1. **Limiti mai applicati in ADAS.** Il chunk li porta (`limit_day`, `limit_hour`), `json_creator` scrive costanti sentinella. Vale per entrambi i casi.
-2. **Fattori `Dividere x10`** delle 9 misure asteriscate (JOB 4.5.2, colonna RANGE IOL): non raccolti.
-3. **O2 Secco/Umido senza unità** (caso 7): le uniche 2 scale non collegate; da investigare sul chunk.
-4. **Nome stazione variabile per run** (`Sistema Analisi Emissioni` vs `SME`): il ramo Station a volte dà `null`. Domanda per il cliente insieme a BISON, zeri iniziali, regola V2.
-5. **Nessun output Double importato in ADAS reale**; terza coppia mai vista.
+1. **Fattori `Dividere x10`** delle 9 misure asteriscate (JOB 4.5.2, colonna RANGE IOL): non raccolti.
+2. **O2 Secco/Umido senza unità** (caso 7): le uniche 2 scale non collegate; da investigare sul chunk.
+3. **Nome stazione variabile per run** (`Sistema Analisi Emissioni` vs `SME`): il ramo Station a volte dà `null`. Domanda per il cliente insieme a BISON, zeri iniziali, regola V2.
+4. **Nessun output Double importato in ADAS reale**; terza coppia mai vista.
 
 ## Prossimo passo
 
 1. **Nodo `JSON CREATOR` (12)**: incollare la **copia canvas**
    `myhydra/double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13_canvas.py`
-   (fix Double, `{edge}[13]`, hash
-   `b004ec4a173b64836eb70d691c2b90b91f1fa108c6cf7c63b07887dac80eb704`).
+   (Double, `{edge}[13]`, offset + limiti + guardia non numerici, hash
+   `3c6c3b439bd640392d363061b4b7d786f692db1e2175161eb71e79a31f5a8651`, 29.552 byte).
    Il file documentato `json_creator_edge13.py` NON va incollato: il canvas
    rifiuta i paste oltre ~32 KB (34.365 byte → rosso, 26.731 → verde, stessa
    logica). Parità AST+output garantita da test.
@@ -94,12 +102,10 @@ Restano, in ordine di gravità:
    I due flussi hanno **copie separate** dello stesso trasformatore, perché l'indice dell'edge
    è diverso (`[4]` Single, `[13]` Double) e un file unico costringerebbe a editarlo a ogni switch
    di flusso: è così che la divergenza è entrata. Non mescolarli.
-   Subito dopo, prova di importazione di un output in un ADAS reale: è l'unica verifica che manca
-   davvero.
-2. Prompt misure v6 (`measurement_measures_bison_v6.md`) già nel nodo `ESTRAI MISURE E BISON`
-   (TAG trascritto + self-check BIT). Non toccare senza motivo.
-3. Applicare `limit_day`/`limit_hour` in `json_creator` (il chunk li porta, l'ADAS riceve costanti).
-4. Investigare O2 Secco/Umido senza unità sul chunk della run4.
+2. Prompt misure v7 (`measurement_measures_bison_v7.md`) nel nodo `ESTRAI MISURE E BISON`
+   (Powered identity; Prompt `{edge.media}[1]`, Context vuoto): v6 archiviato in `prompts/history/`.
+3. Run Essity per confermare la sparizione delle 3 misure inventate dai DBD (mappa DB50 senza REG).
+4. Investigare O2 Secco/Umido senza unità sul chunk della run4 del caso 7.
 5. Attendere dal cliente: BISON, zeri iniziali, regola V2, nome stazione in ADAS.
 6. Prova di importazione in ADAS reale + terza coppia mai vista.
 

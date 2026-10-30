@@ -11,7 +11,7 @@ come bug con evidenza (messaggio ADAS + misura coinvolta).
 | 1 | SMA_1 | `myhydra/single_pdf/TESTS/SMA 1/TAP NAIVE FINALE.txt` | E1 38 misure + 30 bitinfo, E1 1 7 misure |
 | 2 | PROTEC_1 | `myhydra/single_pdf/TESTS/PROTEC 1/NAIVE FINALE.txt` | SME 3 + 30, SME 1 7 + 10 |
 | 3 | SIEMENS_2 | `myhydra/single_pdf/TESTS/SIEMENS/OUTPUT FINALE NAIVE.txt` | SME 104 + 145 |
-| 4 | Double caso 6 | `tests/double_pdf_outputs/observed_adas_case6_qwen38_run4.json` | 22 misure + 60 bitinfo |
+| 4 | Double caso 6 | `tests/double_pdf_outputs/observed_adas_case6_qwen38_run5.json` | 22 misure + 60 bitinfo, registri 40001–40441 |
 
 ## Cosa registrare per ogni import
 
