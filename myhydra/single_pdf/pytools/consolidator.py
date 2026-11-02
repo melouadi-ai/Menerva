@@ -903,6 +903,7 @@ try:
                                      "riga": var.get("riga"),
                                      "detail": "REG " + str(slot["last_reg"]) + " carry"})
                     counters["registri_applicati"] = counters["registri_applicati"] + 1
+                slot.setdefault("_shift1_regs", set()).update(shift1regs)
                 slot["variables"].append(var)
         oi = oi + 1
     # Righe placeholder duplicate sulla reale: vince placeholder (F2).
@@ -961,7 +962,7 @@ try:
         while qi_map < len(qvars):
             r_m = qvars[qi_map].get("modbus_register")
             b_m = qvars[qi_map].get("bit")
-            if type(r_m) is int and type(b_m) is int and r_m not in shift1regs:
+            if type(r_m) is int and type(b_m) is int and r_m not in acc[acc_order[qi - 1]].get("_shift1_regs", set()):
                 if r_m not in reg_bits_map:
                     reg_bits_map[r_m] = []
                 reg_bits_map[r_m].append(b_m)
