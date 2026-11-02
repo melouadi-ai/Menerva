@@ -904,27 +904,6 @@ try:
                                      "detail": "REG " + str(slot["last_reg"]) + " carry"})
                     counters["registri_applicati"] = counters["registri_applicati"] + 1
                 slot["variables"].append(var)
-        # Euristico per-registro (solo segnale forte): bit 16 nelle misure ->
-        # registro 1-based, shifta i bit >= 1. Guardia: shift1regs (page-level).
-        reg_bits = {}
-        for var in slot["variables"]:
-            r = var.get("modbus_register")
-            b = var.get("bit")
-            if type(r) is int and type(b) is int and r not in shift1regs:
-                if r not in reg_bits:
-                    reg_bits[r] = []
-                reg_bits[r].append(b)
-        one_based = set()
-        for r, bs in reg_bits.items():
-            if 16 in bs and 15 not in bs:
-                one_based.add(r)
-        for var in slot["variables"]:
-            b = var.get("bit")
-            if (var.get("modbus_register") in one_based and type(b) is int
-                    and b >= 1):
-                var["bit"] = b - 1
-                counters["bit_offset_pagina"] = counters.get(
-                    "bit_offset_pagina", 0) + 1
         oi = oi + 1
     # Righe placeholder duplicate sulla reale: vince placeholder (F2).
     xi = 0
@@ -975,6 +954,32 @@ try:
     while qi < len(acc_order):
         qvars = acc[acc_order[qi]]["variables"]
         qi = qi + 1
+        # Euristico per-registro (solo segnale forte): bit 16 nelle misure ->
+        # registro 1-based, shifta i bit >= 1. Guardia: shift1regs (page-level).
+        reg_bits_map = {}
+        qi_map = 0
+        while qi_map < len(qvars):
+            r_m = qvars[qi_map].get("modbus_register")
+            b_m = qvars[qi_map].get("bit")
+            if type(r_m) is int and type(b_m) is int and r_m not in shift1regs:
+                if r_m not in reg_bits_map:
+                    reg_bits_map[r_m] = []
+                reg_bits_map[r_m].append(b_m)
+            qi_map = qi_map + 1
+        regs_1based = set()
+        for r_k in reg_bits_map:
+            blist = reg_bits_map[r_k]
+            if 16 in blist and 15 not in blist:
+                regs_1based.add(r_k)
+        if regs_1based:
+            qi_shift = 0
+            while qi_shift < len(qvars):
+                r_s = qvars[qi_shift].get("modbus_register")
+                b_s = qvars[qi_shift].get("bit")
+                if r_s in regs_1based and type(b_s) is int and b_s >= 1:
+                    qvars[qi_shift]["bit"] = b_s - 1
+                    counters["bit_offset_pagina"] = counters.get("bit_offset_pagina", 0) + 1
+                qi_shift = qi_shift + 1
         qk = 0
         while qk < len(qvars):
             qvar = qvars[qk]

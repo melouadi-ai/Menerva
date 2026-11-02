@@ -45,8 +45,8 @@ sha256sum myhydra/single_pdf/pytools/consolidator.py myhydra/single_pdf/pytools/
 ```
 
 Hash attesi:
-- `consolidator.py`: `cdae83814bfa606fd20aba4d2afc8c72238def7af105d11ce9ffbae23616e6b7`
-- `consolidator_canvas.py`: `6e143e6a4d849312b5986fcd7d4f7102502b4475d641e605d8e3c14f5d65bb6a`
+- `consolidator.py`: `10845ec1642e7c35511676422ea32315bf8b0a70d13e0a863bce2aa14c0bc058`
+- `consolidator_canvas.py`: `1896981f8ef8cd91158e9955daaf9b596137f12a750236638ddb6c206cf28322`
 
 Rigenerazione (da fare dopo ogni modifica alla documentata):
 

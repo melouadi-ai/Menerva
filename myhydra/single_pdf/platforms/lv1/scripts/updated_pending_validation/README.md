@@ -25,7 +25,7 @@ sha256sum consolidator_canvas.py json_creator_v15_canvas.py slicer_canvas.py mer
 
 Hash attesi:
 
-- `consolidator_canvas.py`: `6e143e6a4d849312b5986fcd7d4f7102502b4475d641e605d8e3c14f5d65bb6a`
+- `consolidator_canvas.py`: `1896981f8ef8cd91158e9955daaf9b596137f12a750236638ddb6c206cf28322`
 - `json_creator_v15_canvas.py`: `0768c752b5c18ac6852bed693619b21ff6ae91d052e3e67b815b3944e1bbe200`
 - `slicer_canvas.py`: `c008026276addcdc7cd06ca350647a44cfc29bc3930b82f1eb602bb5f19641a0`
 - `merger_canvas.py`: `50614896814d0f7c8d034d868235b9a9857e4973216d72017d14fe0609a2f347`

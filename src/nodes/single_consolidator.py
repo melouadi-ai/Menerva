@@ -520,26 +520,6 @@ def assemble_page(page, page_no):
                                   counter="stati_mismatch")
                         var[field] = incoming
             variables.append(var)
-        # Euristico per-registro (Gemini): registro 1-based se ha bit 16
-        # (senza fratello 15) oppure (nessun bit 0, bit 8, tutti <= 8).
-        # Guardia: shift1_regs (page-level) esclude i registri gia' trattati.
-        reg_bits = {}
-        for var in variables:
-            r = var.get("modbus_register")
-            b = var.get("bit")
-            if isinstance(r, int) and isinstance(b, int) and r not in shift1_regs:
-                reg_bits.setdefault(r, []).append(b)
-        one_based_regs = set()
-        for r, bs in reg_bits.items():
-            if 16 in bs and 15 not in bs:
-                one_based_regs.add(r)
-        for var in variables:
-            if var.get("modbus_register") in one_based_regs:
-                b = var.get("bit")
-                if isinstance(b, int) and b >= 1:
-                    var["bit"] = b - 1
-                    counters["bit_offset_pagina"] = counters.get(
-                        "bit_offset_pagina", 0) + 1
         items.append((meta, variables))
     return items, warnings, counters, shift1_regs
 
