@@ -204,6 +204,7 @@ def assemble_page(page, page_no):
     states_rows = _branch_rows(page.get("bitstates"))
     has_names = isinstance(page.get("bitnames"), (dict, list))
     has_states = isinstance(page.get("bitstates"), (dict, list))
+
     names_by_riga = _riga_map(names_rows, drop_null_desc=True)
     names_by_desc = {}
     names_desc_dup = set()

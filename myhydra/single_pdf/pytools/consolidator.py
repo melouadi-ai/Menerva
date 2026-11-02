@@ -317,6 +317,7 @@ try:
         bitstates = page.get("bitstates")
         has_names = isinstance(bitnames, dict) or isinstance(bitnames, list)
         has_states = isinstance(bitstates, dict) or isinstance(bitstates, list)
+
         if isinstance(bitnames, dict):
             names_in = bitnames.get("rows")
         else:
