@@ -251,6 +251,24 @@ consolidatore (34.113 B contro limite ~34.300): è un pytool separato con
 Aperto dopo il v2: run reale su SIEMENS_2 con UNIFIED+ORACOLO (target
 ≥235/431, 0 invenzioni), poi gli altri 7 documenti.
 
+## Cosa incollare per la run (3 nov 2026, commit a0dfe96)
+
+| Nodo | File | Edge | Byte |
+|---|---|---|---|
+| `UNIFIED` (visiomaru LV2) | `platforms/lv2/prompts/current/vlm_unified_v1.md` in Powered identity | `{edge.media}[N]` in Prompt, Context vuoto | — |
+| `ORACOLO` (visiomaru LV2, nuovo) | `platforms/lv2/prompts/current/vlm_oracle_v1.md` in Powered identity | `{edge.media}[N]` in Prompt, **Context = `{edge}[M]`** (testo di UNIFIED) | — |
+| `PAGE ASSEMBLER` (pytool LV2-03, nuovo) | `platforms/lv2/scripts/updated_pending_validation/page_assembler_canvas.py` | `raw_u={edge}[2]`, `raw_o={edge}[5]` | 3.108 |
+| `CONSOLIDATORE` (LV1-04) | `platforms/lv1/scripts/updated_pending_validation/consolidator_canvas.py` | `{edge}[6]` | 34.113 |
+| `ORACLE_APPLY` (pytool LV1-04b, nuovo) | `platforms/lv1/scripts/updated_pending_validation/oracle_apply_canvas.py` | `raw_c={edge}[6]`, `raw_v={edge}[7]` | 6.949 |
+| `JSON CREATOR` (LV1-05) | `platforms/lv1/scripts/updated_pending_validation/json_creator_v15_canvas.py` | `{edge}[2]` | 25.299 |
+
+Tutti gli indici sono **locali al canvas**: ricontrollare a ogni rewiring
+e ispezionare le match-condition di ogni edge (checklist in
+`platforms/README.md`). Verifica post-run: gate v6.1
+(`verifica_pdf/BENCHMARK_GATE.md`), in particolare §13-bis e i warning
+`oracolo_*`/`oracolo_assente`/`oracolo_input_assente` nel tap di
+`ORACLE_APPLY`, più `audit_oracolo` nel `_meta` del FINALE.
+
 ## Riepilogo
 
 | # | Voce | Tipo | Stato |
