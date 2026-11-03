@@ -10,6 +10,8 @@
 | [`json_creator_v4_2.py`](json_creator_v4_2.py) | `v4.2` | — | Storico, superato. |
 | [`consolidator.py`](consolidator.py) | `v14` | CONSOLIDATORE (LV1-04) | Documentato, da incollare dopo rewiring Task 8. |
 | [`consolidator_canvas.py`](consolidator_canvas.py) | `v14` | CONSOLIDATORE (LV1-04) | Copia canvas senza commenti, stesso AST. |
+| [`oracle_apply.py`](oracle_apply.py) | `v1` | ORACLE_APPLY (LV1-04b) | Documentato: applica le correzioni dell'oracolo al consolidato. |
+| [`oracle_apply_canvas.py`](oracle_apply_canvas.py) | `v1` | ORACLE_APPLY (LV1-04b) | Copia canvas senza commenti, stesso AST. |
 
 ## Sorgente e sincronizzazione
 
@@ -47,6 +49,19 @@ sha256sum myhydra/single_pdf/pytools/consolidator.py myhydra/single_pdf/pytools/
 Hash attesi:
 - `consolidator.py`: `e9894934da6670a346bae9adc13fa5143bc1eb7b2c7578f8e967119b3a0f67dd`
 - `consolidator_canvas.py`: `8d3c7d67a9fca15a52be226526ee225cbc8f63f4e1b876c2edca9fd40d61e1cc`
+
+## ORACLE_APPLY (redesign v2)
+
+Pytool separato perché il consolidatore canvas è già al limite di paste
+(34.113 B): regole `oracolo_*` e audit trail vivono qui, non nel
+consolidatore. Riceve **due edge**: il consolidato (nodo CONSOLIDATORE) e
+l'output grezzo del motore, che contiene `verifica` per pagina. Applica solo
+aggiungi/annulla (mai sovrascrive): refusi e IP non usati restano warning.
+
+- `oracle_apply.py`: `59351734870df884a0224bd7cff1b27437519390ca70350354a09c0593365389`
+- `oracle_apply_canvas.py`: `0eae5b65a3361d0992f9d2aaa2b33e3bc34f2c57ac0b5629dd5e46a9776489b2` (6.410 byte)
+
+Rigenerazione: `python myhydra/single_pdf/pytools/render_canvas.py --write`
 
 Rigenerazione (da fare dopo ogni modifica alla documentata):
 

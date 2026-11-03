@@ -1,4 +1,4 @@
-# Gate di accettazione output finale — Single PDF (v3 completo)
+# Gate di accettazione output finale — Single PDF (v6 completo)
 
 Ogni `FINALE` passa di qui prima di avanzare. Niente passa con silenzi:
 ogni riga del PDF è dentro l'ADAS oppure ha una motivazione scritta.
@@ -16,11 +16,14 @@ Changelog in fondo: ogni regola ha una data e un motivo.
   cambiati.
 - **P1. Un verdetto = 3 file di UN SOLO run**: `TAP_MERGE` (o `ABC.txt`) +
   `TAP_CONSOLIDATORE` (o `CONSOLIDATOR.txt`) + `FINALE`. Mai mescolare run.
-- **P2. Prompt attesi nel run**: stati ≥ v19 (`checklist` presente nel tap),
-  misure ≥ v16 (`checklist`/`righe_viste`), nomi ≥ v16 (V30), consolidatore
-  con `stati_riallineati` + `xfound` + `desc_ok = (nb_desc is not None`
-  + `xdigits` (veto cifre) + filtro nomi senza descrizione.
-  Senza queste stringhe il run è vecchio: rifarlo.
+- **P2. Prompt attesi nel run** (redesign v2): un solo VLM nel LV2 con
+  `vlm_unified_v1.md` (`checklist` + `righe_viste` nel tap, `state_on`/
+  `state_off` presenti) e il secondo VLM `vlm_oracle_v1.md` (`verifica`
+  con le 5 chiavi `mancanti`/`unita_inventate`/`junk_stati`/
+  `refusi_corretti`/`ip_dichiarati_non_usati`). Consolidatore con
+  `xdigits` (veto cifre) + filtro nomi senza descrizione + `desc_ok`.
+  ORACLE_APPLY con `_audit_oracolo`. Se il tap non mostra `verifica`, il
+  run è vecchio: rifarlo.
 - **P3. Taps salvati** in `myhydra/single_pdf/TESTS/<DOC> NUOVO/` (nuovo run =
   nuova cartella o conferma esplicita di sovrascrittura).
 
@@ -179,6 +182,34 @@ cima con `reg N: bit 16->15`; se compare e i bit emessi sono quelli del
 PDF, la regola ha fatto il suo lavoro).
  vietato: TEXTON da fallback senza warning che lo dichiara.
 
+## 13-bis. Oracolo (redesign v2, bloccante dove presente)
+
+Il LV2 unificato restituisce per pagina `{"stations": ..., "verifica": ...}`.
+`verifica` è il JSON difetti del prompt `vlm_oracle_v1.md`. Il pytool
+`ORACLE_APPLY` lo applica al consolidato.
+
+- **§16. Ogni correzione è verificabile.** L'oracolo può SOLO:
+  - aggiungere una riga `mancanti` (verbatim + `evidenza`);
+  - annullare (`null`) `units` (`unita_inventate`) o `state_on/state_off`
+    (`junk_stati`).
+  Mai sovrascrivere un valore esistente. Se una riga aggiunta non è nel
+  PDF, è invenzione: FAIL.
+- **§17. Audit trail.** Ogni variabile toccata porta
+  `_audit_oracolo = {"azione": "aggiunta"|"annullata", "campo"?, "evidenza"}`
+  con `evidenza` NON vuota. Evidenza vuota = difetto non applicato
+  (`oracolo_evidenza_vuota` nel tap): FAIL se il valore è stato cambiato
+  comunque.
+- **§18. Refusi e IP: solo warning.** `oracolo_refuso` e `oracolo_ip` NON
+  correggono nulla: la fedeltà al PDF (V13) e la regola "nessuna stazione
+  inventata" (B2) vincono. Un refuso corretto dal VLM resta warning,
+  conta nella scheda verdetto ma non blocca.
+
+Warning attesi nel tap ORACLE_APPLY: `oracolo_aggiunta`,
+`oracolo_annullata`, `oracolo_refuso`, `oracolo_ip`,
+`oracolo_evidenza_vuota`, `oracolo_duplicato`. Silenzio = nessun difetto
+rilevato, oppure oracolo non collegato: verificare la presenza di `verifica`
+nel tap del motore.
+
 ## 14. Contaminazione e verità sospette (procedure)
 
 - **Sospetto cache** (finale con descrizioni/IP fuori documento, o due run
@@ -201,3 +232,8 @@ PDF, la regola ha fatto il suo lavoro).
   nomi-bit, bit 16→15); la regola deve stare anche nella copia canvas, non
   solo in `src/` (divergenza scoperta il 29/10, ora pinnata da
   `render_canvas.py` e dal confronto dei cataloghi di regole).
+- 2026-11-03 v6: prompt unificato (`vlm_unified_v1.md`) + oracolo
+  (`vlm_oracle_v1.md`) come secondo VLM del LV2; §13-bis (§16-18) fissa
+  aggiungi/annulla + audit trail, refusi e IP solo warning. L'apply vive
+  nel pytool `ORACLE_APPLY` perché il consolidatore canvas è al limite di
+  paste (34.113 B su ~34.300).

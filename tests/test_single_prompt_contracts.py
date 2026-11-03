@@ -86,8 +86,8 @@ def test_stati_v19_checklist_prima_degli_stati():
     flat = " ".join(text.split())
     assert text.index("checklist") < text.index('"rows"')
     assert "write it FIRST, before reading a single state cell" in flat
-    for mirror in ("myhydra/single_pdf/prompt/vlm_bitstates_v19.md",
-                   "myhydra/single_pdf/platforms/lv2/prompts/current/vlm_bitstates_v19.md"):
+    for mirror in ("myhydra/single_pdf/prompt/history/vlm_bitstates_v19.md",
+                   "myhydra/single_pdf/platforms/lv2/prompts/history/vlm_bitstates_v19.md"):
         assert (Path(__file__).parent.parent / mirror).read_bytes() == (
             PROMPTS / "vlm_bitstates_v19.md").read_bytes()
 
@@ -107,8 +107,8 @@ def test_misure_v16_checklist_prima_delle_variabili():
 def test_bit_source_vieta_coil():
     mirrors = {"vlm_measures_v17.md": ("myhydra/single_pdf/prompt/vlm_measures_v17.md",
                "myhydra/single_pdf/platforms/lv2/prompts/current/vlm_measures_v17.md"),
-               "vlm_bitnames_v16.md": ("myhydra/single_pdf/prompt/vlm_bitnames_v16.md",
-               "myhydra/single_pdf/platforms/lv2/prompts/current/vlm_bitnames_v16.md")}
+               "vlm_bitnames_v16.md": ("myhydra/single_pdf/prompt/history/vlm_bitnames_v16.md",
+               "myhydra/single_pdf/platforms/lv2/prompts/history/vlm_bitnames_v16.md")}
     for name, (m1, m2) in mirrors.items():
         flat = " ".join((PROMPTS / name).read_text(encoding="utf-8").split())
         if "bitnames" in name:
@@ -122,7 +122,7 @@ def test_bit_source_vieta_coil():
 def test_misure_v18_vieta_variabili_senza_descrizione():
     flat = " ".join((PROMPTS / "vlm_measures_v18.md").read_text(encoding="utf-8").split())
     assert "Never emit a variable for a bare register" in flat
-    for mirror in ("myhydra/single_pdf/prompt/vlm_measures_v18.md",
-                   "myhydra/single_pdf/platforms/lv2/prompts/current/vlm_measures_v18.md"):
+    for mirror in ("myhydra/single_pdf/prompt/history/vlm_measures_v18.md",
+                   "myhydra/single_pdf/platforms/lv2/prompts/history/vlm_measures_v18.md"):
         assert (Path(__file__).parent.parent / mirror).read_bytes() == (
             PROMPTS / "vlm_measures_v18.md").read_bytes()

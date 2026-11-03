@@ -58,6 +58,29 @@ def _test(nome, condizione, dettaglio=""):
                          ("  -> " + dettaglio) if dettaglio else ""))
 
 
+try:
+    import pytest
+except ImportError:  # esecuzione come script, senza pytest
+    pytest = None
+
+
+if pytest is not None:
+    @pytest.fixture(autouse=True)
+    def _fallisci_sui_check_registrati():
+        """`_test` registra l'esito, non solleva.
+
+        Senza questo, pytest collezionava i test di questo file e li
+        dichiarava verdi anche quando `_test` stampava FAIL (l'attesa
+        `30+8` del 2 ott e' passata cosi' sotto silenzio). Qui ogni
+        fallimento registrato durante il test diventa un rosso vero.
+        """
+        inizio = len(_esiti)
+        yield
+        nuovi = [e for e in _esiti[inizio:] if not e[1]]
+        assert not nuovi, "check falliti: " + "; ".join(
+            "%s%s" % (n, (" (" + d + ")") if d else "") for n, _, d in nuovi)
+
+
 # --------------------------------------------------------------------------
 
 def test_registro_zero_non_emesso():
@@ -190,8 +213,13 @@ def test_caso_reale_protec_1():
     _test("PROTEC_1 mantiene 3+7 misure",
           len(out[0]["measures"]) == 3 and len(out[1]["measures"]) == 7,
           "%d e %d" % (len(out[0]["measures"]), len(out[1]["measures"])))
-    _test("PROTEC_1 mantiene 30+8 bitinfo",
-          len(out[0]["bitinfo"]) == 30 and len(out[1]["bitinfo"]) == 8)
+    # 30+10 e' la verita' del PDF (tabella_pdf.json, caso_2_protec_1):
+    # pagina 1 = 57 righe con bit, di cui 27 "Disponibile" (bit non usati);
+    # pagina 2 = 23 righe con bit, di cui 13 "Disponibile". Restano 30+10.
+    # L'attesa 30+8 era scritta prima di leggere la pagina 2 (2 ott 2026).
+    _test("PROTEC_1 mantiene 30+10 bitinfo",
+          len(out[0]["bitinfo"]) == 30 and len(out[1]["bitinfo"]) == 10,
+          "%d e %d" % (len(out[0]["bitinfo"]), len(out[1]["bitinfo"])))
     _test("PROTEC_1 non segnala variabili senza indirizzo",
           (out[0].get("_meta") or {}).get("variabili_senza_registro") == 0)
 

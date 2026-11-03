@@ -29,7 +29,10 @@ CONSOLIDATOR_CANVAS = (PLATFORMS / "lv1" / "scripts"
 CREATOR_CANVAS = (PLATFORMS / "lv1" / "scripts"
                   / "updated_pending_validation"
                   / "json_creator_v15_canvas.py")
-CANVAS_COPIES = [CONSOLIDATOR_CANVAS, CREATOR_CANVAS]
+ORACLE_CANVAS = (PLATFORMS / "lv1" / "scripts"
+                 / "updated_pending_validation"
+                 / "oracle_apply_canvas.py")
+CANVAS_COPIES = [CONSOLIDATOR_CANVAS, CREATOR_CANVAS, ORACLE_CANVAS]
 
 
 def test_canvas_copies_sotto_budget_e_standalone():
@@ -45,6 +48,8 @@ def test_canvas_copies_byte_identical_to_store():
             == (STORE_PYTOOLS / "consolidator_canvas.py").read_bytes())
     assert (CREATOR_CANVAS.read_bytes()
             == (STORE_PYTOOLS / "json_creator_v15_canvas.py").read_bytes())
+    assert (ORACLE_CANVAS.read_bytes()
+            == (STORE_PYTOOLS / "oracle_apply_canvas.py").read_bytes())
 
 
 def test_canvas_senza_def_class_lambda():
@@ -183,13 +188,15 @@ def test_v15_hashes_nel_readme_pytools():
     assert "json_creator_v15.py" in readme
     assert "json_creator_v15_canvas.py" in readme
     for name in ("json_creator_v15.py", "consolidator.py",
-                 "consolidator_canvas.py", "json_creator_v15_canvas.py"):
+                 "consolidator_canvas.py", "json_creator_v15_canvas.py",
+                 "oracle_apply.py", "oracle_apply_canvas.py"):
         digest = hashlib.sha256((STORE_PYTOOLS / name).read_bytes()).hexdigest()
         assert digest in readme, name
     platform_readme = (PLATFORMS / "lv1" / "scripts"
                        / "updated_pending_validation" / "README.md")
     text = platform_readme.read_text(encoding="utf-8")
-    for name in ("consolidator_canvas.py", "json_creator_v15_canvas.py"):
+    for name in ("consolidator_canvas.py", "json_creator_v15_canvas.py",
+                 "oracle_apply_canvas.py"):
         digest = hashlib.sha256(
             (STORE_PYTOOLS / name).read_bytes()).hexdigest()
         assert digest in text, name

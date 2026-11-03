@@ -86,6 +86,7 @@ def _join_brackets(text):
 PAIRS = [
     ("consolidator.py", "consolidator_canvas.py"),
     ("json_creator_v15.py", "json_creator_v15_canvas.py"),
+    ("oracle_apply.py", "oracle_apply_canvas.py"),
 ]
 
 

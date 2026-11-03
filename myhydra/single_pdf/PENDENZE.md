@@ -218,6 +218,38 @@ Quindi il VLM ha trascritto fedelmente e il ground truth legacy è stato quello 
 
 ---
 
+## Redesign v2 — estrazione unificata + oracolo (3 nov 2026)
+
+Catena target (canvas reale, 3 shard paralleli):
+
+```text
+LV1: 1 medex PDF2PNG -> 3 medex MEDIA2CONTENT
+       -> SLICE-A/B/C -> ENGINE A/B/C (invocano il LV2)
+       -> MERGE_AB -> MERGE_ABC -> CONSOLIDATORE -> ORACLE_APPLY -> JSON CREATOR
+
+LV2: 1 medex CONTENT2MEDIA
+       -> 2 visiomaru UNIFIED   (vlm_unified_v1.md)
+       -> 5 visiomaru ORACOLO   (vlm_oracle_v1.md, riceve immagine + output UNIFIED)
+       -> assemblatore: {page_no, stations, verifica}
+```
+
+Novità e dove vivono:
+
+| Pezzo | File | Ruolo |
+|---|---|---|
+| Prompt unificato | `src/prompts/vlm_unified_v1.md` | una pagina, una chiamata, tutti i campi |
+| Prompt oracolo | `src/prompts/vlm_oracle_v1.md` | solo discrepanze con `evidenza` (5 categorie) |
+| Apply oracolo | `pytools/oracle_apply.py` + canvas 6.410 B | aggiungi/annulla + `_audit_oracolo`, mai sovrascrive |
+| Gate | `verifica_pdf/BENCHMARK_GATE.md` v6 §13-bis | §16 correzioni verificabili, §17 audit, §18 refusi/IP solo warning |
+
+Decisione che ha cambiato il piano: l'apply **non** sta dentro il
+consolidatore (34.113 B contro limite ~34.300): è un pytool separato con
+**due edge** (`{edge}[6]` consolidato, `{edge}[7]` output grezzo con
+`verifica`).
+
+Aperto dopo il v2: run reale su SIEMENS_2 con UNIFIED+ORACOLO (target
+≥235/431, 0 invenzioni), poi gli altri 7 documenti.
+
 ## Riepilogo
 
 | # | Voce | Tipo | Stato |

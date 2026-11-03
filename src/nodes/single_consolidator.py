@@ -525,6 +525,130 @@ def assemble_page(page, page_no):
     return items, warnings, counters, shift1_regs
 
 
+def _oracle_apply(items, verifica, page_no, warnings, counters):
+    """Apply oracle corrections (add/cancel only, never overwrite).
+
+    ``items`` is the list of (meta, variables) from ``assemble_page``.
+    ``verifica`` is the oracle JSON (schema vlm_oracle_v1). Every applied
+    correction is marked with ``_audit_oracolo``; every discrepancy is a
+    warning. Refusi and unused IPs are warnings only (fidelity, no
+    invented stations).
+    """
+    if not isinstance(verifica, dict):
+        return
+    all_vars = []
+    for meta, variables in items:
+        for var in variables:
+            all_vars.append(var)
+
+    def _find(desc):
+        if not isinstance(desc, str):
+            return None
+        key = " ".join(desc.split()).lower()
+        for var in all_vars:
+            d = var.get("description")
+            if isinstance(d, str) and " ".join(d.split()).lower() == key:
+                return var
+        return None
+
+    def _audit(var, azione, campo=None, evidenza=None):
+        audit = {"azione": azione, "evidenza": evidenza}
+        if campo is not None:
+            audit["campo"] = campo
+        var["_audit_oracolo"] = audit
+
+    for entry in verifica.get("mancanti") or []:
+        if not isinstance(entry, dict):
+            continue
+        ev = entry.get("evidenza")
+        if not isinstance(ev, str) or not ev.strip():
+            _warn(warnings, counters, "oracolo_evidenza_vuota",
+                  "mancante senza evidenza",
+                  page_no=page_no, counter="oracolo_evidenza_vuota")
+            continue
+        desc = entry.get("description")
+        if _find(desc) is not None:
+            _warn(warnings, counters, "oracolo_duplicato",
+                  "%s gia' presente" % str(desc),
+                  page_no=page_no, counter="oracolo_duplicato")
+            continue
+        var = _base_variable({"description": desc,
+                              "modbus_register": entry.get("registro"),
+                              "bit": entry.get("bit"),
+                              "riga": None}, page_no)
+        _audit(var, "aggiunta", None, ev)
+        for meta, variables in items:
+            if (meta.get("ip") is None
+                    or all(v.get("modbus_register") != var.get(
+                        "modbus_register") for v in variables)):
+                variables.append(var)
+                break
+        else:
+            if items:
+                items[0][1].append(var)
+        _warn(warnings, counters, "oracolo_aggiunta",
+              "%s (reg %s)" % (str(desc), entry.get("registro")),
+              page_no=page_no, counter="oracolo_aggiunta")
+
+    for entry in verifica.get("unita_inventate") or []:
+        if not isinstance(entry, dict):
+            continue
+        ev = entry.get("evidenza")
+        if not isinstance(ev, str) or not ev.strip():
+            _warn(warnings, counters, "oracolo_evidenza_vuota",
+                  "unita senza evidenza",
+                  page_no=page_no, counter="oracolo_evidenza_vuota")
+            continue
+        var = _find(entry.get("description"))
+        if var is None:
+            continue
+        if var.get("units") is None:
+            continue
+        var["units"] = None
+        _audit(var, "annullata", "units", ev)
+        _warn(warnings, counters, "oracolo_annullata",
+              "%s units %s" % (str(entry.get("description")),
+                               entry.get("unita")),
+              page_no=page_no, counter="oracolo_annullata")
+
+    for entry in verifica.get("junk_stati") or []:
+        if not isinstance(entry, dict):
+            continue
+        ev = entry.get("evidenza")
+        if not isinstance(ev, str) or not ev.strip():
+            _warn(warnings, counters, "oracolo_evidenza_vuota",
+                  "stato senza evidenza",
+                  page_no=page_no, counter="oracolo_evidenza_vuota")
+            continue
+        campo = entry.get("campo")
+        if campo not in ("state_on", "state_off"):
+            continue
+        var = _find(entry.get("description"))
+        if var is None or var.get(campo) is None:
+            continue
+        var[campo] = None
+        _audit(var, "annullata", campo, ev)
+        _warn(warnings, counters, "oracolo_annullata",
+              "%s %s=%s" % (str(entry.get("description")), campo,
+                            entry.get("valore")),
+              page_no=page_no, counter="oracolo_annullata")
+
+    for entry in verifica.get("refusi_corretti") or []:
+        if not isinstance(entry, dict):
+            continue
+        _warn(warnings, counters, "oracolo_refuso",
+              "%s -> %s" % (entry.get("description_finale"),
+                            entry.get("description_pdf")),
+              page_no=page_no, counter="oracolo_refuso")
+
+    for entry in verifica.get("ip_dichiarati_non_usati") or []:
+        if not isinstance(entry, dict):
+            continue
+        _warn(warnings, counters, "oracolo_ip",
+              "%s" % str(entry.get("ip")),
+              page_no=page_no, counter="oracolo_ip")
+
+
 def _is_real_ip(value):
     return (isinstance(value, str) and value.strip()
             and "xxx" not in value and value.strip() != ":"
@@ -685,7 +809,8 @@ def _group_branches(blocks, warnings, counters):
         if isinstance(block.get("stations"), list) and (
                 _is_int(block.get("page_no"))
                 or block.get("bitnames") is not None
-                or block.get("bitstates") is not None):
+                or block.get("bitstates") is not None
+                or block.get("verifica") is not None):
             pages.append(block)
             current = None
             continue
@@ -696,8 +821,8 @@ def _group_branches(blocks, warnings, counters):
         if isinstance(block.get("stations"), list):
             current = _open()
             current["stations"] = block["stations"]
-            for key in ("page_no",):
-                if _is_int(block.get(key)):
+            for key in ("page_no", "verifica"):
+                if block.get(key) is not None:
                     current[key] = block[key]
             continue
         rows = block.get("rows")
@@ -805,6 +930,8 @@ def consolidate(pages):
         warnings.extend(w)
         for key in c:
             counters[key] = counters.get(key, 0) + c.get(key, 0)
+        _oracle_apply(items, page.get("verifica"), page_no,
+                      warnings, counters)
         for index, (meta, variables) in enumerate(items):
             key = _station_key(meta, page_no, index)
             if key not in acc:

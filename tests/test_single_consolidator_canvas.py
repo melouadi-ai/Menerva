@@ -388,12 +388,19 @@ def _rule_literals(text):
 
 
 def test_regole_di_src_tutte_nella_canvas():
-    """Ogni regola emessa da `src/` deve esistere anche nella copia canvas.
+    """Ogni regola emessa da `src/` deve esistere anche nelle copie canvas.
 
     E' il controllo che mancava il 28 ott 2026: `bit_offset_pagina` era in
     `src` e in nessuna copia, e nessun test lo vedeva.
+
+    Dal redesign v2 le regole `oracolo_*` vivono nel pytool ORACLE_APPLY
+    (il consolidatore canvas e' gia' al limite di paste), quindi il
+    confronto copre entrambe le copie canvas.
     """
     src = (REPO / "src" / "nodes" / "single_consolidator.py").read_text(
         encoding="utf-8")
     canvas = CANVAS.read_text(encoding="utf-8")
-    assert _rule_literals(src) - _rule_literals(canvas) == set()
+    oracle = (REPO / "myhydra" / "single_pdf" / "pytools"
+              / "oracle_apply_canvas.py").read_text(encoding="utf-8")
+    assert _rule_literals(src) - (_rule_literals(canvas)
+                                  | _rule_literals(oracle)) == set()

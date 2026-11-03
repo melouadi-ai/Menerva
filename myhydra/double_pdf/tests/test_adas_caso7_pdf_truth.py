@@ -284,10 +284,18 @@ def test_unita_collegate_per_tag():
     assert mancanti == ["Consumo combustibile orario"], mancanti
 
 
-def test_range_da_fondo_scala_e_warning_limiti_divisioni():
-    """v4.5: il fondo scala dichiarato va in LOWRANGE/HIGHRANGE; limiti e
-    divisori restano nel chunk e compaiono in review coi nomi (mapping BISON
-    col cliente, decisione 6/10/2026)."""
+def test_fondo_scala_e_limiti_dichiarati_nel_fixture():
+    """v4.5: il fondo scala dichiarato va in LOWRANGE/HIGHRANGE.
+
+    `observed_adas_case7_qwen38_run5.json` e' anteriore al 29/10 (creator
+    v4.5): dichiara i limiti nel chunk ma non li scrive in `SQ1HOURMEAN`/
+    `SQDAILYMEAN`, quindi si porta dietro il warning vecchio. Il
+    comportamento attuale (limiti numerici -> SQ, non numerici -> sentinel
+    + `LIMITI NON NUMERICI NON APPLICATI`) e' pinnato sulla run5 del caso 6
+    (`tests/test_adas_caso6_pdf_truth.py`, riga 154). Qui si accetta
+    l'uno o l'altro testo: alla prima run caso 7 rigenerata col creator
+    attuale il ramo storico sparisce da solo, senza rompere il test.
+    """
     st = observed()
     by_name = {m["NAME"]: m for m in st["measures"]}
     assert (by_name["CO"]["LOWRANGE"], by_name["CO"]["HIGHRANGE"]) == (0.0, 200.0)
@@ -295,8 +303,11 @@ def test_range_da_fondo_scala_e_warning_limiti_divisioni():
     assert (by_name["Consumo combustibile"]["LOWRANGE"], by_name["Consumo combustibile"]["HIGHRANGE"]) == (0.0, 110000.0)
     assert (by_name["Misura stimata CO"]["LOWRANGE"], by_name["Misura stimata CO"]["HIGHRANGE"]) == (-3.40282e38, 3.40282e38)
     warn = " ".join(st.get("_warnings", []))
-    assert "LIMITI DICHIARATI NON APPLICATI IN ADAS" in warn
-    assert "CO (giornaliero=40, orario=50)" in warn
+    assert ("LIMITI DICHIARATI NON APPLICATI IN ADAS" in warn
+            or "LIMITI DICHIARATI APPLICATI IN ADAS" in warn), warn[:300]
+    if "LIMITI DICHIARATI NON APPLICATI IN ADAS" in warn:
+        assert "CO (giornaliero=40, orario=50)" in warn
+    # Il fattore x10 delle 9 asteriscate resta non raccolto: difetto aperto.
     assert "DIVISIONE NON APPLICATA IN ADAS" in warn
     assert "Temperatura urea (divisione x10)" in warn
 

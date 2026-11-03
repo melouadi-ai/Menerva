@@ -1,11 +1,12 @@
-# Nodo LV1-04 — CONSOLIDATORE (nuovo, redesign v14)
+# Nodo LV1-04 — CONSOLIDATORE (redesign v14, input unificato dal v2)
 
-- **Tipo/nome:** Pytool — unisce i 3 rami VLM per pagina e fonde le pagine.
+- **Tipo/nome:** Pytool — consolida le pagine (input unificato dal redesign v2; il path a 3 rami resta per i tap storici) e fonde le stazioni.
 - **Input:** array dei chunk per pagina accumulati dal nodo LV1-03, letto da `raw = r'''{edge}[6]'''`.
 - **CONFIG:** il `6` è locale al canvas — **ricontrollare N a ogni rewiring** e ispezionare le impostazioni dell'edge (rimuovere match-condition spurie: un placeholder residuo blocca il wire in silenzio).
-- **Script:** [`../platforms/lv1/scripts/updated_pending_validation/consolidator_canvas.py`](../platforms/lv1/scripts/updated_pending_validation/consolidator_canvas.py) (copia canvas, 34.058 byte, generata da `../pytools/render_canvas.py`; documentata in [`../pytools/consolidator.py`](../pytools/consolidator.py), riferimento testabile `src/nodes/single_consolidator.py`).
+- **Script:** [`../platforms/lv1/scripts/updated_pending_validation/consolidator_canvas.py`](../platforms/lv1/scripts/updated_pending_validation/consolidator_canvas.py) (copia canvas, 34.113 byte, generata da `../pytools/render_canvas.py`; documentata in [`../pytools/consolidator.py`](../pytools/consolidator.py), riferimento testabile `src/nodes/single_consolidator.py`).
 - **Output:** `{"stations": [...], "warnings": [...], "counters": {...}}` via `result`. Mai blank: in caso di errore `result` è un ERROR JSON `{"status": "ERROR", ...}`.
-- **Posizione nella catena:** dopo il motore iterativo, prima del JSON CREATOR. È il nodo che rende il creator un trasformatore puro: il merge non è più dentro `json_creator.py`.
+- **Posizione nella catena:** dopo il motore iterativo (via MERGER degli shard), prima di `ORACLE_APPLY` e del JSON CREATOR. È il nodo che rende il creator un trasformatore puro: il merge non è più dentro `json_creator.py`.
+- **Redesign v2:** con il prompt unificato la pagina arriva con `stations` già complete (misure + bit + stati). Se la pagina **non** ha `bitnames`/`bitstates`, il consolidatore non fa nessun join per `riga`; se li ha (tap storici) usa il path a 3 rami. Le regole `oracolo_*` **non** vivono qui: sono nel nodo `ORACLE_APPLY` (LV1-04b), perché questa copia canvas è già al limite di paste.
 
 ## Cosa fa, in ordine
 
