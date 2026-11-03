@@ -16,6 +16,7 @@ Il pytool LV1-04 è stato scritto per essere difensivo proprio per questo: accet
 
 Nel flusso ridisegnato (v14/v15) l'uscita del motore va al nodo LV1-04 CONSOLIDATORE, che unisce i 3 rami VLM per pagina e fonde le pagine; il pytool LV1-05 JSON CREATOR trasforma poi l'unificato in ADAS. È la modifica strutturale prevista dall'Opzione B di ADR-001, con il merge spostato fuori dal creator.
 
-- **Da confermare:** l'indice `{edge}[4]` del creator (scheda LV1-05) è fragile, perché l'inserimento del consolidatore sposta gli indici a valle. Verificare sul canvas a ogni rewiring, con la checklist in [`../platforms/README.md`](../platforms/README.md).
+- **Da confermare:** l'indice `{edge}[2]` del creator (scheda LV1-05) è fragile, perché l'inserimento di CONSOLIDATORE e ORACLE_APPLY sposta gli indici a valle. Verificare sul canvas a ogni rewiring, con la checklist in [`../platforms/README.md`](../platforms/README.md).
+- **Redesign v2:** l'uscita del motore passa per `MERGE_ABC` → `CONSOLIDATORE` → `ORACLE_APPLY` → `JSON CREATOR`. Ogni pagina arriva con `verifica` (dall'oracolo) e `assemble_warnings` (da `PAGE ASSEMBLER` LV2-03): il consolidatore ignora `verifica`, `ORACLE_APPLY` la applica.
 - **Da confermare (invariati):** forma esatta del payload aggregato; comportamento su errore/timeout di una singola pagina (il creator non ha `try/except` globale); retry.
 - **Riferimenti:** [`lv1_04_consolidatore.md`](lv1_04_consolidatore.md), [`lv1_05_json_creator.md`](lv1_05_json_creator.md), [ADR-001](../../../docs/architettura/ADR-001-merge-multi-page.md).
