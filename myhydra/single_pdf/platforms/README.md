@@ -55,7 +55,7 @@ ritestare l'emissione su piattaforma.
 3. **Mai cambiare l'indice dentro il file**: se un edge è quello sbagliato,
    si ricabla il canvas, non si edita la copia (le copie sono pinnate dai test).
 4. **Budget paste**: copie canvas sotto la guardia di 34.300 byte (34.113
-   consolidatore, 6.949 ORACLE_APPLY, 3.108 PAGE ASSEMBLER, 24.831 creator;
+   consolidatore, 6.949 ORACLE_APPLY, 3.108 PAGE ASSEMBLER, 25.299 creator;
    misura empirica: 34.365 byte = rosso, 33.520 = verde). Oltre il limite il paste fallisce a parità di logica; la
    copia canvas si rigenera con `pytools/render_canvas.py`, non si edita a
    mano. Dopo l'incollaggio il nodo deve restare verde.

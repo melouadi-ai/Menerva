@@ -31,7 +31,7 @@ sha256sum consolidator_canvas.py oracle_apply_canvas.py json_creator_v15_canvas.
 Hash attesi:
 
 - `consolidator_canvas.py`: `8d3c7d67a9fca15a52be226526ee225cbc8f63f4e1b876c2edca9fd40d61e1cc`
-- `json_creator_v15_canvas.py`: `0768c752b5c18ac6852bed693619b21ff6ae91d052e3e67b815b3944e1bbe200`
+- `json_creator_v15_canvas.py`: `5c21f013b11d4886a65030f918feddc242487f3d3f32583e9f3806e252debc20` (25.299 byte)
 - `oracle_apply_canvas.py`: `091718500bcc6a0c679de49fc09fd6e42c5f73bd236c6e618ab628d4eb298370` (6.949 byte)
 - `slicer_canvas.py`: `c008026276addcdc7cd06ca350647a44cfc29bc3930b82f1eb602bb5f19641a0`
 - `merger_canvas.py`: `50614896814d0f7c8d034d868235b9a9857e4973216d72017d14fe0609a2f347`

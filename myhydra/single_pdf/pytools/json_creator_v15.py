@@ -793,6 +793,24 @@ try:
     meta["variables_total"] = tv
     meta["variabili_senza_registro"] = senza_registro_tutto
     meta["indirizzi_con_zeri_iniziali"] = len(zero_padded_tutto)
+    # Redesign v2: l'audit trail dell'oracolo (variabili aggiunte/annullate
+    # da ORACLE_APPLY) deve essere visibile nel FINALE, non solo nel tap.
+    audit_oracolo = []
+    i = 0
+    while i < len(st_in):
+        vsd = st_in[i]["variables"]
+        j = 0
+        while j < len(vsd):
+            v = vsd[j]
+            if isinstance(v, dict) and isinstance(v.get("_audit_oracolo"), dict):
+                audit_oracolo.append({"descrizione": v.get("description"),
+                                      "stazione": st_in[i]["name"],
+                                      "ip": st_in[i]["ip"],
+                                      "audit": v["_audit_oracolo"]})
+            j = j + 1
+        i = i + 1
+    meta["audit_oracolo"] = audit_oracolo
+    meta["variabili_toccate_dall_oracolo"] = len(audit_oracolo)
     if len(out) == 0:
         dbg = {"DEBUG": True, "raw_len": len(s), "chunks_parsed": len(chunks), "pages_processed": len(pages), "raw_head": s[:800]}
         output = json.dumps(dbg, ensure_ascii=False, indent=1)

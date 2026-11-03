@@ -2,8 +2,8 @@
 
 Reference: src/nodes/json_creator.py. Documented snapshot:
 myhydra/single_pdf/pytools/json_creator_v15.py. Canvas copy:
-myhydra/single_pdf/pytools/json_creator_v15_canvas.py (23.595 byte, sotto la
-guardia di paste di 33.792, comment lines stripped, same AST and same output).
+myhydra/single_pdf/pytools/json_creator_v15_canvas.py (25.299 byte, sotto la
+guardia di paste di 34.300, comment lines stripped, same AST and same output).
 """
 import ast
 import io
@@ -232,6 +232,22 @@ def test_canvas_senza_def_lambda_class():
     assert not any(isinstance(n, ast.AsyncFunctionDef) for n in kinds)
     assert not any(isinstance(n, ast.ClassDef) for n in kinds)
     assert not any(isinstance(n, ast.Lambda) for n in kinds)
+
+
+def test_audit_oracolo_nel_meta():
+    """Redesign v2: le variabili toccate da ORACLE_APPLY devono essere
+    visibili nel FINALE, non solo nel tap del consolidatore."""
+    v = variable("SO2", 40001)
+    v["_audit_oracolo"] = {"azione": "annullata", "campo": "units",
+                           "evidenza": "cella vuota"}
+    out = run_script(SRC, chunk([v]))
+    meta = out[0]["_meta"]
+    assert meta["variabili_toccate_dall_oracolo"] == 1
+    assert meta["audit_oracolo"][0]["descrizione"] == "SO2"
+    assert meta["audit_oracolo"][0]["audit"]["campo"] == "units"
+    out2 = run_script(SRC, chunk([variable("CO", 40002)]))
+    assert out2[0]["_meta"]["variabili_toccate_dall_oracolo"] == 0
+    assert out2[0]["_meta"]["audit_oracolo"] == []
 
 
 def test_keyword_ovf_da_errore():
