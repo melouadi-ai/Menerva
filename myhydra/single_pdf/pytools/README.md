@@ -12,6 +12,8 @@
 | [`consolidator_canvas.py`](consolidator_canvas.py) | `v14` | CONSOLIDATORE (LV1-04) | Copia canvas senza commenti, stesso AST. |
 | [`oracle_apply.py`](oracle_apply.py) | `v1` | ORACLE_APPLY (LV1-04b) | Documentato: applica le correzioni dell'oracolo al consolidato. |
 | [`oracle_apply_canvas.py`](oracle_apply_canvas.py) | `v1` | ORACLE_APPLY (LV1-04b) | Copia canvas senza commenti, stesso AST. |
+| [`page_assembler.py`](page_assembler.py) | `v1` | PAGE ASSEMBLER (LV2-03) | Documentato: unisce UNIFIED + ORACOLO in una pagina. |
+| [`page_assembler_canvas.py`](page_assembler_canvas.py) | `v1` | PAGE ASSEMBLER (LV2-03) | Copia canvas senza commenti, stesso AST. |
 
 ## Sorgente e sincronizzazione
 
@@ -33,13 +35,13 @@ compatta a 1 spazio/livello, stesso AST della documentata) vive in
 ## Consolidatore (redesign v14, Task 4)
 
 Riferimento testabile: `src/nodes/single_consolidator.py`. Copia
-documentata `consolidator.py` (stile inline, `{edge}[5]` da ricontrollare
+documentata `consolidator.py` (stile inline, `{edge}[6]` da ricontrollare
 dopo il rewiring Task 8) + copia canvas `consolidator_canvas.py` senza
 commenti. La copia canvas **non si scrive a mano**: si genera dalla
 documentata con `render_canvas.py` (stesso AST, 1 spazio per livello, righe
 spezzate dentro parentesi unite), che è anche il controllo di parità in
 `tests/test_single_consolidator_canvas.py`. La copia canvas resta sotto la
-soglia di paste: 33.245 byte (guardia test 33.792, 34.365 = rosso certo).
+soglia di paste: 34.113 byte (guardia test 34.300; 34.365 = rosso certo).
 Se gli hash divergono, vince `src/`.
 
 ```sh
@@ -58,20 +60,45 @@ consolidatore. Riceve **due edge**: il consolidato (nodo CONSOLIDATORE) e
 l'output grezzo del motore, che contiene `verifica` per pagina. Applica solo
 aggiungi/annulla (mai sovrascrive): refusi e IP non usati restano warning.
 
-- `oracle_apply.py`: `59351734870df884a0224bd7cff1b27437519390ca70350354a09c0593365389`
-- `oracle_apply_canvas.py`: `0eae5b65a3361d0992f9d2aaa2b33e3bc34f2c57ac0b5629dd5e46a9776489b2` (6.410 byte)
+- `oracle_apply.py`: `ee61c0a7c075fed7e8c572d41d40c650889ca21d7eb9ad3473b47ff583a0bd82`
+- `oracle_apply_canvas.py`: `091718500bcc6a0c679de49fc09fd6e42c5f73bd236c6e618ab628d4eb298370` (6.949 byte)
 
-Rigenerazione: `python myhydra/single_pdf/pytools/render_canvas.py --write`
+Legge anche `assemble_warnings` dalle pagine del motore e li porta nel tap
+come `oracolo_assente` / `oracolo_input_assente`: un oracolo non collegato
+non può restare in silenzio.
 
-Rigenerazione (da fare dopo ogni modifica alla documentata):
+## PAGE_ASSEMBLER (redesign v2)
+
+Vive nel **LV2**, subito dopo i due visiomaru. Senza questo nodo l'output
+dell'oracolo (le sole 5 categorie) non è né `stations` né `rows` e il
+consolidatore lo rifiuta (`blocco senza stations ne rows`). Due edge:
+`raw_u = {edge}[2]` (UNIFIED) e `raw_o = {edge}[5]` (ORACOLO). Emette
+`{"page_no", "stations", "verifica"|null, "assemble_warnings"}`.
+
+- `page_assembler.py`: `822fe612d0958fc8b9c867259af9c26ad8e5a5b3f0857c6244f3314717a1f26c`
+- `page_assembler_canvas.py`: `7edd34825b1e8ef473077feeeafdddb037a87915bfb444761d54396e393e283b` (3.108 byte)
+
+Copia canvas in
+`../platforms/lv2/scripts/updated_pending_validation/page_assembler_canvas.py`.
+
+## Rigenerazione delle copie canvas
+
+Dopo ogni modifica a una documentata:
 
 ```sh
 python myhydra/single_pdf/pytools/render_canvas.py --write
 cp myhydra/single_pdf/pytools/consolidator_canvas.py \
    myhydra/single_pdf/platforms/lv1/scripts/updated_pending_validation/
+cp myhydra/single_pdf/pytools/oracle_apply_canvas.py \
+   myhydra/single_pdf/platforms/lv1/scripts/updated_pending_validation/
+cp myhydra/single_pdf/pytools/page_assembler_canvas.py \
+   myhydra/single_pdf/platforms/lv2/scripts/updated_pending_validation/
 ```
 
-Questo file ha `{edge}[4]` ed è del solo Single PDF. Il Double PDF ha una copia
+`render_canvas.py` verifica tutte e quattro le coppie (`allineato`/`DIVERSO`)
+e fallisce con codice 1 se una diverge.
+
+Questo file ha `{edge}[2]` ed è del solo Single PDF. Il Double PDF ha una copia
 separata con `{edge}[13}` in
 [`../../double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13_canvas.py`](../../double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13_canvas.py)
 (copia canvas senza commenti; il documentato è `json_creator_edge13.py`):

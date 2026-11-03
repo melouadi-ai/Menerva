@@ -229,8 +229,8 @@ LV1: 1 medex PDF2PNG -> 3 medex MEDIA2CONTENT
 
 LV2: 1 medex CONTENT2MEDIA
        -> 2 visiomaru UNIFIED   (vlm_unified_v1.md)
-       -> 5 visiomaru ORACOLO   (vlm_oracle_v1.md, riceve immagine + output UNIFIED)
-       -> assemblatore: {page_no, stations, verifica}
+       -> 5 visiomaru ORACOLO   (vlm_oracle_v1.md, Context = {edge}[M] di UNIFIED)
+       -> PAGE ASSEMBLER (pytool, LV2-03): {page_no, stations, verifica, assemble_warnings}
 ```
 
 Novità e dove vivono:
@@ -238,8 +238,9 @@ Novità e dove vivono:
 | Pezzo | File | Ruolo |
 |---|---|---|
 | Prompt unificato | `src/prompts/vlm_unified_v1.md` | una pagina, una chiamata, tutti i campi |
-| Prompt oracolo | `src/prompts/vlm_oracle_v1.md` | solo discrepanze con `evidenza` (5 categorie) |
-| Apply oracolo | `pytools/oracle_apply.py` + canvas 6.410 B | aggiungi/annulla + `_audit_oracolo`, mai sovrascrive |
+| Prompt oracolo | `src/prompts/vlm_oracle_v1.md` | solo discrepanze con `evidenza` (5 categorie) + R0 Context gate |
+| Page assembler | `pytools/page_assembler.py` + canvas 3.108 B | unisce UNIFIED+ORACOLO in una pagina; oracolo muto = warning, non silenzio |
+| Apply oracolo | `pytools/oracle_apply.py` + canvas 6.949 B | aggiungi/annulla + `_audit_oracolo`, mai sovrascrive; porta `assemble_warnings` nel tap |
 | Gate | `verifica_pdf/BENCHMARK_GATE.md` v6 §13-bis | §16 correzioni verificabili, §17 audit, §18 refusi/IP solo warning |
 
 Decisione che ha cambiato il piano: l'apply **non** sta dentro il

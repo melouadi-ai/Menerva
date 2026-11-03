@@ -13,12 +13,15 @@ try:
  if isinstance(eng, str):
   eng = json.loads(eng.strip())
  verif = []
+ assemble = []
  queue = [eng]
  while len(queue) > 0:
   node = queue.pop(0)
   if isinstance(node, dict):
    if isinstance(node.get("verifica"), dict):
     verif.append(node["verifica"])
+   if isinstance(node.get("assemble_warnings"), list):
+    assemble = assemble + list(node["assemble_warnings"])
    for key in ("pages", "stations", "results", "result", "data"):
     if isinstance(node.get(key), list):
      queue = list(node[key]) + queue
@@ -30,6 +33,20 @@ try:
  counters = cons.get("counters")
  if not isinstance(counters, dict):
   counters = {}
+ ai = 0
+ while ai < len(assemble):
+  voce = assemble[ai]
+  ai = ai + 1
+  if not isinstance(voce, str):
+   continue
+  regola = "assemble"
+  dettaglio = voce
+  taglio = voce.find(":")
+  if taglio > 0:
+   regola = voce[:taglio].strip()
+   dettaglio = voce[taglio + 1:].strip()
+  warnings.append({"rule": regola, "page_no": None, "riga": None, "detail": dettaglio})
+  counters[regola] = counters.get(regola, 0) + 1
  stations = cons["stations"]
  vi = 0
  while vi < len(verif):

@@ -1,16 +1,19 @@
 # Prompt — Single PDF
 
-## Inventario (stato al 28 ottobre 2026)
+## Inventario (stato al 3 novembre 2026)
 
-I tre rami del redesign sono i prompt **correnti**. Le versioni precedenti
-restano come storia in [`history/`](history/) e in `src/prompts/`: non si
-modificano e non si incollano.
+Il redesign v2 usa **due** prompt: un solo estrattore (UNIFIED) e un
+verificatore (ORACOLO). I tre rami v14 restano come storia in
+[`history/`](history/) e in `src/prompts/`: non si modificano e non si
+incollano.
 
 | File | Versione | Nodo | Stato |
 |---|---|---|---|
-| [`vlm_measures_v18.md`](vlm_measures_v18.md) | `v18` | LV2 ramo 1 di 3 — misure + dati tecnici | **Corrente.** Vieta le variabili senza cella descrizione. |
-| [`vlm_bitnames_v16.md`](vlm_bitnames_v16.md) | `v16` | LV2 ramo 2 di 3 — nomi bit | **Corrente.** BIT solo da suffisso/N.Bit, mai da coil (V30). |
-| [`vlm_bitstates_v19.md`](vlm_bitstates_v19.md) | `v19` | LV2 ramo 3 di 3 — stati TEXTON/TEXTOFF | **Corrente.** Checklist prima degli stati, join tollerante. |
+| [`vlm_unified_v1.md`](vlm_unified_v1.md) | `v1` | LV2-02 UNIFIED — estrazione unica (misure + bit + stati + tecnici) | **Corrente.** Checklist prima delle variabili, schema unico, V1-V30. |
+| [`vlm_oracle_v1.md`](vlm_oracle_v1.md) | `v1` | LV2-02 ORACOLO — verifica (5 categorie + `evidenza`) | **Corrente.** R0 Context gate: senza il JSON di UNIFIED nel Context risponde `errore_input`. |
+| [`history/vlm_measures_v18.md`](history/vlm_measures_v18.md) | `v18` | LV2 ramo 1 di 3 — misure + dati tecnici | Storico (redesign v14). |
+| [`history/vlm_bitnames_v16.md`](history/vlm_bitnames_v16.md) | `v16` | LV2 ramo 2 di 3 — nomi bit | Storico (redesign v14). |
+| [`history/vlm_bitstates_v19.md`](history/vlm_bitstates_v19.md) | `v19` | LV2 ramo 3 di 3 — stati TEXTON/TEXTOFF | Storico (redesign v14). |
 | [`history/vlm_extraction_v13.md`](history/vlm_extraction_v13.md) | `v13` | LV2-02 — parsing JSON a ramo unico | Storico: è il prompt del canvas pre-redesign. |
 | [`history/vlm_bitstates_v14.md`](history/vlm_bitstates_v14.md) | `v14` | ramo stati | Storico, superato da v15→v19. |
 | [`history/vlm_bitstates_v15.md`](history/vlm_bitstates_v15.md) | `v15` | ramo stati | Storico, superato da v16→v19. |
@@ -28,27 +31,24 @@ Verifica:
 
 ```sh
 cd myhydra/single_pdf/prompt
-sha256sum ../../../src/prompts/vlm_measures_v18.md vlm_measures_v18.md \
-          ../platforms/lv2/prompts/current/vlm_measures_v18.md
-sha256sum ../../../src/prompts/vlm_bitnames_v16.md vlm_bitnames_v16.md \
-          ../platforms/lv2/prompts/current/vlm_bitnames_v16.md
-sha256sum ../../../src/prompts/vlm_bitstates_v19.md vlm_bitstates_v19.md \
-          ../platforms/lv2/prompts/current/vlm_bitstates_v19.md
+sha256sum ../../../src/prompts/vlm_unified_v1.md vlm_unified_v1.md \
+          ../platforms/lv2/prompts/current/vlm_unified_v1.md
+sha256sum ../../../src/prompts/vlm_oracle_v1.md vlm_oracle_v1.md \
+          ../platforms/lv2/prompts/current/vlm_oracle_v1.md
 ```
 
 Hash attesi (le tre copie devono coincidere):
 
 | File | sha256 |
 |---|---|
-| `vlm_measures_v18.md` | `dd55d4855131c0f53f2ca3e939f6a6b1acd152beb0bd3a6a4d7feed77e946763` |
-| `vlm_bitnames_v16.md` | `5baec7eb7074d985707f0e5a4fe1a70f28c3b27e5e2e7b906a6ef717a9705b2e` |
-| `vlm_bitstates_v19.md` | `2325a235ac6f6170431d9000d7bdcfe52e618758fa2487230477bf34be242652` |
+| `vlm_unified_v1.md` | `d50edd72d17717a6e36ffd95afc1c25ff1a2f4bfb310dc4075fba57ac30cf820` |
+| `vlm_oracle_v1.md` | `a1d8b5a4bd1fedcabad242c47e65e14d760bb44c3a4a918c7f820813d6d7668b` |
 | `history/vlm_extraction_v13.md` | `7fe80cd5ea7bcfcfeb751647dbfc7b1ad96f057efb653cf87f9c29259e851fb3` |
 
-**Se i tre hash divergono, la fonte autorevole è `src/prompts/`.** Quando il
+**Se gli hash divergono, la fonte autorevole è `src/prompts/`.** Quando il
 prompt cambia lì, va ricopiato nei due specchi e questo file aggiornato.
-Pinnato da `tests/test_single_canvas_hygiene.py::test_prompts_current_byte_identical_to_src`
-e `tests/test_single_prompt_contracts.py`.
+Pinnato da `tests/test_single_canvas_hygiene.py::test_prompts_current_byte_identical_to_src`,
+`tests/test_single_oracle.py` e `tests/test_single_unified.py`.
 
 ## Cronologia delle versioni
 

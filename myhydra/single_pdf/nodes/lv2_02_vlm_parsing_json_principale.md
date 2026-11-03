@@ -6,9 +6,11 @@
   - **ORACOLO** (verifica, prompt `vlm_oracle_v1.md`).
 - **Input:** l'immagine prodotta da LV2-01 (una pagina) **in entrambe** le
   istanze.
-- **Configurazione dei campi (identica nelle due istanze):** `{edge.media}[N]`
-  **da solo** nel campo **Prompt**; istruzioni in **Powered identity**;
-  **Context** vuoto. `N` è locale al canvas.
+- **Configurazione dei campi:** `{edge.media}[N]` **da solo** nel campo
+  **Prompt**; istruzioni in **Powered identity**. `N` è locale al canvas.
+  **Context:** vuoto per UNIFIED; per l'ORACOLO contiene `{edge}[M]`
+  (testo di UNIFIED) — senza, il prompt R0 risponde con `errore_input`
+  e non verifica nulla.
 - **Prompt correnti:**
   - [`../prompt/vlm_unified_v1.md`](../prompt/vlm_unified_v1.md) (copia canvas:
     [`../platforms/lv2/prompts/current/vlm_unified_v1.md`](../platforms/lv2/prompts/current/vlm_unified_v1.md));
@@ -37,7 +39,8 @@ obbligatoria.
 
 ## Contratto di uscita del LV2
 
-L'assemblatore di pagina (naive a valle dei due VLM) produce **una pagina**:
+L'assemblatore di pagina (pytool `PAGE ASSEMBLER`, LV2-03, a valle dei due
+VLM) produce **una pagina**:
 
 ```json
 {"page_no": 1,
@@ -51,6 +54,8 @@ L'assemblatore di pagina (naive a valle dei due VLM) produce **una pagina**:
 `stations` è il contratto storico (v14), `verifica` è la novità v2. Il
 consolidatore ignora `verifica`; il nodo `ORACLE_APPLY` (LV1-04b) la legge
 dall'output grezzo del motore e applica le correzioni al consolidato.
+`assemble_warnings` (oracolo muto, Context vuoto) viaggia con la pagina e
+finisce nel tap di `ORACLE_APPLY`.
 
 ## Confini del compito del VLM
 
@@ -63,7 +68,8 @@ dall'output grezzo del motore e applica le correzioni al consolidato.
   resta valido per i tap a 3 rami).
 - **L'oracolo non calcola e non corregge:** solo discrepanze con evidenza.
 
-- **Riferimenti:** [`../prompt/README.md`](../prompt/README.md) (inventario e
+- **Riferimenti:** [`lv2_03_page_assembler.md`](lv2_03_page_assembler.md),
+  [`../prompt/README.md`](../prompt/README.md) (inventario e
   hash), [`../platforms/lv2/README.md`](../platforms/lv2/README.md),
   [`../verifica_pdf/BENCHMARK_GATE.md`](../verifica_pdf/BENCHMARK_GATE.md)
   (§13-bis), [contratto VLM](../../../docs/contracts/VLM_INTERMEDIATE.md).

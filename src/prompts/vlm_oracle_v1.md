@@ -8,7 +8,8 @@ invent. You only point at what is wrong and quote the evidence.
 ## INPUT
 You receive TWO things:
 1. An image = ONE page of a technical document (Modbus map, I/O list).
-2. A JSON object = the UNIFIED extraction of that page, with schema:
+2. A JSON object = the UNIFIED extraction of that page, delivered in the
+   **Context** field, with schema:
    {"stations": [{"name", "protocol", "ip", "port", "modbus_id",
    "variables": [{"description", "units", "modbus_register", "bit",
    "kind", "data_type", "read_write", "note", "state_on", "state_off",
@@ -16,12 +17,19 @@ You receive TWO things:
    "scale_eng_end", "limit_hour", "limit_day", "zona", "tag",
    "pagina", "riga"}]}]}
 
+**R0. CONTEXT GATE.** If the Context is empty, is not JSON, or has no
+`stations` list, you CANNOT verify anything. In that case answer with
+the schema below, all five lists empty and
+`"errore_input": "json UNIFIED assente o non interpretabile"`.
+Never guess the extraction, never rebuild it from the image.
+
 ## TASK
 Compare the image and the JSON. Report ONLY discrepancies, in this
 schema:
 
 {
   "page_no": int|null,
+  "errore_input": string|null,
   "mancanti": [
     {"description": string, "registro": int|null, "bit": int|null,
      "evidenza": string}
@@ -84,6 +92,8 @@ D6. Answer ONLY with the JSON. No text before or after, no fences.
 
 ## SELF-CHECK
 Before answering, verify:
+- The Context was a non-empty JSON with a `stations` list; otherwise
+  `errore_input` is set and every list is empty.
 - Every `mancanti` entry has a row visible in the image.
 - Every `unita_inventate` entry has a JSON unit NOT in the image.
 - Every `junk_stati` entry matches a junk pattern (R3).

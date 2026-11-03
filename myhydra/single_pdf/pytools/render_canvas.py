@@ -87,6 +87,7 @@ PAIRS = [
     ("consolidator.py", "consolidator_canvas.py"),
     ("json_creator_v15.py", "json_creator_v15_canvas.py"),
     ("oracle_apply.py", "oracle_apply_canvas.py"),
+    ("page_assembler.py", "page_assembler_canvas.py"),
 ]
 
 

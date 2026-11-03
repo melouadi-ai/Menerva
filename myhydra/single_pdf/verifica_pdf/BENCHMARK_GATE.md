@@ -206,9 +206,11 @@ Il LV2 unificato restituisce per pagina `{"stations": ..., "verifica": ...}`.
 
 Warning attesi nel tap ORACLE_APPLY: `oracolo_aggiunta`,
 `oracolo_annullata`, `oracolo_refuso`, `oracolo_ip`,
-`oracolo_evidenza_vuota`, `oracolo_duplicato`. Silenzio = nessun difetto
-rilevato, oppure oracolo non collegato: verificare la presenza di `verifica`
-nel tap del motore.
+`oracolo_evidenza_vuota`, `oracolo_duplicato`, `oracolo_assente`,
+`oracolo_input_assente`. Silenzio = nessun difetto rilevato. Un oracolo
+non collegato NON è più silenzio: `PAGE_ASSEMBLER` (LV2-03) lo segnala
+(`oracolo_assente`) e un Context vuoto lo segnala come
+`oracolo_input_assente` (regola R0 del prompt).
 
 ## 14. Contaminazione e verità sospette (procedure)
 
@@ -237,3 +239,6 @@ nel tap del motore.
   aggiungi/annulla + audit trail, refusi e IP solo warning. L'apply vive
   nel pytool `ORACLE_APPLY` perché il consolidatore canvas è al limite di
   paste (34.113 B su ~34.300).
+- 2026-11-03 v6.1: nodo `PAGE_ASSEMBLER` (LV2-03) unisce UNIFIED+ORACOLO
+  in una pagina; oracolo muto o Context vuoto = warning nel tap, mai
+  silenzio. Prompt oracolo: regola R0 (Context gate).

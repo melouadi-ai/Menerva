@@ -38,7 +38,10 @@ diventa mai una stazione inventata (B2).
 Guardie:
 - `evidenza` vuota → il difetto **non** si applica (`oracolo_evidenza_vuota`);
 - descrizione già presente → nessun duplicato (`oracolo_duplicato`);
-- nessuna `verifica` nell'input → il consolidato esce invariato.
+- nessuna `verifica` nell'input → il consolidato esce invariato;
+- `assemble_warnings` delle pagine (da `PAGE ASSEMBLER`) entrano nel tap
+  come `oracolo_assente` / `oracolo_input_assente`: un oracolo non
+  collegato non può restare in silenzio.
 
 ## Perché è un nodo separato
 

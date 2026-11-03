@@ -10,6 +10,9 @@
 #   ip_dichiarati_non_usati -> SOLO warning (mai stazioni inventate)
 # Ogni variabile toccata porta _audit_oracolo {azione, campo?, evidenza}.
 # Evidenza vuota -> il difetto NON si applica (oracolo_evidenza_vuota).
+# Gli avvisi di PAGE_ASSEMBLER (`assemble_warnings`) entrano nel tap come
+# `oracolo_assente` / `oracolo_input_assente`: un oracolo non collegato non
+# puo' restare in silenzio.
 # Fonte autorevole della logica: src/nodes/single_consolidator.py (_oracle_apply).
 import json
 import traceback
@@ -31,12 +34,17 @@ try:
         eng = json.loads(eng.strip())
     # Le verifiche vivono nelle pagine dell'output grezzo del motore.
     verif = []
+    # PAGE_ASSEMBLER annota qui i propri avvisi (oracolo assente o input
+    # non interpretabile): vanno portati nel tap, non persi.
+    assemble = []
     queue = [eng]
     while len(queue) > 0:
         node = queue.pop(0)
         if isinstance(node, dict):
             if isinstance(node.get("verifica"), dict):
                 verif.append(node["verifica"])
+            if isinstance(node.get("assemble_warnings"), list):
+                assemble = assemble + list(node["assemble_warnings"])
             for key in ("pages", "stations", "results", "result", "data"):
                 if isinstance(node.get(key), list):
                     queue = list(node[key]) + queue
@@ -48,6 +56,21 @@ try:
     counters = cons.get("counters")
     if not isinstance(counters, dict):
         counters = {}
+    ai = 0
+    while ai < len(assemble):
+        voce = assemble[ai]
+        ai = ai + 1
+        if not isinstance(voce, str):
+            continue
+        regola = "assemble"
+        dettaglio = voce
+        taglio = voce.find(":")
+        if taglio > 0:
+            regola = voce[:taglio].strip()
+            dettaglio = voce[taglio + 1:].strip()
+        warnings.append({"rule": regola, "page_no": None, "riga": None,
+                         "detail": dettaglio})
+        counters[regola] = counters.get(regola, 0) + 1
     stations = cons["stations"]
     vi = 0
     while vi < len(verif):

@@ -69,3 +69,13 @@ def test_self_check():
     flat = _flat(SRC)
     assert "SELF-CHECK" in flat
     assert "If any check fails, remove the entry" in flat
+
+
+def test_regola_r0_context_gate():
+    """L'oracolo riceve il JSON di UNIFIED nel Context: senza, non puo'
+    verificare nulla e deve dirlo, non inventare."""
+    flat = _flat(SRC)
+    assert "R0. CONTEXT GATE" in flat
+    assert "delivered in the" in flat and "Context" in flat
+    assert "errore_input" in flat
+    assert "Never guess the extraction" in flat

@@ -8,9 +8,13 @@ ma non gli indici degli edge: le copie restano separate, non mescolarle).
 ## Mappa
 
 - [`lv1/`](lv1/README.md): catena LV1 e script Pytool da incollare.
-- [`lv2/`](lv2/README.md): i 3 rami VLM v14 (prompt da mettere in Powered identity).
-- `lv1/scripts/updated_pending_validation/`: le 2 copie canvas da incollare
-  al rewiring (mai incollate sul canvas: la prima run MyHydra resta da fare).
+- [`lv2/`](lv2/README.md): i 2 VLM del redesign v2 (UNIFIED + ORACOLO) e
+  il pytool PAGE ASSEMBLER.
+- `lv1/scripts/updated_pending_validation/`: le 3 copie canvas LV1 da
+  incollare al rewiring (mai incollate sul canvas: la prima run MyHydra
+  resta da fare).
+- `lv2/scripts/updated_pending_validation/`: la copia canvas LV2
+  (`page_assembler_canvas.py`).
 - `lv1/scripts/in_use/`: vuoto finché il rewiring non è fatto e validato —
   il canvas attivo esegue ancora materiale pre-redesign (prompt v13 +
   creator precedente). Dopo la run, le copie validate migrano qui.
@@ -27,6 +31,8 @@ verificato a metà: non uniformare senza motivo.
 | Nodo | Emissione | Errore | Stato verifica |
 |---|---|---|---|
 | CONSOLIDATORE (nuovo, LV1-04) | `result = json.dumps(...)` | ERROR JSON in `result`: `{"status": "ERROR", "error": ...}` — mai blank | Mai eseguito sul canvas: alla prima run confermare che il nodo esponga `result` |
+| ORACLE_APPLY (nuovo, LV1-04b) | `result = json.dumps(...)` | ERROR JSON in `result` — mai blank | Mai eseguito sul canvas |
+| PAGE ASSEMBLER (nuovo, LV2-03) | `result = json.dumps(...)` | ERROR JSON in `result` — mai blank | Mai eseguito sul canvas |
 | JSON CREATOR v15 (LV1-05) | `print(output)` + variabile `output` | `try/except` globale: in errore stampa `{"status": "ERROR", ...}`, mai blank (fix Task 8 round 1/5) | Meccanismo legacy, verificato sul canvas dal Double (nodo 12, run3/run4 casi 6/7) |
 
 Regola per il futuro: i nuovi Pytool usano `result` + ERROR JSON
@@ -38,17 +44,19 @@ ritestare l'emissione su piattaforma.
 
 1. **Ricontrollare ogni `N` in `{edge}[N]`**: l'indice è locale al canvas e
    cambia quando si aggiungono o spostano nodi. Valori attesi nel flusso
-   ridisegnato: consolidatore `{edge}[5]`, creator `{edge}[4]`. L'inserimento
-   del consolidatore sposta gli indici a valle: ricontrollare anche il creator.
+   ridisegnato: consolidatore `{edge}[6]`, ORACLE_APPLY `{edge}[6]` +
+   `{edge}[7]`, PAGE ASSEMBLER `{edge}[2]` + `{edge}[5]`, creator
+   `{edge}[2]`. L'inserimento di nodi sposta gli indici a valle:
+   ricontrollare anche il creator.
 2. **Ispezionare le impostazioni di OGNI edge** dopo il ricablaggio e
    rimuovere le match-condition spurie: un placeholder residuo (precedente
    visto: `pippo` su un edge filtro→iniezione nel Double) blocca il wire in
    silenzio — il nodo a valle muore di fame senza errori.
 3. **Mai cambiare l'indice dentro il file**: se un edge è quello sbagliato,
    si ricabla il canvas, non si edita la copia (le copie sono pinnate dai test).
-4. **Budget paste**: copie canvas sotto la guardia di 33.792 byte (33.245
-   consolidatore, 23.595 creator; misura empirica: 34.365 byte = rosso,
-   33.520 = verde). Oltre il limite il paste fallisce a parità di logica; la
+4. **Budget paste**: copie canvas sotto la guardia di 34.300 byte (34.113
+   consolidatore, 6.949 ORACLE_APPLY, 3.108 PAGE ASSEMBLER, 24.831 creator;
+   misura empirica: 34.365 byte = rosso, 33.520 = verde). Oltre il limite il paste fallisce a parità di logica; la
    copia canvas si rigenera con `pytools/render_canvas.py`, non si edita a
    mano. Dopo l'incollaggio il nodo deve restare verde.
 5. **Output blank senza errori**: diagnosi in ordine — indice edge sbagliato?
@@ -71,6 +79,7 @@ ritestare l'emissione su piattaforma.
 ## Riferimenti
 
 - Schede dei nodi: [`../nodes/`](../nodes/) (`lv1_04_consolidatore.md`,
-  `lv1_05_json_creator.md`, rami VLM in `lv2_02_*`).
+  `lv1_04b_oracle_apply.md`, `lv1_05_json_creator.md`,
+  `lv2_02_vlm_parsing_json_principale.md`, `lv2_03_page_assembler.md`).
 - Vincoli operativi e di formato: `AGENTS.md` (sezione MyHydra).
 - Report del redesign: `.superpowers/sdd/2026-10-06-single-pdf-redesign/`.
