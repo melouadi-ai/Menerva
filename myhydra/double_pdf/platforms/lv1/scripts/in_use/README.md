@@ -2,7 +2,7 @@
 
 ## File: quale incollare
 
-[`scripts/in_use/json_creator_edge13_canvas.py`](scripts/in_use/json_creator_edge13.py)
+[`scripts/in_use/json_creator_edge13_canvas.py`](json_creator_edge13_canvas.py)
 — è **questo** il file da incollare nel nodo (non quello documentato sotto).
 Stessa logica del documentato (stesso AST, verificato da test), senza righe
 di commento: 26.731 byte.
@@ -14,7 +14,7 @@ test: 32.000 byte (`test_json_creator_edge13_canvas.py`).
 
 ## File documentato (riferimento, NON da incollare)
 
-[`scripts/in_use/json_creator_edge13.py`](scripts/in_use/json_creator_edge13.py)
+[`scripts/in_use/json_creator_edge13.py`](json_creator_edge13_canvas.py)
 — v4.4 + fix Double, placeholder `{edge}[13]`. Versione leggibile e commentata,
 riferimento per ogni modifica futura.
 
@@ -66,7 +66,7 @@ esattamente il modo in cui la divergenza è entrata.
 
 Le copie stanno nelle rispettive cartelle, con l'indice dell'edge già corretto:
 non vanno mescolate. Il Single PDF resta in
-[`../../../single_pdf/pytools/json_creator_v4_4.py`](../../../single_pdf/pytools/json_creator_v4_4.py)
+[`../../../single_pdf/pytools/json_creator_v4_4.py`](../../../../../single_pdf/archive/pytools_v4/json_creator_v4_4.py)
 con `{edge}[4]` e hash `7d60929795a34fb3c8d70884335bb80bcc95004586e10c55b118694d525c0c6b`.
 
 ## Indice dell'edge

@@ -14,8 +14,7 @@ import re
 from pathlib import Path
 
 REPO = Path(__file__).parent.parent
-PYTOOLS = (REPO / "myhydra" / "single_pdf" / "platforms" / "lv1"
-           / "scripts" / "updated_pending_validation")
+PYTOOLS = REPO / "myhydra" / "single_pdf" / "pytools"
 STORE = REPO / "myhydra" / "single_pdf" / "pytools"
 
 SLICER_DOC = STORE / "slicer.py"
@@ -145,6 +144,7 @@ def test_copie_canvas_identico_ast_e_budget():
     for doc, canvas, plat in ((SLICER_DOC, SLICER_CANVAS, SLICER_PLAT),
                              (MERGER_DOC, MERGER_CANVAS, MERGER_PLAT)):
         assert canvas.read_bytes() == plat.read_bytes()
+        assert canvas.parent == STORE
         assert (ast.dump(ast.parse(doc.read_text(encoding="utf-8")))
                 == ast.dump(ast.parse(canvas.read_text(encoding="utf-8"))))
         assert os.path.getsize(canvas) <= CANVAS_MAX_BYTES

@@ -165,7 +165,7 @@ Estensione del gate v5 con:
 
 ### Creare
 - `src/prompts/vlm_oracle_v1.md` — prompt oracolo
-- `myhydra/single_pdf/platforms/lv2/prompts/current/vlm_oracle_v1.md` — copia
+- `myhydra/single_pdf/prompt/vlm_oracle_v1.md` — copia
 - `myhydra/single_pdf/prompt/vlm_oracle_v1.md` — copia
 - `tests/test_single_oracle.py` — test oracolo
 - `tests/test_single_oracle_apply.py` — test apply nel consolidatore
@@ -181,12 +181,12 @@ Estensione del gate v5 con:
   aggiornata (apply oracolo)
 - `myhydra/single_pdf/verifica_pdf/BENCHMARK_GATE.md` — gate v6
 - `myhydra/single_pdf/pytools/README.md` — hash aggiornati
-- `myhydra/single_pdf/platforms/lv1/scripts/updated_pending_validation/README.md` — hash
+- `myhydra/single_pdf/pytools/README.md` — hash
 
 ### Archiviare
-- `myhydra/single_pdf/platforms/lv2/prompts/history/vlm_measures_v18.md`
-- `myhydra/single_pdf/platforms/lv2/prompts/history/vlm_bitnames_v16.md`
-- `myhydra/single_pdf/platforms/lv2/prompts/history/vlm_bitstates_v19.md`
+- `src/prompts/archive/vlm_measures_v18.md`
+- `src/prompts/archive/vlm_bitnames_v16.md`
+- `src/prompts/archive/vlm_bitstates_v19.md`
 
 ## Test
 

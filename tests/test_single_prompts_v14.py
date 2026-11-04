@@ -5,14 +5,14 @@ import pathlib
 
 def test_tre_prompt_con_regole_chiave():
     import pathlib
-    base = pathlib.Path("src/prompts")
+    base = pathlib.Path("src/prompts/archive")
     assert "tag" in (base / "vlm_measures_v14.md").read_text()
     assert "V23" in (base / "vlm_bitnames_v14.md").read_text()
     assert "state_on" in (base / "vlm_bitstates_v14.md").read_text()
 
 
 def test_rami_separati_e_tracciabilita_v14():
-    base = pathlib.Path("src/prompts")
+    base = pathlib.Path("src/prompts/archive")
     measures = (base / "vlm_measures_v14.md").read_text()
     bitnames = (base / "vlm_bitnames_v14.md").read_text()
     bitstates = (base / "vlm_bitstates_v14.md").read_text()
@@ -34,13 +34,9 @@ def test_rami_separati_e_tracciabilita_v14():
 
 
 def test_stati_sparsi_v15_solo_righe_valorizzate():
-    base = pathlib.Path("src/prompts")
+    base = pathlib.Path("src/prompts/archive")
     v15 = (base / "vlm_bitstates_v15.md").read_text()
     assert "V27" in v15
     assert "D7" in v15
     assert "state_off" in v15
     assert "modbus_register" not in v15
-    current = pathlib.Path(
-        "myhydra/single_pdf/platforms/lv2/prompts/current/"
-        "vlm_bitstates_v15.md").read_text()
-    assert current == v15

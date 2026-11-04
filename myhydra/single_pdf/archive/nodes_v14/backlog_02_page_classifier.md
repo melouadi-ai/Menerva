@@ -15,4 +15,4 @@ Le pagine problema sono già note. Sono le pagine di indice delle mappe registri
 
 La soluzione più economica resta **una regola del prompt**, non un nodo: il classificatore costerebbe un giro di VLM per pagina, mentre la regola costa un if.
 
-- **Riferimenti:** [Double PDF LV2-02, classificatore attivo](../../double_pdf/nodes/lv2_02_page_classifier.md), [prompt del classificatore](../../double_pdf/prompts/page_classifier_v1.md), [ADR-001](../../../docs/architettura/ADR-001-merge-multi-page.md), [`../../../TODO.md`](../../../TODO.md).
+- **Riferimenti:** [Double PDF LV2-02, classificatore attivo](../../../double_pdf/nodes/lv2_02_page_classifier.md), [prompt del classificatore](../../../double_pdf/platforms/lv2/page_classifier/prompts/history/page_classifier_v1.md), [ADR-001](../../../../docs/architettura/ADR-001-merge-multi-page.md), [`../../../TODO.md`](../../../../TODO.md).

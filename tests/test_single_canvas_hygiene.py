@@ -1,12 +1,16 @@
 """Igiene canvas Single PDF: copie incollabili sotto budget e standalone (Task 8).
 
-Le copie canvas in myhydra/single_pdf/platforms/ sono cio' che si incolla
-nei nodi MyHydra: devono restare sotto il budget di paste (34.3 KB, pari
-alla misura empirica: 34.365 byte = rosso, 32.766 = verde il 6/10/2026,
-32.852 = verde il 13/10/2026, 33.520 = verde il 28/10/2026; oggi 33.245),
-senza def/class/lambda,
-con ERROR JSON mai blank dove il contratto lo prevede e con le guardie
-(copertura + linkage) attive nella copia incollata, non solo in src/.
+Le copie canvas vivono **solo** in `myhydra/single_pdf/pytools/*_canvas.py`:
+sono cio' che si incolla nei nodi MyHydra e la copia documentata (`*.py`)
+e' la fonte. Devono restare sotto il budget di paste (34.3 KB, pari alla
+misura empirica: 34.365 byte = rosso, 32.766 = verde il 6/10/2026, 32.852 =
+verde il 13/10/2026, 33.520 = verde il 28/10/2026; oggi 34.113), senza
+def/class/lambda, con ERROR JSON mai blank dove il contratto lo prevede e
+con le guardie (copertura + linkage) attive nella copia incollata, non solo
+in src/.
+
+Dopo la riorganizzazione del 4/11/2026 non esistono piu' copie duplicate in
+`myhydra/single_pdf/platforms/*/scripts/`: un solo posto per script.
 """
 
 import ast
@@ -18,23 +22,18 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).parent.parent
-PLATFORMS = REPO / "myhydra" / "single_pdf" / "platforms"
-STORE_PYTOOLS = REPO / "myhydra" / "single_pdf" / "pytools"
+SINGLE = REPO / "myhydra" / "single_pdf"
+PLATFORMS = SINGLE / "platforms"
+STORE_PYTOOLS = SINGLE / "pytools"
 STORE_PROMPTS = REPO / "src" / "prompts"
-NODES = REPO / "myhydra" / "single_pdf" / "nodes"
+PROMPT_ARCHIVE = STORE_PROMPTS / "archive"
+PASTE_PROMPTS = SINGLE / "prompt"
+NODES = SINGLE / "nodes"
 
-CONSOLIDATOR_CANVAS = (PLATFORMS / "lv1" / "scripts"
-                       / "updated_pending_validation"
-                       / "consolidator_canvas.py")
-CREATOR_CANVAS = (PLATFORMS / "lv1" / "scripts"
-                  / "updated_pending_validation"
-                  / "json_creator_v15_canvas.py")
-ORACLE_CANVAS = (PLATFORMS / "lv1" / "scripts"
-                 / "updated_pending_validation"
-                 / "oracle_apply_canvas.py")
-ASSEMBLER_CANVAS = (PLATFORMS / "lv2" / "scripts"
-                    / "updated_pending_validation"
-                    / "page_assembler_canvas.py")
+CONSOLIDATOR_CANVAS = STORE_PYTOOLS / "consolidator_canvas.py"
+CREATOR_CANVAS = STORE_PYTOOLS / "json_creator_v15_canvas.py"
+ORACLE_CANVAS = STORE_PYTOOLS / "oracle_apply_canvas.py"
+ASSEMBLER_CANVAS = STORE_PYTOOLS / "page_assembler_canvas.py"
 CANVAS_COPIES = [CONSOLIDATOR_CANVAS, CREATOR_CANVAS, ORACLE_CANVAS,
                  ASSEMBLER_CANVAS]
 
@@ -47,15 +46,11 @@ def test_canvas_copies_sotto_budget_e_standalone():
     assert max_size < 34300
 
 
-def test_canvas_copies_byte_identical_to_store():
-    assert (CONSOLIDATOR_CANVAS.read_bytes()
-            == (STORE_PYTOOLS / "consolidator_canvas.py").read_bytes())
-    assert (CREATOR_CANVAS.read_bytes()
-            == (STORE_PYTOOLS / "json_creator_v15_canvas.py").read_bytes())
-    assert (ORACLE_CANVAS.read_bytes()
-            == (STORE_PYTOOLS / "oracle_apply_canvas.py").read_bytes())
-    assert (ASSEMBLER_CANVAS.read_bytes()
-            == (STORE_PYTOOLS / "page_assembler_canvas.py").read_bytes())
+def test_una_sola_copia_canvas_per_script():
+    """Nessuna copia duplicata fuori da pytools/: un solo posto."""
+    duplicates = [p for p in SINGLE.rglob("*_canvas.py")
+                  if p.parent != STORE_PYTOOLS]
+    assert duplicates == [], duplicates
 
 
 def test_canvas_senza_def_class_lambda():
@@ -180,15 +175,18 @@ def test_guardia_linkage_presente_nella_copia_canvas():
     assert "BITINFO NON COLLEGATI" in source
 
 
-def test_prompts_current_byte_identical_to_src():
-    current = PLATFORMS / "lv2" / "prompts" / "current"
-    history = PLATFORMS / "lv2" / "prompts" / "history"
-    for name in ("vlm_measures_v14.md", "vlm_bitnames_v14.md",
-                 "vlm_bitstates_v15.md"):
-        assert ((current / name).read_bytes()
-                == (STORE_PROMPTS / name).read_bytes()), name
-    assert ((history / "vlm_extraction_v13.md").read_bytes()
-            == (STORE_PROMPTS / "vlm_extraction_v13.md").read_bytes())
+def test_prompt_correnti_una_copia_di_paste():
+    for name in ("vlm_unified_v1.md", "vlm_oracle_v1.md"):
+        assert ((STORE_PROMPTS / name).read_bytes()
+                == (PASTE_PROMPTS / name).read_bytes()), name
+
+
+def test_prompt_storici_solo_in_archivio():
+    assert PROMPT_ARCHIVE.is_dir()
+    assert (PROMPT_ARCHIVE / "vlm_extraction_v13.md").is_file()
+    assert (PROMPT_ARCHIVE / "vlm_measures_v18.md").is_file()
+    assert not (STORE_PROMPTS / "vlm_measures_v18.md").exists()
+    assert not (PASTE_PROMPTS / "vlm_measures_v18.md").exists()
 
 
 def test_v15_hashes_nel_readme_pytools():
@@ -201,26 +199,26 @@ def test_v15_hashes_nel_readme_pytools():
                  "page_assembler.py", "page_assembler_canvas.py"):
         digest = hashlib.sha256((STORE_PYTOOLS / name).read_bytes()).hexdigest()
         assert digest in readme, name
-    platform_readme = (PLATFORMS / "lv1" / "scripts"
-                       / "updated_pending_validation" / "README.md")
-    text = platform_readme.read_text(encoding="utf-8")
-    for name in ("consolidator_canvas.py", "json_creator_v15_canvas.py",
-                 "oracle_apply_canvas.py"):
-        digest = hashlib.sha256(
-            (STORE_PYTOOLS / name).read_bytes()).hexdigest()
-        assert digest in text, name
 
 
-def test_platforms_layout():
+def test_layout_single_pdf():
+    """Fuori da archive/ solo materiale corrente; in platforms/ solo documenti."""
+    assert (SINGLE / "README.md").is_file()
+    assert (SINGLE / "PENDENZE.md").is_file()
+    assert (SINGLE / "prompt" / "README.md").is_file()
+    assert (SINGLE / "pytools" / "README.md").is_file()
+    assert (SINGLE / "nodes" / "README.md").is_file()
+    assert (SINGLE / "archive" / "README.md").is_file()
+    assert (SINGLE / "archive" / "prompts_v13_v19").is_dir()
+    assert (SINGLE / "archive" / "pytools_v4").is_dir()
+    assert (SINGLE / "archive" / "outputs_2026_10").is_dir()
     assert (PLATFORMS / "README.md").is_file()
     assert (PLATFORMS / "lv1" / "README.md").is_file()
     assert (PLATFORMS / "lv2" / "README.md").is_file()
-    assert (PLATFORMS / "lv1" / "scripts" / "in_use" / "README.md").is_file()
-    assert (PLATFORMS / "lv1" / "scripts" / "updated_pending_validation"
-            / "README.md").is_file()
-    assert (PLATFORMS / "lv1" / "scripts" / "parked" / "README.md").is_file()
-    assert (PLATFORMS / "lv2" / "prompts" / "current" / "README.md").is_file()
-    assert (PLATFORMS / "lv2" / "prompts" / "history" / "README.md").is_file()
+    assert not (PLATFORMS / "lv1" / "scripts").exists()
+    assert not (PLATFORMS / "lv2" / "scripts").exists()
+    assert not (PLATFORMS / "lv2" / "prompts").exists()
+    assert (SINGLE / "pdf_input" / "README.md").is_file()
 
 
 def test_checklist_edge_settings_nei_nodi_e_nel_readme():

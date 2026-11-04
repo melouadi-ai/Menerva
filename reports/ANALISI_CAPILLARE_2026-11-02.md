@@ -88,10 +88,10 @@ src/
 | Coppia | Hash | Esito |
 |---|---|---|
 | `src/nodes/json_creator.py` = `myhydra/single_pdf/pytools/json_creator_v15.py` | `423e2588…` | **byte-identici** ✓ |
-| `src/prompts/vlm_unified_v1.md` = `myhydra/single_pdf/prompt/vlm_unified_v1.md` = `myhydra/single_pdf/platforms/lv2/prompts/current/vlm_unified_v1.md` | `d50edd72…` | **3 copie byte-identiche** ✓ |
-| `src/prompts/vlm_bitnames_v16.md` (3 copie) | `3e7e2205…` | ✓ |
-| `src/prompts/vlm_measures_v18.md` (3 copie) | `bf4536a1…` | ✓ |
-| `src/prompts/vlm_bitstates_v19.md` (3 copie) | `2325a235…` | ✓ |
+| `src/prompts/vlm_unified_v1.md` = `myhydra/single_pdf/prompt/vlm_unified_v1.md` = `myhydra/single_pdf/prompt/vlm_unified_v1.md` | `d50edd72…` | **3 copie byte-identiche** ✓ |
+| `src/prompts/archive/vlm_bitnames_v16.md` (3 copie) | `3e7e2205…` | ✓ |
+| `src/prompts/archive/vlm_measures_v18.md` (3 copie) | `bf4536a1…` | ✓ |
+| `src/prompts/archive/vlm_bitstates_v19.md` (3 copie) | `2325a235…` | ✓ |
 
 ### 3.3 Ruff
 

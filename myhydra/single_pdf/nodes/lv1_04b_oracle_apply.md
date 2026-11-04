@@ -8,7 +8,7 @@
     o tap), che contiene una `verifica` per ogni pagina.
 - **CONFIG:** ispezionare le impostazioni di **entrambi** gli edge a ogni
   rewiring (match-condition spurie = wire bloccato in silenzio).
-- **Script:** [`../platforms/lv1/scripts/updated_pending_validation/oracle_apply_canvas.py`](../platforms/lv1/scripts/updated_pending_validation/oracle_apply_canvas.py)
+- **Script:** [`../pytools/oracle_apply_canvas.py`](../pytools/oracle_apply_canvas.py)
   (copia canvas 6.410 byte; documentata in [`../pytools/oracle_apply.py`](../pytools/oracle_apply.py)).
   Riferimento della logica: `_oracle_apply` in `src/nodes/single_consolidator.py`.
 - **Output:** stesso contratto del consolidatore (`{"stations", "warnings",

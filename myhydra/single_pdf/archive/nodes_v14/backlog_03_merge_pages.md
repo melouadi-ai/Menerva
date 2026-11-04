@@ -11,4 +11,4 @@ Il vantaggio è che il merge avviene a livello semantico piccolo, prima della tr
 
 Quindi non serve un nodo separato. Se in futuro il merge crescesse di complessità e meritasse una sua scheda, il posto naturale è dentro `json_creator.py`, non un nodo separato.
 
-- **Riferimenti:** [legacy LV1 nodo 5, Pages Merger](../../../legacy/single_pdf/LV1/Node%205%20Pages%20Merger%20Pytool.txt), [`lv1_04_json_creator.md`](lv1_04_json_creator.md), [ADR-001](../../../docs/architettura/ADR-001-merge-multi-page.md), [`../../../TODO.md`](../../../TODO.md).
+- **Riferimenti:** [legacy LV1 nodo 5, Pages Merger](../../../../legacy/single_pdf/LV1/Node%205%20Pages%20Merger%20Pytool.txt), [`lv1_04_json_creator.md`](../../nodes/lv1_05_json_creator.md), [ADR-001](../../../../docs/architettura/ADR-001-merge-multi-page.md), [`../../../TODO.md`](../../../../TODO.md).

@@ -30,7 +30,7 @@ certo). Vive nel pytool separato `oracle_apply.py` / `oracle_apply_canvas.py`
 
 **Files:**
 - Create: `src/prompts/vlm_oracle_v1.md`
-- Create: `myhydra/single_pdf/platforms/lv2/prompts/current/vlm_oracle_v1.md`
+- Create: `myhydra/single_pdf/prompt/vlm_oracle_v1.md`
 - Create: `myhydra/single_pdf/prompt/vlm_oracle_v1.md`
 - Test: `tests/test_single_oracle.py`
 
@@ -64,7 +64,7 @@ certo). Vive nel pytool separato `oracle_apply.py` / `oracle_apply_canvas.py`
 **Files:**
 - Modify: `src/nodes/single_consolidator.py` (`_oracle_apply`, `verifica` preservata dal raggruppamento)
 - Create: `myhydra/single_pdf/pytools/oracle_apply.py` (6.410 B canvas, due edge)
-- Create: `myhydra/single_pdf/platforms/lv1/scripts/updated_pending_validation/oracle_apply_canvas.py`
+- Create: `myhydra/single_pdf/pytools/oracle_apply_canvas.py`
 - Test: `tests/test_single_oracle_apply.py`, `tests/test_single_oracle_apply_canvas.py`
 - **Deviazione:** l'apply non entra nel consolidatore canvas (39.073 B = rosso); il consolidatore resta a 34.113 B e inoltra `verifica`.
 
@@ -141,7 +141,7 @@ certo). Vive nel pytool separato `oracle_apply.py` / `oracle_apply_canvas.py`
 
 **Files:**
 - Modify: `myhydra/single_pdf/pytools/README.md`
-- Modify: `myhydra/single_pdf/platforms/lv1/scripts/updated_pending_validation/README.md`
+- Modify: `myhydra/single_pdf/pytools/README.md`
 
 - [x] **Step 1: Aggiornare hash** (consolidator, canvas, creator)
 

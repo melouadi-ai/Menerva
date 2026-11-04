@@ -2,7 +2,7 @@
 
 Le due fonti della verità per questo caso. **Il confronto output↔PDF si fa su
 questi file, non sul ground truth legacy**: il legacy sbaglia (vedi
-[`../test_adas_caso6_pdf_truth.py`](../test_adas_caso6_pdf_truth.py)).
+[`../test_adas_caso6_pdf_truth.py`](../../../../../tests/test_adas_caso6_pdf_truth.py)).
 
 | File | Ruolo | Pagine | SHA-256 (primi 16) |
 |---|---|---|---|

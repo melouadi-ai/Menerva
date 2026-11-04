@@ -413,9 +413,9 @@ Catalogo per intestazioni e dimensioni; i file sorgente sono mantenuti intatti. 
 - `src/prompts/legacy/single_prompt_eva.txt` — 289 righe, 11613 caratteri; Role / Goal / PHASE 1 — PRE-SCAN (do this before generating any JSON); SHA-256 `de648a5e47`.
 - `src/prompts/legacy/vlm_extraction_v10bis.md` — 150 righe, 7504 caratteri; RUOLO / CONTESTO / OBIETTIVO; SHA-256 `5740206ced`.
 - `src/prompts/legacy/vlm_extraction_v12_pre_v13.md` — 185 righe, 9903 caratteri; RUOLO / CONTESTO / OBIETTIVO; SHA-256 `d3615039d5`.
-- `src/prompts/vlm_extraction_v11.md` — 160 righe, 8235 caratteri; RUOLO / CONTESTO / OBIETTIVO; SHA-256 `a9e1664b3c`.
-- `src/prompts/vlm_extraction_v12.md` — 198 righe, 10580 caratteri; RUOLO / CONTESTO / OBIETTIVO; SHA-256 `7fe80cd5ea`.
-- `src/prompts/vlm_extraction_v13.md` — 198 righe, 10580 caratteri; RUOLO / CONTESTO / OBIETTIVO; SHA-256 `7fe80cd5ea`.
+- `src/prompts/archive/vlm_extraction_v11.md` — 160 righe, 8235 caratteri; RUOLO / CONTESTO / OBIETTIVO; SHA-256 `a9e1664b3c`.
+- `src/prompts/archive/vlm_extraction_v12.md` — 198 righe, 10580 caratteri; RUOLO / CONTESTO / OBIETTIVO; SHA-256 `7fe80cd5ea`.
+- `src/prompts/archive/vlm_extraction_v13.md` — 198 righe, 10580 caratteri; RUOLO / CONTESTO / OBIETTIVO; SHA-256 `7fe80cd5ea`.
 - `tests/double_pdf_outputs/README.md` — 20 righe, 1013 caratteri; Double PDF Outputs tests / Stato / Ground truth di riferimento (legacy GAIA); SHA-256 `a3c865d3b0`.
 - `tests/single_pdf_outputs/OUTPUT PROTEC 2.txt` — 950 righe, 25519 caratteri; [; SHA-256 `8b03be8c31`.
 - `tests/single_pdf_outputs/OUTPUT SIEMENS 2.txt` — 4566 righe, 123293 caratteri; [; SHA-256 `f2f545cb5c`.
@@ -426,7 +426,7 @@ Catalogo per intestazioni e dimensioni; i file sorgente sono mantenuti intatti. 
 Gruppi TXT/Markdown identici:
 - `6f239050cb84`: `docs/references/materiale_tutor/Prompt_Iniziale_tutor.txt`, `legacy/misc/1pdf_new_json_new (1).txt`
 - `8d4f4d2b1acd`: `legacy/single_pdf/LV1/Node 2 Medex.txt`, `legacy/single_pdf/LV1/Node 3 (Itearivo guarda LVL2).txt`
-- `7fe80cd5ea7b`: `src/prompts/vlm_extraction_v12.md`, `src/prompts/vlm_extraction_v13.md`
+- `7fe80cd5ea7b`: `src/prompts/archive/vlm_extraction_v12.md`, `src/prompts/archive/vlm_extraction_v13.md`
 
 ## Excel (8 file)
 

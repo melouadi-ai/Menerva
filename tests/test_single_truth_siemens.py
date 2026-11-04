@@ -39,7 +39,7 @@ CONFRONTA_PATH = os.path.join(
     REPO, "myhydra", "single_pdf", "verifica_pdf", "confronta.py")
 PER_CASO = os.path.join(
     REPO, "myhydra", "single_pdf", "verifica_pdf", "per_caso")
-OUT_DIR = os.path.join(REPO, "myhydra", "single_pdf", "Outputs MYHYDRA")
+OUT_DIR = os.path.join(REPO, "myhydra", "single_pdf", "archive", "outputs_2026_10")
 GT_SIEMENS = os.path.join(
     REPO, "data", "test_outputs", "Json_4_Cliente_SIEMENS_2.json")
 

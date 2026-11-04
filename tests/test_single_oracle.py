@@ -3,11 +3,8 @@
 from pathlib import Path
 
 SRC = Path(__file__).parent.parent / "src" / "prompts" / "vlm_oracle_v1.md"
-PLATFORM = (Path(__file__).parent.parent / "myhydra" / "single_pdf"
-            / "platforms" / "lv2" / "prompts" / "current"
-            / "vlm_oracle_v1.md")
-PYTOOLS = (Path(__file__).parent.parent / "myhydra" / "single_pdf"
-           / "prompt" / "vlm_oracle_v1.md")
+PASTE = (Path(__file__).parent.parent / "myhydra" / "single_pdf"
+         / "prompt" / "vlm_oracle_v1.md")
 
 
 def _flat(path):
@@ -16,8 +13,7 @@ def _flat(path):
 
 def test_prompt_esiste():
     assert SRC.exists()
-    assert PLATFORM.exists()
-    assert PYTOOLS.exists()
+    assert PASTE.exists()
 
 
 def test_regole_presenti():
@@ -52,8 +48,7 @@ def test_junk_patterns():
 
 def test_copie_byte_identiche():
     src = SRC.read_bytes()
-    assert PLATFORM.read_bytes() == src
-    assert PYTOOLS.read_bytes() == src
+    assert PASTE.read_bytes() == src
 
 
 def test_schema_output():

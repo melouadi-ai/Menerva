@@ -8,7 +8,7 @@
     (5 categorie + `errore_input`, schema in `vlm_oracle_v1.md`).
 - **CONFIG:** ispezionare le impostazioni di **entrambi** gli edge a ogni
   rewiring (match-condition spurie = wire bloccato in silenzio).
-- **Script:** [`../platforms/lv2/scripts/updated_pending_validation/page_assembler_canvas.py`](../platforms/lv2/scripts/updated_pending_validation/page_assembler_canvas.py)
+- **Script:** [`../pytools/page_assembler_canvas.py`](../pytools/page_assembler_canvas.py)
   (copia canvas 3.108 byte; documentata in
   [`../pytools/page_assembler.py`](../pytools/page_assembler.py)).
 - **Output:** `{"page_no", "stations", "verifica"|null,

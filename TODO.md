@@ -21,7 +21,7 @@ Per generare il codice BISON con linearizzazione (ZE/SE/ZI/SI), servono:
 ### Riferimenti
 - Manuale: `docs/architettura/Manuale sviluppo linguaggio Manager rev03.pdf`
 - Script attuale: `src/nodes/json_creator.py` (variabile `VM_DEFAULT`)
-- Contratto VLM: `src/prompts/vlm_extraction_v11.md` (campi `scale_elec_*`, `scale_eng_*`, `limit_hour`, `limit_day`)
+- Contratto VLM: `src/prompts/archive/vlm_extraction_v11.md` (campi `scale_elec_*`, `scale_eng_*`, `limit_hour`, `limit_day`)
 - Contratto ADAS: `docs/contracts/ADAS_FINAL.md`
 
 ### Azione quando arrivano le specifiche

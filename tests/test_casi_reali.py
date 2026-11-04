@@ -232,7 +232,7 @@ def test_quadratura_su_tutti_i_casi_reali():
     parte e' quella che ha trovato il difetto: un DRIVERPRIVATE valido che
     punta pero' a un registro assente.
     """
-    pdf_dir = os.path.join(ROOT, "myhydra", "single_pdf", "PDFs per il confronto")
+    pdf_dir = os.path.join(ROOT, "myhydra", "single_pdf", "pdf_input")
     if not os.path.isdir(pdf_dir):
         _test("cartella dei PDF disponibile per la quadratura", False,
               "non trovata: %s" % pdf_dir)
@@ -257,7 +257,7 @@ def test_quadratura_su_tutti_i_casi_reali():
         attesi[pdf] = set(re.findall(r"\b4\d{4}\b", testo))
 
     # gli output storici, per il confronto dei registri
-    out_dir = os.path.join(ROOT, "myhydra", "single_pdf", "Outputs MYHYDRA")
+    out_dir = os.path.join(ROOT, "myhydra", "single_pdf", "archive", "outputs_2026_10")
     for pdf, registri_pdf in attesi.items():
         stem = os.path.splitext(pdf)[0]
         mappa = {"Mappatura_1_Cliente_SMA_1": "Output SMA_1.txt",
@@ -304,7 +304,7 @@ def test_registro_zero_assente_negli_output_storici():
 
     Prima della v4.3 ne conteneva: le cinque grandezze derivate di SMA_1.
     """
-    out_dir = os.path.join(ROOT, "myhydra", "single_pdf", "Outputs MYHYDRA")
+    out_dir = os.path.join(ROOT, "myhydra", "single_pdf", "archive", "outputs_2026_10")
     if not os.path.isdir(out_dir):
         return
     trovati = []

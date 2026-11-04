@@ -36,7 +36,7 @@ Per ogni caso, tre file in `per_caso/<caso>/`:
 | `caso_3_protec_2` | PROTEC | 2 | `protec` | 79 righe, 39 presenti, 40 saltate da regola, 0 assenti. |
 | `caso_4_siemens_2` | SIEMENS | 29 | `siemens` | 1116 righe, 236 presenti, 726 assenti. Perdita a monte, vedi sotto. |
 
-I PDF stanno in `../PDFs per il confronto/` (hash e note in quel README), gli output in `../Outputs MYHYDRA/`. Gli output sono byte-identici a quelli in `tests/single_pdf_outputs/`: è lo stesso run, copiato per comodità.
+I PDF stanno in `../pdf_input/` (hash e note in quel README), gli output in `../Outputs MYHYDRA/`. Gli output sono byte-identici a quelli in `tests/single_pdf_outputs/`: è lo stesso run, copiato per comodità.
 
 ## Le classi di scostamento
 

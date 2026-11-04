@@ -136,8 +136,8 @@ Schema in `docs/contracts/ADAS_FINAL.md` (stale e in conflitto col codice, vedi 
 - Verdetto finale: `myhydra/single_pdf/verifica_pdf/verdetto_finale.py`.
 
 ### Fixture
-- Input: `data/test_inputs/Mappatura_{1..4}_Cliente_{SMA_1,PROTEC_1,PROTEC_2,SIEMENS_2}.json` (intermedio), PDF in `myhydra/single_pdf/PDFs per il confronto/`.
-- Output storici: `tests/single_pdf_outputs/`, `myhydra/single_pdf/Outputs MYHYDRA/`.
+- Input: `data/test_inputs/Mappatura_{1..4}_Cliente_{SMA_1,PROTEC_1,PROTEC_2,SIEMENS_2}.json` (intermedio), PDF in `myhydra/single_pdf/pdf_input/`.
+- Output storici: `tests/single_pdf_outputs/`, `myhydra/single_pdf/archive/outputs_2026_10/`.
 - Observed (sanitized runtime): `tests/single_pdf_outputs/`, nomi `observed_`/`expected_`.
 
 ## 7. Cosa il redesign deve produrre
@@ -170,12 +170,12 @@ L'AI deve proporre (e, su approvazione, implementare) almeno:
 - `myhydra/single_pdf/PENDENZE.md` — registro lavoro.
 - `myhydra/single_pdf/platforms/lv1/README.md` — catena e script.
 - `myhydra/single_pdf/nodes/lv1_03..05*.md` — schede nodi.
-- `myhydra/single_pdf/flusso_cloud_osservato.md` — flusso cloud osservato.
+- `myhydra/single_pdf/archive/nodes_v14/flusso_cloud_osservato.md` — flusso cloud osservato.
 - `docs/contracts/VLM_INTERMEDIATE.md`, `docs/contracts/ADAS_FINAL.md`.
 - `docs/architettura/ADR-001-merge-multi-page.md` (se presente).
 - `src/nodes/json_creator.py`, `src/nodes/single_consolidator.py`, `src/nodes/single_filters.py`.
 - `src/models/vlm_schema.py`, `src/models/validators.py`.
-- `src/prompts/vlm_extraction_v13.md`, `vlm_measures_v18.md`, `vlm_bitnames_v16.md`, `vlm_bitstates_v19.md`.
+- `src/prompts/archive/vlm_extraction_v13.md`, `vlm_measures_v18.md`, `vlm_bitnames_v16.md`, `vlm_bitstates_v19.md`.
 - `myhydra/single_pdf/pytools/` — copie canvas.
 - `tests/` — suite.
 

@@ -13,9 +13,9 @@
   e non verifica nulla.
 - **Prompt correnti:**
   - [`../prompt/vlm_unified_v1.md`](../prompt/vlm_unified_v1.md) (copia canvas:
-    [`../platforms/lv2/prompts/current/vlm_unified_v1.md`](../platforms/lv2/prompts/current/vlm_unified_v1.md));
+    [`../prompt/vlm_unified_v1.md`](../prompt/vlm_unified_v1.md));
   - [`../prompt/vlm_oracle_v1.md`](../prompt/vlm_oracle_v1.md) (copia canvas:
-    [`../platforms/lv2/prompts/current/vlm_oracle_v1.md`](../platforms/lv2/prompts/current/vlm_oracle_v1.md)).
+    [`../prompt/vlm_oracle_v1.md`](../prompt/vlm_oracle_v1.md)).
 - **Stato:** copie byte-identiche a `src/prompts/`; il canvas attivo esegue
   già UNIFIED (nodo etichettato `UNIFIED`), l'ORACOLO resta da incollare.
 

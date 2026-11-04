@@ -1,6 +1,6 @@
 # Panoramica Single PDF — 8 ott 2026 (run 3.6/3.8, seriale + shard)
 
-Riferimento: SIEMENS 29 pagine (`../PDFs per il confronto/Mappatura_4_Cliente_SMI..._SIEMENS_2.pdf`,
+Riferimento: SIEMENS 29 pagine (`../pdf_input/Mappatura_4_Cliente_SMI..._SIEMENS_2.pdf`,
 tabella verità `per_caso/caso_4_siemens_2/tabella_pdf.json`, 1116 righe).
 
 ## Metodo (vincolante da qui in poi)

@@ -25,7 +25,7 @@ import difflib
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 SINGLE = os.path.dirname(BASE)
-PDF_DIR = os.path.join(SINGLE, "PDFs per il confronto")
+PDF_DIR = os.path.join(SINGLE, "pdf_input")
 OUT_DIR = os.path.join(SINGLE, "Outputs MYHYDRA")
 OUT_RES = os.path.join(BASE, "per_caso")
 

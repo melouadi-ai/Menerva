@@ -5,8 +5,8 @@ alimentati dalla stessa immagine di LV2-01:
 
 | Istanze | Prompt (Powered identity) | Campo Prompt | Context | Output |
 |---|---|---|---|---|
-| UNIFIED | [`prompts/current/vlm_unified_v1.md`](prompts/current/vlm_unified_v1.md) | `{edge.media}[N]` | vuoto | `{"righe_viste", "checklist", "stations"}` |
-| ORACOLO | [`prompts/current/vlm_oracle_v1.md`](prompts/current/vlm_oracle_v1.md) | `{edge.media}[N]` | `{edge}[M]` = testo di UNIFIED | `{"page_no", "errore_input", 5 categorie}` |
+| UNIFIED | [`../../prompt/vlm_unified_v1.md`](../../prompt/vlm_unified_v1.md) | `{edge.media}[N]` | vuoto | `{"righe_viste", "checklist", "stations"}` |
+| ORACOLO | [`../../prompt/vlm_oracle_v1.md`](../../prompt/vlm_oracle_v1.md) | `{edge.media}[N]` | `{edge}[M]` = testo di UNIFIED | `{"page_no", "errore_input", 5 categorie}` |
 
 `N` e `M` sono **locali al canvas**: ricontrollarli a ogni rewiring, come
 gli `{edge}[N]` dei Pytool (checklist in [`../README.md`](../README.md)).
@@ -29,7 +29,7 @@ un blocco con le sole 5 categorie non è né `stations` né `rows`, e
 `_group_branches` lo rifiuta (`blocco senza stations ne rows`). Serve un
 nodo che li unisca:
 
-- [`scripts/updated_pending_validation/page_assembler_canvas.py`](scripts/updated_pending_validation/page_assembler_canvas.py)
+- [`../../pytools/page_assembler_canvas.py`](../../pytools/page_assembler_canvas.py)
   (2.960 byte) — due edge: `raw_u = {edge}[2]`, `raw_o = {edge}[5]`.
   Emette `{"page_no", "stations", "verifica", "assemble_warnings"}`.
 
@@ -80,7 +80,7 @@ applica al consolidato.
 ## Prompt: correnti e archiviati
 
 Correnti (da incollare nei due visiomaru): `vlm_unified_v1.md`,
-`vlm_oracle_v1.md`. Archiviati in [`prompts/history/`](prompts/history/):
+`vlm_oracle_v1.md`. Archiviati in [`src/prompts/archive/`](../../../../src/prompts/archive/):
 `vlm_measures_v18.md`, `vlm_bitnames_v16.md`, `vlm_bitstates_v19.md`
 (i tre rami v14) e i predecessori. Inventario completo e hash in
 [`../../prompt/README.md`](../../prompt/README.md).

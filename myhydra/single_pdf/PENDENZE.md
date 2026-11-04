@@ -4,11 +4,25 @@ Registro di lavoro compilato il 1 ottobre 2026 durante una sessione di validazio
 
 Ogni voce ha la sua evidenza e il comando per ricontrollarla. Ordinato per impatto.
 
+> **Stato al 4 novembre 2026.** Lo stato corrente del flusso è in
+> [`README.md`](README.md). Questo file è il **registro storico** delle
+> verifiche di ottobre: i blocchi A–D descrivono la pipeline v14, ormai
+> archiviata in [`archive/`](archive/README.md). Le voci A1 e A2 sono chiuse;
+> restano aperte solo le decisioni elencate nel riepilogo in fondo.
+> I percorsi citati sono stati riallineati alla struttura corrente
+> (`archive/pytools_v4/`, `archive/outputs_2026_10/`,
+> `archive/fixtures_v14/`, `pytools/`, `prompt/`).
+
 ---
 
 ## Dove siamo
 
 Il redesign (v14/v15) è completato: prompt v14, consolidatore v14, JSON CREATOR v15. La pipeline pre-redesign (prompt v13, pytool v4.3) resta verificata contro i PDF reali come baseline.
+
+> Dal 2 novembre 2026 il redesign v14/v15 è a sua volta **superato** dal v2
+> (`UNIFIED` + `ORACOLO` + `PAGE_ASSEMBLER` + `ORACLE_APPLY`). I prompt dei
+> 3 rami e il creator v4.x sono in [`archive/`](archive/README.md): non si
+> incollano più.
 
 Stato verificato oggi:
 
@@ -59,18 +73,18 @@ Test da correggere insieme: `tests/test_casi_reali.py::test_warning_copertura` e
 
 ```text
 src/nodes/json_creator.py                      73f4c830...  (v4.3)
-myhydra/single_pdf/pytools/json_creator_v4_2.py 152ff300...  (v4.2)
+myhydra/single_pdf/archive/pytools_v4/json_creator_v4_2.py 152ff300...  (v4.2)
 ```
 
 Il file in `myhydra/` è ancora la v4.2, e l'hash dichiarato in `pytools/README.md` è quello della v4.2, quindi l'hash è **corretto rispetto al file che c'è**, ma il file non è quello in uso.
 
-Se qualcuno prende lo script da `myhydra/single_pdf/pytools/` per incollarlo sul canvas, usa la v4.2: le misure a registro 0 e gli avvisi di copertura non ci sono.
+Se qualcuno prende lo script da `myhydra/single_pdf/archive/pytools_v4/` per incollarlo sul canvas, usa la v4.2: le misure a registro 0 e gli avvisi di copertura non ci sono.
 
 Da fare quando A1 è risolto: sincronizzare la copia, rinominarla in `json_creator_v4_3.py` e aggiornare hash e versione nel README. Non prima, altrimenti si sincronizza due volte.
 
 ### A3. Le fixture storiche contengono ancora il difetto che la v4.3 corregge
 
-`Outputs MYHYDRA/Output SMA_1.txt` ha **6 misure con `DRIVERPRIVATE` a zero**:
+`archive/outputs_2026_10/Output SMA_1.txt` ha **6 misure con `DRIVERPRIVATE` a zero**:
 
 | Stazione | Misura | Nel PDF |
 |---|---|---|
@@ -93,7 +107,7 @@ Non è un errore: sono la baseline del run storico. Ma `test_registro_zero_assen
 
 ### B1. Indirizzi con zeri iniziali
 
-`src/prompts/vlm_extraction_v13.md` e `src/nodes/json_creator.py` trattano due convenzioni diverse come se fossero una.
+`src/prompts/archive/vlm_extraction_v13.md` e `src/nodes/json_creator.py` trattano due convenzioni diverse come se fossero una.
 
 Nel PDF SMA_1:
 - sezioni analogiche: `40001`
@@ -167,7 +181,7 @@ Non tarare la regola per farla combaciare con l'output: sarebbe circolare.
 
 ### C3. Le fixture senza il campo `data_type`
 
-`test/caso_2_protec_1/inputs/vlm_raw_PROTEC_1_2pages.json` è anteriore alla regola V25 e non ha `data_type`. L'output corrispondente sì.
+`archive/fixtures_v14/caso_2_protec_1/inputs/vlm_raw_PROTEC_1_2pages.json` è anteriore alla regola V25 e non ha `data_type`. L'output corrispondente sì.
 
 La conseguenza è che **la regola V25 non è esercitata da nessun test**: formato analogico 150 o 250 a seconda del `data_type` dichiarato è una delle due novità della v4.2 e non è mai stata provata su dati reali.
 
@@ -214,7 +228,7 @@ Correzione rispetto a una nota precedente: in PROTEC_1, alla riga `40001.2`, il 
 
 Quindi il VLM ha trascritto fedelmente e il ground truth legacy è stato quello che ha corretto di nascosto. Vale la pena saperlo prima di giudicare qualità dell'estrazione: è una divergenza di politica, non un errore.
 
-`test/caso_2_protec_1/README.md` contiene ancora l'affermazione opposta. Da correggere quando si affronta D2.
+`archive/fixtures_v14/caso_2_protec_1/README.md` contiene ancora l'affermazione opposta. Da correggere quando si affronta D2.
 
 ---
 
@@ -255,12 +269,12 @@ Aperto dopo il v2: run reale su SIEMENS_2 con UNIFIED+ORACOLO (target
 
 | Nodo | File | Edge | Byte |
 |---|---|---|---|
-| `UNIFIED` (visiomaru LV2) | `platforms/lv2/prompts/current/vlm_unified_v1.md` in Powered identity | `{edge.media}[N]` in Prompt, Context vuoto | — |
-| `ORACOLO` (visiomaru LV2, nuovo) | `platforms/lv2/prompts/current/vlm_oracle_v1.md` in Powered identity | `{edge.media}[N]` in Prompt, **Context = `{edge}[M]`** (testo di UNIFIED) | — |
-| `PAGE ASSEMBLER` (pytool LV2-03, nuovo) | `platforms/lv2/scripts/updated_pending_validation/page_assembler_canvas.py` | `raw_u={edge}[2]`, `raw_o={edge}[5]` | 3.108 |
-| `CONSOLIDATORE` (LV1-04) | `platforms/lv1/scripts/updated_pending_validation/consolidator_canvas.py` | `{edge}[6]` | 34.113 |
-| `ORACLE_APPLY` (pytool LV1-04b, nuovo) | `platforms/lv1/scripts/updated_pending_validation/oracle_apply_canvas.py` | `raw_c={edge}[6]`, `raw_v={edge}[7]` | 6.949 |
-| `JSON CREATOR` (LV1-05) | `platforms/lv1/scripts/updated_pending_validation/json_creator_v15_canvas.py` | `{edge}[2]` | 25.299 |
+| `UNIFIED` (visiomaru LV2) | `prompt/vlm_unified_v1.md` in Powered identity | `{edge.media}[N]` in Prompt, Context vuoto | — |
+| `ORACOLO` (visiomaru LV2, nuovo) | `prompt/vlm_oracle_v1.md` in Powered identity | `{edge.media}[N]` in Prompt, **Context = `{edge}[M]`** (testo di UNIFIED) | — |
+| `PAGE ASSEMBLER` (pytool LV2-03, nuovo) | `pytools/page_assembler_canvas.py` | `raw_u={edge}[2]`, `raw_o={edge}[5]` | 3.108 |
+| `CONSOLIDATORE` (LV1-04) | `pytools/consolidator_canvas.py` | `{edge}[6]` | 34.113 |
+| `ORACLE_APPLY` (pytool LV1-04b, nuovo) | `pytools/oracle_apply_canvas.py` | `raw_c={edge}[6]`, `raw_v={edge}[7]` | 6.949 |
+| `JSON CREATOR` (LV1-05) | `pytools/json_creator_v15_canvas.py` | `{edge}[2]` | 25.299 |
 
 Tutti gli indici sono **locali al canvas**: ricontrollare a ogni rewiring
 e ispezionare le match-condition di ogni edge (checklist in

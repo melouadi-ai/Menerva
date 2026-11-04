@@ -1,39 +1,52 @@
-# LV1 — catena e script (redesign v14/v15)
+# LV1 — catena e script (redesign v2)
 
-## Catena ridisegnata
+## Catena
 
 ```text
-LV1-01 pdf2png --> LV1-02 media2content --> LV1-03 engine (iterativo)
-    --> LV1-04 CONSOLIDATORE (nuovo) --> LV1-05 JSON CREATOR --> JSON ADAS
+LV1-01 PDF2PNG --> LV1-02 MEDIA2CONTENT (1 pagina = 1 gruppo)
+    --> SLICE-A / SLICE-B / SLICE-C (shard paralleli)
+    --> ENGINE A (iterativo, 3 istanze)
+    --> MERGE_AB --> MERGE_ABC
+    --> CONSOLIDATORE --> ORACLE_APPLY --> JSON CREATOR --> JSON ADAS
 ```
 
-Ogni giro del motore invoca il Livello 2 su una pagina (content2media +
-3 rami VLM v14, vedi [`../lv2/`](../lv2/README.md)) e ne accumula il chunk.
-Il consolidatore unisce rami e pagine; il creator trasforma in ADAS.
+Ogni giro di `ENGINE A` invoca il Livello 2 su una pagina (`CONTENT2MEDIA` →
+`UNIFIED` + `ORACOLO` → `PAGE ASSEMBLER`, vedi
+[`../lv2/README.md`](../lv2/README.md)) e ne accumula il chunk. `MERGE_AB` /
+`MERGE_ABC` ricuciono gli shard, `CONSOLIDATORE` fonde pagine e stazioni,
+`ORACLE_APPLY` applica le correzioni dell'oracolo, `JSON CREATOR` trasforma in
+ADAS.
+
+Nel canvas c'è **un solo `ENGINE A` duplicato 3 volte**: le istanze B e C sono
+state rimosse, quindi una modifica su A si propaga a tutti e tre i rami.
 
 ## Quale incollare dove
 
-| Nodo | File da incollare | Placeholder | Stato |
+| Nodo | File da incollare | Edge | Byte |
 |---|---|---|---|
-| LV1-04 CONSOLIDATORE | [`scripts/updated_pending_validation/consolidator_canvas.py`](scripts/updated_pending_validation/consolidator_canvas.py) | `{edge}[5]` (CONFIG: ricontrollare N al rewiring) | Mai incollato: prima run da fare |
-| LV1-05 JSON CREATOR | [`scripts/updated_pending_validation/json_creator_v15_canvas.py`](scripts/updated_pending_validation/json_creator_v15_canvas.py) | `{edge}[4]` (ricontrollare N: il consolidatore sposta gli indici a valle) | Mai incollato in questo flusso: prima run da fare |
-| SLICE-A/B/C (shard paralleli) | [`scripts/updated_pending_validation/slicer_canvas.py`](scripts/updated_pending_validation/slicer_canvas.py) | `{edge}[6]` + costanti `START`/`END` (CONFIG: una copia per shard) | Nuovo: pilota PROTEC 2, poi SIEMENS |
-| MERGER (ricucitura shard) | [`scripts/updated_pending_validation/merger_canvas.py`](scripts/updated_pending_validation/merger_canvas.py) | due `{edge}` (`raw_a`, `raw_b`; per 3 shard: due merger in cascata) | Nuovo: tra motori e CONSOLIDATORE |
+| `SLICE-A/B/C` | [`../../pytools/slicer_canvas.py`](../../pytools/slicer_canvas.py) | `{edge}[N]` + costanti `START`/`END` | 905 |
+| `MERGE_AB`, `MERGE_ABC` | [`../../pytools/merger_canvas.py`](../../pytools/merger_canvas.py) | due `{edge}` (`raw_a`, `raw_b`) | 1.980 |
+| `CONSOLIDATORE` | [`../../pytools/consolidator_canvas.py`](../../pytools/consolidator_canvas.py) | `{edge}[N]` | 34.113 |
+| `ORACLE_APPLY` | [`../../pytools/oracle_apply_canvas.py`](../../pytools/oracle_apply_canvas.py) | due `{edge}` (`raw_c`, `raw_v`) | 6.949 |
+| `JSON CREATOR` | [`../../pytools/json_creator_v15_canvas.py`](../../pytools/json_creator_v15_canvas.py) | `{edge}[N]` | 25.299 |
 
-Entrambe le copie stanno sotto la soglia di paste (33.245 e 23.595 byte;
-guardia test 33.792, 34.365 = rosso certo), senza `def`/`class`/`lambda`, con
-gli stessi AST delle versioni documentate (pinnato da
-`tests/test_single_canvas_hygiene.py` e dai test di parità dei Task 4/5).
-La copia canvas non si edita a mano: la genera
-`pytools/render_canvas.py` dalla documentata.
+Tutte le copie stanno sotto la guardia di progetto (< 34.300 byte; 34.365 =
+rosso certo), senza `def`/`class`/`lambda`, con lo stesso AST delle versioni
+documentate (pinnato da `tests/test_single_canvas_hygiene.py` e dai test di
+parità). La copia canvas **non si edita a mano**: la genera
+[`../../pytools/render_canvas.py`](../../pytools/render_canvas.py).
 
-Dopo la prima run validata sul canvas, le copie migrano in
-[`scripts/in_use/`](scripts/in_use/README.md).
+Gli indici `{edge}[N]` sono **locali al canvas**: vanno riletti a ogni rewiring.
+Un indice sbagliato non dà errore, dà un nodo blank. Checklist in
+[`../README.md`](../README.md).
 
 ## Schede dei nodi
 
 - [`../../nodes/lv1_01_pdf2png.md`](../../nodes/lv1_01_pdf2png.md)
 - [`../../nodes/lv1_02_media2content.md`](../../nodes/lv1_02_media2content.md)
+- [`../../nodes/lv1_02b_slicer.md`](../../nodes/lv1_02b_slicer.md)
 - [`../../nodes/lv1_03_single_pdf_engine.md`](../../nodes/lv1_03_single_pdf_engine.md)
+- [`../../nodes/lv1_03b_merger.md`](../../nodes/lv1_03b_merger.md)
 - [`../../nodes/lv1_04_consolidatore.md`](../../nodes/lv1_04_consolidatore.md)
+- [`../../nodes/lv1_04b_oracle_apply.md`](../../nodes/lv1_04b_oracle_apply.md)
 - [`../../nodes/lv1_05_json_creator.md`](../../nodes/lv1_05_json_creator.md)

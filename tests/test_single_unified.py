@@ -6,8 +6,6 @@ REPO = Path(__file__).parent.parent
 SRC = REPO / "src" / "prompts" / "vlm_unified_v1.md"
 MIRRORS = [
     REPO / "myhydra" / "single_pdf" / "prompt" / "vlm_unified_v1.md",
-    REPO / "myhydra" / "single_pdf" / "platforms" / "lv2" / "prompts"
-    / "current" / "vlm_unified_v1.md",
 ]
 
 CAMPI = (

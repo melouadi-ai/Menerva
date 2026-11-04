@@ -1,8 +1,8 @@
 # Flusso cloud osservato — Single PDF
 
-Questa pagina raccoglie la topologia vista sugli screenshot della piattaforma cloud del 28/09/2026. **Non è il flusso documentato in [`README.md`](README.md)** e non è implementato in questo repository. Serve a tenere traccia di una configurazione diversa, che va chiarita prima di decidere quale sia quella da usare.
+Questa pagina raccoglie la topologia vista sugli screenshot della piattaforma cloud del 28/09/2026. **Non è il flusso documentato in [`README.md`](../../README.md)** e non è implementato in questo repository. Serve a tenere traccia di una configurazione diversa, che va chiarita prima di decidere quale sia quella da usare.
 
-La fonte primaria è [`../../docs/architettura/single_pdf_cloud_corrente.md`](../../docs/architettura/single_pdf_cloud_corrente.md).
+La fonte primaria è [`../../docs/architettura/single_pdf_cloud_corrente.md`](../../../../docs/architettura/single_pdf_cloud_corrente.md).
 
 ## Limiti dell'osservazione
 

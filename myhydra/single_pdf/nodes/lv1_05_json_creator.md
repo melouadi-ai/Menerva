@@ -4,7 +4,7 @@
 - **Input:** `{"stations": [...]}` dal nodo `ORACLE_APPLY` (LV1-04b), letto da `raw = r'''{edge}[2]'''`.
 - **CONFIG:** il `2` è locale al canvas — **ricontrollare N a ogni rewiring** (l'inserimento di CONSOLIDATORE e ORACLE_APPLY sposta gli indici a valle; ispezionare anche le match-condition dell'edge).
 - **Redesign v2:** il creator non sa nulla dell'oracolo: riceve un consolidato già corretto (variabili con `_audit_oracolo` dove toccate).
-- **Script:** [`../platforms/lv1/scripts/updated_pending_validation/json_creator_v15_canvas.py`](../platforms/lv1/scripts/updated_pending_validation/json_creator_v15_canvas.py) (copia canvas, 23.324 byte, indentazione compatta, stesso AST; documentata byte-identica a `src/nodes/json_creator.py` in [`../pytools/json_creator_v15.py`](../pytools/json_creator_v15.py)).
+- **Script:** [`../pytools/json_creator_v15_canvas.py`](../pytools/json_creator_v15_canvas.py) (copia canvas, 25.299 byte, indentazione compatta, stesso AST; documentata byte-identica a `src/nodes/json_creator.py` in [`../pytools/json_creator_v15.py`](../pytools/json_creator_v15.py)).
 - **Output:** lista di stazioni in formato ADAS, con `measures` e `bitinfo`. Emissione via `print(output)` (meccanismo legacy, verificato sul canvas dal Double, nodo 12); `try/except` globale: in errore stampa `{"status": "ERROR", ...}`, mai blank.
 - **Posizione nella catena:** ultimo nodo, dopo il consolidatore. Con l'Opzione B di ADR-001 il merge vive nel consolidatore: qui solo trasformazione deterministica.
 

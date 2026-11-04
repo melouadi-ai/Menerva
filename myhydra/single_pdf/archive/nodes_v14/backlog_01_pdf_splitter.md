@@ -10,4 +10,4 @@ Sotto l'Opzione B di ADR-001 questo compito **è già svolto**,implicitamente, d
 Un nodo splitter esplicito servirebbe se si volesse un controllo diretto sulla segmentazione, per esempio per classificare le pagine prima di elaborarle. Questo non è previsto dal flusso attuale.
 
 - **Da confermare:** se il nodo serva al Double PDF, dove le pagine di due documenti diversi convivono e la segmentazione è più delicata.
-- **Riferimenti:** [`../../../TODO.md`](../../../TODO.md), [legacy](../flusso_cloud_osservato.md).
+- **Riferimenti:** [`../../../TODO.md`](../../../../TODO.md), [legacy](flusso_cloud_osservato.md).

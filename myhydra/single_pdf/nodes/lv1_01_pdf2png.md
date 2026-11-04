@@ -8,4 +8,4 @@
 - **Vincoli:** il nodo non classifica e non estrae nulla. Non deve interpretare il contenuto delle pagine.
 - **Stato:** configurazione nota, ereditata dal legacy. Non è stato osservato un canvas Single PDF aggiornato con questo nodo.
 - **Da confermare:** forma completa del payload di output e mantenimento dell'ordine delle pagine.
-- **Riferimenti:** [`../test/`](../test/) per i casi; [ADR-001](../../../docs/architettura/ADR-001-merge-multi-page.md) per la posizione del nodo nella catena.
+- **Riferimenti:** [`../archive/fixtures_v14/`](../archive/fixtures_v14/) per i casi; [ADR-001](../../../docs/architettura/ADR-001-merge-multi-page.md) per la posizione del nodo nella catena.

@@ -1,7 +1,10 @@
-# PDF da confrontare — Single PDF
+# `pdf_input` — i PDF di riferimento del Single PDF
 
-Le fonti della verità per i quattro casi Single PDF. **Il confronto
+Gli 8 documenti di mappatura PLC/SCADA usati per la verifica. **Il confronto
 output↔PDF si fa su questi file, non sul ground truth legacy.**
+
+Questa cartella si chiamava `PDFs per il confronto`; è stata rinominata il
+4/11/2026 perché il nome vecchio descriveva un'attività, non il contenuto.
 
 | Caso | File | Pagine | SHA-256 |
 |---|---|---|---|
@@ -18,15 +21,15 @@ Copia byte-identica di `docs/protocolli/mappature/`. Se gli hash divergono, la
 cartella locale ha la precedenza per la verifica: il resto del repo non deve
 dipendere da un percorso esterno.
 
-Gli output corrispondenti sono in `../Outputs MYHYDRA/`, e il confronto
-automatico gira in `../verifica_pdf/confronta.py`.
+Gli output delle run di ottobre sono in `../archive/outputs_2026_10/` (riferimento
+storico, non atteso); il confronto automatico gira in `../verifica_pdf/confronta.py`.
 
 ## Attenzione alle copie in `docs/protocolli/mappature/`
 
 La stessa cartella contiene questi documenti più **spezzoni per pagina** e
 ricalcoli di versioni diverse, con suffissi tipo `-1-15_splitted`,
 `-7-29`, `-15-29_second_split`, `-13-14`, `-12`. Sono derivati, non sorgenti.
-Per la verifica usare i quattro file qui sopra. Lo stesso vale per
+Per la verifica usare gli otto file qui sopra. Lo stesso vale per
 `docs/protocolli/clienti_extra/`, che contiene altri clienti (Biogen, CTM
 Rivoli, essity, luxottica, superwatt): utili come campione per la
 generalizzazione, non per il confronto di questi quattro casi.

@@ -1,158 +1,167 @@
-# Pytools — Single PDF
+# Pytools — Single PDF (redesign v2)
 
-## Inventario
+Questa è **l'unica cartella** in cui vivono gli script del Single PDF. Accanto a
+ogni versione documentata (con commenti) c'è la **copia canvas** senza commenti,
+che è quella che si incolla nel nodo MyHydra. Dal 4/11/2026 non esistono più
+copie in `platforms/*/scripts/`: erano duplicati byte-identici e duplicavano
+anche la manutenzione.
 
-| File | Versione | Nodo | Stato |
+## Inventario (6 coppie + 1 generatore)
+
+| Documentato | Canvas (da incollare) | Nodo | Byte canvas |
 |---|---|---|---|
-| [`json_creator_v15.py`](json_creator_v15.py) | `v15` | LV1-05 | Pronto da incollare al rewiring (redesign). |
-| [`json_creator_v4_5.py`](json_creator_v4_5.py) | `v4.5` | — | Storico, superato. |
-| [`json_creator_v4_4.py`](json_creator_v4_4.py) | `v4.4` | — | Storico, superato. |
-| [`json_creator_v4_2.py`](json_creator_v4_2.py) | `v4.2` | — | Storico, superato. |
-| [`consolidator.py`](consolidator.py) | `v14` | CONSOLIDATORE (LV1-04) | Documentato, da incollare dopo rewiring Task 8. |
-| [`consolidator_canvas.py`](consolidator_canvas.py) | `v14` | CONSOLIDATORE (LV1-04) | Copia canvas senza commenti, stesso AST. |
-| [`oracle_apply.py`](oracle_apply.py) | `v1` | ORACLE_APPLY (LV1-04b) | Documentato: applica le correzioni dell'oracolo al consolidato. |
-| [`oracle_apply_canvas.py`](oracle_apply_canvas.py) | `v1` | ORACLE_APPLY (LV1-04b) | Copia canvas senza commenti, stesso AST. |
-| [`page_assembler.py`](page_assembler.py) | `v1` | PAGE ASSEMBLER (LV2-03) | Documentato: unisce UNIFIED + ORACOLO in una pagina. |
-| [`page_assembler_canvas.py`](page_assembler_canvas.py) | `v1` | PAGE ASSEMBLER (LV2-03) | Copia canvas senza commenti, stesso AST. |
+| [`slicer.py`](slicer.py) | [`slicer_canvas.py`](slicer_canvas.py) | `SLICE-A/B/C` (LV1) | 905 |
+| [`merger.py`](merger.py) | [`merger_canvas.py`](merger_canvas.py) | `MERGE_AB`, `MERGE_ABC` (LV1) | 1.980 |
+| [`consolidator.py`](consolidator.py) | [`consolidator_canvas.py`](consolidator_canvas.py) | `CONSOLIDATORE` (LV1-04) | 34.113 |
+| [`oracle_apply.py`](oracle_apply.py) | [`oracle_apply_canvas.py`](oracle_apply_canvas.py) | `ORACLE_APPLY` (LV1-04b) | 6.949 |
+| [`json_creator_v15.py`](json_creator_v15.py) | [`json_creator_v15_canvas.py`](json_creator_v15_canvas.py) | `JSON CREATOR` (LV1-05) | 25.299 |
+| [`page_assembler.py`](page_assembler.py) | [`page_assembler_canvas.py`](page_assembler_canvas.py) | `PAGE ASSEMBLER` (LV2-03) | 3.108 |
 
-## Sorgente e sincronizzazione
+[`render_canvas.py`](render_canvas.py) non è un pytool da incollare: è il
+generatore che produce ogni copia canvas dalla documentata (stesso AST,
+1 spazio di indentazione per livello, commenti e righe vuote rimossi).
 
-Lo script è mantenuto in `src/nodes/json_creator.py` (v15) e copiato qui. La copia è byte-identica; verificarla con:
+Le versioni del periodo precedente (`json_creator_v4_2`, `v4_4`, `v4_5`) sono in
+[`../archive/pytools_v4/`](../archive/pytools_v4/): non si incollano.
 
-```sh
-sha256sum ../../../src/nodes/json_creator.py json_creator_v15.py
+## Sorgente autorevole
+
+`src/` vince sempre.
+
+| Script | Fonte autorevole | Rapporto |
+|---|---|---|
+| `json_creator_v15.py` | `src/nodes/json_creator.py` | **byte-identico** |
+| `consolidator.py` | `src/nodes/single_consolidator.py` | stessa logica, versione inline adattata al canvas |
+| gli altri | il file documentato **è** la fonte | nascono nel ramo MyHydra |
+
+Hash correnti (verificabili con `sha256sum *.py`):
+
+```text
+429fb9bf871a0b18d5fff08897c32b11bd982f07bea289d0d87b0654a5900aaf  json_creator_v15.py   (= src/nodes/json_creator.py)
+5c21f013b11d4886a65030f918feddc242487f3d3f32583e9f3806e252debc20  json_creator_v15_canvas.py
+e9894934da6670a346bae9adc13fa5143bc1eb7b2c7578f8e967119b3a0f67dd  consolidator.py
+8d3c7d67a9fca15a52be226526ee225cbc8f63f4e1b876c2edca9fd40d61e1cc  consolidator_canvas.py
+ee61c0a7c075fed7e8c572d41d40c650889ca21d7eb9ad3473b47ff583a0bd82  oracle_apply.py
+091718500bcc6a0c679de49fc09fd6e42c5f73bd236c6e618ab628d4eb298370  oracle_apply_canvas.py
+822fe612d0958fc8b9c867259af9c26ad8e5a5b3f0857c6244f3314717a1f26c  page_assembler.py
+7edd34825b1e8ef473077feeeafdddb037a87915bfb444761d54396e393e283b  page_assembler_canvas.py
+6a0c7b7836fd35873a2e050005cdbfbccc88762b9d5e28705586657d8c92cbce  merger.py
+50614896814d0f7c8d034d868235b9a9857e4973216d72017d14fe0609a2f347  merger_canvas.py
+3b8faa4d4207179c3890b39b3872405c3232cc0c54a709dbfdf16be08a0baa4c  slicer.py
+c008026276addcdc7cd06ca350647a44cfc29bc3930b82f1eb602bb5f19641a0  slicer_canvas.py
 ```
 
-Hash atteso: `429fb9bf871a0b18d5fff08897c32b11bd982f07bea289d0d87b0654a5900aaf`
+Se un hash diverge, il file autorevole è quello in `src/` (o il documentato):
+si ricopia, non si edita la copia canvas a mano.
 
-La copia canvas senza commenti (`json_creator_v15_canvas.py`, indentazione
-compatta a 1 spazio/livello, stesso AST della documentata) vive in
-`../platforms/lv1/scripts/updated_pending_validation/`; hash atteso:
-`5c21f013b11d4886a65030f918feddc242487f3d3f32583e9f3806e252debc20` (25.299 byte).
+## Rigenerare le copie canvas
 
-**Se gli hash divergono, la fonte autorevole è `src/nodes/`.**
-
-## Consolidatore (redesign v14, Task 4)
-
-Riferimento testabile: `src/nodes/single_consolidator.py`. Copia
-documentata `consolidator.py` (stile inline, `{edge}[6]` da ricontrollare
-dopo il rewiring Task 8) + copia canvas `consolidator_canvas.py` senza
-commenti. La copia canvas **non si scrive a mano**: si genera dalla
-documentata con `render_canvas.py` (stesso AST, 1 spazio per livello, righe
-spezzate dentro parentesi unite), che è anche il controllo di parità in
-`tests/test_single_consolidator_canvas.py`. La copia canvas resta sotto la
-soglia di paste: 34.113 byte (guardia test 34.300; 34.365 = rosso certo).
-Se gli hash divergono, vince `src/`.
+Mai modificare `*_canvas.py` a mano. Si modifica il documentato, poi:
 
 ```sh
-sha256sum myhydra/single_pdf/pytools/consolidator.py myhydra/single_pdf/pytools/consolidator_canvas.py
+.venv/bin/python myhydra/single_pdf/pytools/render_canvas.py           # verifica
+.venv/bin/python myhydra/single_pdf/pytools/render_canvas.py --write   # riscrive
 ```
 
-Hash attesi:
-- `consolidator.py`: `e9894934da6670a346bae9adc13fa5143bc1eb7b2c7578f8e967119b3a0f67dd`
-- `consolidator_canvas.py`: `8d3c7d67a9fca15a52be226526ee225cbc8f63f4e1b876c2edca9fd40d61e1cc`
+Il generatore verifica tutte le coppie e fallisce con codice 1 se una diverge.
+La parità è pinnata anche da `tests/test_single_consolidator_canvas.py`,
+`tests/test_single_shard_merger.py` e `tests/test_single_canvas_hygiene.py`.
 
-## ORACLE_APPLY (redesign v2)
+## Budget di paste
 
-Pytool separato perché il consolidatore canvas è già al limite di paste
-(34.113 B): regole `oracolo_*` e audit trail vivono qui, non nel
-consolidatore. Riceve **due edge**: il consolidato (nodo CONSOLIDATORE) e
-l'output grezzo del motore, che contiene `verifica` per pagina. Applica solo
-aggiungi/annulla (mai sovrascrive): refusi e IP non usati restano warning.
+Misura empirica: 34.365 byte = rosso, 33.520 = verde (6–28 ottobre 2026);
+32.766 = verde. Guardia di progetto: **< 34.300 byte**, controllata da
+`tests/test_single_canvas_hygiene.py`.
 
-- `oracle_apply.py`: `ee61c0a7c075fed7e8c572d41d40c650889ca21d7eb9ad3473b47ff583a0bd82`
-- `oracle_apply_canvas.py`: `091718500bcc6a0c679de49fc09fd6e42c5f73bd236c6e618ab628d4eb298370` (6.949 byte)
+`consolidator_canvas.py` (34.113 B) è il più grande ed è già al limite: per
+questo le regole dell'oracolo stanno in `oracle_apply_canvas.py` (6.949 B) e non
+nel consolidatore. Se un domani una copia sfora, si spezza il nodo, non si
+comprime il file.
 
-Legge anche `assemble_warnings` dalle pagine del motore e li porta nel tap
-come `oracolo_assente` / `oracolo_input_assente`: un oracolo non collegato
-non può restare in silenzio.
+## Contratto di emissione (non uniformare senza motivo)
 
-## PAGE_ASSEMBLER (redesign v2)
+| Nodo | Emissione | Errore |
+|---|---|---|
+| `SLICE-A/B/C`, `MERGE_AB/ABC`, `CONSOLIDATORE`, `ORACLE_APPLY`, `PAGE ASSEMBLER` | `result = json.dumps(...)` | ERROR JSON in `result`, mai blank |
+| `JSON CREATOR` v15 | `print(output)` + variabile `output` | `try/except` globale: stampa ERROR JSON, mai blank |
 
-Vive nel **LV2**, subito dopo i due visiomaru. Senza questo nodo l'output
-dell'oracolo (le sole 5 categorie) non è né `stations` né `rows` e il
-consolidatore lo rifiuta (`blocco senza stations ne rows`). Due edge:
-`raw_u = {edge}[2]` (UNIFIED) e `raw_o = {edge}[5]` (ORACOLO). Emette
-`{"page_no", "stations", "verifica"|null, "assemble_warnings"}`.
+Il creator resta `print`-based perché è il meccanismo già verificato sul canvas.
+Cambiarlo significherebbe cambiare il contratto di uscita dell'intero flusso.
 
-- `page_assembler.py`: `822fe612d0958fc8b9c867259af9c26ad8e5a5b3f0857c6244f3314717a1f26c`
-- `page_assembler_canvas.py`: `7edd34825b1e8ef473077feeeafdddb037a87915bfb444761d54396e393e283b` (3.108 byte)
+Tutti gli script sono **standalone**: niente `def`/`class`/`lambda`, nessun
+import da `src.*`. Un `import src.models` fallisce sul canvas e la validazione
+Pydantic viene saltata per progetto (`_pydantic_available = False`); la pipeline
+prosegue identica. Non è un errore.
 
-Copia canvas in
-`../platforms/lv2/scripts/updated_pending_validation/page_assembler_canvas.py`.
+## Dettaglio dei singoli script
 
-## Rigenerazione delle copie canvas
+### `slicer.py` — SLICE-A/B/C
 
-Dopo ogni modifica a una documentata:
+Divide l'array di pagine in tre shard (`START`/`END` in testa al file, una copia
+per shard). Fuori portata restituisce `[]`: non è un guasto.
 
-```sh
-python myhydra/single_pdf/pytools/render_canvas.py --write
-cp myhydra/single_pdf/pytools/consolidator_canvas.py \
-   myhydra/single_pdf/platforms/lv1/scripts/updated_pending_validation/
-cp myhydra/single_pdf/pytools/oracle_apply_canvas.py \
-   myhydra/single_pdf/platforms/lv1/scripts/updated_pending_validation/
-cp myhydra/single_pdf/pytools/page_assembler_canvas.py \
-   myhydra/single_pdf/platforms/lv2/scripts/updated_pending_validation/
-```
+### `merger.py` — MERGE_AB / MERGE_ABC
 
-`render_canvas.py` verifica tutte e quattro le coppie (`allineato`/`DIVERSO`)
-e fallisce con codice 1 se una diverge.
+Ricuce due array di pagine in uno. Due edge (`raw_a`, `raw_b`). In cascata:
+`MERGE_AB` + `SLICE-C` → `MERGE_ABC`.
 
-Questo file ha `{edge}[2]` ed è del solo Single PDF. Il Double PDF ha una copia
-separata con `{edge}[13}` in
-[`../../double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13_canvas.py`](../../double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13_canvas.py)
-(copia canvas senza commenti; il documentato è `json_creator_edge13.py`):
-i due flussi condividono il trasformatore ma non l'indice dell'edge, quindi
-restano in cartelle diverse.
+### `consolidator.py` — CONSOLIDATORE
 
-La copia non ha header aggiuntivo per un motivo preciso: il file è un corpo Pytool pronto da incollare nel nodo, con il placeholder `{edge}[4]` alla riga 45. Aggiungere un header sposterebbe i numeri di riga e romperebbe i riferimenti incrociati fra questo README, le schede dei nodi e i contratti. La documentazione sta qui, il file resta incollabile.
+Fonde le pagine e le stazioni in un unico consolidato, numerando gli ID.
+Accetta anche l'output grezzo del motore. Ogni disaccordo e ogni scarto
+V2/V20/V21 diventa un warning, mai silenzio. Config canvas: `{edge}[6]`.
 
-## Storico delle versioni
+### `oracle_apply.py` — ORACLE_APPLY
 
-| Versione | Sorgente | Edge | Note |
-|---|---|---|---|
-| v3 | `src/nodes/legacy/json_creator_v3.py` | `{edge}[3]` | Merge multi-pagina, parser difensivo. |
-| v4.1 | `src/nodes/legacy/json_creator_v4_1.py` | `{edge}[4]` | Filtro sulle descrizioni contenenti `riservat`. |
-| v4.2 | questo file (`json_creator_v4_2.py`) | `{edge}[4]` | Formato analogico da `data_type`, flag `CAMPO_SCALA_AS_MEASURES`. |
-| v4.3 | `src/nodes/json_creator.py` (storico) | `{edge}[4]` | Scarto senza-registro, avvisi zeri iniziali e copertura (guardia morta). |
-| v4.4 | `json_creator_v4_4.py` (storico) | `{edge}[4]` | Guardia copertura funzionante (stesso `page_no` + soglia 100), self-check linkage, validazione senza `def`. |
-| v4.5 | questo file (`json_creator_v4_5.py`) | `{edge}[4]` | Fondo scala → `LOWRANGE`/`HIGHRANGE`; limiti e divisori solo in review (mapping BISON). |
+Applica le correzioni dell'oracolo al consolidato: **aggiunge** le variabili
+mancanti, **annulla** unità inventate e stati junk. Refusi corretti e IP
+dichiarati non usati restano **solo warning** (il PDF decide). Ogni variabile
+toccata porta `_audit_oracolo {azione, campo, evidenza}`. Evidenza vuota → il
+difetto non si applica. Due edge: `raw_c` (consolidato), `raw_v` (grezzo del
+motore, che contiene `verifica` per pagina). Porta nel tap anche
+`oracolo_assente` / `oracolo_input_assente`: un oracolo non collegato non può
+restare in silenzio.
 
-Le variabili con prefisso `P` nella change-log dell'intestazione sono le correzioni portate dal v3 al v4: dedup delle misure, fold dei digitali singoli con registro condiviso, parsing robusto del registro, filtro dei nomi generici, pulizia delle parentesi e sanitizzazione degli stati.
+### `page_assembler.py` — PAGE ASSEMBLER
 
-## Contratto del runtime Pytool
+Vive nel **LV2**, dopo i due Visiomaru. Senza questo nodo l'output dell'oracolo
+(le sole 5 categorie) non è né `stations` né `rows` e il consolidatore lo
+rifiuta (`blocco senza stations ne rows`). Due edge: `raw_u` (UNIFIED),
+`raw_o` (ORACOLO). Emette `{"page_no", "stations", "verifica"|null,
+"assemble_warnings"}`.
 
-- I dati arrivano tramite il placeholder `{edge}[4]`, risolto dalla piattaforma. L'indice è fragile: cambia se il numero di nodi precedenti varia. Verificare sul canvas.
-- L'uscita è la variabile `output`, serializzata come JSON, stampata con `print`. La piattaforma la legge per popolare l'edge successivo.
-- Lo stile è volutamente povero: `while` con indice esplicito, nessuna funzione, nessuna classe, nessuna f-string, commenti in italiano. È un adattamento al runtime limitato del nodo Pytool, ereditato dai nodi legacy.
+### `json_creator_v15.py` — JSON CREATOR
 
-## Note runtime
-
-**La validazione Pydantic viene saltata su MyHydra.** Lo script prova a importare `src.models.validators`, risalendo da `__file__` fino a trovare una radice che contenga `src/models/`. Sulla piattaforma il pytool gira come script standalone e quel pacchetto non esiste, quindi l'import fallisce, l'eccezione viene catturata e `_pydantic_available` resta `False`. La pipeline prosegue identica, ma senza validazione. Non è un errore: è il comportamento previsto in entrambi gli ambienti.
-
-**Il risultato è una lista di stazioni**, non un oggetto stazione singolo. `docs/contracts/ADAS_FINAL.md` dice il contrario.
+Trasforma il consolidato nel JSON ADAS: `DRIVERPRIVATE`, `LOWRANGE`/`HIGHRANGE`,
+limiti `limit_hour` → `SQ1HOURMEAN` e `limit_day` → `SQDAILYMEAN`, sentinel,
+`XML`, `_meta`, `_warnings`, `_meta.audit_oracolo`.
 
 ## Contratto ADAS: divergenze dalla documentazione
 
-`docs/contracts/ADAS_FINAL.md` descrive il formato `DRIVERPRIVATE` in modo che non coincide con il codice. Vale la pena conoscerle, perché chi legge solo il contratto scriverà il prodotto sbagliato.
+`docs/contracts/ADAS_FINAL.md` descrive il formato `DRIVERPRIVATE` in modo che
+non coincide col codice. Vale la pena conoscerle, perché chi legge solo il
+contratto scriverà il prodotto sbagliato.
 
 | Punto | Contratto | Codice |
 |---|---|---|
 | Lunghezza di `DRIVERPRIVATE` | 52 caratteri | **48** caratteri |
 | Primo blocco di 8 hex | tipo di misura | **solo il registro**, little-endian |
 | Posizione del registro | ultimo blocco | **primo** blocco |
-| Quarta word | non descritta | sempre `00000000`; il legacy vi metteva l'ultimo bit |
-| Misure con IP placeholder | scartate, l'IP reale è primario | **sempre stazioni separate e mai scartate** |
+| Quarta word | non descritta | sempre `00000000` |
+| Misure con IP placeholder | scartate | **stazioni separate e mai scartate** |
 | Forma dell'output | oggetto stazione singolo | **lista** di stazioni |
 
 ## Limiti noti
 
-- **`try/except` globale di runtime** (fix Task 8 round 1/5): le eccezioni emettono `{"status": "ERROR", ...}` via `print(output)`, mai blank (modello: consolidatore v14).
-- **`NAME` non viene troncato.** La colonna è `nvarchar(50)`; il legacy tagliava a 49 caratteri. Nomi più lunghi verranno rifiutati dal database.
-- **`_meta` e `_warnings` sono iniettati in ogni stazione**, quindi duplicati N volte nell'output. È una scelta pragmatica per non aggiungere un involucro che romperebbe l'import in ADAS, ma appesantisce il payload.
-- **`_meta.raw_sample` e `raw_head` contengono estratti grezzi dell'ingresso**, che possono includere indirizzi IP e nomi di stazione dei clienti. `docs/architettura/analisi_progetto.md` avverte che i documenti caricati contengono anche credenziali operative: se l'output deve girare su dati reali, questi campi vanno filtrati.
-- **Tre difetti logici** documentati in [`../nodes/lv1_04_json_creator.md`](../nodes/lv1_04_json_creator.md): le guardie A e B che testano `bit` grezzo invece del bit estratto, il collasso del fold P2 e il dedup P1 dei digitali singoli.
+- **`try/except` globale**: le eccezioni emettono `{"status": "ERROR", ...}`, mai blank.
+- **`NAME` non viene troncato**: la colonna ADAS è `nvarchar(50)`; nomi più lunghi vengono rifiutati dal database.
+- **`_meta` e `_warnings` sono iniettati in ogni stazione**, quindi duplicati N volte.
+- **`_meta.raw_sample` e `raw_head` contengono estratti grezzi** dell'ingresso, inclusi IP e nomi cliente: da filtrare prima di un uso su dati reali.
+- **Linearizzazione BISON non implementata**: `scale_elec_*` e `scale_eng_*` sono raccolti dal VLM ma non usati; i `Dividere x10` (9 misure asteriscate) non sono raccolti.
 
-## Non implementato
+## Double PDF: copia separata, non mescolare
 
-`VM_SOURCE_CODE` resta hardcoded a un valore di default e i campi `scale_elec_start`, `scale_elec_end`, `scale_eng_start`, `scale_eng_end`, `limit_hour` e `limit_day` sono raccolti dal VLM ma **non vengono mai usati** dallo script. La linearizzazione BISON è bloccata in attesa di specifiche del cliente.
+Il Double PDF ha il suo trasformatore con `{edge}[13]` in
+[`../../double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13_canvas.py`](../../double_pdf/platforms/lv1/scripts/in_use/json_creator_edge13_canvas.py).
+I due flussi condividono la logica ma non l'indice dell'edge: restano in
+cartelle separate per non costringere a editare il file a ogni switch di flusso.

@@ -42,7 +42,7 @@
 >
 > </details>
 >
-> - Ran `git status --porcelain=v1; rg -n '^<<<<<<<|^=======|^>>>>>>>' README.md 'README project.md' src/nodes/json_creator.py; git branch -a; git log --format='%h %ad %s' --date=short -20; find . -maxdepth 3 -type f | sort | sed -n '1,220p'; sed -n '1,180p' src/prompts/vlm_extraction_v13.md`
+> - Ran `git status --porcelain=v1; rg -n '^<<<<<<<|^=======|^>>>>>>>' README.md 'README project.md' src/nodes/json_creator.py; git branch -a; git log --format='%h %ad %s' --date=short -20; find . -maxdepth 3 -type f | sort | sed -n '1,220p'; sed -n '1,180p' src/prompts/archive/vlm_extraction_v13.md`
 >
 > - Ran `git show --stat --oneline HEAD; git show HEAD:README.md | head -5; git status --short; sed -n '1,220p' src/models/validators.py; sed -n '1,160p' tests/test_pydantic_models.py; sed -n '1,200p' docs/protocolli/db_config/bit.txt docs/protocolli/db_config/misure.txt`
 >
@@ -89,7 +89,7 @@ Il VLM dovrebbe limitarsi a leggere e trascrivere ciò che appare nel documento.
 
 ## Cosa c’è davvero nel repository
 
-La parte implementata più concretamente è [json_creator.py](./src/nodes/json_creator.py): riceve uno o più JSON intermedi e genera le stazioni ADAS. Gestisce, tra le altre cose:
+La parte implementata più concretamente è [json_creator.py](../../../src/nodes/json_creator.py): riceve uno o più JSON intermedi e genera le stazioni ADAS. Gestisce, tra le altre cose:
 
 - accorpamento di pagine e stazioni;
 - propagazione di alcuni dati tra pagine;
@@ -98,19 +98,19 @@ La parte implementata più concretamente è [json_creator.py](./src/nodes/json_c
 - generazione del blocco XML `DRIVERCONFIG`;
 - formato analogico in base al `data_type`.
 
-Ci sono inoltre il prompt VLM v13 in [vlm_extraction_v13.md](./src/prompts/vlm_extraction_v13.md), i modelli Pydantic in [vlm_schema.py](./src/models/vlm_schema.py), i contratti intermedi e finali in `docs/contracts/`, molti input/output di esempio e il codice storico in `legacy/`.
+Ci sono inoltre il prompt VLM v13 in [vlm_extraction_v13.md](../../../src/prompts/archive/vlm_extraction_v13.md), i modelli Pydantic in [vlm_schema.py](../../../src/models/vlm_schema.py), i contratti intermedi e finali in `docs/contracts/`, molti input/output di esempio e il codice storico in `legacy/`.
 
 **Non risulta invece implementato il flusso completo che parte da un PDF.** Le directory e la documentazione descrivono nodi di ingestione, suddivisione, classificazione e invocazione del VLM, ma i moduli corrispondenti non sono presenti: l’integrazione MyHydra è ancora da configurare. In pratica, oggi il trasformatore parte da dati già estratti.
 
 ## Stato del lavoro precedente
 
-Le note presentano questo lavoro come una ricostruzione da zero dei vecchi flussi MyHydra/GAIA. Il materiale legacy conserva nodi, script, prompt e output di riferimento. L’idea architetturale è accorpare i risultati delle pagine nel formato intermedio e trasformarli in ADAS alla fine; questa decisione è descritta in [ADR-001](./docs/architettura/ADR-001-merge-multi-page.md).
+Le note presentano questo lavoro come una ricostruzione da zero dei vecchi flussi MyHydra/GAIA. Il materiale legacy conserva nodi, script, prompt e output di riferimento. L’idea architetturale è accorpare i risultati delle pagine nel formato intermedio e trasformarli in ADAS alla fine; questa decisione è descritta in [ADR-001](../../../docs/architettura/ADR-001-merge-multi-page.md).
 
 Il prompt v13 aggiunge l’estrazione del `data_type` e regole per non alterare la numerazione dei bit. Il trasformatore v4.2 usa il `data_type` per scegliere il formato analogico. Ci sono fixture per SMA, PROTEC, SIEMENS e altri casi. Il report di confronto indica risultati promettenti, ma alcune percentuali e affermazioni di “100%” sono dichiarazioni del report, non una dimostrazione sistematica sui PDF.
 
 ## Le criticità da chiarire prima di costruire sopra il repository
 
-1. **README con conflitti Git irrisolti.** Sia [README.md](./README.md) sia `README project.md` contengono `<<<<<<<`, `=======` e `>>>>>>>`. Le parti visibili riportano stati e versioni non sempre coerenti.
+1. **README con conflitti Git irrisolti.** Sia [README.md](../../../README.md) sia `README project.md` contengono `<<<<<<<`, `=======` e `>>>>>>>`. Le parti visibili riportano stati e versioni non sempre coerenti.
 
 2. **Validazione Pydantic non è un blocco affidabile.** Il trasformatore prova a validare l’input se trova il modulo, ma registra gli errori e continua comunque. Su MyHydra, secondo i commenti del file, la validazione può essere saltata del tutto.
 
@@ -120,7 +120,7 @@ Il prompt v13 aggiunge l’estrazione del `data_type` e regole per non alterare 
 
 5. **Il caso doppio PDF è soprattutto materiale preparatorio.** Ci sono PDF IOL/JOB e output legacy, ma `legacy/README.md` dice che il flusso Double PDF attuale non è stato avviato e richiede nodi non presenti.
 
-6. **BISON e linearizzazioni non sono completati.** Il trasformatore assegna un `VM_SOURCE_CODE` predefinito. [TODO.md](./TODO.md) elenca le specifiche ancora necessarie dal cliente.
+6. **BISON e linearizzazioni non sono completati.** Il trasformatore assegna un `VM_SOURCE_CODE` predefinito. [TODO.md](../../../TODO.md) elenca le specifiche ancora necessarie dal cliente.
 
 7. **Va deciso quali formati di documento sono in perimetro.** Il repository contiene PDF e fogli Excel, ma l’estrazione e il trasformatore descritti sono centrati sui PDF e il contratto VLM.
 
@@ -431,10 +431,10 @@ Per la nuova versione, il valore del legacy è quindi soprattutto nella lista de
 >
 > </details>
 >
-> - Ran `sed -n '541,640p' /home/next/Documents/'Script pytool aggiornato.txt'; diff -u src/prompts/vlm_extraction_v13.md /home/next/Documents/'Prompt Aggiornato .txt' | head -100; python3 - <<'PY'
+> - Ran `sed -n '541,640p' /home/next/Documents/'Script pytool aggiornato.txt'; diff -u src/prompts/archive/vlm_extraction_v13.md /home/next/Documents/'Prompt Aggiornato .txt' | head -100; python3 - <<'PY'
 > from pathlib import Path
 > import hashlib
-> for a,b in [('src/nodes/json_creator.py','/home/next/Documents/Script pytool aggiornato.txt'),('src/prompts/vlm_extraction_v13.md','/home/next/Documents/Prompt Aggiornato .txt')]:
+> for a,b in [('src/nodes/json_creator.py','/home/next/Documents/Script pytool aggiornato.txt'),('src/prompts/archive/vlm_extraction_v13.md','/home/next/Documents/Prompt Aggiornato .txt')]:
 >  x=Path(a).read_bytes();y=Path(b).read_bytes()
 >  print(a,hashlib.sha256(x).hexdigest(),len(x));print(b,hashlib.sha256(y).hexdigest(),len(y))
 > PY`
@@ -467,7 +467,7 @@ PDF → immagini/pagine → VLM per pagina → JSON intermedi
     → pytool: unione delle pagine e creazione JSON ADAS
 ```
 
-La scelta architetturale, descritta in [ADR-001](./docs/architettura/ADR-001-merge-multi-page.md), è fare il merge **prima** della trasformazione ADAS. Così il pytool può accorpare le informazioni estratte e assegnare gli ID nel risultato finale.
+La scelta architetturale, descritta in [ADR-001](../../../docs/architettura/ADR-001-merge-multi-page.md), è fare il merge **prima** della trasformazione ADAS. Così il pytool può accorpare le informazioni estratte e assegnare gli ID nel risultato finale.
 
 ### Prompt VLM
 
@@ -658,12 +658,12 @@ Ho trovato i quattro PDF sorgente e li ho associati agli output:
 
 | Output allegato | PDF sorgente | Pagine | Misure / bitinfo nell’output |
 |---|---|---:|---:|
-| `Output SMA_1.txt` | [Mappatura_1_Cliente_SMA_1.pdf](./data/test_inputs/Mappatura_1_Cliente_SMA_1.pdf) | 1 | 51 / 30 |
-| `Output PROTEC 1.txt` | [Mappatura_2_Cliente_PROTEC_1.pdf](./data/test_inputs/Mappatura_2_Cliente_PROTEC_1.pdf) | 2 | 10 / 38 |
-| `OUTPUT PROTEC 2.txt` | [Mappatura_3_Cliente_PROTEC_2.pdf](./data/test_inputs/Mappatura_3_Cliente_PROTEC_2.pdf) | 2 | 20 / 24 |
-| `OUTPUT SIEMENS 2.txt` | [Mappatura_4_Cliente_SIEMENS_2.pdf](./docs/protocolli/richieste_clienti/Mappatura_4_Cliente_SIEMENS_2.pdf) | 29 | 104 / 147 |
+| `Output SMA_1.txt` | [Mappatura_1_Cliente_SMA_1.pdf](../../../data/test_inputs/Mappatura_1_Cliente_SMA_1.pdf) | 1 | 51 / 30 |
+| `Output PROTEC 1.txt` | [Mappatura_2_Cliente_PROTEC_1.pdf](../../../data/test_inputs/Mappatura_2_Cliente_PROTEC_1.pdf) | 2 | 10 / 38 |
+| `OUTPUT PROTEC 2.txt` | [Mappatura_3_Cliente_PROTEC_2.pdf](../../../data/test_inputs/Mappatura_3_Cliente_PROTEC_2.pdf) | 2 | 20 / 24 |
+| `OUTPUT SIEMENS 2.txt` | [Mappatura_4_Cliente_SIEMENS_2.pdf](../../../docs/protocolli/richieste_clienti/Mappatura_4_Cliente_SIEMENS_2.pdf) | 29 | 104 / 147 |
 
-Le copie dei PDF presenti in `data/test_inputs/` e `docs/protocolli/` sono identiche. Anche i quattro TXT che hai allegato coincidono byte per byte con quelli già archiviati in [tests/single_pdf_outputs](./tests/single_pdf_outputs).
+Le copie dei PDF presenti in `data/test_inputs/` e `docs/protocolli/` sono identiche. Anche i quattro TXT che hai allegato coincidono byte per byte con quelli già archiviati in [tests/single_pdf_outputs](../../../tests/single_pdf_outputs).
 
 Ho fatto un primo confronto automatico con i JSON di riferimento disponibili. Emergono differenze da verificare sul PDF: PROTEC 1 ha 38 bitinfo contro 40 nel riferimento; PROTEC 2 ha 20 misure contro 19; SIEMENS 2 ha 104 misure e 147 bitinfo, mentre il riferimento consolidato riporta 108 e 211. SMA ha lo stesso conteggio di 51 misure, ma il confronto stretto segnala differenze di nomi, comandi e bitinfo.
 
@@ -902,7 +902,7 @@ Menerva deve convertire documenti tecnici di impianti PLC/SCADA in una configura
 - **bitinfo**: misura digitale padre, numero bit, nome e testi ON/OFF;
 - **campi ADAS calcolati**: ID, `DRIVERPRIVATE`, XML `DRIVERCONFIG` e `VM_SOURCE_CODE`.
 
-Il principio architetturale documentato è sensato: il modello visivo legge e trascrive; il codice produce i valori deterministici, esegue i merge e costruisce l’output ADAS. Il documento [ADR-001](<./docs/architettura/ADR-001-merge-multi-page.md>) sceglie di aggregare i risultati intermedi delle pagine prima della trasformazione finale.
+Il principio architetturale documentato è sensato: il modello visivo legge e trascrive; il codice produce i valori deterministici, esegue i merge e costruisce l’output ADAS. Il documento [ADR-001](../../../docs/architettura/ADR-001-merge-multi-page.md)) sceglie di aggregare i risultati intermedi delle pagine prima della trasformazione finale.
 
 ## Cosa mostra il repository sul Single PDF
 
@@ -913,7 +913,7 @@ Il flusso recente documentato è:
 3. Il VLM produce JSON intermedio con stazioni e variabili.
 4. Python aggrega e trasforma i risultati nel formato ADAS.
 
-Il prompt di estrazione più aggiornato è [vlm_extraction_v13.md](./src/prompts/vlm_extraction_v13.md). Il file che mi avevi dato, **Script pytool aggiornato.txt**, coincide con una versione precedente del [json_creator.py](./src/nodes/json_creator.py). La versione nel repository aggiunge validazione Pydantic e segnalazioni, ma la validazione non è un blocco garantito: i problemi vengono segnalati senza necessariamente interrompere l’elaborazione.
+Il prompt di estrazione più aggiornato è [vlm_extraction_v13.md](../../../src/prompts/archive/vlm_extraction_v13.md). Il file che mi avevi dato, **Script pytool aggiornato.txt**, coincide con una versione precedente del [json_creator.py](../../../src/nodes/json_creator.py). La versione nel repository aggiunge validazione Pydantic e segnalazioni, ma la validazione non è un blocco garantito: i problemi vengono segnalati senza necessariamente interrompere l’elaborazione.
 
 Dall’incrocio tra prompt e codice emergono punti da non trasferire automaticamente nel nuovo Double PDF:
 
@@ -926,7 +926,7 @@ Questo non invalida il Single PDF del tuo cloud: descrive ciò che ho verificato
 
 ## Cosa intendeva fare il Double PDF legacy
 
-I file in [legacy/double_pdf](./legacy/double_pdf) descrivono un flusso articolato su due livelli. Nel livello iterativo, le pagine vengono classificate come informazioni stazione, dati tecnici di misura o density map. Rami differenti estraggono metadati e campi scala, misure e bitinfo; poi i risultati vengono riuniti, completati e convertiti in JSON ADAS.
+I file in [legacy/double_pdf](../../../legacy/double_pdf) descrivono un flusso articolato su due livelli. Nel livello iterativo, le pagine vengono classificate come informazioni stazione, dati tecnici di misura o density map. Rami differenti estraggono metadati e campi scala, misure e bitinfo; poi i risultati vengono riuniti, completati e convertiti in JSON ADAS.
 
 Quindi il Double PDF legacy **non specifica semplicemente “unisci due PDF”**. Descrive soprattutto la classificazione ed estrazione di contenuti diversi, comprese pagine di indice e sezioni eterogenee. Non ho trovato, nei materiali legacy, un contratto robusto che definisca come associare in modo sicuro un IOL a un JOB, come risolvere riferimenti discordanti o come segnalare associazioni dubbie.
 
@@ -1077,10 +1077,10 @@ Terrò questo schema come riferimento del **Single PDF corrente**, distinguendol
 
 Ho aggiornato la documentazione del repository con il flusso Single PDF visibile negli screenshot:
 
-- [Single PDF cloud corrente](./docs/architettura/single_pdf_cloud_corrente.md) riporta i nodi e i collegamenti dei due livelli, distinguendo ciò che si vede da ciò che richiede ancora l’esportazione delle configurazioni per essere verificato.
-- [Analisi del progetto](./docs/architettura/analisi_progetto.md) raccoglie il contesto Double PDF, i rischi nei documenti campione e le decisioni ancora aperte.
-- Ho riscritto [README.md](./README.md) perché conteneva conflitti Git irrisolti e informazioni di stato non aggiornate. [README project.md](./README%20project.md) ora rimanda al README principale.
-- Ho aggiornato la [documentazione architetturale](./docs/architettura/README.md) per chiarire che descrive l’architettura di riferimento e non prova il comportamento della piattaforma cloud.
+- [Single PDF cloud corrente](../../../docs/architettura/single_pdf_cloud_corrente.md) riporta i nodi e i collegamenti dei due livelli, distinguendo ciò che si vede da ciò che richiede ancora l’esportazione delle configurazioni per essere verificato.
+- [Analisi del progetto](../../../docs/architettura/analisi_progetto.md) raccoglie il contesto Double PDF, i rischi nei documenti campione e le decisioni ancora aperte.
+- Ho riscritto [README.md](../../../README.md) perché conteneva conflitti Git irrisolti e informazioni di stato non aggiornate. [README project.md](../../../docs/architettura/storico/README_project.md) ora rimanda al README principale.
+- Ho aggiornato la [documentazione architetturale](../../../docs/architettura/README.md) per chiarire che descrive l’architettura di riferimento e non prova il comportamento della piattaforma cloud.
 
 Il diff riguarda solo documentazione; non ho eseguito test. Adesso la repository registra il flusso mostrato senza attribuire agli screenshot dettagli interni che non contengono.
 
@@ -1182,7 +1182,7 @@ Ricevuto: **ogni coppia è un’unica elaborazione Double PDF**. Ho verificato i
 - **Gruppo 6:** IOL e descrizione JOB riportano entrambi `0139.23`.
 - **Gruppo 7:** IOL e descrizione JOB riportano entrambi `0105.22`.
 
-Ho registrato le coppie, il numero di pagine e i contenuti rilevanti nell’[analisi del progetto](./docs/architettura/analisi_progetto.md) e aggiornato il [README](./README.md). Ho anche annotato che il file 6 IOL caricato non è presente come copia nel repository: lì il PDF omonimo in `data/test_inputs` è vuoto, quindi non va scambiato per il campione del tutor.
+Ho registrato le coppie, il numero di pagine e i contenuti rilevanti nell’[analisi del progetto](../../../docs/architettura/analisi_progetto.md) e aggiornato il [README](../../../README.md). Ho anche annotato che il file 6 IOL caricato non è presente come copia nel repository: lì il PDF omonimo in `data/test_inputs` è vuoto, quindi non va scambiato per il campione del tutor.
 
 Nota pratica: i JOB contengono credenziali operative. Ho documentato di non riportarle in prompt, log o fixture e di usare copie redatte prima di versionare o condividere quei PDF. Le modifiche sono documentali; `git diff --check` non ha segnalato problemi.
 
@@ -1229,11 +1229,11 @@ Ho letto i due file: il README ricostruisce in dettaglio un **vecchio flusso Sin
 
 Li ho conservati nella repository come riferimenti storici, con note sulla provenienza, i limiti e i checksum:
 
-- [Prompt iniziale del tutor](./docs/references/materiale_tutor/Prompt_Iniziale_tutor.txt)
-- [README del vecchio Single PDF](./docs/references/materiale_tutor/README_tutor_single_pdf_legacy.md)
-- [Nota di contesto sui materiali](./docs/references/materiale_tutor/README.md)
+- [Prompt iniziale del tutor](../../../docs/references/materiale_tutor/Prompt_Iniziale_tutor.txt)
+- [README del vecchio Single PDF](../../../docs/references/materiale_tutor/README_tutor_single_pdf_legacy.md)
+- [Nota di contesto sui materiali](../../../docs/references/materiale_tutor/README.md)
 
-Ho aggiunto i riferimenti al [README principale](./README.md) e all’[analisi del progetto](./docs/architettura/analisi_progetto.md). `git diff --check` è pulito; non ho eseguito test perché le modifiche sono documentali.
+Ho aggiunto i riferimenti al [README principale](../../../README.md) e all’[analisi del progetto](../../../docs/architettura/analisi_progetto.md). `git diff --check` è pulito; non ho eseguito test perché le modifiche sono documentali.
 
 > ok, prima di continuare, sai cosa ogin cartella contiene nella cartella? ogni script pyton, ogni pdf, ogni JSON, ogni prompt? Hai tutte le info? te le sei spulciate tutte?
 
@@ -1636,7 +1636,7 @@ Ho appena censito sistematicamente la repository. L’inventario registra percor
 - Ho indicizzato i due archivi RAR; non ho aperto i database SQL Server MDF/LDF che contengono.
 - Degli screenshot cloud conosco i nodi e i collegamenti visibili, non la loro configurazione interna.
 
-Ho messo conteggi, hash, duplicati e limiti della revisione in [inventario_repository.md](./docs/architettura/inventario_repository.md). **Quindi non ho ancora tutte le informazioni per dire che ogni file è stato capito a fondo.** Considero la revisione semantica ancora aperta; il report elenca i punti da chiudere prima di progettare il Double PDF.
+Ho messo conteggi, hash, duplicati e limiti della revisione in [inventario_repository.md](../../../docs/architettura/inventario_repository.md). **Quindi non ho ancora tutte le informazioni per dire che ogni file è stato capito a fondo.** Considero la revisione semantica ancora aperta; il report elenca i punti da chiudere prima di progettare il Double PDF.
 
 > Perfetto, quindi secondo te rispetto al legacy double file come potemo procedere, secondo te come potrebbe essere un ipotetico workflow? quali e quanti livelli?
 
@@ -1727,7 +1727,7 @@ Il `Pair Validator` deve bloccare o mandare in revisione coppie con riferimenti 
 
 Questa è una proposta logica: va verificato nell’editor MyHydra se il Livello 2 può ricevere un parametro `document_type`. Se non può, si usano due istanze equivalenti del sottoflusso, una IOL e una JOB.
 
-Ho salvato la proposta in [double_pdf_workflow_proposta.md](./docs/architettura/double_pdf_workflow_proposta.md) e collegata dal [README](./README.md). `git diff --check` è pulito; non ho eseguito test perché la modifica è documentale.
+Ho salvato la proposta in [double_pdf_workflow_proposta.md](../../../docs/architettura/double_pdf_workflow_proposta.md) e collegata dal [README](../../../README.md). `git diff --check` è pulito; non ho eseguito test perché la modifica è documentale.
 
 > ricorda che i file vengono caricati in una chat AI, e non separatamente in dei contenuti appositi, il VLM andrà a capire di che pagine si tratta
 
@@ -1782,7 +1782,7 @@ Chat con entrambi i PDF allegati
 
 Per efficienza, partirei con **un’unica chiamata VLM per pagina** che classifica e poi estrae, senza un classificatore separato. Resta da verificare che Medex o l’orchestratore conservino il nome/ID del PDF e il numero di pagina: servono per mantenere la provenienza dei dati durante il merge.
 
-Ho corretto la [proposta Double PDF](./docs/architettura/double_pdf_workflow_proposta.md) e l’[analisi del progetto](./docs/architettura/analisi_progetto.md) per riflettere l’ingresso tramite chat unica.
+Ho corretto la [proposta Double PDF](../../../docs/architettura/double_pdf_workflow_proposta.md) e l’[analisi del progetto](../../../docs/architettura/analisi_progetto.md) per riflettere l’ingresso tramite chat unica.
 
 > OK ATTUALMENTE IL LVL L'HO CONFIGURATO COSÌ, DIMMI SE VA BENE, ANDREMO PASSO PASSO
 >
@@ -1807,7 +1807,7 @@ Ho corretto la [proposta Double PDF](./docs/architettura/double_pdf_workflow_pro
 
 Prima di continuare, verificherei un dettaglio: nello screenshot l’icona **Iterative Node** del `DOUBLE PDF ENGINE` sembra grigia/disattivata. Nel Single PDF corrente appariva verde. Se l’iterazione è gestita internamente al motore, va bene; altrimenti va attivata, così il Livello 2 riceve una pagina per volta.
 
-Poi controlliamo che `MEDIA2CONTENT` conservi il legame tra ogni pagina e il PDF d’origine: ci servirà per riunire correttamente i risultati IOL e JOB. Ho registrato configurazione e verifica nella [proposta Double PDF](./docs/architettura/double_pdf_workflow_proposta.md).
+Poi controlliamo che `MEDIA2CONTENT` conservi il legame tra ogni pagina e il PDF d’origine: ci servirà per riunire correttamente i risultati IOL e JOB. Ho registrato configurazione e verifica nella [proposta Double PDF](../../../docs/architettura/double_pdf_workflow_proposta.md).
 
 > SI HO ATTIVATO IL NODO ITERATIVO, COME VERIFICHE PRELIMINARI DI DIVISOINE IN GRUPPI E PAGINE E'MEGLIO FARLE?
 
@@ -1852,7 +1852,7 @@ Per ogni coppia di PDF controlla che:
 
 Come controllo sui due esempi del tutor, la coppia **6** dovrebbe produrre **14 pagine in totale** (5 + 9) e la coppia **7** **11** (4 + 7). Sono conteggi per verificare quei campioni, non valori da fissare nel flusso.
 
-Una volta accertato che il nodo iterativo riceve una pagina alla volta e conserva la provenienza, passiamo alla classificazione VLM di ciascuna pagina come IOL o JOB. Ho riportato questa verifica preliminare anche nella [proposta del workflow Double PDF](./docs/architettura/double_pdf_workflow_proposta.md).
+Una volta accertato che il nodo iterativo riceve una pagina alla volta e conserva la provenienza, passiamo alla classificazione VLM di ciascuna pagina come IOL o JOB. Ho riportato questa verifica preliminare anche nella [proposta del workflow Double PDF](../../../docs/architettura/double_pdf_workflow_proposta.md).
 
 `git diff --check` non segnala problemi di formattazione.
 
@@ -1889,7 +1889,7 @@ Il Double PDF legacy documenta un flusso più articolato: il VLM classifica **og
 
 La parte che avevo proposto di **classificare esplicitamente i PDF come IOL/JOB e riconciliare i dati tra loro** può essere una buona evoluzione, ma non è confermata dai prompt legacy che ho verificato. In particolare, il prompt del tutor presente nel repository descrive l’estrazione Single PDF e l’output ADAS; non definisce una regola generale per abbinare dati IOL e JOB. Anche un match basato sui TAG va quindi verificato, non assunto come requisito.
 
-Quindi: il nodo iterativo può restare nella tua progettazione, ma **non darei ancora per approvata la struttura funzionale del Double PDF**. Prima va ricostruito con precisione quali pagine e dati devono uscire dai due documenti, quali campi vanno nell’ADAS e quale relazione tra IOL e JOB si aspetta il cliente. Ho aggiornato la [proposta Double PDF](./docs/architettura/double_pdf_workflow_proposta.md) con queste evidenze e cautele.
+Quindi: il nodo iterativo può restare nella tua progettazione, ma **non darei ancora per approvata la struttura funzionale del Double PDF**. Prima va ricostruito con precisione quali pagine e dati devono uscire dai due documenti, quali campi vanno nell’ADAS e quale relazione tra IOL e JOB si aspetta il cliente. Ho aggiornato la [proposta Double PDF](../../../docs/architettura/double_pdf_workflow_proposta.md) con queste evidenze e cautele.
 
 > perfetto, questo è l'output del prim medex con il relativo codice -> {"request":"pdf2png","nume":5}{question}
 >
@@ -1919,13 +1919,13 @@ Il primo Medex sembra **convertire entrambe le mappature**: nello screenshot con
 
 Anche `nume:5` non è ancora interpretabile con certezza. Nel materiale legacy trovo `nume:3` per `pdf2png` e una nota separata che associa `nume:1` del secondo Medex a un buffer; non c’è una spiegazione affidabile del parametro del primo. Quindi non lo considererei un limite di pagine senza verificare l’output.
 
-Ho annotato l’evidenza e questa incertezza nella [proposta Double PDF](./docs/architettura/double_pdf_workflow_proposta.md). Il passo utile ora è vedere l’output del secondo Medex (`MEDIA2CONTENT`): ci dirà se le 14 pagine arrivano come elementi utilizzabili dal nodo iterativo e se resta visibile la loro provenienza.
+Ho annotato l’evidenza e questa incertezza nella [proposta Double PDF](../../../docs/architettura/double_pdf_workflow_proposta.md). Il passo utile ora è vedere l’output del secondo Medex (`MEDIA2CONTENT`): ci dirà se le 14 pagine arrivano come elementi utilizzabili dal nodo iterativo e se resta visibile la loro provenienza.
 
 > nel primo medex quel nume : 5  sarebbe una speci di ingrandimento per facilitare la lettura
 
 Chiaro, grazie: allora nel tuo nodo `PDF2PNG` **`nume:5` è un parametro di ingrandimento della resa**, scelto per rendere le pagine più leggibili. Non è il conteggio delle pagine né il numero di PDF.
 
-Correggo la nota nella [documentazione Double PDF](./docs/architettura/double_pdf_workflow_proposta.md): avevo lasciato aperta un’incertezza che hai appena chiarito.
+Correggo la nota nella [documentazione Double PDF](../../../docs/architettura/double_pdf_workflow_proposta.md): avevo lasciato aperta un’incertezza che hai appena chiarito.
 
 > perfeto, non te lo avevo detto ma questi sono il file 6, questo è l'output del secondo medex -> {[ { "_medexkeys": [ { "key": "DLRNGEVUHK\/60318514-1324-4e99-bfa1-ea768250fce4" }, { "key": "DLRNGEVUHK\/2fe62483-d015-4f3c-a932-7b2fa02b8a75" } ] }, { "_medexkeys": [ { "key": "DLRNGEVUHK\/2fe62483-d015-4f3c-a932-7b2fa02b8a75" }, { "key": "DLRNGEVUHK\/72d146a1-d399-4af7-a362-12a39aec09ed" } ] }, { "_medexkeys": [ { "key": "DLRNGEVUHK\/72d146a1-d399-4af7-a362-12a39aec09ed" }, { "key": "DLRNGEVUHK\/f9103892-c146-4fe6-a96c-5b2b7226a7e2" } ] }, { "_medexkeys": [ { "key": "DLRNGEVUHK\/f9103892-c146-4fe6-a96c-5b2b7226a7e2" }, { "key": "DLRNGEVUHK\/559d2b23-310c-4ad2-8aa5-04884f790f6d" } ] }, { "_medexkeys": [ { "key": "DLRNGEVUHK\/559d2b23-310c-4ad2-8aa5-04884f790f6d" }, { "key": "DLRNGEVUHK\/509e8156-2d1e-4b13-a720-6a4a77a02c17" } ] }, { "_medexkeys": [ { "key": "DLRNGEVUHK\/509e8156-2d1e-4b13-a720-6a4a77a02c17" }, { "key": "DLRNGEVUHK\/f746ac9f-7007-4646-9eea-884a4650aa7c" } ] }, { "_medexkeys": [ { "key": "DLRNGEVUHK\/f746ac9f-7007-4646-9eea-884a4650aa7c" }, { "key": "DLRNGEVUHK\/75fdcc81-1f1d-4a8b-822c-ea269e00cf28" } ] }, { "_medexkeys": [ { "key": "DLRNGEVUHK\/75fdcc81-1f1d-4a8b-822c-ea269e00cf28" }, { "key": "DLRNGEVUHK\/76f816a4-151e-4a10-a4dd-533f8eb8cb8a" } ] }, { "_medexkeys": [ { "key": "DLRNGEVUHK\/76f816a4-151e-4a10-a4dd-533f8eb8cb8a" }, { "key": "DLRNGEVUHK\/61007d9d-af6e-455e-9efb-40f5587c49e7" } ] }, { "_medexkeys": [ { "key": "DLRNGEVUHK\/61007d9d-af6e-455e-9efb-40f5587c49e7" }, { "key": "DLRNGEVUHK\/d9ceaaad-ad36-46f1-857b-153688d84d5f" } ] }, { "_medexkeys": [ { "key": "DLRNGEVUHK\/d9ceaaad-ad36-46f1-857b-153688d84d5f" }, { "key": "DLRNGEVUHK\/664a5dc0-f611-4295-808a-705d2f61bddd" } ] }, { "_medexkeys": [ { "key": "DLRNGEVUHK\/664a5dc0-f611-4295-808a-705d2f61bddd" }, { "key": "DLRNGEVUHK\/ddbd36fd-a581-4b8f-b7c1-ff565b00279d" } ] }, { "_medexkeys": [ { "key": "DLRNGEVUHK\/ddbd36fd-a581-4b8f-b7c1-ff565b00279d" }, { "key": "DLRNGEVUHK\/c1d3db9a-c9e6-41dc-84b0-ccbcee4faa9a" } ] }, { "_medexkeys": { "key": "DLRNGEVUHK\/c1d3db9a-c9e6-41dc-84b0-ccbcee4faa9a" } } ]
 >
@@ -1950,7 +1950,7 @@ Grazie, ora il test è riferito ai due PDF del caso 6. Il primo Medex ha prodott
 
 Nel secondo Medex vedo 14 oggetti `_medexkeys`, ma non una chiave per oggetto: i primi 13 ne contengono due e condividono una chiave col record successivo; l’ultimo ne contiene una. In totale sono **14 chiavi media uniche**, disposte come finestre sovrapposte. Questo può servire a passare al VLM un buffer di pagine, ma dal solo payload non posso confermare cosa farà esattamente l’iterativo.
 
-Le chiavi sono opache: non indicano il nome del PDF, il numero pagina o il confine tra i due file. Quindi l’output conferma la sequenza di media, ma non ancora la tracciabilità IOL/JOB. Ho aggiornato questa lettura nella [proposta Double PDF](./docs/architettura/double_pdf_workflow_proposta.md).
+Le chiavi sono opache: non indicano il nome del PDF, il numero pagina o il confine tra i due file. Quindi l’output conferma la sequenza di media, ma non ancora la tracciabilità IOL/JOB. Ho aggiornato questa lettura nella [proposta Double PDF](../../../docs/architettura/double_pdf_workflow_proposta.md).
 
 > Attualmente il pdf semplicemente è stato semplicemente spezzettato e trasformato in chiavi da poter passare al nodo iterativo, non c'è nessuna indicazzione del nome del PDF o numero pag o confine. Se pensi che va bene così dimmi tu, altrimenti andiamo avanti e chiedimi cosa ti serve.
 
@@ -1986,7 +1986,7 @@ Il test di forwarding è riuscito: il nodo iterativo restituisce **14 elementi**
 
 Il punto da tenere presente è la forma delle iterazioni: i primi 13 elementi contengono due chiavi sovrapposte a quelle dell’elemento successivo; l’ultimo ne contiene una. Quindi l’iterativo inoltra **finestre di pagine consecutive**, non una pagina singola per giro. Per il forwarding va bene. Quando inserirai il VLM, dovremo associargli un risultato a ciascuna chiave e gestire le pagine ripetute tra finestre, soprattutto quella che attraversa il confine dei PDF.
 
-Per ora lascerei il Livello 1 così. Il prossimo passo è provare nel nodo iterativo il classificatore di pagina del legacy adattato a queste finestre: classificare le pagine, senza ancora estrarre o comporre il JSON ADAS. Ho annotato anche questo risultato nella [proposta Double PDF](./docs/architettura/double_pdf_workflow_proposta.md).
+Per ora lascerei il Livello 1 così. Il prossimo passo è provare nel nodo iterativo il classificatore di pagina del legacy adattato a queste finestre: classificare le pagine, senza ancora estrarre o comporre il JSON ADAS. Ho annotato anche questo risultato nella [proposta Double PDF](../../../docs/architettura/double_pdf_workflow_proposta.md).
 
 > Aspetta, adesso cosa devo fare
 
@@ -2071,7 +2071,7 @@ Ogni pagina ripetuta nelle finestre sovrapposte riceve la stessa classe in entra
 
 **Prossimo passo:** aggiungi un Pytool che riceva sia le chiavi Medex della finestra sia il JSON del VLM, e abbini a ogni chiave la sua etichetta usando gli indici `0` e `1`. Poi, dopo il ciclo, raccogli i risultati e deduplica per chiave, verificando che rimangano 14 pagine. Solo allora collegherei i rami di estrazione per categoria.
 
-Ho registrato sequenza e controlli superati nella [proposta Double PDF](./docs/architettura/double_pdf_workflow_proposta.md).
+Ho registrato sequenza e controlli superati nella [proposta Double PDF](../../../docs/architettura/double_pdf_workflow_proposta.md).
 
 > aspetta, il pytool quindi deve ricevere l'output del LV1 o del medex al LV2?
 
@@ -2116,7 +2116,7 @@ Così abbina ogni etichetta alla chiave della pagina corrispondente. Non gli bas
 
 Ho preparato lo script del Pytool rispettando le convenzioni MyHydra del progetto: niente funzioni, classi o lambda; usa cicli `while`, legge gli ingressi con `{edge}[N]` e assegna l’output a `result`.
 
-[Apri lo script Pytool](<./legacy/double_pdf/LV2/Pytool Associa classificazioni alle chiavi.txt>)
+[Apri lo script Pytool](../platforms/lv2/page_classifier/scripts/history/associate_page_labels_to_media_keys.py))
 
 Nel codice ho usato gli edge mostrati nello screenshot:
 
@@ -2151,7 +2151,7 @@ Lo script abbina ogni etichetta all’elemento `key` usando l’indice locale de
 
 Hai ragione: il legacy deve restare intatto. Ho spostato lo script in `myhydra/LV2/` e creato `myhydra/LV1/` per il nuovo progetto. Ho verificato che Git non segnala modifiche sotto `legacy/`.
 
-La struttura è descritta in [myhydra/README.md](./myhydra/README.md); lo script si trova in [double_pdf_associa_classificazioni_chiavi.py](./myhydra/LV2/double_pdf_associa_classificazioni_chiavi.py). Ho scelto `myhydra/` come nome della cartella dedicata: per separarla dal legacy non mi servono altre informazioni.
+La struttura è descritta in [myhydra/README.md](../../README.md); lo script si trova in [double_pdf_associa_classificazioni_chiavi.py](../platforms/lv2/page_classifier/scripts/history/associate_page_labels_to_media_keys.py). Ho scelto `myhydra/` come nome della cartella dedicata: per separarla dal legacy non mi servono altre informazioni.
 
 > Perfetto, mi raccomando sotto queste cartele devi metterci ogni dettaglio del nodo -> Pytools, VLMs con i rispettivi prompts, nodi e collegamenti, outputs per il testing. Pensa bene e strutturala come megloi credi per facilitare il developing
 
@@ -2192,7 +2192,7 @@ Ho organizzato `myhydra/` come area di sviluppo autonoma, separata da `legacy/`.
 
 La struttura ora documenta nodi e collegamenti LV1/LV2, conserva il prompt VLM e il Pytool in file dedicati, e include le evidenze e fixture del caso 6 con chiavi sintetiche. Gli output VLM osservati sono distinti dai risultati attesi derivati per il confronto.
 
-Parti da [myhydra/README.md](./myhydra/README.md). Per il flusso corrente: [LV1 Double PDF](./myhydra/LV1/double_pdf/README.md) e [LV2 Double PDF](./myhydra/LV2/double_pdf/README.md).
+Parti da [myhydra/README.md](../../README.md). Per il flusso corrente: [LV1 Double PDF](../platforms/lv1/README.md) e [LV2 Double PDF](../platforms/lv2/README.md).
 
 Ho marcato come **da confermare** il codice esatto del secondo Medex LV1 e l’esecuzione del Pytool su MyHydra. Non ho eseguito test sul runtime.
 
@@ -2283,7 +2283,7 @@ Il codice esatto del Medex LV1 è annotato nella scheda del nodo. Il risultato d
 
 Per capire quale ingresso arriva vuoto o in un formato diverso da quello previsto, ho aggiunto uno script diagnostico separato:
 
-[diagnose_pytool_inputs.py](./myhydra/double_pdf/pytools/diagnose_pytool_inputs.py)
+[diagnose_pytool_inputs.py](../platforms/lv1/scripts/diagnostics/diagnose_pytool_inputs.py)
 
 Sostituisci temporaneamente il codice del Pytool con quello diagnostico ed esegui di nuovo gli stessi PDF. Restituisce, per entrambi gli edge, la lunghezza e un’anteprima del valore ricevuto, il tipo dopo il parsing e l’eventuale errore. Incollami l’output: da quello correggiamo lo script di associazione senza toccare la configurazione alla cieca.
 
@@ -2328,7 +2328,7 @@ La diagnostica identifica il problema:
 
 Ti consiglio di aggiungere un collegamento **diretto dal Medex LV2 al Pytool**, lasciando il collegamento Visiomaru → Pytool. Dopo averlo creato, MyHydra mostrerà il nuovo numero edge: mandami quel numero o uno screenshot e aggiornerò lo script per leggere l’ingresso corretto. Per ora non cambiare il parsing delle classificazioni VLM.
 
-Ho registrato la diagnosi nelle schede dei nodi: [Naive](./myhydra/double_pdf/nodes/lv2_03_naive_forwarding.md), [Pytool](./myhydra/double_pdf/nodes/lv2_04_associate_labels_to_keys.md).
+Ho registrato la diagnosi nelle schede dei nodi: [Naive](../nodes/lv2_03_naive_forwarding.md), [Pytool](../nodes/lv2_04_associate_labels_to_keys.md).
 
 > il nodo medex converte le chiavi ricevute in media da dare in pasto al VLM, quindi diceverebbe praticamente immagini, quando in realtà ci servirebbero le chiavi le quali sono ricevute dal livelllo 1
 
@@ -2359,7 +2359,7 @@ Hai ragione: **il Pytool deve associare le etichette alle chiavi originali ricev
 
 Ho corretto lo script: ora legge le chiavi da `{question}` — la finestra originale del ciclo iterativo — e le etichette VLM da edge `#2`. L’edge `#4` vuoto non va usato come sorgente. **Non collegare il Medex LV2 direttamente al Pytool.**
 
-Prima di rilanciare lo script di associazione, verifica che MyHydra esponga `{question}` anche nel Pytool: usa il [diagnostico aggiornato](./myhydra/double_pdf/pytools/diagnose_pytool_inputs.py). Se mostra le chiavi su `question` e il JSON valido su edge `#2`, passa allo [script corretto](./myhydra/double_pdf/pytools/associate_page_labels_to_media_keys.py). Non serve modificare il canvas per questa verifica.
+Prima di rilanciare lo script di associazione, verifica che MyHydra esponga `{question}` anche nel Pytool: usa il [diagnostico aggiornato](../platforms/lv1/scripts/diagnostics/diagnose_pytool_inputs.py). Se mostra le chiavi su `question` e il JSON valido su edge `#2`, passa allo [script corretto](../platforms/lv2/page_classifier/scripts/history/associate_page_labels_to_media_keys.py). Non serve modificare il canvas per questa verifica.
 
 > ecco ->
 >
@@ -2469,7 +2469,7 @@ Prima di rilanciare lo script di associazione, verifica che MyHydra esponga `{qu
 
 Perfetto: la diagnostica conferma che in **tutte le 14 iterazioni** `{question}` contiene le chiavi originali e edge `#2` contiene il JSON del VLM. `_medexkeys` è una stringa JSON annidata; lo script aggiornato gestisce questa forma, compresa l’ultima finestra con una sola chiave.
 
-Ora sostituisci il Pytool diagnostico con [lo script di associazione aggiornato](./myhydra/double_pdf/pytools/associate_page_labels_to_media_keys.py) ed esegui di nuovo gli stessi PDF. Ci aspettiamo `status: OK` per tutte le iterazioni: due associazioni per i primi 13 giri e una per l’ultimo. Saranno 27 associazioni nelle finestre, da deduplicare successivamente a 14 pagine uniche.
+Ora sostituisci il Pytool diagnostico con [lo script di associazione aggiornato](../platforms/lv2/page_classifier/scripts/history/associate_page_labels_to_media_keys.py) ed esegui di nuovo gli stessi PDF. Ci aspettiamo `status: OK` per tutte le iterazioni: due associazioni per i primi 13 giri e una per l’ultimo. Saranno 27 associazioni nelle finestre, da deduplicare successivamente a 14 pagine uniche.
 
 Ho anche corretto la documentazione: i prefissi delle chiavi cambiano tra le prove e **non sono affidabili per identificare il confine tra i PDF**.
 
@@ -2521,7 +2521,7 @@ Ho anche corretto la documentazione: i prefissi delle chiavi cambiano tra le pro
 
 Ho semplificato lo script, mantenendo l’associazione tra `{question}` — le chiavi originali LV1 — e le etichette su edge `#2`:
 
-[Apri la versione semplificata del Pytool](./myhydra/double_pdf/pytools/associate_page_labels_to_media_keys.py)
+[Apri la versione semplificata del Pytool](../platforms/lv2/page_classifier/scripts/history/associate_page_labels_to_media_keys.py)
 
 Sostituisci il codice nel Pytool con questa versione e rilancia la coppia. Se l’output resta vuoto, mandami uno screenshot del codice effettivamente presente nell’editor Pytool e del risultato: a quel punto dobbiamo distinguere un problema del codice da uno del nodo o del suo output.
 
@@ -2558,7 +2558,7 @@ Sì, hai ragione: avrei dovuto farlo prima di chiederti di rilanciare il workflo
 
 Ora ho eseguito in locale il **sorgente Pytool aggiornato**, sostituendo `{question}` e `{edge}[2]` con dati campione. I 4 test passano in 0,04 secondi: coprono tutte le 14 finestre, le 27 associazioni dovute all’overlap, la finestra finale con una chiave, le slash escapate e il conteggio errato. **Non è stato chiamato il VLM.**
 
-La risposta `[,,,,]` veniva dalla versione precedente; non posso ancora stabilire perché MyHydra abbia prodotto output vuoto. La versione locale verificata è qui: [associate_page_labels_to_media_keys.py](./myhydra/double_pdf/pytools/associate_page_labels_to_media_keys.py). Il test ripetibile è [test_associate_page_labels_to_media_keys.py](./myhydra/double_pdf/tests/test_associate_page_labels_to_media_keys.py).
+La risposta `[,,,,]` veniva dalla versione precedente; non posso ancora stabilire perché MyHydra abbia prodotto output vuoto. La versione locale verificata è qui: [associate_page_labels_to_media_keys.py](../platforms/lv2/page_classifier/scripts/history/associate_page_labels_to_media_keys.py). Il test ripetibile è [test_associate_page_labels_to_media_keys.py](../tests/test_associate_page_labels_to_media_keys.py).
 
 Quando vuoi verificare la versione aggiornata su MyHydra, puoi provare a rieseguire solo il Pytool usando gli output VLM già ottenuti, se la piattaforma lo consente: non dovrebbe servire un nuovo ciclo VLM.
 
@@ -2614,7 +2614,7 @@ Quando vuoi verificare la versione aggiornata su MyHydra, puoi provare a riesegu
 > p = Path('myhydra/double_pdf/README.md')
 > s = p.read_text()
 > s = s.replace('Sorgente verificato localmente su tutti i 14 gruppi campione; resta da confermare l\'output nel nodo MyHydra.', 'Confermato nel runtime: 14/14 finestre `OK`, 27 associazioni complessive.')
-> s = s.replace('- Confermare l\'associazione chiave→pagina con il risultato del Pytool; non inferirla dai prefissi opachi.\n- Eseguire lo script aggiornato sul runtime e verificare 14 finestre `OK`: due record per le prime 13, uno per l\'ultima.\n- Il comportamento dello Pytool quando il numero di chiavi nel payload non coincide con il numero di etichette VLM.', '- L\'output reale del Pytool è registrato in [`tests/case_6/outputs/observed_pytool_sanitized.json`](tests/case_6/outputs/observed_pytool_sanitized.json), con chiavi temporanee sostituite da ID sintetici.\n- Associazione chiave→etichetta confermata per 14/14 finestre; le etichette delle chiavi ripetute concordano tra finestre sovrapposte.\n- Sequenza risultante: 1 `DENSITY_MAP`, 2–5 `MEASUREMENT_TECHNICAL_DATA`, 6–7 `STATION_INFORMATION`, 8 `MEASUREMENT_TECHNICAL_DATA`, 9–10 `STATION_INFORMATION`, 11–14 `MEASUREMENT_TECHNICAL_DATA`.')
+> s = s.replace('- Confermare l\'associazione chiave→pagina con il risultato del Pytool; non inferirla dai prefissi opachi.\n- Eseguire lo script aggiornato sul runtime e verificare 14 finestre `OK`: due record per le prime 13, uno per l\'ultima.\n- Il comportamento dello Pytool quando il numero di chiavi nel payload non coincide con il numero di etichette VLM.', '- L\'output reale del Pytool è registrato in [`tests/case_6/outputs/observed_pytool_sanitized.json`](../tests/case_6/outputs/observed_pytool_sanitized.json), con chiavi temporanee sostituite da ID sintetici.\n- Associazione chiave→etichetta confermata per 14/14 finestre; le etichette delle chiavi ripetute concordano tra finestre sovrapposte.\n- Sequenza risultante: 1 `DENSITY_MAP`, 2–5 `MEASUREMENT_TECHNICAL_DATA`, 6–7 `STATION_INFORMATION`, 8 `MEASUREMENT_TECHNICAL_DATA`, 9–10 `STATION_INFORMATION`, 11–14 `MEASUREMENT_TECHNICAL_DATA`.')
 > p.write_text(s)
 > p = Path('myhydra/double_pdf/nodes/lv2_04_associate_labels_to_keys.md')
 > s = p.read_text()
@@ -2623,7 +2623,7 @@ Quando vuoi verificare la versione aggiornata su MyHydra, puoi provare a riesegu
 > p.write_text(s)
 > p = Path('myhydra/double_pdf/tests/case_6/README.md')
 > s = p.read_text()
-> s = s.replace('| [`outputs/observed_classifier.json`](outputs/observed_classifier.json) | Risposta reale del VLM, 27 etichette su 14 iterazioni |', '| [`outputs/observed_classifier.json`](outputs/observed_classifier.json) | Risposta reale del VLM, 27 etichette su 14 iterazioni |\n| [`outputs/observed_pytool_sanitized.json`](outputs/observed_pytool_sanitized.json) | Output reale del Pytool, con chiavi runtime sostituite da ID sintetici |')
+> s = s.replace('| [`outputs/observed_classifier.json`](../tests/case_6/outputs/observed_classifier.json) | Risposta reale del VLM, 27 etichette su 14 iterazioni |', '| [`outputs/observed_classifier.json`](../tests/case_6/outputs/observed_classifier.json) | Risposta reale del VLM, 27 etichette su 14 iterazioni |\n| [`outputs/observed_pytool_sanitized.json`](../tests/case_6/outputs/observed_pytool_sanitized.json) | Output reale del Pytool, con chiavi runtime sostituite da ID sintetici |')
 > s = s.replace('Lo Pytool non elimina l\'overlap tra finestre: la deduplicazione deve avvenire dopo il ciclo del Livello 1, usando la chiave media come identità tecnica.', 'Il Pytool ha restituito `status: OK` in tutte le 14 finestre. Le prime 13 contengono due associazioni e l\'ultima una (27 associazioni totali); le etichette ripetute delle chiavi di overlap concordano. Lo Pytool non elimina l\'overlap: la deduplicazione deve avvenire dopo il ciclo LV1, usando la chiave media come identità tecnica.')
 > s = s.replace('La suite non è stata eseguita contro il runtime MyHydra. I file sono fixture e documentazione per la verifica manuale sulla piattaforma. L\'esecuzione reale del Pytool resta da verificare.', 'Il Pytool è stato eseguito nel runtime MyHydra con esito positivo per tutte le finestre. La fixture sanitizzata conserva il risultato senza memorizzare le chiavi runtime. I test locali verificano parsing e associazione senza invocare MyHydra o il VLM.')
 > p.write_text(s)
@@ -2639,7 +2639,7 @@ Quando vuoi verificare la versione aggiornata su MyHydra, puoi provare a riesegu
 > p = Path('myhydra/double_pdf/README.md')
 > s = p.read_text()
 > s = s.replace('Sorgente verificato localmente su tutti i 14 gruppi campione; resta da confermare l\'output nel nodo MyHydra.', 'Confermato nel runtime: 14/14 finestre `OK`, 27 associazioni complessive.')
-> s = s.replace('- Confermare l\'associazione chiave→pagina con il risultato del Pytool; non inferirla dai prefissi opachi.\n- Eseguire lo script aggiornato sul runtime e verificare 14 finestre `OK`: due record per le prime 13, uno per l\'ultima.\n- Il comportamento dello Pytool quando il numero di chiavi nel payload non coincide con il numero di etichette VLM.', '- L\'output reale del Pytool è registrato in [`tests/case_6/outputs/observed_pytool_sanitized.json`](tests/case_6/outputs/observed_pytool_sanitized.json), con chiavi temporanee sostituite da ID sintetici.\n- Associazione chiave→etichetta confermata per 14/14 finestre; le etichette delle chiavi ripetute concordano tra finestre sovrapposte.\n- Sequenza risultante: 1 `DENSITY_MAP`, 2–5 `MEASUREMENT_TECHNICAL_DATA`, 6–7 `STATION_INFORMATION`, 8 `MEASUREMENT_TECHNICAL_DATA`, 9–10 `STATION_INFORMATION`, 11–14 `MEASUREMENT_TECHNICAL_DATA`.')
+> s = s.replace('- Confermare l\'associazione chiave→pagina con il risultato del Pytool; non inferirla dai prefissi opachi.\n- Eseguire lo script aggiornato sul runtime e verificare 14 finestre `OK`: due record per le prime 13, uno per l\'ultima.\n- Il comportamento dello Pytool quando il numero di chiavi nel payload non coincide con il numero di etichette VLM.', '- L\'output reale del Pytool è registrato in [`tests/case_6/outputs/observed_pytool_sanitized.json`](../tests/case_6/outputs/observed_pytool_sanitized.json), con chiavi temporanee sostituite da ID sintetici.\n- Associazione chiave→etichetta confermata per 14/14 finestre; le etichette delle chiavi ripetute concordano tra finestre sovrapposte.\n- Sequenza risultante: 1 `DENSITY_MAP`, 2–5 `MEASUREMENT_TECHNICAL_DATA`, 6–7 `STATION_INFORMATION`, 8 `MEASUREMENT_TECHNICAL_DATA`, 9–10 `STATION_INFORMATION`, 11–14 `MEASUREMENT_TECHNICAL_DATA`.')
 > p.write_text(s)
 > p = Path('myhydra/double_pdf/nodes/lv2_04_associate_labels_to_keys.md')
 > s = p.read_text()
@@ -2648,7 +2648,7 @@ Quando vuoi verificare la versione aggiornata su MyHydra, puoi provare a riesegu
 > p.write_text(s)
 > p = Path('myhydra/double_pdf/tests/case_6/README.md')
 > s = p.read_text()
-> s = s.replace('| [`outputs/observed_classifier.json`](outputs/observed_classifier.json) | Risposta reale del VLM, 27 etichette su 14 iterazioni |', '| [`outputs/observed_classifier.json`](outputs/observed_classifier.json) | Risposta reale del VLM, 27 etichette su 14 iterazioni |\n| [`outputs/observed_pytool_sanitized.json`](outputs/observed_pytool_sanitized.json) | Output reale del Pytool, con chiavi runtime sostituite da ID sintetici |')
+> s = s.replace('| [`outputs/observed_classifier.json`](../tests/case_6/outputs/observed_classifier.json) | Risposta reale del VLM, 27 etichette su 14 iterazioni |', '| [`outputs/observed_classifier.json`](../tests/case_6/outputs/observed_classifier.json) | Risposta reale del VLM, 27 etichette su 14 iterazioni |\n| [`outputs/observed_pytool_sanitized.json`](../tests/case_6/outputs/observed_pytool_sanitized.json) | Output reale del Pytool, con chiavi runtime sostituite da ID sintetici |')
 > s = s.replace('Lo Pytool non elimina l\'overlap tra finestre: la deduplicazione deve avvenire dopo il ciclo del Livello 1, usando la chiave media come identità tecnica.', 'Il Pytool ha restituito `status: OK` in tutte le 14 finestre. Le prime 13 contengono due associazioni e l\'ultima una (27 associazioni totali); le etichette ripetute delle chiavi di overlap concordano. Lo Pytool non elimina l\'overlap: la deduplicazione deve avvenire dopo il ciclo LV1, usando la chiave media come identità tecnica.')
 > s = s.replace('La suite non è stata eseguita contro il runtime MyHydra. I file sono fixture e documentazione per la verifica manuale sulla piattaforma. L\'esecuzione reale del Pytool resta da verificare.', 'Il Pytool è stato eseguito nel runtime MyHydra con esito positivo per tutte le finestre. La fixture sanitizzata conserva il risultato senza memorizzare le chiavi runtime. I test locali verificano parsing e associazione senza invocare MyHydra o il VLM.')
 > p.write_text(s)
@@ -2675,7 +2675,7 @@ La sequenza classificata è:
 - Pagine 9–10: `STATION_INFORMATION`
 - Pagine 11–14: `MEASUREMENT_TECHNICAL_DATA`
 
-Ho aggiunto l’output alla documentazione del caso 6, sostituendo le chiavi runtime con identificativi sintetici: [fixture Pytool sanitizzata](<./myhydra/double_pdf/tests/case_6/outputs/observed_pytool_sanitized.json>). La sequenza completa è anche nel [riepilogo Double PDF](<./myhydra/double_pdf/README.md>).
+Ho aggiunto l’output alla documentazione del caso 6, sostituendo le chiavi runtime con identificativi sintetici: [fixture Pytool sanitizzata](../tests/case_6/outputs/observed_pytool_sanitized.json>). La sequenza completa è anche nel [riepilogo Double PDF](<../README.md>).
 
 Il passo successivo è raccogliere i 14 risultati dopo il ciclo iterativo e deduplicare le pagine usando la chiave media. Questo output non indica ancora a quale PDF appartenga ciascuna pagina né fornisce i numeri di pagina originali: non ricaviamoli dai prefissi delle chiavi.
 
@@ -2730,7 +2730,7 @@ Sì, la **struttura tecnica** è diversa, mentre per ora le tre categorie di pag
 
 Il nuovo flusso usa finestre sovrapposte di chiavi: il Pytool interno associa a ogni chiave l’etichetta del VLM e quello esterno elimina le ripetizioni tra finestre. È un passaggio per gestire questo formato di input; non svolge i merge semantici del legacy.
 
-Il diagramma attuale copre quindi solo l’acquisizione e la classificazione delle pagine. Per arrivare al comportamento completo del legacy restano da progettare i rami di estrazione per categoria e il merge dei risultati, fino al JSON finale. Ho aggiornato il [diagramma del nuovo Double PDF](<./myhydra/double_pdf/README.md>) per mostrare questi confini.
+Il diagramma attuale copre quindi solo l’acquisizione e la classificazione delle pagine. Per arrivare al comportamento completo del legacy restano da progettare i rami di estrazione per categoria e il merge dei risultati, fino al JSON finale. Ho aggiornato il [diagramma del nuovo Double PDF](<../README.md>) per mostrare questi confini.
 
 > Ok quindi ora cosa dobbiamo fare
 
@@ -2767,7 +2767,7 @@ Il diagramma attuale copre quindi solo l’acquisizione e la classificazione del
 
 Il prossimo passo è provare **il Pytool 5 “ELIMINAZIONE DUPLICATI”** che hai aggiunto:
 
-1. Incolla nel nodo lo script [deduplicate_overlapping_pages.py](<./myhydra/double_pdf/pytools/deduplicate_overlapping_pages.py>).
+1. Incolla nel nodo lo script [deduplicate_overlapping_pages.py](../platforms/lv1/scripts/in_use/deduplicate_overlapping_pages.py)).
 2. Controlla che legga l’**edge #3** dal Double PDF Engine e che il risultato vada al Naive tramite **edge #4**.
 3. Eseguilo e controlla che restituisca `status: OK`, `page_count: 14` e 14 pagine.
 
@@ -2936,7 +2936,7 @@ Ho aggiornato la documentazione per descrivere il Naive come nodo di output. Il 
 > </details>
 </details>
 
-Ho ricostruito i rami nel legacy e preparato la proposta per la fase successiva in [WORKFLOW_DESIGN.md](<./myhydra/double_pdf/WORKFLOW_DESIGN.md>).
+Ho ricostruito i rami nel legacy e preparato la proposta per la fase successiva in [WORKFLOW_DESIGN.md](<../WORKFLOW_DESIGN.md>).
 
 La sequenza proposta è:
 
@@ -3107,7 +3107,7 @@ Hai ragione: con upload in ordine casuale e senza metadati MyHydra, serve che il
 
 `document_role` indica `IOL`, `JOB` o `UNKNOWN`; `label` conserva una delle tre categorie di pagina esistenti. Se l’immagine non dà indizi sufficienti, il VLM deve rispondere `UNKNOWN`, senza basarsi sull’ordine dei file o sulla categoria.
 
-Ho aggiornato il prompt [page_classifier_v2_role_and_type.md](<./myhydra/double_pdf/prompts/page_classifier_v2_role_and_type.md>) e i Pytool LV2 di associazione e LV1 di deduplicazione, così conservano il ruolo e segnalano eventuali classificazioni discordanti. **I 10 controlli locali passano**; verificano lo schema e gli script, non la capacità del VLM di riconoscere i PDF.
+Ho aggiornato il prompt [page_classifier_v2_role_and_type.md](../platforms/lv2/page_classifier/prompts/history/page_classifier_v2_role_and_type.md)) e i Pytool LV2 di associazione e LV1 di deduplicazione, così conservano il ruolo e segnalano eventuali classificazioni discordanti. **I 10 controlli locali passano**; verificano lo schema e gli script, non la capacità del VLM di riconoscere i PDF.
 
 Il prossimo passo è sostituire nel canvas il prompt del classificatore e gli script dei due Pytool, poi eseguire il caso 6. È necessaria una nuova esecuzione VLM: i risultati precedenti non contengono il ruolo IOL/JOB.
 
@@ -3115,9 +3115,9 @@ Il prossimo passo è sostituire nel canvas il prompt del classificatore e gli sc
 
 Aggiorna questi **3 nodi**:
 
-1. **LV2 — Visiomaru/VLM #2:** sostituisci il prompt con [page_classifier_v2_role_and_type.md](<./myhydra/double_pdf/prompts/page_classifier_v2_role_and_type.md>).
-2. **LV2 — Pytool associatore #4:** sostituisci il codice con [associate_page_labels_to_media_keys.py](<./myhydra/double_pdf/pytools/associate_page_labels_to_media_keys.py>).
-3. **LV1 — Pytool “ELIMINAZIONE DUPLICATI” #5:** sostituisci il codice con [deduplicate_overlapping_pages.py](<./myhydra/double_pdf/pytools/deduplicate_overlapping_pages.py>).
+1. **LV2 — Visiomaru/VLM #2:** sostituisci il prompt con [page_classifier_v2_role_and_type.md](../platforms/lv2/page_classifier/prompts/history/page_classifier_v2_role_and_type.md)).
+2. **LV2 — Pytool associatore #4:** sostituisci il codice con [associate_page_labels_to_media_keys.py](../platforms/lv2/page_classifier/scripts/history/associate_page_labels_to_media_keys.py)).
+3. **LV1 — Pytool “ELIMINAZIONE DUPLICATI” #5:** sostituisci il codice con [deduplicate_overlapping_pages.py](../platforms/lv1/scripts/in_use/deduplicate_overlapping_pages.py)).
 
 Medex, Double PDF Engine e Naive restano invariati. I numeri corrispondono al canvas mostrato; verifica che non siano cambiati.
 
@@ -3194,7 +3194,7 @@ Hai ragione: non ti chiederò quei risultati intermedi. Ho aggiornato localmente
 - Nel caso segnalato, conserverebbe `JOB/STATION_INFORMATION` e segnalerebbe anche `JOB/MEASUREMENT_TECHNICAL_DATA`.
 - Se è discordante il ruolo IOL/JOB, lo imposta a `UNKNOWN` e aggiunge un avviso.
 
-I **10 test locali passano**. Per applicare la modifica, sostituisci il codice del solo nodo #5 con [deduplicate_overlapping_pages.py](<./myhydra/double_pdf/pytools/deduplicate_overlapping_pages.py>). Se MyHydra consente di rieseguire quel nodo sui dati già elaborati, non serve rifare il VLM; altrimenti la modifica sarà verificabile nella prossima run prevista.
+I **10 test locali passano**. Per applicare la modifica, sostituisci il codice del solo nodo #5 con [deduplicate_overlapping_pages.py](../platforms/lv1/scripts/in_use/deduplicate_overlapping_pages.py)). Se MyHydra consente di rieseguire quel nodo sui dati già elaborati, non serve rifare il VLM; altrimenti la modifica sarà verificabile nella prossima run prevista.
 
 > ok, quindi il problema di prima risiedeva nella rimozione duplicati?
 
@@ -3384,7 +3384,7 @@ Va bene: testiamo anche il caso 7 prima di progettare il dispatch. Usa la stessa
 
 Anche il caso 7 è passato: **11 pagine**, con 4 ruoli `IOL` e 7 `JOB`, conteggi coerenti con i PDF caricati. La distribuzione delle categorie è 1 `DENSITY_MAP`, 5 `MEASUREMENT_TECHNICAL_DATA` e 5 `STATION_INFORMATION`.
 
-Resta un solo conflitto di categoria, alla pagina 10, risolto come `STATION_INFORMATION` e segnalato per revisione. Ho salvato l’output anonimizzato e l’esito in [case_7/README.md](./myhydra/double_pdf/tests/case_7/README.md). Dopo aver controllato visivamente quella pagina, avremo due casi di prova da usare per progettare il dispatch.
+Resta un solo conflitto di categoria, alla pagina 10, risolto come `STATION_INFORMATION` e segnalato per revisione. Ho salvato l’output anonimizzato e l’esito in [case_7/README.md](../tests/case_7/README.md). Dopo aver controllato visivamente quella pagina, avremo due casi di prova da usare per progettare il dispatch.
 
 > perfetto, procediamo finalmente con la proggettazione del displatcher
 
@@ -3446,7 +3446,7 @@ Resta un solo conflitto di categoria, alla pagina 10, risolto come `STATION_INFO
 > </details>
 </details>
 
-Ho definito il dispatcher e preparato il Pytool in [dispatch_classified_pages.py](./myhydra/double_pdf/pytools/dispatch_classified_pages.py). La regola è instradare per **categoria**, come nei tre rami legacy, mantenendo `document_role` e chiave in ogni record. Così le pagine IOL e JOB della stessa categoria passano dallo stesso estrattore, ma restano distinguibili nel consolidamento.
+Ho definito il dispatcher e preparato il Pytool in [dispatch_classified_pages.py](../platforms/lv1/scripts/parked/dispatch_classified_pages.py). La regola è instradare per **categoria**, come nei tre rami legacy, mantenendo `document_role` e chiave in ogni record. Così le pagine IOL e JOB della stessa categoria passano dallo stesso estrattore, ma restano distinguibili nel consolidamento.
 
 Il flusso previsto è:
 
@@ -3457,7 +3457,7 @@ Il flusso previsto è:
    - `dispatch.has_density_map` → `dispatch.density_map`
 3. Le pagine con avvisi restano instradate secondo la categoria risolta e portano con sé `review_required` e i relativi avvisi.
 
-La specifica completa è in [lv1_05_page_dispatcher.md](./myhydra/double_pdf/nodes/lv1_05_page_dispatcher.md). Ho eseguito il Pytool localmente sulle fixture dei casi 6 e 7: **4 test superati**. In MyHydra resta da verificare come il Condition Node legge il flag annidato.
+La specifica completa è in [lv1_05_page_dispatcher.md](../nodes/lv1_05_page_dispatcher.md). Ho eseguito il Pytool localmente sulle fixture dei casi 6 e 7: **4 test superati**. In MyHydra resta da verificare come il Condition Node legge il flag annidato.
 
 Come primo passo sul canvas, inserisci il Pytool dopo la deduplicazione e prova **un solo ramo**; controlliamo il collegamento e il campo della condizione prima di configurare gli altri due.
 
@@ -3550,7 +3550,7 @@ Ho corretto il Pytool: ora restituisce una sola stringa di categoria per pagina.
 
 Per il prossimo passaggio:
 
-1. Attiva l’iterazione sul nodo 6 e incolla il codice da [dispatch_classified_pages.py](./myhydra/double_pdf/pytools/dispatch_classified_pages.py). Sul canvas attuale legge `{edge}[4]`; controlla quell’indice se i collegamenti cambiano.
+1. Attiva l’iterazione sul nodo 6 e incolla il codice da [dispatch_classified_pages.py](../platforms/lv1/scripts/parked/dispatch_classified_pages.py). Sul canvas attuale legge `{edge}[4]`; controlla quell’indice se i collegamenti cambiano.
 2. Crea tre archi condizionali, ciascuno con un nodo **Naive temporaneo** di arrivo:
    - `STATION_INFORMATION`
    - `MEASUREMENT_TECHNICAL_DATA`
@@ -3567,7 +3567,7 @@ Così verifichiamo che ogni pagina raggiunga il ramo corretto prima di aggiunger
 
 La configurazione è coerente per **provare il dispatcher**: nodo 4 deduplica, nodo 5 è iterativo e i tre Naive ricevono i rami condizionati. I valori mostrati sugli archi corrispondono alle stringhe attese. Per ora non aggiungere Medex o VLM.
 
-Il prossimo passo è incollare nel nodo 5 il codice di [dispatch_classified_pages.py](./myhydra/double_pdf/pytools/dispatch_classified_pages.py). L’edge in ingresso è il **#4** nello screenshot; il codice deve ricevere una pagina per iterazione e restituire solo la sua categoria.
+Il prossimo passo è incollare nel nodo 5 il codice di [dispatch_classified_pages.py](../platforms/lv1/scripts/parked/dispatch_classified_pages.py). L’edge in ingresso è il **#4** nello screenshot; il codice deve ricevere una pagina per iterazione e restituire solo la sua categoria.
 
 Dato che classificare le pagine richiede tempo, userei una sottopiattaforma **solo come banco di prova**, se permette di fornire al nodo 5 una fixture LV1 salvata. I tre Naive possono così verificare il routing senza rilanciare il VLM. La sottopiattaforma non serve nel flusso finale.
 
@@ -3611,7 +3611,7 @@ Sì: in questo caso serve l’iniezione LV2. **Non avviare la prova con il nodo 
 
 Imposta invece il nodo 5 come iniezione della sottopiattaforma `PAGE DISPATCHER`, con iterazione attiva sull’iniezione. Dentro la sottopiattaforma metti un solo Pytool, che riceve una pagina alla volta da `{question}` e restituisce soltanto la sua etichetta. Gli archi condizionali in uscita dall’iniezione confrontano quella stringa con i tre valori esatti.
 
-Ho aggiornato il codice in [dispatch_classified_pages.py](./myhydra/double_pdf/pytools/dispatch_classified_pages.py) per questo schema; i **5 test locali** passano. Per ora conserva i tre Naive temporanei. Se MyHydra permette di alimentare l’iniezione con l’output LV1 già salvato del caso 6, puoi verificare i rami senza ripetere la classificazione VLM.
+Ho aggiornato il codice in [dispatch_classified_pages.py](../platforms/lv1/scripts/parked/dispatch_classified_pages.py) per questo schema; i **5 test locali** passano. Per ora conserva i tre Naive temporanei. Se MyHydra permette di alimentare l’iniezione con l’output LV1 già salvato del caso 6, puoi verificare i rami senza ripetere la classificazione VLM.
 
 > si ma ricodri l'output della deduplicazione? lui se non sbaglio manda non solo una pagina, come la gestisci questa cosa?
 
@@ -3661,8 +3661,8 @@ Sì, lo ricordo: il deduplicatore emette **un oggetto LV1** con dentro `pages`, 
 
 La catena corretta è in due passaggi:
 
-1. **Nodo 5 Pytool semplice, non iterativo:** estrae `pages` e restituisce un array root, aggiungendo a ogni pagina gli avvisi di revisione pertinenti. Il codice è [prepare_pages_for_dispatch.py](./myhydra/double_pdf/pytools/prepare_pages_for_dispatch.py).
-2. **Iniezione LV2 iterativa:** riceve quell’array e consegna una pagina alla volta al Pytool interno. Quest’ultimo restituisce solo la stringa della categoria, che gli archi confrontano con `STATION_INFORMATION`, `MEASUREMENT_TECHNICAL_DATA` o `DENSITY_MAP`. Il codice è [dispatch_classified_pages.py](./myhydra/double_pdf/pytools/dispatch_classified_pages.py).
+1. **Nodo 5 Pytool semplice, non iterativo:** estrae `pages` e restituisce un array root, aggiungendo a ogni pagina gli avvisi di revisione pertinenti. Il codice è [prepare_pages_for_dispatch.py](../platforms/lv1/scripts/in_use/prepare_pages_for_dispatch.py).
+2. **Iniezione LV2 iterativa:** riceve quell’array e consegna una pagina alla volta al Pytool interno. Quest’ultimo restituisce solo la stringa della categoria, che gli archi confrontano con `STATION_INFORMATION`, `MEASUREMENT_TECHNICAL_DATA` o `DENSITY_MAP`. Il codice è [dispatch_classified_pages.py](../platforms/lv1/scripts/parked/dispatch_classified_pages.py).
 
 Quindi correggo l’indicazione precedente: l’iterazione va attivata sull’iniezione LV2, **non** sul Pytool 5. Ho verificato localmente preparazione e routing con i casi 6 e 7: 9 test superati. Per la prova su MyHydra possiamo usare l’output LV1 già acquisito, se l’iniezione accetta quell’array, evitando di rilanciare il VLM.
 
@@ -3670,7 +3670,7 @@ Quindi correggo l’indicazione precedente: l’iterazione va attivata sull’in
 
 Sì, prima verifichiamo il nodo 5 e lasciamo fuori LV2.
 
-Imposta il nodo 5 come Pytool **non iterativo** con [prepare_pages_for_dispatch.py](./myhydra/double_pdf/pytools/prepare_pages_for_dispatch.py), poi collegalo direttamente a un solo Naive temporaneo per leggere l’output.
+Imposta il nodo 5 come Pytool **non iterativo** con [prepare_pages_for_dispatch.py](../platforms/lv1/scripts/in_use/prepare_pages_for_dispatch.py), poi collegalo direttamente a un solo Naive temporaneo per leggere l’output.
 
 Per il caso 6 ci aspettiamo un array root di **14 record**. Le pagine 11 e 12 dovrebbero avere `review_required: true` e i rispettivi `review_warnings`. Se MyHydra consente di eseguire il nodo con l’output LV1 già acquisito, usiamolo così evitiamo di rilanciare il VLM. Poi mandami l’output del Naive.
 
@@ -3747,7 +3747,7 @@ Ora il formato è pronto per il passaggio successivo: verificare che l’iniezio
 Per verificarlo senza rilanciare il VLM, crea una sottopiattaforma temporanea `DISPATCH PROBE`:
 
 1. Collega l’output array root del Pytool 5 all’iniezione LV2 e attiva l’iterazione sull’iniezione.
-2. Dentro la sottopiattaforma inserisci un solo Pytool, usando [diagnose_dispatch_injection.py](./myhydra/double_pdf/pytools/diagnose_dispatch_injection.py).
+2. Dentro la sottopiattaforma inserisci un solo Pytool, usando [diagnose_dispatch_injection.py](../platforms/lv1/scripts/diagnostics/diagnose_dispatch_injection.py).
 3. Collega l’uscita a un Naive temporaneo. Come input usa l’output del nodo 5 già ottenuto.
 
 **Esito atteso:** 14 record diagnostici, ciascuno con `input_kind: "SINGLE_PAGE"`, indici da 1 a 14 e chiavi diverse. Se vedi un solo record `ROOT_ARRAY` con `item_count: 14`, l’iniezione sta ricevendo l’intera lista in una volta e va corretto il mapping.
@@ -4313,9 +4313,9 @@ Anche la preparazione alimenta tutti e tre i filtri, e l’iterazione è attiva 
 
 Ho preparato i Pytool con i riferimenti agli archi visibili nello screenshot:
 
-- [Filtro STATION_INFORMATION](./myhydra/double_pdf/pytools/filter_station_information_pages.py)
-- [Filtro MEASUREMENT_TECHNICAL_DATA](./myhydra/double_pdf/pytools/filter_measurement_technical_data_pages.py)
-- [Filtro DENSITY_MAP](./myhydra/double_pdf/pytools/filter_density_map_pages.py)
+- [Filtro STATION_INFORMATION](../platforms/lv1/scripts/in_use/filter_station_information_pages.py)
+- [Filtro MEASUREMENT_TECHNICAL_DATA](../platforms/lv1/scripts/in_use/filter_measurement_technical_data_pages.py)
+- [Filtro DENSITY_MAP](../platforms/lv1/scripts/in_use/filter_density_map_pages.py)
 
 Incolla ciascuno nel Pytool corrispondente. I filtri mantengono il record completo, inclusa la chiave della pagina. Non ho avviato un’altra run VLM.
 
@@ -4347,8 +4347,8 @@ Hai ragione: avevo scambiato **i numeri degli archi** dei nodi Station e Density
 
 Quindi i rami arrivano alle destinazioni giuste. Ho corretto nel repository i riferimenti d’ingresso dei filtri Station e Density; quello Measurement resta su `#7`:
 
-- [Filtro Station Information](./myhydra/double_pdf/pytools/filter_station_information_pages.py)
-- [Filtro Density Map](./myhydra/double_pdf/pytools/filter_density_map_pages.py)
+- [Filtro Station Information](../platforms/lv1/scripts/in_use/filter_station_information_pages.py)
+- [Filtro Density Map](../platforms/lv1/scripts/in_use/filter_density_map_pages.py)
 
 Vedo anche un **triangolo rosso sul nodo 6**: controlla l’avviso del Pytool prima di eseguire la run. Non sembra un errore di collegamento, ma va verificato.
 
@@ -4899,7 +4899,7 @@ I collegamenti sono corretti:
 - Visiomaru 4 → Pytool 5 `ASSOCIA ESTRAZIONE ALLA PAGINA`: arco **#3**
 - Pytool 5 → Naive 3: arco **#4**
 
-Nel Pytool 5 usa lo script [associate_station_extraction_to_page.py](./myhydra/double_pdf/pytools/associate_station_extraction_to_page.py). Legge la pagina corrente da `{question}` e l’estrazione VLM dall’arco #3, poi conserva chiave, indice, ruolo e avvisi nel risultato. Il Naive 3 può inoltrare questo output completo.
+Nel Pytool 5 usa lo script [associate_station_extraction_to_page.py](../platforms/lv2/station_information/scripts/in_use/associate_station_extraction_to_page.py). Legge la pagina corrente da `{question}` e l’estrazione VLM dall’arco #3, poi conserva chiave, indice, ruolo e avvisi nel risultato. Il Naive 3 può inoltrare questo output completo.
 
 > ok, lo mando in execution e ti passo l'output
 
@@ -5047,10 +5047,10 @@ I nomi non cambiano gli archi né gli script. Visto che la run è in corso, rino
 
 Ho aggiornato la documentazione del progetto Double PDF e la relativa directory:
 
-- [README del workflow](./myhydra/double_pdf/README.md) e [disegno aggiornato](./myhydra/double_pdf/WORKFLOW_DESIGN.md): descrivono i filtri per etichetta e distinguono le fasi verificate da quelle ancora in prova.
-- Ho registrato gli output dei tre filtri LV1 in forma anonimizzata in [observed_lv1_filtered_branches_sanitized.json](./myhydra/double_pdf/tests/case_6/outputs/observed_lv1_filtered_branches_sanitized.json).
+- [README del workflow](../README.md) e [disegno aggiornato](../WORKFLOW_DESIGN.md): descrivono i filtri per etichetta e distinguono le fasi verificate da quelle ancora in prova.
+- Ho registrato gli output dei tre filtri LV1 in forma anonimizzata in [observed_lv1_filtered_branches_sanitized.json](../tests/case_6/outputs/observed_lv1_filtered_branches_sanitized.json).
 - Ho aggiunto il prompt Station per l’elaborazione di una singola pagina e aggiornato l’inventario di prompt e Pytool.
-- Ho aggiunto [extract_page_key.py](./myhydra/double_pdf/pytools/extract_page_key.py) e aggiornato la scheda Medex della LV2 Station. Lo script è predisposto, ma va ancora verificato su MyHydra.
+- Ho aggiunto [extract_page_key.py](../platforms/lv2/shared/scripts/in_use/extract_page_key.py) e aggiornato la scheda Medex della LV2 Station. Lo script è predisposto, ma va ancora verificato su MyHydra.
 
 Il dispatcher condizionale resta documentato come parcheggiato; non ho modificato il legacy. Quando mi mandi l’output della LV2 Station, aggiorno la documentazione con l’esito e le eventuali correzioni.
 
@@ -5103,7 +5103,7 @@ Il dispatcher condizionale resta documentato come parcheggiato; non ho modificat
 
 La prova LV2 è riuscita sul piano del collegamento: tutte e 6 le pagine hanno mantenuto chiave, indice ed etichetta. L’estrazione ha trovato dati utili nelle pagine 6 e 7; la pagina 10 ha restituito `[]`. Le pagine 9, 11 e 12 hanno invece prodotto oggetti senza dati, quindi il prompt va reso più esplicito. Gli avvisi sulle pagine 11 e 12 restano correttamente visibili.
 
-Ho salvato l’output anonimizzato in [observed_lv2_station_information_sanitized.json](./myhydra/double_pdf/tests/case_6/outputs/observed_lv2_station_information_sanitized.json) e aggiornato le schede del workflow. Ho anche preparato il [prompt Station v2](./myhydra/double_pdf/prompts/station_information_extraction_v2.md): richiede `[]` quando non viene estratto alcun valore.
+Ho salvato l’output anonimizzato in [observed_lv2_station_information_sanitized.json](../tests/case_6/outputs/observed_lv2_station_information_sanitized.json) e aggiornato le schede del workflow. Ho anche preparato il [prompt Station v2](../platforms/lv2/station_information/prompts/history/station_information_extraction_v2.md): richiede `[]` quando non viene estratto alcun valore.
 
 **Passo successivo:** inserisci la v2 nel VLM Station e verifica che le pagine senza dati restituiscano `[]`, mentre le pagine 6 e 7 conservino i dati già estratti. Se MyHydra permette di rilanciare solo la LV2 sugli stessi input, puoi evitare di ripetere la classificazione LV1. Le differenze di tipo (`review_required` numerico e `review_warnings` come stringa JSON) sono annotate: le normalizzeremo nella fase di consolidamento.
 
@@ -5131,7 +5131,7 @@ Ho salvato l’output anonimizzato in [observed_lv2_station_information_sanitize
 > </details>
 </details>
 
-Ho mantenuto la struttura del prompt legacy. Incolla nel VLM il contenuto qui sotto; ho salvato la stessa versione anche in [station_information_extraction_v2.md](./myhydra/double_pdf/prompts/station_information_extraction_v2.md).
+Ho mantenuto la struttura del prompt legacy. Incolla nel VLM il contenuto qui sotto; ho salvato la stessa versione anche in [station_information_extraction_v2.md](../platforms/lv2/station_information/prompts/history/station_information_extraction_v2.md).
 
 ```text
 ## Task description
@@ -5313,9 +5313,9 @@ La v2 ha recuperato dati utili nelle pagine 6, 7, 10 e 11. Restano due anomalie:
 
 Ho aggiornato il Pytool associatore per accettare un array, un singolo oggetto stazione o `null`, e trasformare gli oggetti senza valori in `[]`. **È una modifica preparata, da verificare ancora su MyHydra.**
 
-Come prossimo passo, sostituisci lo script del nodo 5 con [associate_station_extraction_to_page.py](./myhydra/double_pdf/pytools/associate_station_extraction_to_page.py) e ripeti la prova della LV2 Station. Se la pagina 9 resta in errore, ci servirà il suo output grezzo dal VLM per capire il formato effettivo.
+Come prossimo passo, sostituisci lo script del nodo 5 con [associate_station_extraction_to_page.py](../platforms/lv2/station_information/scripts/in_use/associate_station_extraction_to_page.py) e ripeti la prova della LV2 Station. Se la pagina 9 resta in errore, ci servirà il suo output grezzo dal VLM per capire il formato effettivo.
 
-Ho registrato anche questa run, con chiavi anonimizzate, in [observed_lv2_station_information_v2_sanitized.json](./myhydra/double_pdf/tests/case_6/outputs/observed_lv2_station_information_v2_sanitized.json) e aggiornato la documentazione.
+Ho registrato anche questa run, con chiavi anonimizzate, in [observed_lv2_station_information_v2_sanitized.json](../tests/case_6/outputs/observed_lv2_station_information_v2_sanitized.json) e aggiornato la documentazione.
 
 > ecco a te -> [{"key": "DLTDD7VSMI/fc974ee0-3404-4109-8dca-49ac15636ef1", "sequence_index": 6, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": 0, "review_warnings": "[ ]", "station_info": [{"nome_stazione": "Sistema Analisi SO2", "stazione": null, "protocollo": "ModBus TCP", "ip_plc": "10.100.50.95", "port": 511, "campi_scala": []}]},
 > {"key": "DLTDD7VSMI/2d487167-de95-4d5b-a94f-1470eebc44dc", "sequence_index": 7, "document_role": "JOB", "label": "STATION_INFORMATION", "review_required": 0, "review_warnings": "[ ]", "station_info": [{"nome_stazione": null, "stazione": null, "protocollo": null, "ip_plc": null, "port": null, "campi_scala": [{"segnale": "SO2", "tag": "SO2", "campo_da": 0, "campo_a": 300}, {"segnale": "Temperatura fumi", "tag": "TF", "campo_da": 0, "campo_a": 100}]}]},
@@ -5348,7 +5348,7 @@ Bene: questa run conferma che il Pytool aggiornato associa tutte e 6 le pagine s
 
 Restano due verifiche prima di considerare stabili i dati: **il nome della stazione alla pagina 10 è cambiato tra run** e le pagine 11–12 hanno avvisi di classificazione. Teniamo quindi i warning e non consolidiamo ancora quei risultati come definitivi.
 
-Ho registrato l’output anonimizzato in [observed_lv2_station_information_v2_associated_sanitized.json](./myhydra/double_pdf/tests/case_6/outputs/observed_lv2_station_information_v2_associated_sanitized.json) e aggiornato la documentazione. Il test tecnico della LV2 Station è passato; il prossimo ramo da progettare è la LV2 Measurement.
+Ho registrato l’output anonimizzato in [observed_lv2_station_information_v2_associated_sanitized.json](../tests/case_6/outputs/observed_lv2_station_information_v2_associated_sanitized.json) e aggiornato la documentazione. Il test tecnico della LV2 Station è passato; il prossimo ramo da progettare è la LV2 Measurement.
 
 > Proseguiamo con la proggettazione LV2 measurement
 
@@ -5445,7 +5445,7 @@ Ho registrato l’output anonimizzato in [observed_lv2_station_information_v2_as
 > </details>
 </details>
 
-La LV2 Measurement la progettiamo **pagina per pagina**, mantenendo il legame con chiave e indice. Ho registrato il piano nella [scheda di progettazione](<./myhydra/double_pdf/nodes/lv2_06_measurement_extraction_design.md>) e aggiornato la documentazione; il legacy resta intatto.
+La LV2 Measurement la progettiamo **pagina per pagina**, mantenendo il legame con chiave e indice. Ho registrato il piano nella [scheda di progettazione](../nodes/lv2_06_measurement_extraction_design.md)) e aggiornato la documentazione; il legacy resta intatto.
 
 Per ora, nel canvas della sottopiattaforma iterativa, prepara questa sequenza:
 
@@ -5480,7 +5480,7 @@ Per il primo giro i Naive servono a vedere separatamente cosa produce ogni VLM: 
 
 Sì, il cablaggio è corretto: il Pytool passa la chiave al Medex, l’immagine del Medex raggiunge tutti e tre i VLM e ogni VLM ha il proprio Naive di output.
 
-La topologia è confermata; resta da verificare con una run che i nodi ricevano i payload attesi. Ho aggiornato la [scheda LV2 Measurement](<./myhydra/double_pdf/nodes/lv2_06_measurement_extraction_design.md>).
+La topologia è confermata; resta da verificare con una run che i nodi ricevano i payload attesi. Ho aggiornato la [scheda LV2 Measurement](../nodes/lv2_06_measurement_extraction_design.md)).
 
 > perfetto ora passami tutto quello che devo inserire nei rispettivi nodi
 

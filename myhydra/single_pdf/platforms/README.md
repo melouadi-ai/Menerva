@@ -1,85 +1,67 @@
-# Single PDF — materiali canvas (redesign v14/v15)
+# Single PDF — documenti di cablaggio canvas
 
-Copie pronte da incollare nei nodi MyHydra del flusso Single PDF ridisegnato
-(3 rami VLM v14 + consolidatore + JSON CREATOR v15). Organizzazione modellata
-su `myhydra/double_pdf/platforms/` (i due flussi condividono il trasformatore
-ma non gli indici degli edge: le copie restano separate, non mescolarle).
+Questa cartella non contiene più script: dal 4/11/2026 le copie da incollare
+vivono in un solo posto, [`../pytools/`](../pytools/README.md), dove accanto a
+ogni copia canvas c'è la versione documentata. Le vecchie cartelle
+`lv1/scripts/updated_pending_validation/` e `lv2/scripts/...` contenevano
+duplicati byte-identici e sono state eliminate.
+
+Qui resta la **conoscenza del cablaggio**: com'è fatto il canvas, quali edge
+esistono, cosa controllare prima e dopo un rewiring.
 
 ## Mappa
 
-- [`lv1/`](lv1/README.md): catena LV1 e script Pytool da incollare.
-- [`lv2/`](lv2/README.md): i 2 VLM del redesign v2 (UNIFIED + ORACOLO) e
-  il pytool PAGE ASSEMBLER.
-- `lv1/scripts/updated_pending_validation/`: le 3 copie canvas LV1 da
-  incollare al rewiring (mai incollate sul canvas: la prima run MyHydra
-  resta da fare).
-- `lv2/scripts/updated_pending_validation/`: la copia canvas LV2
-  (`page_assembler_canvas.py`).
-- `lv1/scripts/in_use/`: vuoto finché il rewiring non è fatto e validato —
-  il canvas attivo esegue ancora materiale pre-redesign (prompt v13 +
-  creator precedente). Dopo la run, le copie validate migrano qui.
-- `lv1/scripts/parked/`: vuoto; prove non collegate. Lo storico versionato
-  (`json_creator_v4_2/v4_4/v4_5`) resta in `../../pytools/`.
-- `lv2/prompts/current/`: i 3 prompt v14 (produzione del redesign).
-- `lv2/prompts/history/`: `vlm_extraction_v13.md` (storico, immutato).
+- [`lv1/README.md`](lv1/README.md): catena LV1 (nodi, edge, indici, budget di paste).
+- [`lv2/README.md`](lv2/README.md): i due VLM del redesign v2 e il `PAGE ASSEMBLER`.
+- [`../verifica_pdf/BENCHMARK_GATE.md`](../verifica_pdf/BENCHMARK_GATE.md): gate di verifica (§13-bis).
 
 ## Contratto I/O dei Pytool — chiarito una volta sola qui
 
-I due Pytool usano due meccanismi di emissione diversi. È intenzionale e
-verificato a metà: non uniformare senza motivo.
+Due meccanismi di emissione, entrambi intenzionali. Non uniformare senza motivo.
 
 | Nodo | Emissione | Errore | Stato verifica |
 |---|---|---|---|
-| CONSOLIDATORE (nuovo, LV1-04) | `result = json.dumps(...)` | ERROR JSON in `result`: `{"status": "ERROR", "error": ...}` — mai blank | Mai eseguito sul canvas: alla prima run confermare che il nodo esponga `result` |
-| ORACLE_APPLY (nuovo, LV1-04b) | `result = json.dumps(...)` | ERROR JSON in `result` — mai blank | Mai eseguito sul canvas |
-| PAGE ASSEMBLER (nuovo, LV2-03) | `result = json.dumps(...)` | ERROR JSON in `result` — mai blank | Mai eseguito sul canvas |
-| JSON CREATOR v15 (LV1-05) | `print(output)` + variabile `output` | `try/except` globale: in errore stampa `{"status": "ERROR", ...}`, mai blank (fix Task 8 round 1/5) | Meccanismo legacy, verificato sul canvas dal Double (nodo 12, run3/run4 casi 6/7) |
+| `CONSOLIDATORE` | `result = json.dumps(...)` | ERROR JSON in `result`, mai blank | eseguito sul canvas (run di collaudo) |
+| `ORACLE_APPLY` | `result = json.dumps(...)` | ERROR JSON in `result`, mai blank | eseguito sul canvas |
+| `PAGE ASSEMBLER` | `result = json.dumps(...)` | ERROR JSON in `result`, mai blank | eseguito sul canvas |
+| `SLICE-A/B/C` | `result = json.dumps(...)` | ERROR JSON in `result`, mai blank | eseguito sul canvas |
+| `MERGE_AB/ABC` | `result = json.dumps(...)` | ERROR JSON in `result`, mai blank | eseguito sul canvas |
+| `JSON CREATOR` v15 | `print(output)` + variabile `output` | `try/except` globale: stampa ERROR JSON, mai blank | meccanismo legacy verificato dal Double (nodo 12) |
 
-Regola per il futuro: i nuovi Pytool usano `result` + ERROR JSON
-(convenzione corrente). Il creator v15 resta `print`-based perché è il
-meccanismo che ha già funzionato sul canvas; cambiarlo significherebbe
-ritestare l'emissione su piattaforma.
+Regola per il futuro: i nuovi Pytool usano `result` + ERROR JSON. Il creator
+v15 resta `print`-based perché è il meccanismo che ha già funzionato sul
+canvas; cambiarlo significherebbe cambiare il contratto di uscita del flusso.
 
-## Checklist edge-settings — a ogni rewiring
+## Checklist edge (il punto in cui i wire muoiono in silenzio)
 
-1. **Ricontrollare ogni `N` in `{edge}[N]`**: l'indice è locale al canvas e
-   cambia quando si aggiungono o spostano nodi. Valori attesi nel flusso
-   ridisegnato: consolidatore `{edge}[6]`, ORACLE_APPLY `{edge}[6]` +
-   `{edge}[7]`, PAGE ASSEMBLER `{edge}[2]` + `{edge}[5]`, creator
-   `{edge}[2]`. L'inserimento di nodi sposta gli indici a valle:
-   ricontrollare anche il creator.
-2. **Ispezionare le impostazioni di OGNI edge** dopo il ricablaggio e
-   rimuovere le match-condition spurie: un placeholder residuo (precedente
-   visto: `pippo` su un edge filtro→iniezione nel Double) blocca il wire in
-   silenzio — il nodo a valle muore di fame senza errori.
-3. **Mai cambiare l'indice dentro il file**: se un edge è quello sbagliato,
-   si ricabla il canvas, non si edita la copia (le copie sono pinnate dai test).
-4. **Budget paste**: copie canvas sotto la guardia di 34.300 byte (34.113
-   consolidatore, 6.949 ORACLE_APPLY, 3.108 PAGE ASSEMBLER, 25.299 creator;
-   misura empirica: 34.365 byte = rosso, 33.520 = verde). Oltre il limite il paste fallisce a parità di logica; la
-   copia canvas si rigenera con `pytools/render_canvas.py`, non si edita a
-   mano. Dopo l'incollaggio il nodo deve restare verde.
-5. **Output blank senza errori**: diagnosi in ordine — indice edge sbagliato?
-   match-condition spuria? eccezione nel creator (senza ERROR JSON)? Non si
-   può fare tap sui nodi né usare il debugger (timeout): la diagnosi viaggia
-   con self-check dentro l'output (`_warnings`, `_meta`, `review`), mai con
-   ispezioni live.
+Per **ogni** edge del flusso:
 
-## Regole delle copie (non negoziabili sul canvas)
+1. **Nessuna match-condition spuria.** Un placeholder residuo (visto:
+   `pippo` su un edge filtro→iniezione nel Double) blocca il wire senza
+   errori: il nodo a valle muore di fame (blank, non ERROR JSON).
+2. **Tipo di edge corretto.** Gli edge media (`{edge.media}[N]`) devono
+   partire dal ramo `@MEDIA`; gli edge testo (`{edge}[N]`) dal ramo testo.
+   Un media letto come testo porta `null` a valle.
+3. **Conteggio edge in uscita.** `MEDIA2CONTENT` → 3 (uno per SLICE);
+   `CONTENT2MEDIA` → 2 (UNIFIED + ORACOLO); `MERGE_ABC` → 2
+   (CONSOLIDATORE + ORACLE_APPLY).
+4. **Indice riletto.** Ogni `{edge}[N]` è locale al canvas e cambia quando
+   si aggiungono o spostano nodi: va riletto a ogni rewiring.
 
-- Script standalone: solo codice inline, niente `def`/`class`/`lambda`,
-  niente import di `src.*` (validazione Pydantic saltata by design).
-- Incollare pulito: una riga non-Python nel paste è un SyntaxError a
-  compile-time — `result` non viene mai assegnato e il nodo a valle muore
-  di fame in silenzio.
-- Fonte autorevole in caso di divergenza: `src/nodes/` (per i Pytool),
-  `src/prompts/` (per i prompt). Le copie qui sono byte-identiche e pinnate
-  da `tests/test_single_canvas_hygiene.py`.
+## Budget di paste
 
-## Riferimenti
+Misura empirica: 34.365 byte = rosso, 33.520 = verde (6–28 ottobre 2026).
+Guardia di progetto: **< 34.300 byte**.
 
-- Schede dei nodi: [`../nodes/`](../nodes/) (`lv1_04_consolidatore.md`,
-  `lv1_04b_oracle_apply.md`, `lv1_05_json_creator.md`,
-  `lv2_02_vlm_parsing_json_principale.md`, `lv2_03_page_assembler.md`).
-- Vincoli operativi e di formato: `AGENTS.md` (sezione MyHydra).
-- Report del redesign: `.superpowers/sdd/2026-10-06-single-pdf-redesign/`.
+| Copia | Byte |
+|---|---|
+| `consolidator_canvas.py` | 34.113 |
+| `json_creator_v15_canvas.py` | 25.299 |
+| `oracle_apply_canvas.py` | 6.949 |
+| `page_assembler_canvas.py` | 3.108 |
+| `merger_canvas.py` | 1.980 |
+| `slicer_canvas.py` | 905 |
+
+Se una copia supera il budget non si edita a mano: si rigenera con
+[`../pytools/render_canvas.py`](../pytools/render_canvas.py), che toglie i
+commenti e verifica che l'AST resti identico.

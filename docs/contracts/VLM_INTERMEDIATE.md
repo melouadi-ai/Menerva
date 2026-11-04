@@ -83,9 +83,9 @@ Stato al 28/10/2026 — tre rami, un prompt corrente per ramo:
 
 | Ramo | Prompt corrente |
 |---|---|
-| misure + dati tecnici | `src/prompts/vlm_measures_v18.md` |
-| nomi bit | `src/prompts/vlm_bitnames_v16.md` |
-| stati TEXTON/TEXTOFF | `src/prompts/vlm_bitstates_v19.md` |
+| misure + dati tecnici | `src/prompts/archive/vlm_measures_v18.md` |
+| nomi bit | `src/prompts/archive/vlm_bitnames_v16.md` |
+| stati TEXTON/TEXTOFF | `src/prompts/archive/vlm_bitstates_v19.md` |
 
 Le versioni `v11`, `v12`, `v13` (ramo unico) e le intermedie `v14`–`v17`
 restano in `src/prompts/` come storico e non vanno incollate nei nodi.

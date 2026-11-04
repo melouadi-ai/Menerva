@@ -24,17 +24,28 @@ System `python3` lacks dependencies (`pymupdf` missing). Never use it.
 - `legacy/` is read-only reference material. Never modify it; new work goes in `myhydra/`.
 - Docs can be stale — the root README says so explicitly. `data/test_inputs/`, `data/test_outputs/`, and `tests/*/outputs/` contain mixed-provenance files: check a file's role before using it as ground truth. Fixture names starting with `observed_` are pasted runtime outputs (sanitized), `expected_` are derived.
 
+## Struttura: un solo posto per file (4 nov 2026)
+
+> Fuori da una cartella `archive/` c'è solo materiale che si incolla o si esegue **oggi**. Dentro `archive/` c'è materiale che **non si incolla e non si esegue**: serve solo come riferimento di qualità da superare.
+
+- Prompt correnti: `src/prompts/<nome>.md` (autorevole) + `myhydra/single_pdf/prompt/<nome>.md` (copia di paste). Storico **solo** in `src/prompts/archive/`.
+- Script correnti: `myhydra/single_pdf/pytools/<nome>.py` (documentato) + `<nome>_canvas.py` (copia da incollare), generata da `render_canvas.py`. Nessun'altra copia.
+- Single PDF pre-v2 (3 rami v13–v19, creator v4.x, run di ottobre): `myhydra/single_pdf/archive/`. Non si tocca, non si incolla.
+- `myhydra/single_pdf/TESTS/` è ignorata da git: artefatti di run, non documentazione.
+- Doppio PDF: materiale per subpiattaforma in `myhydra/double_pdf/platforms/` (`prompts/current/` vs `prompts/history/`, `scripts/in_use/` vs `updated_pending_validation/` vs `parked/`).
+- Nuovi duplicati non si creano: se serve una variante, si rigenera dalla fonte, non si copia a mano.
+
 ## MyHydra script constraints (non-negotiable on canvas)
 
 Pytool scripts pasted into MyHydra nodes must be standalone: inline code only, **no `def`/`class`/`lambda`**, output assigned to the `result` variable. They cannot import `src.*` — pydantic validation is skipped by design on the platform (`_pydantic_available = False`, pipeline continues identically). Paste clean: a stray non-Python line (e.g. an annotation like `riga 5` copied from chat) is a compile-time SyntaxError — `result` is never assigned, the node exposes nothing and downstream starves **silently** (blank output, not even an ERROR JSON, because `try/except` never runs).
-Keep pasted scripts **under ~32 KB**: on 6 Oct 2026 a 34,365-byte paste turned node 12 red while the 32,766-byte predecessor passed and a 26,731-byte AST-identical copy passes. If a script outgrows the limit, ship a comment-stripped canvas copy with a parity test (same AST, same output on fixtures), never hand edits.
+Keep pasted scripts **under the empirical paste budget**. Measured on canvas: 34,365 bytes = red (6 Oct 2026), 32,766 = green, 32,852 = green (13 Oct), 33,520 = green (28 Oct). Project guardrail: **< 34,300 bytes**, enforced by `tests/test_single_canvas_hygiene.py`. The largest current canvas is `consolidator_canvas.py` at 34,113 bytes — above the largest *verified* green (33,520), so if it turns red the fix is to split the node (`ORACLE_APPLY` was split out for exactly this reason), never to hand-compress the file. If a script outgrows the limit, ship a comment-stripped canvas copy with a parity test (same AST, same output on fixtures), never hand edits.
 
 - `{question}` = current iteration input; `{edge}[N]` = another node's text output (`N` is canvas-local, re-check after rewiring). **Edges can carry match conditions**: a leftover placeholder condition (seen: `pippo` on a filter→injection edge) silently blocks the wire — the downstream injection starves with no error. After any rewiring, inspect edge settings and remove stray conditions.
 - VLM nodes: two verified working layouts — legacy single Prompt field with instructions **and** `{edge.media}[N]` inline (legacy screenshots show `[19]`–`[23]`), and the split layout (`{edge.media}[N]` alone in Prompt, instructions in Powered identity, Context empty; verified 2 Oct 2026 with `image_readable: true`). The empty shells were a Medex input problem, never a field-layout problem.
 
 ## Before starting work
 
-Read the current work-state file for the area: `myhydra/single_pdf/PENDENZE.md`, `myhydra/double_pdf/WORKFLOW_DESIGN.md`. Node cards live in `myhydra/*/nodes/` (`lv1_`/`lv2_` prefixes); Double PDF copy-paste material is organized per subplatform in `myhydra/double_pdf/platforms/` (`prompts/current/` vs `prompts/history/`, `scripts/in_use/` vs `updated_pending_validation/` vs `parked/`).
+Read the current work-state file for the area: `myhydra/single_pdf/README.md` (stato e flusso v2) e `myhydra/single_pdf/PENDENZE.md` (registro storico + voci aperte), `myhydra/double_pdf/WORKFLOW_DESIGN.md`. Node cards live in `myhydra/*/nodes/` (`lv1_`/`lv2_` prefixes); Double PDF copy-paste material is organized per subplatform in `myhydra/double_pdf/platforms/` (`prompts/current/` vs `prompts/history/`, `scripts/in_use/` vs `updated_pending_validation/` vs `parked/`).
 
 When passing a script or prompt change to the user, always paste the **complete file** with changes applied — never a single line or fragment. They copy-paste into the MyHydra canvas, so fragments slow them down. Mark temporary/debug lines with a `DEBUG` comment so they can be reverted.
 
@@ -58,9 +69,15 @@ Conseguenza: **le differenze di un confronto col GT non vanno colmate senza veri
 
 Attenzione anche alle unità: nel PDF IOL del caso 6 **non esiste la colonna unità**. `mg/Nm3` e `°C` nel GT sono inferenze del legacy; noi emettiamo `mg/Nm3` solo dove la scala SO2 è dichiarata e `null` altrove. Non trattare `°C` come un dato mancante da recuperare: è una decisione di dominio (vedi `reports/CONFRONTO_QUALITA_LEGACY_VS_ATTUALE.md`).
 
-## Stato attuale (29 ott 2026)
+## Stato attuale (4 nov 2026)
 
-- Single PDF: prompt v13 + `src/nodes/json_creator.py` v4.4 (A1 soglia 100, A2 copia `myhydra/` allineata). Registro in `myhydra/single_pdf/PENDENZE.md`.
+- **Single PDF — redesign v2** (supera v13/v14/v15): due prompt (`UNIFIED`, `ORACOLO`),
+  `PAGE ASSEMBLER` (LV2-03), `ORACLE_APPLY` (LV1-04b), JSON CREATOR v15 con `_meta.audit_oracolo`.
+  Canvas cablato: LV1 16 nodi, LV2 5 nodi; `ENGINE A` duplicato 3 volte (B/C rimosse, le modifiche su A si propagano).
+  Prima run di collaudo: **PROTEC_2** (2 pagine, tutto in SLICE A), attesi in
+  `myhydra/single_pdf/verifica_pdf/per_caso/caso_3_protec_2/ATTESI_v2.md`.
+  Stato e mappa in `myhydra/single_pdf/README.md`; registro storico e voci aperte in `PENDENZE.md`.
+  Tutto il pre-v2 (3 rami v13–v19, creator v4.x, run di ottobre) è in `myhydra/single_pdf/archive/`.
 - Double PDF: catena LV1→LV2→consolidatore→ADAS verificata end-to-end sui casi 6 e 7 con Qwen 3.8.
   Caso 6, run5 del 29/10: **22 misure + 60 bitinfo, 100% del PDF**, registri **40001–40441**
   (`40000 + REG`), `SQ1HOURMEAN`/`SQDAILYMEAN` = 60 sulle due SO2, PM-302A/B ai bit 1/2.
@@ -109,7 +126,13 @@ Restano, in ordine di gravità:
 5. Attendere dal cliente: BISON, zeri iniziali, regola V2, nome stazione in ADAS.
 6. Prova di importazione in ADAS reale + terza coppia mai vista.
 
-## Single PDF — non è perfetto (verificato 5/10, nessuna modifica al codice)
+## Single PDF pre-v2 — cosa il confronto coi PDF aveva rivelato (verificato 5/10/2026)
+
+> **Riferimento storico.** Questi difetti appartengono al flusso v13, archiviato in
+> `myhydra/single_pdf/archive/`. Restano qui perché sono la lista delle trappole da
+> non reintrodurre nel v2: le regole corrispondenti sono passate in
+> `vlm_unified_v1.md` (V3 unità, fedeltà refusi) e in `ORACLE_APPLY` (IP dichiarati
+> non usati = solo warning).
 
 Resta aperto tutto il Blocco B/C di `myhydra/single_pdf/PENDENZE.md`. In più, dal confronto coi PDF:
 

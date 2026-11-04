@@ -78,7 +78,7 @@ git commit -m "Schema intermedio v14 con zona tag pagina riga"
 ### Task 2: Prompt VLM a 3 rami
 
 **Files:**
-- Create: `src/prompts/vlm_measures_v14.md`, `src/prompts/vlm_bitnames_v14.md`, `src/prompts/vlm_bitstates_v14.md`
+- Create: `src/prompts/archive/vlm_measures_v14.md`, `src/prompts/archive/vlm_bitnames_v14.md`, `src/prompts/archive/vlm_bitstates_v14.md`
 - Modify: `myhydra/single_pdf/prompt/README.md` (hash delle 3 copie)
 - Test: `tests/test_single_prompts_v14.py` (regole presenti per file, non LLM)
 
@@ -102,7 +102,7 @@ def test_tre_prompt_con_regole_chiave():
 Run: `.venv/bin/python -m pytest tests/test_single_prompts_v14.py -q`
 Expected: FAIL (file mancanti).
 
-- [ ] **Step 3: Implement i 3 prompt partendo da `src/prompts/vlm_extraction_v13.md` (split, niente nuove regole di scarto oltre V2/V20/V21)**
+- [ ] **Step 3: Implement i 3 prompt partendo da `src/prompts/archive/vlm_extraction_v13.md` (split, niente nuove regole di scarto oltre V2/V20/V21)**
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `.venv/bin/python -m pytest tests/test_single_prompts_v14.py -q`
@@ -111,7 +111,7 @@ Expected: PASS.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/prompts/vlm_measures_v14.md src/prompts/vlm_bitnames_v14.md src/prompts/vlm_bitstates_v14.md myhydra/single_pdf/prompt/README.md tests/test_single_prompts_v14.py
+git add src/prompts/archive/vlm_measures_v14.md src/prompts/archive/vlm_bitnames_v14.md src/prompts/archive/vlm_bitstates_v14.md myhydra/single_pdf/prompt/README.md tests/test_single_prompts_v14.py
 git commit -m "Prompt VLM Single a 3 rami v14"
 ```
 

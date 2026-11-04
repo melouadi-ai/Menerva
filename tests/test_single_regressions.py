@@ -28,7 +28,7 @@ sys.path.insert(0, str(REPO / "src"))
 from nodes.single_consolidator import consolidate  # noqa: E402
 
 SRC = REPO / "src" / "nodes" / "json_creator.py"
-MEASURES_PROMPT = REPO / "src" / "prompts" / "vlm_measures_v14.md"
+MEASURES_PROMPT = REPO / "src" / "prompts" / "archive" / "vlm_measures_v14.md"
 
 EXPECTED_BITS_40014 = [8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7]
 

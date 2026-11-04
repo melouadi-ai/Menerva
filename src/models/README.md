@@ -228,7 +228,7 @@ else:
 ## 📝 Note
 
 - I modelli sono basati su `docs/contracts/VLM_INTERMEDIATE.md` e `ADAS_FINAL.md`
-- Il prompt corrente è `src/prompts/vlm_extraction_v11.md`
+- Il prompt corrente è `src/prompts/archive/vlm_extraction_v11.md`
 - I modelli sono progettati per essere **permissivi ma corretti**: accettano tutti i casi legittimi (IP placeholder, nome null, units null) ma rifiutano errori strutturali
 
 ## 🚀 Prossimi passi

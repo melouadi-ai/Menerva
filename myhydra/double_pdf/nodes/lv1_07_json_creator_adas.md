@@ -9,7 +9,7 @@
   Copia dedicata al Double PDF, v4.5 + fix Double con `{edge}[13]` + **offset
   40000 sui registri (12/10/2026)**. È il trasformatore
   condiviso col Single PDF, ma in una cartella separata: il Single sta in
-  `myhydra/single_pdf/pytools/json_creator_v4_4.py` con `{edge}[4]`. Non
+  `myhydra/single_pdf/archive/pytools_v4/json_creator_v4_4.py` con `{edge}[4]`. Non
   mescolare i due file e non editare l'indice dentro uno dei due per passare da
   un flusso all'altro.
 
