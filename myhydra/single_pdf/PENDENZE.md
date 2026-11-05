@@ -283,6 +283,38 @@ e ispezionare le match-condition di ogni edge (checklist in
 `oracolo_*`/`oracolo_assente`/`oracolo_input_assente` nel tap di
 `ORACLE_APPLY`, più `audit_oracolo` nel `_meta` del FINALE.
 
+## Run v2 SIEMENS_2 — verdetto (4 nov 2026)
+
+**File:** `verifica_pdf/per_caso/caso_4_siemens_2/VERDETTO_RUN_V2_2026-11-04.md`
+
+Run di collaudo v2 su SIEMENS_2 (29 pagine). Numeri identici al legacy
+(105 misure + 145 bitinfo, registri 3486–61340, IP 192.168.2.11).
+
+Difetti trovati, in ordine di gravità:
+
+1. **ORACOLO non cablato** (alta): warning `oracolo_input_assente` su 29/29
+   pagine. Il nodo ORACOLO non riceve il JSON di UNIFIED nel Context.
+   Da verificare: campo Context del nodo ORACOLO, indice edge `{edge}[M]`,
+   cablaggio UNIFIED→ORACOLO.
+2. **Nomi misure troncati a 49 char** (alta): 39 su 105 nomi troncati.
+   Il VLM UNIFIED tronca i nomi a ~49 char. Serve una regola esplicita nel
+   prompt: "NON troncare i nomi, copia la descrizione completa anche se lunga".
+3. **UNITS mancanti su 6 misure analizzatore** (media): COG2/COG3 MISURA
+   ANALIZZATORE CO/NO/O2 hanno `UNITS=None` nel nostro output, `mg/m3`/`%`
+   nel legacy. Il VLM non legge la colonna unità per quelle righe.
+4. **Numerazione "Ingressi digitali"** (media): `packed_count` in
+   `json_creator_v15.py` numera in ordine di apparizione, il legacy in ordine
+   di registro crescente. I 15 registri sono gli stessi, il numero nel nome
+   è sbagliato.
+5. **`(impulsivo)` perso dai BITNAME** (bassa): 12 bitinfo del registro 16796
+   hanno `(impulsivo)` nel PDF, il legacy lo riporta come `(IMPULSIVO)`, noi
+   lo perdiamo. Il VLM rimuove le parentesi.
+6. **TEXTON inventati su 5 bit** (bassa): il VLM inventa stati dove il PDF
+   non ce li ha. Il legacy usa `ATTIVO` come default. Comportamento
+   accettabile.
+7. **Refusi nei nomi bitinfo** (bassa): comportamento coerente col prompt
+   V13 (fedeltà al PDF). Il legacy corregge, noi no.
+
 ## Riepilogo
 
 | # | Voce | Tipo | Stato |
@@ -299,5 +331,14 @@ e ispezionare le match-condition di ogni edge (checklist in
 | D1 | Comandi di test non standard | informazione | da documentare |
 | D2 | Contratti in conflitto col codice | documentazione | da allineare |
 | D3 | Nota sul refuso da correggere | documentazione | da correggere |
+| E1 | ORACOLO non cablato (run v2 SIEMENS_2) | canvas | **aperto, alta** |
+| E2 | Nomi misure troncati a 49 char (run v2) | prompt | **aperto, alta** |
+| E3 | UNITS mancanti su 6 misure (run v2) | VLM | **aperto, media** |
+| E4 | Numerazione "Ingressi digitali" (run v2) | pytool | **aperto, media** |
+| E5 | `(impulsivo)` perso dai BITNAME (run v2) | VLM | aperto, bassa |
+| E6 | TEXTON inventati su 5 bit (run v2) | VLM | aperto, bassa |
+| E7 | Refusi nei nomi bitinfo (run v2) | VLM | aperto, bassa |
 
 **A1 e A2 sono gli unici due che si risolvono senza aspettare nessuno.** A2 dipende da A1, quindi nell'ordine. Gli altri tre (B1, C2, e in parte C1) aspettano il cliente.
+
+**E1 e E2 sono i due fix prioritari della run v2 SIEMENS_2.** E1 è un problema di cablaggio canvas (verificare il Context del nodo ORACOLO), E2 è un problema di prompt (regola esplicita contro il troncamento dei nomi).
